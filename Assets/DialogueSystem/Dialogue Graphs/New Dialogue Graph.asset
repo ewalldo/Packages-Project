@@ -1,0 +1,1251 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9032973100368033002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 952, y: -24}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -9032973100368033002}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: 8842996009307144821}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -9032973100368033002}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -6389066574812869490}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Payne
+  speakerPortrait: {fileID: 0}
+  dialogueText: Well, did you, or did you not?
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &-8638562304674751867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7260aaea8fb92d4e90d69812d108d44, type: 3}
+  m_Name: Dialogue End
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 9464, y: 280}
+  ports:
+    keys:
+    - input
+    values:
+    - _fieldName: input
+      _node: {fileID: -8638562304674751867}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: 3604355690000285644}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+--- !u!114 &-8433043548144180645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 4856, y: 232}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -8433043548144180645}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -5682998430600656143}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -8433043548144180645}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -7710034570036973706}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Payne
+  speakerPortrait: {fileID: 0}
+  dialogueText: Well then, we'll just have to remind you!
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &-7970422111569743602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 2184, y: -24}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -7970422111569743602}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -2977733987855047130}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -7970422111569743602}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -2720268495285047718}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Phoenix
+  speakerPortrait: {fileID: 0}
+  dialogueText: (What do I do?)
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &-7710034570036973706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 5256, y: 232}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -7710034570036973706}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -8433043548144180645}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -7710034570036973706}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 752491221961014643}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Phoenix
+  speakerPortrait: {fileID: 0}
+  dialogueText: (I got a bad feeling about this...)
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &-7573952206868782236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 7320, y: 248}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -7573952206868782236}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: 1819429087216515771}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -7573952206868782236}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -1661010466630130047}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Payne
+  speakerPortrait: {fileID: 0}
+  dialogueText: He saw the defendant fleeing the scene of the crime!
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &-7150566829876455831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 6488, y: 232}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -7150566829876455831}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: 1399596241535774646}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -7150566829876455831}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 1819429087216515771}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Payne
+  speakerPortrait: {fileID: 0}
+  dialogueText: The man who found the victim's body.
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &-6389066574812869490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1368, y: -24}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -6389066574812869490}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -9032973100368033002}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -6389066574812869490}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -2977733987855047130}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Butz
+  speakerPortrait: {fileID: 0}
+  dialogueText: Heh? Heh, heh. Well, maybe I did, and maybe I didn't!
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &-5682998430600656143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 4408, y: 232}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -5682998430600656143}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -4801996986501849992}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -5682998430600656143}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -8433043548144180645}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Payne
+  speakerPortrait: {fileID: 0}
+  dialogueText: You "don't remember"?
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &-5295940282246095591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 8200, y: 232}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -5295940282246095591}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -1661010466630130047}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -5295940282246095591}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 2307447444905235378}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Judge
+  speakerPortrait: {fileID: 0}
+  dialogueText: Mr. Payne, the prosecution may call its witness.
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &-4801996986501849992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 3992, y: 232}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -4801996986501849992}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: 2760091483532324288}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -4801996986501849992}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -5682998430600656143}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Butz
+  speakerPortrait: {fileID: 0}
+  dialogueText: 'Um, well, see, it''s like this: I don''t remember.'
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &-2977733987855047130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1800, y: -24}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -2977733987855047130}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -6389066574812869490}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -2977733987855047130}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -7970422111569743602}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Phoenix
+  speakerPortrait: {fileID: 0}
+  dialogueText: (Uh oh. He went.)
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &-2720268495285047718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 3112, y: 200}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -2720268495285047718}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output 1
+        node: {fileID: 28462266018673092}
+        reroutePoints: []
+      - fieldName: output
+        node: {fileID: -7970422111569743602}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -2720268495285047718}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 2760091483532324288}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Phoenix
+  speakerPortrait: {fileID: 0}
+  dialogueText: (I'll send him a signal...)
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &-1661010466630130047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 7768, y: 232}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -1661010466630130047}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -7573952206868782236}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -1661010466630130047}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -5295940282246095591}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Judge
+  speakerPortrait: {fileID: 0}
+  dialogueText: Order! Order in the court!
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0cef096600ced04aa7bf2f56de759d8, type: 3}
+  m_Name: New Dialogue Graph
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 5965530933860809032}
+  - {fileID: 4181954332748062623}
+  - {fileID: 8652053803241932873}
+  - {fileID: 8842996009307144821}
+  - {fileID: -9032973100368033002}
+  - {fileID: -6389066574812869490}
+  - {fileID: -2977733987855047130}
+  - {fileID: -7970422111569743602}
+  - {fileID: 28462266018673092}
+  - {fileID: -2720268495285047718}
+  - {fileID: 2760091483532324288}
+  - {fileID: -4801996986501849992}
+  - {fileID: -5682998430600656143}
+  - {fileID: -8433043548144180645}
+  - {fileID: -7710034570036973706}
+  - {fileID: 752491221961014643}
+  - {fileID: 1399596241535774646}
+  - {fileID: -7150566829876455831}
+  - {fileID: 1819429087216515771}
+  - {fileID: -7573952206868782236}
+  - {fileID: -1661010466630130047}
+  - {fileID: -5295940282246095591}
+  - {fileID: 2307447444905235378}
+  - {fileID: 3604355690000285644}
+  - {fileID: -8638562304674751867}
+  current: {fileID: 4181954332748062623}
+--- !u!114 &28462266018673092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fb0e7b759c168d40a943ce6768330f1, type: 3}
+  m_Name: Dialogue Choices
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 2616, y: -152}
+  ports:
+    keys:
+    - input
+    - output
+    - output 0
+    - output 1
+    values:
+    - _fieldName: input
+      _node: {fileID: 28462266018673092}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 28462266018673092}
+      _typeQualifiedName: System.Collections.Generic.List`1[[System.String, mscorlib,
+        Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib,
+        Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output 0
+      _node: {fileID: 28462266018673092}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: output 1
+      _node: {fileID: 28462266018673092}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: -2720268495285047718}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  input: {fileID: 0}
+  output:
+  - Have him answer honestly
+  - Stop him from answering
+--- !u!114 &752491221961014643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 5656, y: 232}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: 752491221961014643}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -7710034570036973706}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 752491221961014643}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 1399596241535774646}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Payne
+  speakerPortrait: {fileID: 0}
+  dialogueText: ' We have a witness that can prove he DID go to the victim''s apartment
+    that day!'
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &1399596241535774646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 6072, y: 232}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: 1399596241535774646}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: 752491221961014643}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 1399596241535774646}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -7150566829876455831}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Judge
+  speakerPortrait: {fileID: 0}
+  dialogueText: Well, that simplifies matters. Who is your witness?
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &1819429087216515771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 6904, y: 248}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: 1819429087216515771}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -7150566829876455831}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 1819429087216515771}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -7573952206868782236}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Payne
+  speakerPortrait: {fileID: 0}
+  dialogueText: Just before making the gruesome discovery...
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &2307447444905235378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 8600, y: 232}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: 2307447444905235378}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -5295940282246095591}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 2307447444905235378}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 3604355690000285644}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Payne
+  speakerPortrait: {fileID: 0}
+  dialogueText: Yes, Your Honor.
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &2760091483532324288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 3544, y: 216}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: 2760091483532324288}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -2720268495285047718}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 2760091483532324288}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -4801996986501849992}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Phoenix
+  speakerPortrait: {fileID: 0}
+  dialogueText: (LIE LIKE A DOG)
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &3604355690000285644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 9000, y: 232}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: 3604355690000285644}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: 2307447444905235378}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 3604355690000285644}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -8638562304674751867}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Phoenix
+  speakerPortrait: {fileID: 0}
+  dialogueText: (This is bad...)
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &4181954332748062623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -280, y: -24}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: 4181954332748062623}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: 5965530933860809032}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 4181954332748062623}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 8652053803241932873}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Payne
+  speakerPortrait: {fileID: 0}
+  dialogueText: Next question!
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &5965530933860809032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf7bc803400f8344d8aaee36984ce134, type: 3}
+  m_Name: Dialogue Start
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -587.6741, y: 43.440693}
+  ports:
+    keys:
+    - output
+    values:
+    - _fieldName: output
+      _node: {fileID: 5965530933860809032}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 4181954332748062623}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  output: {fileID: 0}
+--- !u!114 &8652053803241932873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 104, y: -24}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: 8652053803241932873}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: 4181954332748062623}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 8652053803241932873}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 8842996009307144821}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Payne
+  speakerPortrait: {fileID: 0}
+  dialogueText: You went to the victim's apartment on the day of the murder, did
+    you not?
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
+--- !u!114 &8842996009307144821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbb25f5897cd4a48b760d6808778c21, type: 3}
+  m_Name: Dialogue Speech
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 520, y: -24}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: 8842996009307144821}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: 8652053803241932873}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 8842996009307144821}
+      _typeQualifiedName: DialoguePackage.DialogueBaseNode, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: -9032973100368033002}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {fileID: 0}
+  speakerName: Butz
+  speakerPortrait: {fileID: 0}
+  dialogueText: Gulp!
+  dialogueTextAudio: {fileID: 0}
+  output: {fileID: 0}
