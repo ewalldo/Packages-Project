@@ -1,5 +1,6 @@
 font color
 screen shake
+tooltip when hover
 
 Payne Your Honor, a-a moment please!
 Payne There isn&t a shred of evidence supporting the defense's claims!

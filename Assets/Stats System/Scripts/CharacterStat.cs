@@ -6,12 +6,32 @@ namespace StatsSystem
 {
     public class CharacterStat
     {
+        /// <summary>
+        /// The stat base value
+        /// </summary>
         public float StatBaseValue { get; private set; }
+
+        /// <summary>
+        /// The modifiers on this stat
+        /// </summary>
         public List<StatsModifier> StatsModifiers { get; private set; }
 
-        private float statMinValue;
-        private float statMaxValue;
+        /// <summary>
+        /// The minimum value this stat can reach
+        /// </summary>
+        private readonly float statMinValue;
 
+        /// <summary>
+        /// The maximum value this stat can reach
+        /// </summary>
+        private readonly float statMaxValue;
+
+        /// <summary>
+        /// Initialize a new instance of the <see cref="CharacterStat"/> class
+        /// </summary>
+        /// <param name="statBaseValue">The stat initial value</param>
+        /// <param name="statMinValue">The minimum value this stat can reach</param>
+        /// <param name="statMaxValue">The maximum value this stat can reach</param>
         public CharacterStat(float statBaseValue, float statMinValue = float.MinValue, float statMaxValue = float.MaxValue)
         {
             StatBaseValue = statBaseValue;
@@ -21,28 +41,56 @@ namespace StatsSystem
             StatsModifiers = new List<StatsModifier>();
         }
 
+        /// <summary>
+        /// Get the final stat value after the modifiers were applied
+        /// </summary>
         public float GetFinalValueAfterModifiers => CalculateFinalValue();
+
+        /// <summary>
+        /// Get the final stat normalized after the modifiers were applied
+        /// </summary>
         public float GetFinalValueAfterModifiersNormalized => CalculateFinalValue() / statMaxValue;
 
+        /// <summary>
+        /// Get the base stat normalized
+        /// </summary>
         public float GetStatBaseValueNormalized => StatBaseValue / statMaxValue;
 
+        /// <summary>
+        /// Increase/decrease the stat by the passed amount
+        /// </summary>
+        /// <param name="amount">The amount to modify the stat</param>
         public void IncreaseDecreaseBaseStat(float amount)
         {
             StatBaseValue += amount;
             StatBaseValue = Mathf.Clamp(StatBaseValue, statMinValue, statMaxValue);
         }
 
+        /// <summary>
+        /// Add a modifier to the stat
+        /// </summary>
+        /// <param name="statsModifier">The modifier to be added</param>
         public void AddModifier(StatsModifier statsModifier)
         {
             StatsModifiers.Add(statsModifier);
             StatsModifiers.Sort();
         }
 
+        /// <summary>
+        /// Remove a modifier from the stat
+        /// </summary>
+        /// <param name="statsModifier">The modifier to be removed</param>
+        /// <returns>If the modifier removal was successful or not</returns>
         public bool RemoveModifier(StatsModifier statsModifier)
         {
             return StatsModifiers.Remove(statsModifier);
         }
 
+        /// <summary>
+        /// Remove all the modifiers from a specific source
+        /// </summary>
+        /// <param name="modifierSource">The source indicating which modifiers should be removed</param>
+        /// <returns>If the modifier list was modified or not</returns>
         public bool RemoveModifiersBySource(object modifierSource)
         {
             bool somethingWasRemoved = false;
@@ -59,6 +107,11 @@ namespace StatsSystem
             return somethingWasRemoved;
         }
 
+        /// <summary>
+        /// Calculate the final value of the stat after all modifiers are applied
+        /// </summary>
+        /// <param name="precision">How many decimal places the stat should be rounded to</param>
+        /// <returns>The value of the stat after the modifiers</returns>
         private float CalculateFinalValue(int precision = 4)
         {
             float finalValue = StatBaseValue;
