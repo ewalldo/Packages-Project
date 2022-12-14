@@ -12,5 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d46856ee817aec48a2500d058670e4b, type: 3}
   m_Name: ChestLoot
   m_EditorClassIdentifier: 
-  independentLootPool: []
-  dependentLootPool: []
+  independentLootPool:
+  - weight: 1
+    item: {fileID: 7368620510535672143, guid: 84946d7eb276fc847a294034ed430ef9, type: 3}
+    minCountItem: 1
+    maxCountItem: 3
+  - weight: 0.5
+    item: {fileID: 7368620510535672143, guid: 2efd8dd3005e9194d882a2e2ee53fc69, type: 3}
+    minCountItem: 1
+    maxCountItem: 2
+  dependentLootPool:
+  - weight: 0.35
+    item: {fileID: 7368620510535672143, guid: 68d21a0864961cb419cf7bb8d8513163, type: 3}
+    minCountItem: 1
+    maxCountItem: 2
+  - weight: 0.35
+    item: {fileID: 7368620510535672143, guid: 4bc71a8ba7ba6ab48a6dff9ada916713, type: 3}
+    minCountItem: 1
+    maxCountItem: 2

@@ -60,11 +60,11 @@ namespace LootSystem
         {
             List<GameObject> lootList = new List<GameObject>();
 
-            float value = Random.Range(0f, 1f);
-            float curSum = 0;
-
             for (int pulls = 0; pulls < dependentPulls; pulls++)
             {
+                float value = Random.Range(0f, 1f);
+                float curSum = 0;
+
                 for (int i = 0; i < lootItems.Count; i++)
                 {
                     curSum += lootItems[i].weight;
