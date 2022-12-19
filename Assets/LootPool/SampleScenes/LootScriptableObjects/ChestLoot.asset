@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   independentLootPool:
   - weight: 1
-    item: {fileID: 7368620510535672143, guid: 84946d7eb276fc847a294034ed430ef9, type: 3}
+    item: {fileID: 7835944758312380898, guid: 52229d0c969162744bbd5dd50d6c22ae, type: 3}
     minCountItem: 1
     maxCountItem: 3
   - weight: 0.5
-    item: {fileID: 7368620510535672143, guid: 2efd8dd3005e9194d882a2e2ee53fc69, type: 3}
+    item: {fileID: 7540951513014733063, guid: dfff28482c8985f449f5b4112308a951, type: 3}
     minCountItem: 1
     maxCountItem: 2
   dependentLootPool:
-  - weight: 0.35
-    item: {fileID: 7368620510535672143, guid: 68d21a0864961cb419cf7bb8d8513163, type: 3}
+  - weight: 0.75
+    item: {fileID: 6890280240978353595, guid: 06593ca9005fddd44b289582cc0f5b6b, type: 3}
     minCountItem: 1
     maxCountItem: 2
-  - weight: 0.35
-    item: {fileID: 7368620510535672143, guid: 4bc71a8ba7ba6ab48a6dff9ada916713, type: 3}
+  - weight: 0.15
+    item: {fileID: 5778202492230565274, guid: 4c6f0605513e2fd45924cedf2e819e1f, type: 3}
     minCountItem: 1
     maxCountItem: 2

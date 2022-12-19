@@ -87,12 +87,10 @@ namespace LootSystem
             //EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width, rect.height), element, GUIContent.none);
 
             // 76% + 2% + 10% + 2% + 10%
-            //EditorGUI.LabelField(new Rect(rect.x + (rect.width * 0), rect.y, rect.width * 0.10f, listItemHeight / 2), "Weight (0~1)");
             EditorGUI.LabelField(new Rect(rect.x + (rect.width * 0.00f), rect.y, rect.width * 0.76f, listItemHeight / 2), "Item");
             EditorGUI.LabelField(new Rect(rect.x + (rect.width * 0.78f), rect.y, rect.width * 0.10f, listItemHeight / 2), "Min");
             EditorGUI.LabelField(new Rect(rect.x + (rect.width * 0.90f), rect.y, rect.width * 0.10f, listItemHeight / 2), "Max");
 
-            //EditorGUI.PropertyField(new Rect(rect.x + (rect.width * 0), rect.y + (listItemHeight / 2), rect.width * 0.10f, listItemHeight / 2), element.FindPropertyRelative(nameof(LootPool.LootItem.weight)), GUIContent.none);
             EditorGUI.PropertyField(new Rect(rect.x + (rect.width * 0.00f), rect.y + (listItemHeight / 2), rect.width * 0.76f, listItemHeight / 2), element.FindPropertyRelative(nameof(LootItem.item)), GUIContent.none);
             EditorGUI.PropertyField(new Rect(rect.x + (rect.width * 0.78f), rect.y + (listItemHeight / 2), rect.width * 0.10f, listItemHeight / 2), element.FindPropertyRelative(nameof(LootItem.minCountItem)), GUIContent.none);
             EditorGUI.PropertyField(new Rect(rect.x + (rect.width * 0.90f), rect.y + (listItemHeight / 2), rect.width * 0.10f, listItemHeight / 2), element.FindPropertyRelative(nameof(LootItem.maxCountItem)), GUIContent.none);
@@ -136,8 +134,6 @@ namespace LootSystem
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-
-            //EditorUtility.SetDirty(target);
 
             EditorGUILayout.LabelField("<color=white>Loot Pool</color>", new GUIStyle
             {

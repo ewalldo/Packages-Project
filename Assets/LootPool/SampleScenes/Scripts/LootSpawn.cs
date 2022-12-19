@@ -4,14 +4,16 @@ namespace LootSystem
 {
     public class LootSpawn : MonoBehaviour
     {
-        [SerializeField]
+        [SerializeField][Tooltip("Loot pool where the loot will be pulled from")]
         private LootPool lootPool;
-        [SerializeField]
+        [SerializeField][Tooltip("Number of pulls from the independent list")]
         private int numIndependentPulls;
-        [SerializeField]
+        [SerializeField][Tooltip("Number of pulls from the dependent list")]
         private int numDependentPulls;
-        [SerializeField]
+        [SerializeField][Tooltip("The offset range from this object transform")]
         private Vector3 offsetRange;
+        [SerializeField][Tooltip("Effect to play when the loot is spawned")]
+        private GameObject particleSystemSimpleExplosion;
 
         private SpriteRenderer spriteRenderer;
 
@@ -31,6 +33,9 @@ namespace LootSystem
             {
                 lootPool.SpawnDrop(transform, offsetRange, numIndependentPulls, numDependentPulls);
                 spriteRenderer.enabled = false;
+
+                GameObject explosion = Instantiate(particleSystemSimpleExplosion);
+                Destroy(explosion, 4f);
             }
         }
 
