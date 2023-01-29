@@ -99,7 +99,7 @@ namespace LootSystem
         /// </summary>
         /// <param name="independentPulls">How many times it should pull from the independent list</param>
         /// <param name="dependentPulls">How many times it should pull from the dependent list</param>
-        /// <returns></returns>
+        /// <returns>List of GameObjects containing the pulled items</returns>
         public List<GameObject> PullLoot(int independentPulls, int dependentPulls)
         {
             List<GameObject> pulledLoot = PullIndependentLoot(independentPulls);
@@ -109,7 +109,7 @@ namespace LootSystem
         }
 
         /// <summary>
-        /// Spawn the loot pulled from the loot pool
+        /// Pulls and spawn the loot from the loot pool
         /// </summary>
         /// <param name="spawnPosition">The central position where the loot will be spawned</param>
         /// <param name="offsetRange">The offset range from the <paramref name="spawnPosition"/> (calculated independent for each item)</param>
@@ -126,7 +126,7 @@ namespace LootSystem
         }
 
         /// <summary>
-        /// Spawn the loot pulled from the loot pool
+        /// Pulls and spawn the loot from the loot pool
         /// </summary>
         /// <param name="spawnPosition">The central position where the loot will be spawned</param>
         /// <param name="offsetRange">The offset range from the <paramref name="spawnPosition"/> (calculated independent for each item)</param>
@@ -138,7 +138,7 @@ namespace LootSystem
         }
 
         /// <summary>
-        /// Spawn the loot pulled from the loot pool
+        /// Pulls and spawn the loot from the loot pool
         /// </summary>
         /// <param name="spawnPosition">The central position where the loot will be spawned</param>
         /// <param name="independentPulls">How many times it should pull from the independent list</param>
@@ -149,7 +149,7 @@ namespace LootSystem
         }
 
         /// <summary>
-        /// Spawn the loot pulled from a loot pool
+        /// Pulls and spawn the loot from a loot pool
         /// </summary>
         /// <param name="lootItems">The pool of items to pull from</param>
         /// <param name="spawnPosition">The central position where the loot will be spawned</param>
@@ -172,7 +172,7 @@ namespace LootSystem
         }
 
         /// <summary>
-        /// Spawn the loot pulled from a loot pool
+        /// Pulls and spawn the loot from a loot pool
         /// </summary>
         /// <param name="lootItems">The pool of items to pull from</param>
         /// <param name="spawnPosition">The central position where the loot will be spawned</param>
@@ -185,7 +185,7 @@ namespace LootSystem
         }
 
         /// <summary>
-        /// Spawn the loot pulled from a loot pool
+        /// Pulls and spawn the loot from a loot pool
         /// </summary>
         /// <param name="lootItems">The pool of items to pull from</param>
         /// <param name="spawnPosition">The central position where the loot will be spawned</param>
