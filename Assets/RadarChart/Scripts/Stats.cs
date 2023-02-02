@@ -12,11 +12,11 @@ namespace RadarChart
         public static int STAT_MIN = 0;
         public static int STAT_MAX = 20;
 
-        private CharacterStat attackStat;
-        private CharacterStat defenseStat;
-        private CharacterStat speedStat;
-        private CharacterStat magicStat;
-        private CharacterStat healthStat;
+        private SingleStat attackStat;
+        private SingleStat defenseStat;
+        private SingleStat speedStat;
+        private SingleStat magicStat;
+        private SingleStat healthStat;
 
         public enum Type
         {
@@ -29,14 +29,14 @@ namespace RadarChart
 
         public Stats(int attackStatAmount, int defenseStatAmount, int speedStatAmount, int magicStatAmount, int healthStatAmount)
         {
-            attackStat = new CharacterStat(attackStatAmount, STAT_MIN, STAT_MAX);
-            defenseStat = new CharacterStat(defenseStatAmount, STAT_MIN, STAT_MAX);
-            speedStat = new CharacterStat(speedStatAmount, STAT_MIN, STAT_MAX);
-            magicStat = new CharacterStat(magicStatAmount, STAT_MIN, STAT_MAX);
-            healthStat = new CharacterStat(healthStatAmount, STAT_MIN, STAT_MAX);
+            attackStat = new SingleStat(attackStatAmount, STAT_MIN, STAT_MAX);
+            defenseStat = new SingleStat(defenseStatAmount, STAT_MIN, STAT_MAX);
+            speedStat = new SingleStat(speedStatAmount, STAT_MIN, STAT_MAX);
+            magicStat = new SingleStat(magicStatAmount, STAT_MIN, STAT_MAX);
+            healthStat = new SingleStat(healthStatAmount, STAT_MIN, STAT_MAX);
         }
 
-        private CharacterStat GetSingleStat(Type statType)
+        private SingleStat GetSingleStat(Type statType)
         {
             switch (statType)
             {

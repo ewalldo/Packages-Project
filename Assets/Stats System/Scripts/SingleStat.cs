@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace StatsSystem
 {
-    public class CharacterStat
+    public class SingleStat
     {
         /// <summary>
         /// The stat base value
@@ -17,6 +17,34 @@ namespace StatsSystem
         public List<StatsModifier> StatsModifiers { get; private set; }
 
         /// <summary>
+        /// Invoked when the base value of the stat has changed
+        /// </summary>
+        /// <param name="curBaseValue">float: base value of the stat after the change</param>
+        /// <param name="curValueAfterModifiers">float: the stat value with the modifiers applied after the change</param>
+        public Action<float, float> OnSingleStatBaseValueChange;
+
+        /// <summary>
+        /// Invoked when a modifier is added to the stat
+        /// </summary>
+        /// <param name="curBaseValue">float: base value of the stat after the change</param>
+        /// <param name="curValueAfterModifiers">float: the stat value with the modifiers applied after the change</param>
+        public Action<float, float> OnModifierAdded;
+
+        /// <summary>
+        /// Invoked when a modifier is removed from the stat
+        /// </summary>
+        /// <param name="curBaseValue">float: base value of the stat after the change</param>
+        /// <param name="curValueAfterModifiers">float: the stat value with the modifiers applied after the change</param>
+        public Action<float, float> OnModifierRemoved;
+
+        /// <summary>
+        /// Invoked when the modifier list is modified
+        /// </summary>
+        /// <param name="curBaseValue">float: base value of the stat after the change</param>
+        /// <param name="curValueAfterModifiers">float: the stat value with the modifiers applied after the change</param>
+        public Action<float, float> OnModifierListModified;
+
+        /// <summary>
         /// The minimum value this stat can reach
         /// </summary>
         private readonly float statMinValue;
@@ -27,14 +55,14 @@ namespace StatsSystem
         private readonly float statMaxValue;
 
         /// <summary>
-        /// Initialize a new instance of the <see cref="CharacterStat"/> class
+        /// Initialize a new instance of the <see cref="SingleStat"/> class
         /// </summary>
         /// <param name="statBaseValue">The stat initial value</param>
         /// <param name="statMinValue">The minimum value this stat can reach</param>
         /// <param name="statMaxValue">The maximum value this stat can reach</param>
-        public CharacterStat(float statBaseValue, float statMinValue = float.MinValue, float statMaxValue = float.MaxValue)
+        public SingleStat(float statBaseValue, float statMinValue = float.MinValue, float statMaxValue = float.MaxValue)
         {
-            StatBaseValue = statBaseValue;
+            StatBaseValue = statBaseValue; //TODO: clamp between min and max
             this.statMinValue = statMinValue;
             this.statMaxValue = statMaxValue;
 
@@ -64,6 +92,8 @@ namespace StatsSystem
         {
             StatBaseValue += amount;
             StatBaseValue = Mathf.Clamp(StatBaseValue, statMinValue, statMaxValue);
+
+            OnSingleStatBaseValueChange?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
         }
 
         /// <summary>
@@ -74,6 +104,9 @@ namespace StatsSystem
         {
             StatsModifiers.Add(statsModifier);
             StatsModifiers.Sort();
+
+            OnModifierAdded?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
+            OnModifierListModified?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
         }
 
         /// <summary>
@@ -83,7 +116,36 @@ namespace StatsSystem
         /// <returns>If the modifier removal was successful or not</returns>
         public bool RemoveModifier(StatsModifier statsModifier)
         {
-            return StatsModifiers.Remove(statsModifier);
+            bool wasRemoved = StatsModifiers.Remove(statsModifier);
+
+            if (wasRemoved)
+            {
+                OnModifierRemoved?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
+                OnModifierListModified?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
+            }
+
+            return wasRemoved;
+        }
+
+        /// <summary>
+        /// Remove all modifiers from the stat
+        /// </summary>
+        /// <returns>If modifiers were removed or not</returns>
+        public bool RemoveAllModifiers()
+        {
+            if (StatsModifiers.Count > 0)
+            {
+                StatsModifiers = new List<StatsModifier>();
+
+                OnModifierRemoved?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
+                OnModifierListModified?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -91,7 +153,7 @@ namespace StatsSystem
         /// </summary>
         /// <param name="modifierSource">The source indicating which modifiers should be removed</param>
         /// <returns>If the modifier list was modified or not</returns>
-        public bool RemoveModifiersBySource(object modifierSource)
+        public bool RemoveModifiersBySource(UnityEngine.Object modifierSource)
         {
             bool somethingWasRemoved = false;
 
@@ -102,6 +164,12 @@ namespace StatsSystem
                     somethingWasRemoved = true;
                     StatsModifiers.RemoveAt(i);
                 }
+            }
+
+            if (somethingWasRemoved)
+            {
+                OnModifierRemoved?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
+                OnModifierListModified?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
             }
 
             return somethingWasRemoved;
@@ -142,8 +210,6 @@ namespace StatsSystem
                     default:
                         break;
                 }
-
-                finalValue += statsModifier.Value;
             }
 
             return Mathf.Clamp((float)Math.Round(finalValue, precision), statMinValue, statMaxValue);

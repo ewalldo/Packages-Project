@@ -1,28 +1,42 @@
 using System;
+using UnityEngine;
 
 namespace StatsSystem
 {
+    [Serializable]
     public class StatsModifier: IComparable
     {
+        [SerializeField] private float value;
+        [SerializeField] private StatsModifiersType statsModifiersType;
+        [SerializeField] private int modifierOrder;
+        [SerializeField] private UnityEngine.Object modifierSource;
+        [SerializeField] private bool canEditModifierOrder;
+
+        public static string GetNameOfValue => nameof(value);
+        public static string GetNameOfStatModifierType => nameof(statsModifiersType);
+        public static string GetNameOfModifierOrder => nameof(modifierOrder);
+        public static string GetNameOfModifierSource => nameof(modifierSource);
+        public static string GetNameOfCanEditModifierOrder => nameof(canEditModifierOrder);
+
         /// <summary>
         /// Modifier value
         /// </summary>
-        public float Value { get; private set; }
+        public float Value => value;
 
         /// <summary>
         /// The type of this modifier
         /// </summary>
-        public StatsModifiersType StatsModifiersType { get; private set; }
+        public StatsModifiersType StatsModifiersType => statsModifiersType;
 
         /// <summary>
         /// The order of this modifier when applying to the stat
         /// </summary>
-        public int ModifierOrder { get; private set; }
+        public int ModifierOrder => modifierOrder;
 
         /// <summary>
         /// The source object of this modifier
         /// </summary>
-        public object ModifierSource { get; private set; }
+        public UnityEngine.Object ModifierSource => modifierSource;
 
         /// <summary>
         /// Initialize a new instance of the <see cref="StatsModifier"/> class
@@ -31,12 +45,12 @@ namespace StatsSystem
         /// <param name="statsModifiersType">The type of this modifier</param>
         /// <param name="modifierOrder">The order of this modifier when applying to the stat</param>
         /// <param name="modifierSource">The source object of this modifier</param>
-        public StatsModifier(float value, StatsModifiersType statsModifiersType, int modifierOrder, object modifierSource)
+        public StatsModifier(float value, StatsModifiersType statsModifiersType, int modifierOrder, UnityEngine.Object modifierSource)
         {
-            Value = value;
-            StatsModifiersType = statsModifiersType;
-            ModifierOrder = modifierOrder;
-            ModifierSource = modifierSource;
+            this.value = value;
+            this.statsModifiersType = statsModifiersType;
+            this.modifierOrder = modifierOrder;
+            this.modifierSource = modifierSource;
         }
 
         public StatsModifier(float value, StatsModifiersType statsModifiersType)
@@ -45,7 +59,7 @@ namespace StatsSystem
         public StatsModifier(float value, StatsModifiersType statsModifiersType, int modifierOrder)
             : this(value, statsModifiersType, modifierOrder, null) { }
 
-        public StatsModifier(float value, StatsModifiersType statsModifiersType, object modifierSource)
+        public StatsModifier(float value, StatsModifiersType statsModifiersType, UnityEngine.Object modifierSource)
             : this(value, statsModifiersType, (int)statsModifiersType, modifierSource) { }
 
         /// <summary>
