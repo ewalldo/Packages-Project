@@ -29,11 +29,11 @@ namespace RadarChart
 
         public Stats(int attackStatAmount, int defenseStatAmount, int speedStatAmount, int magicStatAmount, int healthStatAmount)
         {
-            attackStat = new SingleStat(attackStatAmount, STAT_MIN, STAT_MAX);
-            defenseStat = new SingleStat(defenseStatAmount, STAT_MIN, STAT_MAX);
-            speedStat = new SingleStat(speedStatAmount, STAT_MIN, STAT_MAX);
-            magicStat = new SingleStat(magicStatAmount, STAT_MIN, STAT_MAX);
-            healthStat = new SingleStat(healthStatAmount, STAT_MIN, STAT_MAX);
+            //attackStat = new SingleStat(attackStatAmount, STAT_MIN, STAT_MAX);
+            //defenseStat = new SingleStat(defenseStatAmount, STAT_MIN, STAT_MAX);
+            //speedStat = new SingleStat(speedStatAmount, STAT_MIN, STAT_MAX);
+            //magicStat = new SingleStat(magicStatAmount, STAT_MIN, STAT_MAX);
+            //healthStat = new SingleStat(healthStatAmount, STAT_MIN, STAT_MAX);
         }
 
         private SingleStat GetSingleStat(Type statType)

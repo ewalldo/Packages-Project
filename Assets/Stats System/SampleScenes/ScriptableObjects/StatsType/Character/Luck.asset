@@ -9,14 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad6581acd8056054e932bff918437f86, type: 3}
-  m_Name: Iron Helmet
+  m_Script: {fileID: 11500000, guid: fddc3e36b649eba459be0c8420b055ff, type: 3}
+  m_Name: Luck
   m_EditorClassIdentifier: 
-  statsModifier:
-  - value: 4
-    statsModifiersType: 100
-    modifierOrder: 100
-    modifierSource: {fileID: 11400000}
-    canEditModifierOrder: 0
-  affectedStats: 01000000
-  equipmentSlot: 1
+  statName: Luck

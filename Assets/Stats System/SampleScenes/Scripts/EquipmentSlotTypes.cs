@@ -4,6 +4,8 @@ namespace StatsSystem
 	{
 		WeaponSlot,
 		HelmetSlot,
-		ArmorSlot
+		ArmorSlot,
+
+		AttachmentSlot
 	}
 }

@@ -1,63 +1,53 @@
 using UnityEngine;
-using TMPro;
+using System.Collections.Generic;
+using System;
 
 namespace StatsSystem
 {
     public class Character : MonoBehaviour
     {
-        public SingleStat Attack { get; private set; }
-        public SingleStat Defense { get; private set; }
-        public SingleStat Speed { get; private set; }
-        public SingleStat Magic { get; private set; }
-        public SingleStat Luck { get; private set; }
+        [SerializeField] private StatTypeSet characterStatsTypeSet;
 
-        [SerializeField] private TextMeshProUGUI attackStatUI;
-        [SerializeField] private TextMeshProUGUI defenseStatUI;
-        [SerializeField] private TextMeshProUGUI speedStatUI;
-        [SerializeField] private TextMeshProUGUI magicStatUI;
-        [SerializeField] private TextMeshProUGUI luckStatUI;
+        private Dictionary<StatType, SingleStat> characterStats;
 
-        private void Awake()
+        public static Action<StatType, float> OnStatUpdated;
+
+        private void Start()
         {
-            Attack = new SingleStat(Random.Range(1, 10), 0, 99);
-            Defense = new SingleStat(Random.Range(1, 10), 0, 99);
-            Speed = new SingleStat(Random.Range(1, 10), 0, 99);
-            Magic = new SingleStat(Random.Range(1, 10), 0, 99);
-            Luck = new SingleStat(Random.Range(1, 10), 0, 99);
+            characterStats = new Dictionary<StatType, SingleStat>();
 
-            UpdateStatsUI();
+            foreach (StatType type in characterStatsTypeSet.GetStatTypeSet)
+            {
+                characterStats[type] = new SingleStat(type, UnityEngine.Random.Range(1, 10), 0, 99);
+                OnStatUpdated?.Invoke(type, characterStats[type].GetFinalValueAfterModifiers);
+            }
         }
 
-        private void OnEnable()
+        public SingleStat GetStat(StatType type)
         {
-            Attack.OnModifierListModified += SingleStat_OnModifierListModified;
-            Defense.OnModifierListModified += SingleStat_OnModifierListModified;
-            Speed.OnModifierListModified += SingleStat_OnModifierListModified;
-            Magic.OnModifierListModified += SingleStat_OnModifierListModified;
-            Luck.OnModifierListModified += SingleStat_OnModifierListModified;
+            if (characterStats.ContainsKey(type))
+            {
+                return characterStats[type];
+            }
+            else
+            {
+                Debug.LogError("This character does not have the stat of the type " + type.GetStatName);
+                return null;
+            }
         }
 
-        private void OnDisable()
+        public void AddModifierToStat(StatType type, StatsModifier statsModifier)
         {
-            Attack.OnModifierListModified -= SingleStat_OnModifierListModified;
-            Defense.OnModifierListModified -= SingleStat_OnModifierListModified;
-            Speed.OnModifierListModified -= SingleStat_OnModifierListModified;
-            Magic.OnModifierListModified -= SingleStat_OnModifierListModified;
-            Luck.OnModifierListModified -= SingleStat_OnModifierListModified;
+            GetStat(type).AddModifier(statsModifier);
+
+            OnStatUpdated?.Invoke(type, characterStats[type].GetFinalValueAfterModifiers);
         }
 
-        private void SingleStat_OnModifierListModified(float baseStat, float modifiedStat)
+        public void RemoveModifierFromStat(StatType type, StatsModifier statsModifier)
         {
-            UpdateStatsUI();
-        }
+            GetStat(type).RemoveModifier(statsModifier);
 
-        public void UpdateStatsUI()
-        {
-            attackStatUI.text = Attack.GetFinalValueAfterModifiers.ToString();
-            defenseStatUI.text = Defense.GetFinalValueAfterModifiers.ToString();
-            speedStatUI.text = Speed.GetFinalValueAfterModifiers.ToString();
-            magicStatUI.text = Magic.GetFinalValueAfterModifiers.ToString();
-            luckStatUI.text = Luck.GetFinalValueAfterModifiers.ToString();
+            OnStatUpdated?.Invoke(type, characterStats[type].GetFinalValueAfterModifiers);
         }
     }
 }

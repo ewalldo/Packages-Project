@@ -10,17 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad6581acd8056054e932bff918437f86, type: 3}
-  m_Name: Dagger
+  m_Name: Axe
   m_EditorClassIdentifier: 
   statsModifier:
-  - value: 2
+  - value: 7
+    statTypeTarget: {fileID: 11400000, guid: 84a1fcef22ff3e94f91d8453f637a0a0, type: 2}
     statsModifiersType: 100
     modifierOrder: 100
     modifierSource: {fileID: 11400000}
     canEditModifierOrder: 0
-  - value: 3
+  - value: -3
+    statTypeTarget: {fileID: 11400000, guid: 18ba8729e8870564cb9e9a1fb398f222, type: 2}
     statsModifiersType: 100
     modifierOrder: 100
     modifierSource: {fileID: 11400000}
     canEditModifierOrder: 0
-  affectedStats: 0000000004000000
+  equipmentSlot: 0

@@ -7,12 +7,14 @@ namespace StatsSystem
     public class StatsModifier: IComparable
     {
         [SerializeField] private float value;
+        [SerializeField] private StatType statTypeTarget;
         [SerializeField] private StatsModifiersType statsModifiersType;
         [SerializeField] private int modifierOrder;
         [SerializeField] private UnityEngine.Object modifierSource;
         [SerializeField] private bool canEditModifierOrder;
 
         public static string GetNameOfValue => nameof(value);
+        public static string GetNameOfStaticTypeTarget => nameof(statTypeTarget);
         public static string GetNameOfStatModifierType => nameof(statsModifiersType);
         public static string GetNameOfModifierOrder => nameof(modifierOrder);
         public static string GetNameOfModifierSource => nameof(modifierSource);
@@ -22,6 +24,11 @@ namespace StatsSystem
         /// Modifier value
         /// </summary>
         public float Value => value;
+
+        /// <summary>
+        /// The stat type who this modifier is targeting
+        /// </summary>
+        public StatType StatTypeTarget => statTypeTarget;
 
         /// <summary>
         /// The type of this modifier
@@ -45,22 +52,23 @@ namespace StatsSystem
         /// <param name="statsModifiersType">The type of this modifier</param>
         /// <param name="modifierOrder">The order of this modifier when applying to the stat</param>
         /// <param name="modifierSource">The source object of this modifier</param>
-        public StatsModifier(float value, StatsModifiersType statsModifiersType, int modifierOrder, UnityEngine.Object modifierSource)
+        public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, int modifierOrder, UnityEngine.Object modifierSource)
         {
             this.value = value;
+            this.statTypeTarget = statTypeTarget;
             this.statsModifiersType = statsModifiersType;
             this.modifierOrder = modifierOrder;
             this.modifierSource = modifierSource;
         }
 
-        public StatsModifier(float value, StatsModifiersType statsModifiersType)
-            : this(value, statsModifiersType, (int)statsModifiersType, null) { }
+        public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType)
+            : this(value, statTypeTarget, statsModifiersType, (int)statsModifiersType, null) { }
 
-        public StatsModifier(float value, StatsModifiersType statsModifiersType, int modifierOrder)
-            : this(value, statsModifiersType, modifierOrder, null) { }
+        public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, int modifierOrder)
+            : this(value, statTypeTarget, statsModifiersType, modifierOrder, null) { }
 
-        public StatsModifier(float value, StatsModifiersType statsModifiersType, UnityEngine.Object modifierSource)
-            : this(value, statsModifiersType, (int)statsModifiersType, modifierSource) { }
+        public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, UnityEngine.Object modifierSource)
+            : this(value, statTypeTarget, statsModifiersType, (int)statsModifiersType, modifierSource) { }
 
         /// <summary>
         /// Sort the StatsModifier class by the ModifierOrder attribute

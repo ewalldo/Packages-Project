@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad6581acd8056054e932bff918437f86, type: 3}
-  m_Name: Iron Armor
+  m_Name: Heavy Armor
   m_EditorClassIdentifier: 
   statsModifier:
   - value: 7
+    statTypeTarget: {fileID: 11400000, guid: 8de422449944fa34bb3d20edc02a3347, type: 2}
     statsModifiersType: 100
     modifierOrder: 100
     modifierSource: {fileID: 11400000}
     canEditModifierOrder: 0
-  - value: -0.15
+  - value: -0.2
+    statTypeTarget: {fileID: 11400000, guid: b375f6c5f59317146bd46afb1477d234, type: 2}
     statsModifiersType: 200
     modifierOrder: 200
     modifierSource: {fileID: 11400000}
     canEditModifierOrder: 0
-  affectedStats: 0100000002000000
-  equipmentSlot: 2
+  equipmentSlot: 3

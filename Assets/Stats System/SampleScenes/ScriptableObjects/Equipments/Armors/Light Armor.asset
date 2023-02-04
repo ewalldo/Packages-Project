@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad6581acd8056054e932bff918437f86, type: 3}
-  m_Name: Magic Robe
+  m_Name: Light Armor
   m_EditorClassIdentifier: 
   statsModifier:
-  - value: 3
+  - value: 5
+    statTypeTarget: {fileID: 11400000, guid: 3a7e46fbd89f08b488cee311dd83b02f, type: 2}
     statsModifiersType: 100
     modifierOrder: 100
     modifierSource: {fileID: 11400000}
     canEditModifierOrder: 0
-  - value: 0.3
+  - value: 0.2
+    statTypeTarget: {fileID: 11400000, guid: 18ba8729e8870564cb9e9a1fb398f222, type: 2}
     statsModifiersType: 200
     modifierOrder: 200
     modifierSource: {fileID: 11400000}
     canEditModifierOrder: 0
-  affectedStats: 0100000003000000
   equipmentSlot: 2

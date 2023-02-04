@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad6581acd8056054e932bff918437f86, type: 3}
-  m_Name: Wizard Hat
+  m_Name: Turret
   m_EditorClassIdentifier: 
   statsModifier:
-  - value: 1
+  - value: 6
+    statTypeTarget: {fileID: 11400000, guid: ab0b656bddd63034b98e0df0478ed7f0, type: 2}
     statsModifiersType: 100
     modifierOrder: 100
     modifierSource: {fileID: 11400000}
     canEditModifierOrder: 0
-  - value: 0.1
-    statsModifiersType: 200
-    modifierOrder: 200
+  - value: -3
+    statTypeTarget: {fileID: 11400000, guid: 8de422449944fa34bb3d20edc02a3347, type: 2}
+    statsModifiersType: 100
+    modifierOrder: 100
     modifierSource: {fileID: 11400000}
     canEditModifierOrder: 0
-  affectedStats: 0100000003000000
-  equipmentSlot: 1
+  equipmentSlot: 3

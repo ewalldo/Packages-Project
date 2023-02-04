@@ -12,6 +12,11 @@ namespace StatsSystem
         public float StatBaseValue { get; private set; }
 
         /// <summary>
+        /// The type of this stat
+        /// </summary>
+        public StatType Type { get; private set; }
+
+        /// <summary>
         /// The modifiers on this stat
         /// </summary>
         public List<StatsModifier> StatsModifiers { get; private set; }
@@ -60,9 +65,10 @@ namespace StatsSystem
         /// <param name="statBaseValue">The stat initial value</param>
         /// <param name="statMinValue">The minimum value this stat can reach</param>
         /// <param name="statMaxValue">The maximum value this stat can reach</param>
-        public SingleStat(float statBaseValue, float statMinValue = float.MinValue, float statMaxValue = float.MaxValue)
+        public SingleStat(StatType statType, float statBaseValue, float statMinValue = float.MinValue, float statMaxValue = float.MaxValue)
         {
-            StatBaseValue = statBaseValue; //TODO: clamp between min and max
+            Type = statType;
+            StatBaseValue = Mathf.Clamp(statBaseValue, statMinValue, statMaxValue);
             this.statMinValue = statMinValue;
             this.statMaxValue = statMaxValue;
 

@@ -11,6 +11,7 @@ namespace StatsSystem
             //StatsModifier statsModifier = (StatsModifier)fieldInfo.GetValue(property.serializedObject.targetObject);
 
             SerializedProperty valueProperty = property.FindPropertyRelative(StatsModifier.GetNameOfValue);
+            SerializedProperty statTargetProperty = property.FindPropertyRelative(StatsModifier.GetNameOfStaticTypeTarget);
             SerializedProperty statModifierTypeProperty = property.FindPropertyRelative(StatsModifier.GetNameOfStatModifierType);
             SerializedProperty canEditModifierOrderProperty = property.FindPropertyRelative(StatsModifier.GetNameOfCanEditModifierOrder);
             SerializedProperty modifierOrderProperty = property.FindPropertyRelative(StatsModifier.GetNameOfModifierOrder);
@@ -31,6 +32,9 @@ namespace StatsSystem
             Rect contentPosition = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
 
             float newValue = EditorGUI.FloatField(new Rect(contentPosition.x, contentPosition.y, contentPosition.width, EditorGUIUtility.singleLineHeight), new GUIContent("Modifier Value"), valueProperty.floatValue);
+            contentPosition.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+
+            EditorGUI.ObjectField(new Rect(contentPosition.x, contentPosition.y, contentPosition.width, EditorGUIUtility.singleLineHeight), statTargetProperty, typeof(StatType), new GUIContent("Target Stats"));
             contentPosition.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
             EditorGUI.PropertyField(new Rect(contentPosition.x, contentPosition.y, contentPosition.width, EditorGUIUtility.singleLineHeight), statModifierTypeProperty, new GUIContent("Modifier Type"));
@@ -73,7 +77,7 @@ namespace StatsSystem
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return (EditorGUIUtility.singleLineHeight * 4) + (EditorGUIUtility.standardVerticalSpacing * 4);
+            return (EditorGUIUtility.singleLineHeight * 5) + (EditorGUIUtility.standardVerticalSpacing * 5);
         }
     }
 }
