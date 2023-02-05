@@ -10,26 +10,37 @@ namespace ScriptGeneratorTools
         private const string monobehaviourPath = basePath + "C# MonoBehaviour";
         private const string scriptableObjectPath = basePath + "C# ScriptableObject";
         private const string customEditorPath = basePath + "C# Custom Editor";
-        private const string customPropertyPath = basePath + "C# Custom Property Drawer";
+        private const string customPropertyDrawerPath = basePath + "C# Custom Property Drawer";
+        private const string customPropertyAttributePath = basePath + "C# Custom Property Attribute";
         private const string interfacePath = basePath + "C# Interface";
         private const string structPath = basePath + "C# Struct";
         private const string enumPath = basePath + "C# Enum";
 
         [MenuItem(classPath, false, 61)]
         private static void CreateScript() => CheckAndCreate(ScriptType.CSClass);
+
         [MenuItem(monobehaviourPath, false, 62)]
         private static void CreateScriptMonoBehaviour() => CheckAndCreate(ScriptType.CSMonoBehaviour);
+
         [MenuItem(scriptableObjectPath, false, 63)]
         private static void CreateScriptScriptableObject() => CheckAndCreate(ScriptType.CSScriptableObject);
+
         [MenuItem(customEditorPath, false, 64)]
         private static void CreateScriptEditorCustomEditor() => CheckAndCreate(ScriptType.CSCustomEditor);
-        [MenuItem(customPropertyPath, false, 65)]
+
+        [MenuItem(customPropertyDrawerPath, false, 65)]
         private static void CreateScriptEditorPropertyDrawer() => CheckAndCreate(ScriptType.CSCustomPropertyDrawer);
-        [MenuItem(interfacePath, false, 66)]
+
+        [MenuItem(customPropertyAttributePath, false, 66)]
+        private static void CreateScriptEditorPropertyAttribute() => CheckAndCreate(ScriptType.CSCustomPropertyAttribute);
+
+        [MenuItem(interfacePath, false, 67)]
         private static void CreateScriptInterface() => CheckAndCreate(ScriptType.CSInterface);
-        [MenuItem(structPath, false, 67)]
+
+        [MenuItem(structPath, false, 68)]
         private static void CreateScriptStruct() => CheckAndCreate(ScriptType.CSStruct);
-        [MenuItem(enumPath, false, 68)]
+
+        [MenuItem(enumPath, false, 69)]
         private static void CreateScriptEnum() => CheckAndCreate(ScriptType.CSEnum);
 
         private static void CheckAndCreate(ScriptType scriptType)
@@ -63,6 +74,9 @@ namespace ScriptGeneratorTools
                 case ScriptType.CSCustomPropertyDrawer:
                     scriptContents += "using UnityEngine;\nusing UnityEditor;\n\nnamespace GenericNamespace\n{\n\t//[CustomPropertyDrawer(typeof(ClassName))]\n\tpublic class " + filename + " : PropertyDrawer\n\t{\n\t\t// Add your code here\n\t}\n}";
                     break;
+                case ScriptType.CSCustomPropertyAttribute:
+                    scriptContents += "using UnityEngine;\n\nnamespace GenericNamespace\n{\n\tpublic class " + filename + " : PropertyAttribute\n\t{\n\t\t// Add your code here\n\t}\n}";
+                    break;
                 case ScriptType.CSInterface:
                     scriptContents += "namespace GenericNamespace\n{\n\tpublic interface " + filename + "\n\t{\n\t\t// Add your code here\n\t}\n}";
                     break;
@@ -87,6 +101,7 @@ namespace ScriptGeneratorTools
             CSScriptableObject,
             CSCustomEditor,
             CSCustomPropertyDrawer,
+            CSCustomPropertyAttribute,
             CSInterface,
             CSStruct,
             CSEnum,

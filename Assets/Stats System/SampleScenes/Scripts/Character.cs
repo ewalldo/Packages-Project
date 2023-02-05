@@ -45,6 +45,7 @@ namespace StatsSystem
 
         public void RemoveModifierFromStat(StatType type, StatsModifier statsModifier)
         {
+            // can also use GetStat(type).RemoveModifiersBySource(statsModifier.ModifierSource);
             GetStat(type).RemoveModifier(statsModifier);
 
             OnStatUpdated?.Invoke(type, characterStats[type].GetFinalValueAfterModifiers);
