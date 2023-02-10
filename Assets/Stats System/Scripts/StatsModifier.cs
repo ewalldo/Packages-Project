@@ -46,9 +46,10 @@ namespace StatsSystem
         public UnityEngine.Object ModifierSource => modifierSource;
 
         /// <summary>
-        /// Initialize a new instance of the <see cref="StatsModifier"/> class
+        /// Instantiate a new instance of the <see cref="StatsModifier"/> class
         /// </summary>
         /// <param name="value">The value of this modifier</param>
+        /// <param name="statTypeTarget">The statType that this modifier will modify</param>
         /// <param name="statsModifiersType">The type of this modifier</param>
         /// <param name="modifierOrder">The order of this modifier when applying to the stat</param>
         /// <param name="modifierSource">The source object of this modifier</param>

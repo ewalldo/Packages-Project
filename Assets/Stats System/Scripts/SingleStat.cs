@@ -60,8 +60,9 @@ namespace StatsSystem
         private readonly float statMaxValue;
 
         /// <summary>
-        /// Initialize a new instance of the <see cref="SingleStat"/> class
+        /// Instantiate a new instance of the <see cref="SingleStat"/> class
         /// </summary>
+        /// <param name="statType">The stat type of this stat</param>
         /// <param name="statBaseValue">The stat initial value</param>
         /// <param name="statMinValue">The minimum value this stat can reach</param>
         /// <param name="statMaxValue">The maximum value this stat can reach</param>

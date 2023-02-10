@@ -1,4 +1,4 @@
-# Loot Pool Package
+# Loot Pool
 ## Table of contents
 - [Introduction](#introduction)
 - [Version History](#versionHistory)
@@ -24,11 +24,11 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.0: Initial release
 
 ## 3 - Features <a name="features"/>
-- Easier to create and manage loot pools: By using ScriptablesObjects, loot pools can be easily created and managed, even by someone without a background in programming.
+- Easier to create and manage loot pools: By using ScriptablesObjects, loot pools can be created and managed from the editor, without the need of any code.
 - More control on the loot pool: Loot pool is divided into two different pools (independent and dependent), giving more control and options on the items being spawned. Also, minimum and maximum quantity of each loot can be set individually.
 - Clean inspector UI: Simple and clean UI allows you to create loot pools very fast, while the graph at the bottom gives you a easy way to visualize the probabilities of each one of the items being spawned. Also, the graph is capable of display warnings in case a item is not set up correctly.
 - Spawn options: There are a number of options to configure how the items from the loot pool are spawned. Parameters options include the spawn position, offset, number of pulls for each pool and so on.
-- Code can be easily extended: The code itself is organized in a way that is easy to understand and with comments in all the important parts, making it easier in case you want to extend by adding new functionalities.
+- Code can be easily extended: The code itself is organized in a way that is easy to understand and with comments on all the important parts, making it easier in case you want to extend by adding new functionalities.
 
 ## 4 - Get Started <a name="getStarted"/>
 ### 4.1 Create a loot pool <a name="createALootPool"/>
@@ -50,8 +50,8 @@ The loot pool UI is organized into three parts: The "independent pool", the "dep
 Pull loot from a list in an independent way (each item in the list has its own chance of being pulled)
 #### Declaration
 ```csharp
-public static List<GameObject> PullIndependentLoot(List<LootItem> lootItems, int independentPulls)
-public List<GameObject> PullIndependentLoot(int independentPulls)
+public static List<GameObject> PullIndependentLoot(List<LootItem> lootItems, int independentPulls);
+public List<GameObject> PullIndependentLoot(int independentPulls);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -68,8 +68,8 @@ public List<GameObject> PullIndependentLoot(int independentPulls)
 Pull loot from a list in a dependent way (the chance of a item being pulled depends on the other items in the list)
 #### Declaration
 ```csharp
-public static List<GameObject> PullDependentLoot(List<LootItem> lootItems, int dependentPulls)
-public List<GameObject> PullDependentLoot(int dependentPulls)
+public static List<GameObject> PullDependentLoot(List<LootItem> lootItems, int dependentPulls);
+public List<GameObject> PullDependentLoot(int dependentPulls);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -86,7 +86,7 @@ public List<GameObject> PullDependentLoot(int dependentPulls)
 Pull loot from the loot pool
 #### Declaration
 ```csharp
-public List<GameObject> PullDependentLoot(int independentPulls, int dependentPulls)
+public List<GameObject> PullDependentLoot(int independentPulls, int dependentPulls);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -103,12 +103,12 @@ public List<GameObject> PullDependentLoot(int independentPulls, int dependentPul
 Pulls and spawn the loot from the loot pool
 #### Declaration
 ```csharp
-public void SpawnDrop(Transform spawnPosition, Vector3 offsetRange, int independentPulls = 1, int dependentPulls = 1)
-public void SpawnDrop(Transform spawnPosition, float offsetRange, int independentPulls = 1, int dependentPulls = 1)
-public void SpawnDrop(Transform spawnPosition, int independentPulls = 1, int dependentPulls = 1)
-public static void SpawnDrop(List<LootItem> lootItems, Transform spawnPosition, Vector3 offsetRange, int numberPulls = 1, bool isIndependentLoot = true)
-public static void SpawnDrop(List<LootItem> lootItems, Transform spawnPosition, float offsetRange, int numberPulls = 1, bool isIndependentLoot = true)
-public static void SpawnDrop(List<LootItem> lootItems, Transform spawnPosition, int numberPulls = 1, bool isIndependentLoot = true)
+public void SpawnDrop(Transform spawnPosition, Vector3 offsetRange, int independentPulls = 1, int dependentPulls = 1);
+public void SpawnDrop(Transform spawnPosition, float offsetRange, int independentPulls = 1, int dependentPulls = 1);
+public void SpawnDrop(Transform spawnPosition, int independentPulls = 1, int dependentPulls = 1);
+public static void SpawnDrop(List<LootItem> lootItems, Transform spawnPosition, Vector3 offsetRange, int numberPulls = 1, bool isIndependentLoot = true);
+public static void SpawnDrop(List<LootItem> lootItems, Transform spawnPosition, float offsetRange, int numberPulls = 1, bool isIndependentLoot = true);
+public static void SpawnDrop(List<LootItem> lootItems, Transform spawnPosition, int numberPulls = 1, bool isIndependentLoot = true);
 ```
 #### Parameters
 | Type | Name | Description |
