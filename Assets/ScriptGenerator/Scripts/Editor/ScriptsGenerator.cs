@@ -90,6 +90,12 @@ namespace ScriptGeneratorTools
                     break;
             }
 
+            // Standardizes the line endings to Windows format (CRLF)
+            scriptContents = scriptContents.Replace("\n", "\r\n");
+
+            // Standardizes the line endings to Unix format (LF)
+            //scriptContents = scriptContents.Replace("\r\n", "\n");
+
             File.WriteAllText(filepath, scriptContents);
             AssetDatabase.Refresh();
         }
