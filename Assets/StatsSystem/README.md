@@ -32,6 +32,7 @@
   - [StatsModifierStatsModifiersType.](#statsModifierStatsModifiersType)
   - [StatsModifier.ModifierOrder](#statsModifierModifierOrder)
   - [StatsModifier.ModifierSource](#statsModifierModifierSource)
+  - [StatsModifiersType](#statsModifiersType)
 - [Contact Information](#contactInformation)
 
 ## 1 - Introduction <a name="introduction"/>
@@ -361,6 +362,20 @@ public Object ModifierSource;
 | Type | Description |
 | :--- | :--- |
 | Object | The source object of this modifier |
+
+
+### 5.23 StatsModifiersType <a name="statsModifiersType"/>
+Constrols how the modifier is applied to the stat
+#### Declaration
+```csharp
+public enum StatsModifiersType;
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Flat | Flat value to be added/subtracted to the stat, i.e. a value of +5 means that +5 will be added. Default modifier order equals to 100 |
+| PercentageAdditive | Percentage additive value to modify the stat, i.e. all percentage additive modifiers are added together before being applied. Default modifier order equals to 200 |
+| PercentageMultiplicative | Percentage multiplicative value to modify the stat, i.e. percentage multiplicative modifiers are are applied right away. Default modifier order equals to 300 |
 
 ## 6 - Contact Information <a name="contactInformation"/>
 If you have any questions or want to report a bug/problem with the package, please contact me at evaldo.lborba@gmail.com

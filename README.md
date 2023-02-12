@@ -2,6 +2,7 @@
 Repository to hold the packages of the tools I have developed for Unity.  
 
 ## Available tools
+* [Event Bus](Assets/EventBus/README.md)
 * [Loot Pool](Assets/LootPool/README.md)
 * [Scripts Generator](Assets/ScriptGenerator/README.md)
 * [Stats System](Assets/StatsSystem/README.md)
@@ -16,6 +17,5 @@ Repository to hold the packages of the tools I have developed for Unity.
 ## TODO list of tools
 * Screen Shake
 * Tooltip
-* Event Bus
 * Graph Plot
 * State Machine
