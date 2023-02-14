@@ -13,9 +13,9 @@ Repository to hold the packages of the tools I have developed for Unity.
 * Dialogue System
 * Health System
 * Radar Chart
+* State Machine
 
 ## TODO list of tools
 * Screen Shake
 * Tooltip
 * Graph Plot
-* State Machine
