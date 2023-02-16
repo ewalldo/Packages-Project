@@ -5,11 +5,22 @@ namespace StateMachinePattern
 {
 	public abstract class StateMachine : MonoBehaviour
 	{
+        /// <summary>
+        /// The current state of the state machine
+        /// </summary>
         public IState CurrentState { get; private set; }
+
+        /// <summary>
+        /// The previous state of the state machine
+        /// </summary>
         public IState PreviousState { get; private set; }
 
         private bool inTransition;
 
+        /// <summary>
+        /// Invoked when the state machine changes to a new state
+        /// </summary>
+        /// <param name="curState">IState: the current state that it has changed to</param>
         public Action<IState> OnStateChanged;
 
         protected virtual void Update()
@@ -24,6 +35,10 @@ namespace StateMachinePattern
                 CurrentState.OnFixedUpdate();
         }
 
+        /// <summary>
+        /// Change the state machine to a new state
+        /// </summary>
+        /// <param name="newState">The new state to change into</param>
         public void ChangeState(IState newState)
         {
             if (CurrentState == newState || inTransition)
@@ -32,12 +47,19 @@ namespace StateMachinePattern
             ChangeStateRoutine(newState);
         }
 
+        /// <summary>
+        /// Revert to the previous state
+        /// </summary>
         public void RevertState()
         {
             if (PreviousState != null)
                 ChangeState(PreviousState);
         }
 
+        /// <summary>
+        /// Execute the routine to change into a new state
+        /// </summary>
+        /// <param name="newState"></param>
         private void ChangeStateRoutine(IState newState)
         {
             inTransition = true;
