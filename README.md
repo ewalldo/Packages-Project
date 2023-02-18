@@ -2,6 +2,7 @@
 Repository to hold the packages of the tools I have developed for Unity.  
 
 ## Available tools
+* [Camera System](Assets/CameraSystem/README.md)
 * [Event Bus](Assets/EventBus/README.md)
 * [Loot Pool](Assets/LootPool/README.md)
 * [Scripts Generator](Assets/ScriptGenerator/README.md)
@@ -9,7 +10,6 @@ Repository to hold the packages of the tools I have developed for Unity.
 * [Stats System](Assets/StatsSystem/README.md)
 
 ## Tools in development
-* Camera control
 * Code Extensions
 * Dialogue System
 * Health System

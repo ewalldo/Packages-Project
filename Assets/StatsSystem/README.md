@@ -26,10 +26,10 @@
   - [SingleStat.RemoveModifier()](#singleStatRemoveModifier)
   - [SingleStat.RemoveAllModifiers()](#singleStatRemoveAllModifiers)
   - [SingleStat.RemoveModifiersBySource()](#singleStatRemoveModifiersBySource)
-  - [StatsModifier())](#statsModifierStatsModifier)
+  - [StatsModifier()](#statsModifierStatsModifier)
   - [StatsModifier.ModifierValue](#statsModifierValue)
   - [StatsModifier.StatTypeTarget](#statsModifierStatTypeTarget)
-  - [StatsModifierStatsModifiersType.](#statsModifierStatsModifiersType)
+  - [StatsModifierStatsModifiersType](#statsModifierStatsModifiersType)
   - [StatsModifier.ModifierOrder](#statsModifierModifierOrder)
   - [StatsModifier.ModifierSource](#statsModifierModifierSource)
   - [StatsModifiersType](#statsModifiersType)
@@ -54,10 +54,10 @@ This package was created and tested using Unity version 2022.1, but it should wo
 
 ## 4 - Get Started <a name="getStarted"/>
 ### 4.1 Create a "stat type" <a name="createAStatType"/>
-- Stat types can be create by right-clicking the project window, choose "Create"->"ScriptableObjects"->"Stats System"-"Stat Type". The name of the file will be used as the name of the stat type as well.
+- Stat types can be created by right-clicking the project window, choose "Create"->"ScriptableObjects"->"Stats System"-"Stat Type". The name of the file will be used as the name of the stat type as well.
 
 ### 4.2 Create a "stat set" <a name="createAStatSet"/>
-- Stat sets can be create by right-clicking the project window, choose "Create"->"ScriptableObjects"->"Stats System"-"Stat Type Set"
+- Stat sets can be created by right-clicking the project window, choose "Create"->"ScriptableObjects"->"Stats System"-"Stat Type Set"
 
 ### 4.3 Instantiate a "single stat" <a name="instantiateASingleStat"/>
 An instance of the SingleStat class can be instantiated by calling its constructor and passing the StatType and base value as parameters. The minimum and maximum that a stat can reach can also be defined in the constructor as optional parameters.  
