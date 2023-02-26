@@ -52,6 +52,24 @@ namespace Extensions
         }
 
         /// <summary>
+        /// Gets a random element from a list
+        /// </summary>
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="list">The list to get a random element from</param>
+        /// <returns>The random element got from the list</returns>
+        public static T RandomElement<T>(this IList<T> list)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+
+            if (list.Count <= 0)
+                throw new ArgumentException("List should contain at least one element");
+
+            int index = UnityEngine.Random.Range(0, list.Count);
+            return list[index];
+        }
+
+        /// <summary>
         /// Return the minimum element of a list
         /// </summary>
         /// <param name="list">The list to get the minimum element from</param>
@@ -284,6 +302,20 @@ namespace Extensions
                 float value = list[i];
                 list[i] = value.Inverse();
             }
+        }
+
+        /// <summary>
+        /// Gets a read-only version of a list
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the list</typeparam>
+        /// <param name="list">The list to be converted to read only</param>
+        /// <returns>The read-only version of the list</returns>
+        public static IReadOnlyList<T> AsReadOnly<T>(this List<T> list)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+
+            return list.AsReadOnly();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Extensions
 {
@@ -83,5 +84,39 @@ namespace Extensions
         /// <param name="value">The value to inverse</param>
         /// <returns>The inverted value</returns>
         public static int Inverse(this int value) => value * -1;
+
+        /// <summary>
+        /// Clamp the value between a min and max
+        /// </summary>
+        /// <param name="value">The value to be clamped</param>
+        /// <param name="min">The minimum value</param>
+        /// <param name="max">The maximum value</param>
+        /// <returns>The clamped value</returns>
+        public static float Clamp(this float value, float min, float max)
+        {
+            return Mathf.Clamp(value, min, max);
+        }
+
+        /// <summary>
+        /// Clamp the value between 0 and 1
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>The clamped value</returns>
+        public static float Clamp01(this float value)
+        {
+            return Mathf.Clamp(value, 0f, 1f);
+        }
+
+        /// <summary>
+        /// Clamp the value between a min and max
+        /// </summary>
+        /// <param name="value">The value to be clamped</param>
+        /// <param name="min">The minimum value</param>
+        /// <param name="max">The maximum value</param>
+        /// <returns>The clamped value</returns>
+        public static int Clamp(this int value, int min, int max)
+        {
+            return Mathf.Clamp(value, min, max);
+        }
     }
 }

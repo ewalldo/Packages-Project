@@ -70,5 +70,55 @@ namespace Extensions
                 child.gameObject.SetActive(status);
             }
         }
+
+        /// <summary>
+        /// Set the object to a new parent and reset the transform values
+        /// </summary>
+        /// <param name="child">The transform to be moved</param>
+        /// <param name="parent">The parent to be attached to</param>
+        /// <param name="resetPosition">Should reset the position?</param>
+        /// <param name="resetRotation">Should reset the rotation?</param>
+        /// <param name="resetScale">Should reset the scale?</param>
+        public static void SetParentAndReset(this Transform child, Transform parent, bool resetPosition = true, bool resetRotation = true, bool resetScale = true)
+        {
+            if (child == null)
+                throw new ArgumentNullException(nameof(child));
+
+            if (parent == null)
+                throw new ArgumentNullException(nameof(parent));
+
+            child.SetParent(parent);
+
+            if (resetPosition)
+                child.localPosition = Vector3.zero;
+            if (resetRotation)
+                child.localRotation = Quaternion.identity;
+            if (resetScale)
+                child.localScale = Vector3.one;
+        }
+
+        /// <summary>
+        /// Rotate the transform towards a target
+        /// </summary>
+        /// <param name="transform">The transform to be rotated</param>
+        /// <param name="target">The target value to be rotated towards</param>
+        /// <param name="speed">The speed of the rotation</param>
+        public static void RotateTowards(this Transform transform, Vector3 target, float speed)
+        {
+            Vector3 direction = (target - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * speed);
+        }
+
+        /// <summary>
+        /// Calculates the distance of this transform in relation to another one
+        /// </summary>
+        /// <param name="transform">The transform starting point</param>
+        /// <param name="other">The transform end point</param>
+        /// <returns>The distance between the two transforms</returns>
+        public static float DistanceTo(this Transform transform, Transform other)
+        {
+            return Vector3.Distance(transform.position, other.position);
+        }
     }
 }
