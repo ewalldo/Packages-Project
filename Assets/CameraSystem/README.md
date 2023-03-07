@@ -81,7 +81,7 @@ public void LoadSettingsFromPlayerPrefs();
 Set a new camera settings to this controller
 #### Declaration
 ```csharp
-public void SetCameraSettings(CameraSettings cameraSettings)
+public void SetCameraSettings(CameraSettings cameraSettings);
 ```
 #### Parameters
 | Type | Name | Description |
