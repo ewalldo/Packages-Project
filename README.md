@@ -8,6 +8,7 @@ Repository to hold the packages of the tools I have developed for Unity.
 * [Extensions](Assets/Extensions/README.md)
 * [Health System](Assets/HealthSystem/README.md)
 * [Loot Pool](Assets/LootPool/README.md)
+* [Measuring Tool](Assets/MeasuringTool/README.md)
 * [Scripts Generator](Assets/ScriptGenerator/README.md)
 * [State Machine](Assets/StateMachine/README.md)
 * [Stats System](Assets/StatsSystem/README.md)
@@ -15,7 +16,6 @@ Repository to hold the packages of the tools I have developed for Unity.
 ## Tools in development
 * Dialogue System
 * Grid System
-* Measuring Tool
 * Radar Chart
 
 ## TODO list of tools
