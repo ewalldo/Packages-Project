@@ -7,6 +7,7 @@ Repository to hold the packages of the tools I have developed for Unity.
 * [Event Bus](Assets/EventBus/README.md)
 * [Extensions](Assets/Extensions/README.md)
 * [Health System](Assets/HealthSystem/README.md)
+* [Hierarchy Enhancer](Assets/HierarchyEnhancer/README.md)
 * [Loot Pool](Assets/LootPool/README.md)
 * [Measuring Tool](Assets/MeasuringTool/README.md)
 * [Scripts Generator](Assets/ScriptGenerator/README.md)
