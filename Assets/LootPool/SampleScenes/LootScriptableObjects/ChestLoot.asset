@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d46856ee817aec48a2500d058670e4b, type: 3}
+  m_Name: ChestLoot
+  m_EditorClassIdentifier: 
+  independentLootPool:
+  - weight: 1
+    item: {fileID: 7835944758312380898, guid: 52229d0c969162744bbd5dd50d6c22ae, type: 3}
+    minCountItem: 1
+    maxCountItem: 3
+  - weight: 0.5
+    item: {fileID: 7540951513014733063, guid: dfff28482c8985f449f5b4112308a951, type: 3}
+    minCountItem: 1
+    maxCountItem: 2
+  dependentLootPool:
+  - weight: 0.75
+    item: {fileID: 6890280240978353595, guid: 06593ca9005fddd44b289582cc0f5b6b, type: 3}
+    minCountItem: 1
+    maxCountItem: 2
+  - weight: 0.15
+    item: {fileID: 5778202492230565274, guid: 4c6f0605513e2fd45924cedf2e819e1f, type: 3}
+    minCountItem: 1
+    maxCountItem: 2
