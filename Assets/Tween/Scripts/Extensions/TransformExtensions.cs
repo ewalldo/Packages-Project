@@ -120,51 +120,140 @@ namespace Tween
             return TweenScale(targetObject, targetObject.localScale, new Vector3(targetObject.localScale.x, targetObject.localScale.y, to), duration, delay, easingFunction, loopType, onComplete);
         }
 
-        // Rotate
+        // Rotate Quaternion
 
-        public static Transform TweenRotate(this Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public static Transform TweenRotate(this Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
             if (easingFunction == null)
                 easingFunction = new LinearEasing();
-            TweenRotate tweenRotate = new TweenRotate(targetObject, from, to, duration, delay, easingFunction, loopType, onComplete);
+            TweenRotateQuaternion tweenRotate = new TweenRotateQuaternion(targetObject, from, to, duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
             TweenCoroutineStarter.Instance.StartCoroutine(tweenRotate.Execute());
 
             return targetObject;
         }
 
-        public static Transform TweenRotate(this Transform targetObject, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public static Transform TweenRotate(this Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
-            return TweenRotate(targetObject, targetObject.rotation.eulerAngles, to, duration, delay, easingFunction, loopType, onComplete);
+            if (isLocalRotation)
+                return TweenRotate(targetObject, targetObject.localRotation, to, duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, targetObject.rotation, to, duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
         }
 
-        public static Transform TweenRotateX(this Transform targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public static Transform TweenRotateXQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
-            return TweenRotate(targetObject, new Vector3(from, targetObject.rotation.eulerAngles.y, targetObject.rotation.eulerAngles.z), new Vector3(to, targetObject.rotation.eulerAngles.y, targetObject.rotation.eulerAngles.z), duration, delay, easingFunction, loopType, onComplete);
+            if (isLocalRotation)
+                return TweenRotate(targetObject, Quaternion.Euler(from, targetObject.localRotation.eulerAngles.y, targetObject.localRotation.eulerAngles.z), Quaternion.Euler(to, targetObject.localRotation.eulerAngles.y, targetObject.localRotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, Quaternion.Euler(from, targetObject.rotation.eulerAngles.y, targetObject.rotation.eulerAngles.z), Quaternion.Euler(to, targetObject.rotation.eulerAngles.y, targetObject.rotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
         }
 
-        public static Transform TweenRotateX(this Transform targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public static Transform TweenRotateXQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
-            return TweenRotate(targetObject, targetObject.rotation.eulerAngles, new Vector3(to, targetObject.rotation.eulerAngles.y, targetObject.rotation.eulerAngles.z), duration, delay, easingFunction, loopType, onComplete);
+            if (isLocalRotation)
+                return TweenRotate(targetObject, targetObject.localRotation, Quaternion.Euler(to, targetObject.localRotation.eulerAngles.y, targetObject.localRotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, targetObject.rotation, Quaternion.Euler(to, targetObject.rotation.eulerAngles.y, targetObject.rotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
         }
 
-        public static Transform TweenRotateY(this Transform targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public static Transform TweenRotateYQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
-            return TweenRotate(targetObject, new Vector3(targetObject.rotation.eulerAngles.x, from, targetObject.rotation.eulerAngles.z), new Vector3(targetObject.rotation.eulerAngles.x, to, targetObject.rotation.eulerAngles.z), duration, delay, easingFunction, loopType, onComplete);
+            if (isLocalRotation)
+                return TweenRotate(targetObject, Quaternion.Euler(targetObject.localRotation.eulerAngles.x, from, targetObject.localRotation.eulerAngles.z), Quaternion.Euler(targetObject.localRotation.eulerAngles.x, to, targetObject.localRotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, Quaternion.Euler(targetObject.rotation.eulerAngles.x, from, targetObject.rotation.eulerAngles.z), Quaternion.Euler(targetObject.rotation.eulerAngles.x, to, targetObject.rotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
         }
 
-        public static Transform TweenRotateY(this Transform targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public static Transform TweenRotateYQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
-            return TweenRotate(targetObject, targetObject.rotation.eulerAngles, new Vector3(targetObject.rotation.eulerAngles.x, to, targetObject.rotation.eulerAngles.z), duration, delay, easingFunction, loopType, onComplete);
+            if (isLocalRotation)
+                return TweenRotate(targetObject, targetObject.localRotation, Quaternion.Euler(targetObject.localRotation.eulerAngles.x, to, targetObject.localRotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, targetObject.rotation, Quaternion.Euler(targetObject.rotation.eulerAngles.x, to, targetObject.rotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
         }
 
-        public static Transform TweenRotateZ(this Transform targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public static Transform TweenRotateZQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
-            return TweenRotate(targetObject, new Vector3(targetObject.rotation.eulerAngles.x, targetObject.rotation.eulerAngles.y, from), new Vector3(targetObject.rotation.eulerAngles.x, targetObject.rotation.eulerAngles.y, to), duration, delay, easingFunction, loopType, onComplete);
+            if (isLocalRotation)
+                return TweenRotate(targetObject, Quaternion.Euler(targetObject.localRotation.eulerAngles.x, targetObject.localRotation.eulerAngles.y, from), Quaternion.Euler(targetObject.localRotation.eulerAngles.x, targetObject.localRotation.eulerAngles.y, to), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, Quaternion.Euler(targetObject.rotation.eulerAngles.x, targetObject.rotation.eulerAngles.y, from), Quaternion.Euler(targetObject.rotation.eulerAngles.x, targetObject.rotation.eulerAngles.y, to), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
         }
 
-        public static Transform TweenRotateZ(this Transform targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public static Transform TweenRotateZQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
-            return TweenRotate(targetObject, targetObject.rotation.eulerAngles, new Vector3(targetObject.rotation.eulerAngles.x, targetObject.rotation.eulerAngles.y, to), duration, delay, easingFunction, loopType, onComplete);
+            if (isLocalRotation)
+                return TweenRotate(targetObject, targetObject.localRotation, Quaternion.Euler(targetObject.localRotation.eulerAngles.x, targetObject.localRotation.eulerAngles.y, to), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, targetObject.rotation, Quaternion.Euler(targetObject.rotation.eulerAngles.x, targetObject.rotation.eulerAngles.y, to), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+        }
+
+        // Rotate Vector3
+
+        public static Transform TweenRotate(this Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        {
+            if (easingFunction == null)
+                easingFunction = new LinearEasing();
+            TweenRotateVector3 tweenRotate = new TweenRotateVector3(targetObject, from, to, duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            TweenCoroutineStarter.Instance.StartCoroutine(tweenRotate.Execute());
+
+            return targetObject;
+        }
+
+        public static Transform TweenRotate(this Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        {
+            if (isLocalRotation)
+                return TweenRotate(targetObject, targetObject.localRotation.eulerAngles, to, duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, targetObject.rotation.eulerAngles, to, duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+        }
+
+        public static Transform TweenRotateXVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        {
+            if (isLocalRotation)
+                return TweenRotate(targetObject, new Vector3(from, targetObject.localRotation.eulerAngles.y, targetObject.localRotation.eulerAngles.z), new Vector3(to, targetObject.localRotation.eulerAngles.y, targetObject.localRotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, new Vector3(from, targetObject.rotation.eulerAngles.y, targetObject.rotation.eulerAngles.z), new Vector3(to, targetObject.rotation.eulerAngles.y, targetObject.rotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+        }
+
+        public static Transform TweenRotateXVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        {
+            if (isLocalRotation)
+                return TweenRotate(targetObject, targetObject.localRotation.eulerAngles, new Vector3(to, targetObject.localRotation.eulerAngles.y, targetObject.localRotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, targetObject.rotation.eulerAngles, new Vector3(to, targetObject.rotation.eulerAngles.y, targetObject.rotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+        }
+
+        public static Transform TweenRotateYVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        {
+            if (isLocalRotation)
+                return TweenRotate(targetObject, new Vector3(targetObject.localRotation.eulerAngles.x, from, targetObject.localRotation.eulerAngles.z), new Vector3(targetObject.localRotation.eulerAngles.x, to, targetObject.localRotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, new Vector3(targetObject.rotation.eulerAngles.x, from, targetObject.rotation.eulerAngles.z), new Vector3(targetObject.rotation.eulerAngles.x, to, targetObject.rotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+        }
+
+        public static Transform TweenRotateYVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        {
+            if (isLocalRotation)
+                return TweenRotate(targetObject, targetObject.localRotation.eulerAngles, new Vector3(targetObject.localRotation.eulerAngles.x, to, targetObject.localRotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, targetObject.rotation.eulerAngles, new Vector3(targetObject.rotation.eulerAngles.x, to, targetObject.rotation.eulerAngles.z), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+        }
+
+        public static Transform TweenRotateZVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        {
+            if (isLocalRotation)
+                return TweenRotate(targetObject, new Vector3(targetObject.localRotation.eulerAngles.x, targetObject.localRotation.eulerAngles.y, from), new Vector3(targetObject.localRotation.eulerAngles.x, targetObject.localRotation.eulerAngles.y, to), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, new Vector3(targetObject.rotation.eulerAngles.x, targetObject.rotation.eulerAngles.y, from), new Vector3(targetObject.rotation.eulerAngles.x, targetObject.rotation.eulerAngles.y, to), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+        }
+
+        public static Transform TweenRotateZVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        {
+            if (isLocalRotation)
+                return TweenRotate(targetObject, targetObject.localRotation.eulerAngles, new Vector3(targetObject.localRotation.eulerAngles.x, targetObject.localRotation.eulerAngles.y, to), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
+            else
+                return TweenRotate(targetObject, targetObject.rotation.eulerAngles, new Vector3(targetObject.rotation.eulerAngles.x, targetObject.rotation.eulerAngles.y, to), duration, delay, isLocalRotation, easingFunction, loopType, onComplete);
         }
     }
 }

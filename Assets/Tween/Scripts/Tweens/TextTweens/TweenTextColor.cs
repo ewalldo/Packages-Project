@@ -43,7 +43,7 @@ namespace Tween
                     yield break;
 
                 progress = Mathf.Clamp01((Time.time - startTime) / duration);
-                Vector4 newColor = EasingEquations.Evaluate(easingFunction, progress, initialValue, endValue);
+                Vector4 newColor = Vector4.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
                 newColor = new Vector4(Mathf.Clamp01(newColor.x), Mathf.Clamp01(newColor.y), Mathf.Clamp01(newColor.z), Mathf.Clamp01(newColor.w));
 
                 targetObject.color = newColor;

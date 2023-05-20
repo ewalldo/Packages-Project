@@ -43,7 +43,7 @@ namespace Tween
                     yield break;
 
                 progress = Mathf.Clamp01((Time.time - startTime) / duration);
-                float newAlpha = EasingEquations.Evaluate(easingFunction, progress, initialValue, endValue);
+                float newAlpha = Mathf.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
                 newAlpha = Mathf.Clamp01(newAlpha);
 
                 targetObject.alpha = newAlpha;

@@ -42,7 +42,7 @@ namespace Tween
                     yield break;
 
                 progress = Mathf.Clamp01((Time.time - startTime) / duration);
-                Vector3 newScale = EasingEquations.Evaluate(easingFunction, progress, initialValue, endValue);
+                Vector3 newScale = Vector3.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
 
                 targetObject.localScale = newScale;
 

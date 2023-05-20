@@ -34,5 +34,10 @@ namespace Tween
         {
             return (from, to);
         }
+
+        public (Quaternion, Quaternion) AdjustTweenValues(Quaternion from, Quaternion to)
+        {
+            return (from, to);
+        }
     }
 }

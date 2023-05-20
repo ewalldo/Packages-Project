@@ -4,29 +4,29 @@ using UnityEngine;
 
 namespace Tween
 {
-    public class TweenMove : Vector3Tween
+	public class TweenRotateVector3 : Vector3Tween
 	{
         private Transform targetObject;
-        private bool isLocalPosition;
+        private bool isLocalRotation;
 
         public override event Action OnComplete;
 
-        public TweenMove(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public TweenRotateVector3(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
             this.targetObject = targetObject;
             initialValue = from;
             endValue = to;
             this.duration = duration;
             this.delay = delay;
-            this.isLocalPosition = isLocalPosition;
+            this.isLocalRotation = isLocalRotation;
             this.easingFunction = easingFunction == null ? new LinearEasing() : easingFunction;
             this.loopType = loopType;
 
             OnComplete += onComplete;
         }
 
-        public TweenMove(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
-            : this(targetObject, isLocalPosition ? targetObject.localPosition : targetObject.position, to, duration, delay, isLocalPosition, easingFunction, loopType, onComplete) { }
+        public TweenRotateVector3(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+            : this(targetObject, isLocalRotation ? targetObject.localRotation.eulerAngles : targetObject.rotation.eulerAngles, to, duration, delay, isLocalRotation, easingFunction, loopType, onComplete) { }
 
         public override IEnumerator Execute()
         {
@@ -44,12 +44,12 @@ namespace Tween
                     yield break;
 
                 progress = Mathf.Clamp01((Time.time - startTime) / duration);
-                Vector3 newPosition = Vector3.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
+                Vector3 newRotation = Vector3.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
 
-                if (isLocalPosition)
-                    targetObject.localPosition = newPosition;
+                if (isLocalRotation)
+                    targetObject.localRotation = Quaternion.Euler(newRotation);
                 else
-                    targetObject.position = newPosition;
+                    targetObject.rotation = Quaternion.Euler(newRotation);
 
                 yield return null;
 

@@ -4,27 +4,29 @@ using UnityEngine;
 
 namespace Tween
 {
-	public class TweenRotate : Vector3Tween
+	public class TweenRotateQuaternion : QuaternionTween
 	{
         private Transform targetObject;
+        private bool isLocalRotation;
 
         public override event Action OnComplete;
 
-        public TweenRotate(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public TweenRotateQuaternion(Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
             this.targetObject = targetObject;
             initialValue = from;
             endValue = to;
             this.duration = duration;
             this.delay = delay;
+            this.isLocalRotation = isLocalRotation;
             this.easingFunction = easingFunction == null ? new LinearEasing() : easingFunction;
             this.loopType = loopType;
 
             OnComplete += onComplete;
         }
 
-        public TweenRotate(Transform targetObject, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
-            : this(targetObject, targetObject.rotation.eulerAngles, to, duration, delay, easingFunction, loopType, onComplete) { }
+        public TweenRotateQuaternion(Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+            : this(targetObject, isLocalRotation ? targetObject.localRotation : targetObject.rotation, to, duration, delay, isLocalRotation, easingFunction, loopType, onComplete) { }
 
         public override IEnumerator Execute()
         {
@@ -42,9 +44,12 @@ namespace Tween
                     yield break;
 
                 progress = Mathf.Clamp01((Time.time - startTime) / duration);
-                Vector3 newRotation = EasingEquations.Evaluate(easingFunction, progress, initialValue, endValue);
+                Quaternion newRotation = Quaternion.SlerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
 
-                targetObject.rotation = Quaternion.Euler(newRotation);
+                if (isLocalRotation)
+                    targetObject.localRotation = newRotation;
+                else
+                    targetObject.rotation = newRotation;
 
                 yield return null;
 
