@@ -2,8 +2,10 @@ using UnityEngine;
 
 namespace Tween
 {
-	public abstract class EasingFunction
-	{
+    public abstract class EasingFunction
+    {
+        public abstract EasingType EasingName { get; }
+
         public abstract float Evaluate(float start, float end, float value);
 
         public virtual Vector3 Evaluate(Vector3 start, Vector3 end, float value)
@@ -19,6 +21,8 @@ namespace Tween
 
     public class LinearEasing : EasingFunction
     {
+        public override EasingType EasingName => EasingType.LinearEasing;
+
         public override float Evaluate(float start, float end, float value)
         {
             return Mathf.Lerp(start, end, value);
@@ -27,6 +31,8 @@ namespace Tween
 
     public class EaseInQuad : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInQuad;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -36,6 +42,8 @@ namespace Tween
 
     public class EaseOutQuad : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseOutQuad;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -45,6 +53,8 @@ namespace Tween
 
     public class EaseInOutQuad : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInOutQuad;
+
         public override float Evaluate(float start, float end, float value)
         {
             value /= .5f;
@@ -60,6 +70,8 @@ namespace Tween
 
     public class EaseInCubic : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInCubic;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -69,6 +81,8 @@ namespace Tween
 
     public class EaseOutCubic : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseOutCubic;
+
         public override float Evaluate(float start, float end, float value)
         {
             value--;
@@ -79,6 +93,8 @@ namespace Tween
 
     public class EaseInOutCubic : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInOutCubic;
+
         public override float Evaluate(float start, float end, float value)
         {
             value /= .5f;
@@ -94,6 +110,8 @@ namespace Tween
 
     public class EaseInQuart : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInQuart;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -103,6 +121,8 @@ namespace Tween
 
     public class EaseOutQuart : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseOutQuart;
+
         public override float Evaluate(float start, float end, float value)
         {
             value--;
@@ -113,6 +133,8 @@ namespace Tween
 
     public class EaseInOutQuart : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInOutQuart;
+
         public override float Evaluate(float start, float end, float value)
         {
             value /= .5f;
@@ -128,6 +150,8 @@ namespace Tween
 
     public class EaseInQuint : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInQuint;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -137,6 +161,8 @@ namespace Tween
 
     public class EaseOutQuint : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseOutQuint;
+
         public override float Evaluate(float start, float end, float value)
         {
             value--;
@@ -147,6 +173,8 @@ namespace Tween
 
     public class EaseInOutQuint : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInOutQuint;
+
         public override float Evaluate(float start, float end, float value)
         {
             value /= .5f;
@@ -162,6 +190,8 @@ namespace Tween
 
     public class EaseInSine : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInSine;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -171,6 +201,8 @@ namespace Tween
 
     public class EaseOutSine : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseOutSine;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -180,6 +212,8 @@ namespace Tween
 
     public class EaseInOutSine : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInOutSine;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -189,6 +223,8 @@ namespace Tween
 
     public class EaseInExpo : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInExpo;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -198,6 +234,8 @@ namespace Tween
 
     public class EaseOutExpo : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseOutExpo;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -207,6 +245,8 @@ namespace Tween
 
     public class EaseInOutExpo : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInOutExpo;
+
         public override float Evaluate(float start, float end, float value)
         {
             value /= .5f;
@@ -222,6 +262,8 @@ namespace Tween
 
     public class EaseInCirc : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInCirc;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -231,6 +273,8 @@ namespace Tween
 
     public class EaseOutCirc : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseOutCirc;
+
         public override float Evaluate(float start, float end, float value)
         {
             value--;
@@ -241,6 +285,8 @@ namespace Tween
 
     public class EaseInOutCirc : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInOutCirc;
+
         public override float Evaluate(float start, float end, float value)
         {
             value /= .5f;
@@ -256,6 +302,8 @@ namespace Tween
 
     public class EaseInBounce : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInBounce;
+
         public override float Evaluate(float start, float end, float value)
         {
             EaseOutBounce easeOutBounce = new EaseOutBounce();
@@ -268,6 +316,8 @@ namespace Tween
 
     public class EaseOutBounce : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseOutBounce;
+
         public override float Evaluate(float start, float end, float value)
         {
             value /= 1f;
@@ -296,6 +346,8 @@ namespace Tween
 
     public class EaseInOutBounce : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInOutBounce;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -316,6 +368,8 @@ namespace Tween
 
     public class EaseInBack : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInBack;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -327,6 +381,8 @@ namespace Tween
 
     public class EaseOutBack : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseOutBack;
+
         public override float Evaluate(float start, float end, float value)
         {
             float s = 1.70158f;
@@ -338,6 +394,8 @@ namespace Tween
 
     public class EaseInOutBack : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInOutBack;
+
         public override float Evaluate(float start, float end, float value)
         {
             float s = 1.70158f;
@@ -358,6 +416,8 @@ namespace Tween
 
     public class EaseInElastic : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInElastic;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -387,6 +447,8 @@ namespace Tween
 
     public class EaseOutElastic : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseOutElastic;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -416,6 +478,8 @@ namespace Tween
 
     public class EaseInOutElastic : EasingFunction
     {
+        public override EasingType EasingName => EasingType.EaseInOutElastic;
+
         public override float Evaluate(float start, float end, float value)
         {
             end -= start;
@@ -446,6 +510,8 @@ namespace Tween
 
     public class SpringEasing : EasingFunction
     {
+        public override EasingType EasingName => EasingType.SpringEasing;
+
         public override float Evaluate(float start, float end, float value)
         {
             value = Mathf.Clamp01(value);
