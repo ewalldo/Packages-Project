@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace Tween
 {
-	public class TweenScale : Vector3Tween
+	public class TweenLightIntensity : FloatTween
 	{
-        private Transform targetObject;
+        private Light targetObject;
 
         public override event Action OnComplete;
 
-        public TweenScale(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public TweenLightIntensity(Light targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
             this.targetObject = targetObject;
             initialValue = from;
@@ -23,8 +23,8 @@ namespace Tween
             OnComplete += onComplete;
         }
 
-        public TweenScale(Transform targetObject, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
-            : this(targetObject, targetObject.localScale, to, duration, delay, easingFunction, loopType, onComplete) { }
+        public TweenLightIntensity(Light targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+            : this(targetObject, targetObject.intensity, to, duration, delay, easingFunction, loopType, onComplete) { }
 
         public override IEnumerator Execute()
         {
@@ -42,9 +42,11 @@ namespace Tween
                     yield break;
 
                 progress = Mathf.Clamp01((Time.time - startTime) / duration);
-                Vector3 newScale = Vector3.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
+                float newIntensity = Mathf.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
+                if (newIntensity < 0f)
+                    newIntensity = 0f;
 
-                targetObject.localScale = newScale;
+                targetObject.intensity = newIntensity;
 
                 yield return null;
 

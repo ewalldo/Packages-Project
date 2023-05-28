@@ -55,6 +55,7 @@ namespace Tween
                     if (loopType.IsInfiniteLoop || curLoops < loopType.NumLoops)
                     {
                         progress = 0f;
+                        loopType.OnOneLoopCompleted?.Invoke();
                         startTime = Time.time + loopType.DelayBetweenLoops;
 
                         while (Time.time < startTime)

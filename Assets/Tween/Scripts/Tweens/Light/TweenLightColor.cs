@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace Tween
 {
-	public class TweenScale : Vector3Tween
+	public class TweenLightColor : Vector4Tween
 	{
-        private Transform targetObject;
+        private Light targetObject;
 
         public override event Action OnComplete;
 
-        public TweenScale(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public TweenLightColor(Light targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
             this.targetObject = targetObject;
             initialValue = from;
@@ -23,8 +23,8 @@ namespace Tween
             OnComplete += onComplete;
         }
 
-        public TweenScale(Transform targetObject, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
-            : this(targetObject, targetObject.localScale, to, duration, delay, easingFunction, loopType, onComplete) { }
+        public TweenLightColor(Light targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+            : this(targetObject, targetObject.color, to, duration, delay, easingFunction, loopType, onComplete) { }
 
         public override IEnumerator Execute()
         {
@@ -42,9 +42,10 @@ namespace Tween
                     yield break;
 
                 progress = Mathf.Clamp01((Time.time - startTime) / duration);
-                Vector3 newScale = Vector3.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
+                Vector4 newColor = Vector4.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
+                newColor = new Vector4(Mathf.Clamp01(newColor.x), Mathf.Clamp01(newColor.y), Mathf.Clamp01(newColor.z), Mathf.Clamp01(newColor.w));
 
-                targetObject.localScale = newScale;
+                targetObject.color = newColor;
 
                 yield return null;
 

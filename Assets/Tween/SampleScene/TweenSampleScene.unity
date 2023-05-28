@@ -555,6 +555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rendererTest: {fileID: 1490814174}
   textTest: {fileID: 740634343}
+  transformTest: {fileID: 1490814178}
 --- !u!4 &943281076
 Transform:
   m_ObjectHideFlags: 0

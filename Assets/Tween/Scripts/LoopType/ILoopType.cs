@@ -9,6 +9,7 @@ namespace Tween
         bool IsInfiniteLoop { get; }
         float DelayBetweenLoops { get; }
         Func<bool> EarlyExitCondition { get; }
+        Action OnOneLoopCompleted { get; }
 
         (float, float) AdjustTweenValues(float from, float to);
         (Vector3, Vector3) AdjustTweenValues(Vector3 from, Vector3 to);

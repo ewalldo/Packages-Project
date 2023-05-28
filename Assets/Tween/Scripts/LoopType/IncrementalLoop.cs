@@ -9,15 +9,17 @@ namespace Tween
         public uint NumLoops { get => numLoops; set => numLoops = value; }
         public bool IsInfiniteLoop { get => numLoops == 0; }
         public Func<bool> EarlyExitCondition { get; }
+        public Action OnOneLoopCompleted { get; }
 
         private float delayBetweenLoops;
         public float DelayBetweenLoops { get => delayBetweenLoops; set => delayBetweenLoops = value; }
 
-        public IncrementalLoop(uint numLoops, float delayBetweenLoops = 0f, Func<bool> earlyExit = null)
+        public IncrementalLoop(uint numLoops, float delayBetweenLoops = 0f, Func<bool> earlyExit = null, Action onOneLoopCompleted = null)
         {
             this.numLoops = numLoops;
             this.delayBetweenLoops = delayBetweenLoops;
             this.EarlyExitCondition = earlyExit != null ? earlyExit : () => false;
+            this.OnOneLoopCompleted = onOneLoopCompleted;
         }
 
         public (float, float) AdjustTweenValues(float from, float to)
