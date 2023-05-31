@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 namespace Tween
@@ -7,6 +8,7 @@ namespace Tween
 	{
         [SerializeField] private GameObject rendererTest;
         [SerializeField] private TextMeshProUGUI textTest;
+        [SerializeField] private Image imageTest;
         [SerializeField] private Transform transformTest;
 
         private TweenBuilder tweenBuilder;
@@ -16,6 +18,7 @@ namespace Tween
             tweenBuilder = new TweenBuilder(this);
             tweenBuilder.AddTween(new TweenTextFade(textTest, 0, 2f));
             tweenBuilder.AddTween(new TweenScale(transformTest, Vector3.one * 2, 2f, 0f, null, new PingPongLoop(0, 0f, null, () => Debug.Log("Loop completed"))));
+            tweenBuilder.AddTween(new TweenImageFillAmount(imageTest, 0f, 2f, 0f, new EaseInSine(), new PingPongLoop(0, 1f)));
         }
 
         private void Update()

@@ -1,17 +1,17 @@
-using UnityEngine;
-using TMPro;
 using System;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Tween
 {
-	public class TweenTextColor : ColorTween
-    {
-        private TMP_Text targetObject;
+	public class TweenImageFillAmount : FloatTween
+	{
+        private Image targetObject;
 
         public override event Action OnComplete;
 
-        public TweenTextColor(TMP_Text targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public TweenImageFillAmount(Image targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
             this.targetObject = targetObject;
             initialValue = from;
@@ -24,8 +24,8 @@ namespace Tween
             OnComplete += onComplete;
         }
 
-        public TweenTextColor(TMP_Text targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
-            : this(targetObject, targetObject.color, to, duration, delay, easingFunction, loopType, onComplete) { }
+        public TweenImageFillAmount(Image targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+            : this(targetObject, targetObject.fillAmount, to, duration, delay, easingFunction, loopType, onComplete) { }
 
         public override IEnumerator Execute()
         {
@@ -43,9 +43,10 @@ namespace Tween
                     yield break;
 
                 progress = Mathf.Clamp01((Time.time - startTime) / duration);
-                Color newColor = Color.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
+                float newFillAmount = Mathf.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
+                newFillAmount = Mathf.Clamp01(newFillAmount);
 
-                targetObject.color = newColor;
+                targetObject.fillAmount = newFillAmount;
 
                 yield return null;
 

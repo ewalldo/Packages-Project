@@ -34,6 +34,11 @@ namespace Tween
             owner.StartCoroutine(tweens[curTween].Execute());
         }
 
+        public void Reset()
+        {
+            tweens.Clear();
+        }
+
         private void OnTweenComplete()
         {
             completedTweens++;

@@ -36,6 +36,11 @@ namespace Tween
             }
         }
 
+        public void Reset()
+        {
+            tweens.Clear();
+        }
+
         private void OnTweenComplete()
         {
             completedTweens++;

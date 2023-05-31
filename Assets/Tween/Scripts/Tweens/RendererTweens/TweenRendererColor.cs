@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Tween
 {
-	public class TweenRendererColor : Vector4Tween
-	{
+	public class TweenRendererColor : ColorTween
+    {
         private Renderer targetObject;
 
         public override event Action OnComplete;
@@ -42,8 +42,7 @@ namespace Tween
                     yield break;
 
                 progress = Mathf.Clamp01((Time.time - startTime) / duration);
-                Vector4 newColor = Vector4.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
-                newColor = new Vector4(Mathf.Clamp01(newColor.x), Mathf.Clamp01(newColor.y), Mathf.Clamp01(newColor.z), Mathf.Clamp01(newColor.w));
+                Color newColor = Color.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
 
                 targetObject.material.color = newColor;
 
