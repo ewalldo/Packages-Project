@@ -64,17 +64,6 @@ State machine and states scripts can be automatically created by using the "Stat
 - Override namespace: Allow you to chose which namespace your scripts will belong to, if not toggled it will put the scripts under the "StateMachinePattern" namespace.
 - Create states only: If this toggled is turned on, it will not generate the state machine script, only the state ones defined in the list. This option is useful in case you want to add states to a already existing state machine.
 
-### 4.4 Invoking an event <a name="invokingAnEvent"/>
-Events can be invoked by calling the static function Invoke in the EventBus class and passing both the event type and its respective parameters.
-```csharp
-public static void Invoke(EventType eventType);
-public static void Invoke<T0>(EventType eventType, T0 arg0);
-public static void Invoke<T0, T1>(EventType eventType, T0 arg0, T1 arg1);
-public static void Invoke<T0, T1, T2>(EventType eventType, T0 arg0, T1 arg1, T2 arg2);
-public static void Invoke<T0, T1, T2, T3>(EventType eventType, T0 arg0, T1 arg1, T2 arg2, T3 arg3);
-public static void Invoke<T0, T1, T2, T3, T4>(EventType eventType, T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4);
-```
-
 ## 5 - Documentation <a name="documentation"/>
 ### 5.1 StateMachine.CurrentState <a name="stateMachineCurrentState"/>
 The current state of the state machine
