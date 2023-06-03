@@ -27,12 +27,22 @@ namespace Tween
             return (from, to);
         }
 
+        public (Vector2, Vector2) AdjustTweenValues(Vector2 from, Vector2 to)
+        {
+            return (from, to);
+        }
+
         public (Vector3, Vector3) AdjustTweenValues(Vector3 from, Vector3 to)
         {
             return (from, to);
         }
 
         public (Vector4, Vector4) AdjustTweenValues(Vector4 from, Vector4 to)
+        {
+            return (from, to);
+        }
+
+        public (Color, Color) AdjustTweenValues(Color from, Color to)
         {
             return (from, to);
         }

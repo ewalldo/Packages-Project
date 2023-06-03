@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace Tween
 {
-	public class TweenSequencer
-	{
+	public class TweenSequencer : ITweenGroup
+    {
         private MonoBehaviour owner;
         private readonly List<ITweener> tweens;
 
         private int completedTweens;
         private int curTween;
 
-        public Action OnAllTweensCompleted;
+        public event Action OnAllTweensCompleted;
 
         public TweenSequencer(MonoBehaviour monoBehaviour)
         {
@@ -21,7 +21,7 @@ namespace Tween
             curTween = 0;
         }
 
-        public TweenSequencer AddTween(ITweener tween)
+        public ITweenGroup AddTween(ITweener tween)
         {
             tweens.Add(tween);
             tween.OnComplete += OnTweenComplete;

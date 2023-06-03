@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Tween
 {
-	public class TweenBuilder
-	{
+	public class TweenBuilder : ITweenGroup
+    {
         private MonoBehaviour owner;
         private readonly List<ITweener> tweens;
 
         private int completedTweens;
 
-        public Action OnAllTweensCompleted;
+        public event Action OnAllTweensCompleted;
 
         public TweenBuilder(MonoBehaviour monoBehaviour)
         {
@@ -19,7 +19,7 @@ namespace Tween
             tweens = new List<ITweener>();
         }
 
-        public TweenBuilder AddTween(ITweener tween)
+        public ITweenGroup AddTween(ITweener tween)
         {
             tweens.Add(tween);
             tween.OnComplete += OnTweenComplete;
