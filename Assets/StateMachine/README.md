@@ -27,7 +27,8 @@ The package also include a "state machine generator" tool, allowing you to quick
 This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
 
 ## 2 - Version History <a name="versionHistory"/>
-- 1.0: Initial release
+- 1.0.0: Initial release
+- 1.0.1: Adjust spacing on automatically generated scripts
 
 ## 3 - Features <a name="features"/>
 - Use of interface: Unlike traditional implementations that use enums, the use of a interface for states provide a more flexible, compact and extensible way to define states and their behaviours, making the code cleaner and easier to debug and maintain.

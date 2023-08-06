@@ -150,6 +150,8 @@ namespace StateMachinePattern
             foreach (string state in statesNames)
             {
                 string statePath = directoryPath + "\\" + state + ".cs";
+                string variableStateMachine = string.Concat(stateMachineClassName[0].ToString().ToLower(), stateMachineClassName[1..]);
+
                 using (StreamWriter outfile = new StreamWriter(statePath))
                 {
                     outfile.WriteLine("using UnityEngine;");
@@ -158,13 +160,13 @@ namespace StateMachinePattern
                     outfile.WriteLine("");
                     outfile.WriteLine("namespace " + (overwriteNamespace ? scriptsNamespace : DEFAULT_NAMESPACE));
                     outfile.WriteLine("{");
-                    outfile.WriteLine("\tpublic class " + state + ": IState");
+                    outfile.WriteLine("\tpublic class " + state + " : IState");
                     outfile.WriteLine("\t{");
-                    outfile.WriteLine("\t\tprivate " + stateMachineClassName + " " + stateMachineClassName.ToLower() + ";");
+                    outfile.WriteLine("\t\tprivate " + stateMachineClassName + " " + variableStateMachine + ";");
                     outfile.WriteLine("");
-                    outfile.WriteLine("\t\tpublic " + state + "(" + stateMachineClassName + " " + stateMachineClassName.ToLower() + ")");
+                    outfile.WriteLine("\t\tpublic " + state + "(" + stateMachineClassName + " " + variableStateMachine + ")");
                     outfile.WriteLine("\t\t{");
-                    outfile.WriteLine("\t\t\tthis." + stateMachineClassName.ToLower() + " = " + stateMachineClassName.ToLower() + ";");
+                    outfile.WriteLine("\t\t\tthis." + variableStateMachine + " = " + variableStateMachine + ";");
                     outfile.WriteLine("\t\t}");
                     outfile.WriteLine("");
                     outfile.WriteLine("\t\tpublic void OnEnter()");
@@ -202,7 +204,7 @@ namespace StateMachinePattern
                 outfile.WriteLine("");
                 outfile.WriteLine("namespace " + (overwriteNamespace ? scriptsNamespace : DEFAULT_NAMESPACE));
                 outfile.WriteLine("{");
-                outfile.WriteLine("\tpublic class " + stateMachineClassName + ": StateMachine");
+                outfile.WriteLine("\tpublic class " + stateMachineClassName + " : StateMachine");
                 outfile.WriteLine("\t{");
                 foreach (string state in statesNames)
                 {

@@ -6,6 +6,7 @@ Repository to hold the packages of the tools I have developed for Unity.
 * [Camera System](Assets/CameraSystem/README.md)
 * [Event Bus](Assets/EventBus/README.md)
 * [Extensions](Assets/Extensions/README.md)
+* [Extra Attributes](Assets/ExtraAttributes/README.md)
 * [Grid System](Assets/GridSystem/README.md)
 * [Health System](Assets/HealthSystem/README.md)
 * [Hierarchy Enhancer](Assets/HierarchyEnhancer/README.md)
@@ -19,6 +20,7 @@ Repository to hold the packages of the tools I have developed for Unity.
 ## Tools in development
 * Dialogue System
 * Radar Chart
+* Spritesheet Animation Generator
 
 ## TODO list of tools
 * Screen Shake
