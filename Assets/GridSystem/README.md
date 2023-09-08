@@ -59,7 +59,8 @@ Overall, the Grid System Package is a powerful and flexible tool that can be use
 This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.  
 
 ## 2 - Version History <a name="versionHistory"/>
-- 1.0: Initial release
+- 1.0.0: Initial release
+- 1.0.1: Remove redundant error checking
 
 ## 3 - Features <a name="features"/>
 - Use of generics allowing the instantiation of any type of grid.
