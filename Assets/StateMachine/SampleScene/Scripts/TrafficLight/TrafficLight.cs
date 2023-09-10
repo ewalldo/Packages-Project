@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace StateMachinePattern
 {
-	public class TrafficLight : StateMachine
+	public class TrafficLight : StateMachineMonoBehaviour
 	{
         [SerializeField] private Material greenMaterial;
         [SerializeField] private AnimationCurve greenLightAnimation;

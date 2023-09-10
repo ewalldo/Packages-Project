@@ -1,8 +1,9 @@
 using System;
+using UnityEngine;
 
 namespace StateMachinePattern
 {
-	public class StateMachine
+	public abstract class StateMachineMonoBehaviour : MonoBehaviour
 	{
         /// <summary>
         /// The current state of the state machine
