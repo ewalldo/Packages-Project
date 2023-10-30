@@ -29,6 +29,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0.0: Initial release
 - 1.0.1: Adjust spacing on automatically generated scripts
+- 1.0.2: Add non-MonoBehaviour version of the State Machine
 
 ## 3 - Features <a name="features"/>
 - Use of interface: Unlike traditional implementations that use enums, the use of a interface for states provide a more flexible, compact and extensible way to define states and their behaviours, making the code cleaner and easier to debug and maintain.
@@ -37,9 +38,14 @@ This package was created and tested using Unity version 2022.1, but it should wo
 
 ## 4 - Get Started <a name="getStarted"/>
 ### 4.1 Creating a state machine <a name="creatingAStateMachine"/>
-A state machine can be created by making it inherit from the StateMachine class. The StateMachine class itself inherits from MonoBehaviour, so your new class can access any method or attribute that belongs to MonoBehaviour.
+- A state machine can be created by making it inherit from the StateMachineMonoBehaviour class, so your new class can access any method or attribute that belongs to MonoBehaviour.
+- Or just instantiate the "StateMachine" class inside any of your scripts
 ```csharp
-class MyStateMachine : StateMachine;
+// MonoBehaviour version
+class MyStateMachine : StateMachineStateMachineMonoBehaviour;
+
+// C# class version
+private StateMachine myStateMachine = new StateMachine();
 ```
 
 ### 4.2 Creating a state <a name="creatingAState"/>
@@ -66,7 +72,15 @@ State machine and states scripts can be automatically created by using the "Stat
 - Create states only: If this toggled is turned on, it will not generate the state machine script, only the state ones defined in the list. This option is useful in case you want to add states to a already existing state machine.
 
 ## 5 - Documentation <a name="documentation"/>
-### 5.1 StateMachine.CurrentState <a name="stateMachineCurrentState"/>
+### 5.1 StateMachine() <a name="stateMachineConstructor"/>
+Instantiate a new instance of the StateMachine class
+#### Declaration
+```csharp
+public StateMachine();
+```
+
+
+### 5.2 StateMachine.CurrentState <a name="stateMachineCurrentState"/>
 The current state of the state machine
 #### Declaration
 ```csharp
@@ -78,7 +92,7 @@ public IState CurrentState;
 | IState | Current state of the state machine |
 
 
-### 5.2 StateMachine.PreviousState <a name="stateMachinePreviousState"/>
+### 5.3 StateMachine.PreviousState <a name="stateMachinePreviousState"/>
 The previous state of the state machine
 #### Declaration
 ```csharp
@@ -90,7 +104,7 @@ public IState PreviousState;
 | IState | Previous state of the state machine |
 
 
-### 5.3 StateMachine.OnStateChanged <a name="stateMachineOnStateChanged"/>
+### 5.4 StateMachine.OnStateChanged <a name="stateMachineOnStateChanged"/>
 Invoked when the state machine changes to a new state
 #### Declaration
 ```csharp
@@ -102,7 +116,7 @@ public Action<IState> OnStateChanged;
 | IState | The current state that it has changed to |
 
 
-### 5.4 StateMachine.ChangeState() <a name="stateMachineChangeState"/>
+### 5.5 StateMachine.ChangeState() <a name="stateMachineChangeState"/>
 Change the state machine to a new state
 #### Declaration
 ```csharp
@@ -114,7 +128,7 @@ public void ChangeState(IState newState);
 | IState | newState | The new state to change into |
 
 
-### 5.5 StateMachine.RevertState() <a name="stateMachineRevertState"/>
+### 5.6 StateMachine.RevertState() <a name="stateMachineRevertState"/>
 Revert to the previous state
 #### Declaration
 ```csharp
@@ -122,7 +136,7 @@ public void RevertState();
 ```
 
 
-### 5.6 IState.OnEnter() <a name="istateOnEnter"/>
+### 5.7 IState.OnEnter() <a name="istateOnEnter"/>
 Invoked when entering the state
 #### Declaration
 ```csharp
@@ -130,7 +144,7 @@ public void OnEnter();
 ```
 
 
-### 5.7 IState.OnExit() <a name="istateOnExit"/>
+### 5.8 IState.OnExit() <a name="istateOnExit"/>
 Invoked when leaving the state
 #### Declaration
 ```csharp
@@ -138,7 +152,7 @@ public void OnExit();
 ```
 
 
-### 5.8 IState.OnUpdate() <a name="istateOnUpdate"/>
+### 5.9 IState.OnUpdate() <a name="istateOnUpdate"/>
 Invoked on the Update() function
 #### Declaration
 ```csharp
@@ -146,7 +160,7 @@ public void OnUpdate();
 ```
 
 
-### 5.9 IState.OnFixedUpdate() <a name="istateOnFixedUpdate"/>
+### 5.10 IState.OnFixedUpdate() <a name="istateOnFixedUpdate"/>
 Invoked on the FixedUpdate() function
 #### Declaration
 ```csharp

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace StateMachinePattern
 {
-	public class Character: StateMachine
+	public class Character: StateMachineMonoBehaviour
 	{
 		[SerializeField] private TrafficLight trafficLight;
 

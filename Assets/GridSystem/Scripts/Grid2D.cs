@@ -243,9 +243,6 @@ namespace GridSystem
         /// <returns>The element at the specified grid position</returns>
         public T GetGridObjectAtGridPosition2D(GridPosition2D gridPosition2D)
         {
-            if (!IsWithinGrid2DBounds(gridPosition2D))
-                throw new ArgumentException("Grid position is out of the grid bounds");
-
             return gridObjectArray[gridPosition2D.X, gridPosition2D.Z];
         }
 
@@ -257,9 +254,6 @@ namespace GridSystem
         public T GetGridObjectAtWorldPosition(Vector3 worldPosition)
         {
             GridPosition2D gridPosition2D = GetGridPosition2DFromWorldPosition(worldPosition);
-
-            if (!IsWithinGrid2DBounds(gridPosition2D))
-                throw new ArgumentException("World position is out of the grid bounds");
 
             return GetGridObjectAtGridPosition2D(gridPosition2D);
         }
@@ -323,9 +317,6 @@ namespace GridSystem
         /// <returns>The new object was set successfully or not</returns>
         public bool SetGridObjectAtGridPosition2D(GridPosition2D gridPosition2D, T newObject, bool replaceIfExistAnObjectAlready = true)
         {
-            if (!IsWithinGrid2DBounds(gridPosition2D))
-                throw new ArgumentException("Grid position is out of the grid bounds");
-
             if (replaceIfExistAnObjectAlready) // always replace
             {
                 gridObjectArray[gridPosition2D.X, gridPosition2D.Z] = newObject;
@@ -360,9 +351,6 @@ namespace GridSystem
         {
             GridPosition2D gridPosition2D = GetGridPosition2DFromWorldPosition(worldPosition);
 
-            if (!IsWithinGrid2DBounds(gridPosition2D))
-                throw new ArgumentException("World position is out of the grid bounds");
-
             return SetGridObjectAtGridPosition2D(gridPosition2D, newObject, replaceIfExistAnObjectAlready);
         }
 
@@ -373,9 +361,6 @@ namespace GridSystem
         /// <returns>The position in world coordinates</returns>
         public Vector3 GetWorldPositionFromGridPosition2D(GridPosition2D gridPosition2D)
         {
-            if (!IsWithinGrid2DBounds(gridPosition2D))
-                throw new ArgumentException("Grid position is out of the grid bounds");
-
             return new Vector3(gridPosition2D.X * cellSizeX, 0, gridPosition2D.Z * cellSizeZ) + gridOriginPosition;
         }
 
@@ -430,9 +415,6 @@ namespace GridSystem
         {
             Vector3 vectorOffset = worldPosition - gridOriginPosition;
             GridPosition2D gridPosition2D = new GridPosition2D(Mathf.FloorToInt(vectorOffset.x / cellSizeX), Mathf.FloorToInt(vectorOffset.z / cellSizeZ));
-
-            if (!IsWithinGrid2DBounds(gridPosition2D))
-                throw new ArgumentException("World position is out of the grid bounds");
 
             return gridPosition2D;
         }
@@ -545,9 +527,6 @@ namespace GridSystem
         /// <returns>If the position is empty or not</returns>
         public bool IsPositionEmpty(GridPosition2D gridPosition2D)
         {
-            if (!IsWithinGrid2DBounds(gridPosition2D))
-                throw new ArgumentException("Grid position is out of the grid bounds");
-
             if (default(T) is null)
                 return GetGridObjectAtGridPosition2D(gridPosition2D) == null;
             else
@@ -688,9 +667,6 @@ namespace GridSystem
         /// <returns>The instantiated game object</returns>
         public GameObject InstantiateGameObjectAtGridPosition(GridPosition2D gridPosition2D, GameObject gameObjectPrefab, Transform objectParent, Action<GameObject> onGameObjectSpawned = null)
         {
-            if (!IsWithinGrid2DBounds(gridPosition2D))
-                throw new ArgumentException("Grid position is out of the grid bounds");
-
             GameObject spawnedGameObject = GameObject.Instantiate(gameObjectPrefab, GetWorldPositionFromCenterGridPosition2D(gridPosition2D), Quaternion.identity, objectParent);
 
             onGameObjectSpawned?.Invoke(spawnedGameObject);
@@ -708,9 +684,6 @@ namespace GridSystem
         public GameObject InstantiateGameObjectAtWorldPosition(Vector3 worldPosition, GameObject gameObjectPrefab, Transform objectParent, Action<GameObject> onGameObjectSpawned = null)
         {
             GridPosition2D gridPosition2D = GetGridPosition2DFromWorldPosition(worldPosition);
-
-            if (!IsWithinGrid2DBounds(gridPosition2D))
-                throw new ArgumentException("World position is out of the grid bounds");
 
             return InstantiateGameObjectAtGridPosition(gridPosition2D, gameObjectPrefab, objectParent, onGameObjectSpawned);
         }

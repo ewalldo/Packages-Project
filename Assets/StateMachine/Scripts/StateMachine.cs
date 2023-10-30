@@ -1,9 +1,8 @@
 using System;
-using UnityEngine;
 
 namespace StateMachinePattern
 {
-	public abstract class StateMachine : MonoBehaviour
+	public class StateMachine
 	{
         /// <summary>
         /// The current state of the state machine
@@ -23,13 +22,13 @@ namespace StateMachinePattern
         /// <param name="curState">IState: the current state that it has changed to</param>
         public Action<IState> OnStateChanged;
 
-        protected virtual void Update()
+        public virtual void Update()
         {
             if (CurrentState != null && !inTransition)
                 CurrentState.OnUpdate();
         }
 
-        protected virtual void FixedUpdate()
+        public virtual void FixedUpdate()
         {
             if (CurrentState != null && !inTransition)
                 CurrentState.OnFixedUpdate();
