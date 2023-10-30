@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
+#endif
 using UnityEngine.UI;
 
 namespace TooltipSystem
