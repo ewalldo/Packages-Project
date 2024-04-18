@@ -6,12 +6,15 @@
 - [Get started](#getStarted)
   - [Assing an attribute to a field](#assingAnAttributeToAField)
 - [Documentation](#documentation)
+  - [AnimatorParamField()](#animatorParamField)
   - [AssetPath()](#assetPath)
+  - [AssetPreview()](#assetPreview)
   - [ColorPalette()](#colorPalette)
   - [FloatRangeWithStep()](#floatRangeWithStep)
   - [HeaderPlus()](#headerPlus)
   - [HideOnEdit()](#hideOnEdit)
   - [HideOnPlay()](#hideOnPlay)
+  - [HorizontalRule()](#HorizontalRule)
   - [IntRangeWithStep()](#intRangeWithStep)
   - [LayerField()](#layerField)
   - [PrettyField()](#prettyField)
@@ -34,6 +37,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.1: Added extra attributes (AnimatorParamField, AssetPreview, HorizontalRule)
 
 ## 3 - Features <a name="features"/>
 - Enhanced Headers and Label Fields: The package offers an enhanced version of headers and labels in the Inspector. These improved headers allow you to customize your component fields, making it simpler to understand their purpose at a glance.
@@ -51,7 +55,21 @@ private AudioSource audioSource;
 ```
 
 ## 5 - Documentation <a name="documentation"/>
-### 5.1 AssetPath() <a name="assetPath"/>
+### 5.1 AnimatorParamField() <a name="animatorParamField"/>
+Attribute to convert a string or int field into a Animator Parameter selection field (string and int only)
+#### Declaration
+```csharp
+public AnimatorParamField(string animatorName)
+public AnimatorParamField(string animatorName, AnimatorControllerParameterType animatorParamType);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| string | animatorName | The animator containing the animator controller to get the parameters from |
+| AnimatorControllerParameterType | animatorParamType | Display only parameters of this specific type |
+
+
+### 5.2 AssetPath() <a name="assetPath"/>
 Allows drag/drop of files in the field to automatically fill up with its path (string only)
 #### Declaration
 ```csharp
@@ -59,7 +77,19 @@ public AssetPath();
 ```
 
 
-### 5.2 ColorPalette() <a name="colorPalette"/>
+### 5.3 AssetPreview() <a name="assetPreview"/>
+Attribute to display a preview of the asset in the inspector
+#### Declaration
+```csharp
+public AssetPreviewAttribute(int height)
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| int | height | The height of the preview |
+
+
+### 5.4 ColorPalette() <a name="colorPalette"/>
 Restrict the color field to a limited set of options (Color only)
 #### Declaration
 ```csharp
@@ -71,7 +101,7 @@ public ColorPalette(params string[] colorNames);
 | string[] | colorNames | Color name or its RBG representation in a string format (R, G, B). Ex: [ColorPalette("Red", "Green", "Blue")] or [ColorPalette("(1, 0, 0)", "(0, 1, 0)", "(0, 0, 1)")] |
 
 
-### 5.3 FloatRangeWithStep() <a name="floatRangeWithStep"/>
+### 5.5 FloatRangeWithStep() <a name="floatRangeWithStep"/>
 Attribute used to make a float variable be restricted to a specific range and only be modified by a specific step value (float only)
 #### Declaration
 ```csharp
@@ -85,7 +115,7 @@ public FloatRangeWithStep(float minValue, float maxValue, float step);
 | float | step | Amount that the value should change |
 
 
-### 5.4 HeaderPlus() <a name="headerPlus"/>
+### 5.6 HeaderPlus() <a name="headerPlus"/>
 Attribute used to add a header above fields in the inspector, can be customized with an icon and/or text color
 #### Declaration
 ```csharp
@@ -100,7 +130,7 @@ public HeaderPlus(string headerText, float[] headerColor = null, TextAnchor text
 | string | iconName | Name of the texture in the Resources folder |
 
 
-### 5.5 HideOnEdit() <a name="hideOnEdit"/>
+### 5.7 HideOnEdit() <a name="hideOnEdit"/>
 Attribute used to hide the field while in edit mode (will be displayed during play mode)
 #### Declaration
 ```csharp
@@ -108,7 +138,7 @@ public HideOnEdit();
 ```
 
 
-### 5.6 HideOnPlay() <a name="hideOnPlay"/>
+### 5.8 HideOnPlay() <a name="hideOnPlay"/>
 Attribute used to hide the field while in play mode (will be displayed during edit mode)
 #### Declaration
 ```csharp
@@ -116,7 +146,20 @@ public HideOnPlay();
 ```
 
 
-### 5.7 IntRangeWithStep() <a name="intRangeWithStep"/>
+### 5.9 HorizontalRule() <a name="horizontalRule"/>
+Draw a horizontal line on the inspector (Similar to the <hr /> tag in HTML)
+#### Declaration
+```csharp
+public HorizontalRuleAttribute(float rulerHeight = 3f, float[] rulerColor = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | rulerHeight | The height of the horizontal line |
+| float[] | rulerColor | The color of the line in a float[3] (RGB) or float[4] (RGBA) format |
+
+
+### 5.10 IntRangeWithStep() <a name="intRangeWithStep"/>
 Attribute used to make a int variable be restricted to a specific range and only be modified by a specific step value (int only)
 #### Declaration
 ```csharp
@@ -130,7 +173,7 @@ public IntRangeWithStep(int minValue, int maxValue, int step);
 | int | step | Amount that the value should change |
 
 
-### 5.8 LayerField() <a name="layerField"/>
+### 5.11 LayerField() <a name="layerField"/>
 Attribute to convert a int field into a layer selection field (int only)
 #### Declaration
 ```csharp
@@ -138,7 +181,7 @@ public LayerField();
 ```
 
 
-### 5.9 PrettyField() <a name="prettyField"/>
+### 5.12 PrettyField() <a name="prettyField"/>
 Attribute to add customization to the label part of a field
 #### Declaration
 ```csharp
@@ -152,7 +195,7 @@ public PrettyFieldAttribute(string fieldText = "", float[] fieldColor = null, st
 | string | iconName | Name of the texture in the Resources folder |
 
 
-### 5.10 ProjectOnly() <a name="projectOnly"/>
+### 5.13 ProjectOnly() <a name="projectOnly"/>
 Attribute to restrict the object references to items located in the Project window only
 #### Declaration
 ```csharp
@@ -160,7 +203,7 @@ public ProjectOnly();
 ```
 
 
-### 5.11 ReadOnly() <a name="readOnly"/>
+### 5.14 ReadOnly() <a name="readOnly"/>
 Attribute to restrict the field to be read-only (i.e. non-editable) in the inspector
 #### Declaration
 ```csharp
@@ -168,7 +211,7 @@ public ReadOnly();
 ```
 
 
-### 5.12 ReadOnlyOnEdit() <a name="readOnlyOnEdit"/>
+### 5.15 ReadOnlyOnEdit() <a name="readOnlyOnEdit"/>
 Attribute to restrict the field to be read-only (i.e. non-editable) while in edit mode
 #### Declaration
 ```csharp
@@ -176,7 +219,7 @@ public ReadOnlyOnEdit();
 ```
 
 
-### 5.13 ReadOnlyOnPlay() <a name="readOnlyOnPlay"/>
+### 5.16 ReadOnlyOnPlay() <a name="readOnlyOnPlay"/>
 Attribute to restrict the field to be read-only (i.e. non-editable) while in play mode
 #### Declaration
 ```csharp
@@ -184,7 +227,7 @@ public ReadOnlyOnPlay();
 ```
 
 
-### 5.14 RequiredField() <a name="requiredField"/>
+### 5.17 RequiredField() <a name="requiredField"/>
 Attribute to mark a field as required, i.e. will display an error while the value is null
 #### Declaration
 ```csharp
@@ -192,7 +235,7 @@ public RequiredField();
 ```
 
 
-### 5.15 ResourcesPath() <a name="resourcesPath"/>
+### 5.18 ResourcesPath() <a name="resourcesPath"/>
 Allows drag/drop of files from within the resouces folder in this field to automatically fill up with its filename (string only)
 #### Declaration
 ```csharp
@@ -200,7 +243,7 @@ public ResourcesPath();
 ```
 
 
-### 5.16 SceneField() <a name="sceneField"/>
+### 5.19 SceneField() <a name="sceneField"/>
 Attribute to convert a string field into a scene selection field (string only)
 #### Declaration
 ```csharp
@@ -208,7 +251,7 @@ public SceneField();
 ```
 
 
-### 5.17 SceneOnly() <a name="sceneOnly"/>
+### 5.20 SceneOnly() <a name="sceneOnly"/>
 Attribute to restrict the object references to items located in scenes only
 #### Declaration
 ```csharp
@@ -216,7 +259,7 @@ public SceneOnly();
 ```
 
 
-### 5.18 TagField() <a name="tagField"/>
+### 5.21 TagField() <a name="tagField"/>
 Attribute to convert a string field into a tag selection field (string only)
 #### Declaration
 ```csharp

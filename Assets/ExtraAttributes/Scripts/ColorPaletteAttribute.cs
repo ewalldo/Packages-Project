@@ -2,13 +2,12 @@ using UnityEngine;
 
 namespace ExtraAttributes
 {
-	/// <summary>
-	/// Restrict the color field to a limited set of options (Color only)
-	/// </summary>
-	public class ColorPaletteAttribute : PropertyAttribute
-	{
+    /// <summary>
+    /// Restrict the color field to a limited set of options (Color only)
+    /// </summary>
+    public class ColorPaletteAttribute : PropertyAttribute
+    {
         public (Color, string)[] Colors { get; private set; }
-        public int SelectedIndex { get; private set; }
 
         /// <summary>
         /// Restrict the color field to a limited set of options (Color only)
@@ -17,12 +16,6 @@ namespace ExtraAttributes
         public ColorPaletteAttribute(params string[] colorNames)
         {
             Colors = StringMappingToColor(colorNames);
-            SelectedIndex = 0;
-        }
-
-        public void SetSelectedIndex(int selectedIndex)
-        {
-            SelectedIndex = selectedIndex;
         }
 
         private (Color, string)[] StringMappingToColor(string[] colorNames)

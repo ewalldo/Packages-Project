@@ -1,7 +1,6 @@
-using ExtraAttributes;
 using UnityEngine;
 
-namespace GenericNamespace
+namespace ExtraAttributes
 {
 	public class AttributesSampleScript : MonoBehaviour
 	{
@@ -11,7 +10,7 @@ namespace GenericNamespace
 		
 		[Space(10)]
 		
-		[ColorPalette("Red", "Green", "Blue")] [SerializeField] private Color colorPalette;
+		[ColorPalette("Red", "Green", "Blue", "(0, 1, 1)")] [SerializeField] private Color colorPalette;
 		
 		[Space(10)]
 		
@@ -45,7 +44,19 @@ namespace GenericNamespace
         [Space(10)]
 
 		[LayerField] [SerializeField] private int layerField;
-		[SceneField] [SerializeField] private string sceneField;
+		[SceneField] [SerializeField] private string sceneFieldString;
+		[SceneField] [SerializeField] private string sceneFieldInteger;
 		[TagField] [SerializeField] private string tagField;
+
+		[HorizontalRule(3, new float[] { 0, 1, 0 })]
+
+		[AssetPreview(64)] [SerializeField] private Texture2D texturePreview;
+		[AssetPreview(128)] [SerializeField] private GameObject gameObjectPreview;
+
+		[Space(10)]
+
+		[SerializeField] private Animator animatorField;
+		[AnimatorParamField("animatorField")] [SerializeField] private string animatorStringParam;
+		[AnimatorParamField("animatorField")] [SerializeField] private int animatorIntParam;
 	}
 }
