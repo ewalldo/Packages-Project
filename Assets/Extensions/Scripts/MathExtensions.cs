@@ -118,5 +118,32 @@ namespace Extensions
         {
             return Mathf.Clamp(value, min, max);
         }
+
+        /// <summary>
+        /// Get a random number between min and max (both inclusive) where the probability of said number is biased towards the lower or higher end of the range
+        /// </summary>
+        /// <param name="min">The mininum possible value for the random number</param>
+        /// <param name="max">The maximum possible value for the random number</param>
+        /// <param name="power">The probability distribution of the generated number.<br/>
+        ///     A value lower than 1 will result in a higher likelihood of larger numbers being generated. The closer to 0, the bigger the chance of a large number.<br/>
+        ///     A value higher than 1 will result in a higher likelihood of smaller numbers being generated. The higher the number, the bigger the chance of a smaller number.<br/>
+        ///     A value equals to 1 will result in a uniform distribution, where all values are equallly likely to occur.
+        /// </param>
+        /// <returns>The generated random number</returns>
+        public static int GetBiasedRandomNumber(int min, int max, double power = 1)
+        {
+            if (max <= min)
+                throw new ArgumentException("Max value should be higher than min value");
+
+            if (power <= 0)
+                throw new ArgumentOutOfRangeException(nameof(power), "Value has to be higher than zero");
+
+            System.Random rand = new System.Random();
+
+            double u = rand.NextDouble();
+            double randNum = Math.Floor(min + (max + 1 - min) * (Math.Pow(u, power)));
+
+            return (int)randNum;
+        }
     }
 }

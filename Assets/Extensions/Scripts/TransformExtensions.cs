@@ -72,6 +72,37 @@ namespace Extensions
         }
 
         /// <summary>
+        /// Reset the transform to its default values
+        /// </summary>
+        /// <param name="transform">The transform to reset</param>
+        /// <param name="isLocal">True if the local values should be reset, false if the global ones</param>
+        /// <param name="resetPosition">Should reset the position?</param>
+        /// <param name="resetRotation">Should reset the rotation?</param>
+        /// <param name="resetScale">Should reset the scale?</param>
+        public static void ResetTransform(this Transform transform, bool isLocal = true, bool resetPosition = true, bool resetRotation = true, bool resetScale = true)
+        {
+            if (transform == null)
+                throw new ArgumentNullException(nameof(transform));
+
+            if (resetPosition)
+            {
+                if (isLocal)
+                    transform.localPosition = Vector3.zero;
+                else
+                    transform.position = Vector3.zero;
+            }
+            if (resetRotation)
+            {
+                if (isLocal)
+                    transform.localRotation = Quaternion.identity;
+                else
+                    transform.rotation = Quaternion.identity;
+            }
+            if (resetScale)
+                transform.localScale = Vector3.one;
+        }
+
+        /// <summary>
         /// Set the object to a new parent and reset the transform values
         /// </summary>
         /// <param name="child">The transform to be moved</param>
@@ -88,13 +119,7 @@ namespace Extensions
                 throw new ArgumentNullException(nameof(parent));
 
             child.SetParent(parent);
-
-            if (resetPosition)
-                child.localPosition = Vector3.zero;
-            if (resetRotation)
-                child.localRotation = Quaternion.identity;
-            if (resetScale)
-                child.localScale = Vector3.one;
+            child.ResetTransform(true, resetPosition, resetRotation, resetScale);
         }
 
         /// <summary>

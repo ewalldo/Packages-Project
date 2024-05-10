@@ -18,6 +18,10 @@
     - [MapArray](#arrayExtensionsMapArray)
     - [ComplementArray](#arrayExtensionsComplementArray)
     - [InverseArray](#arrayExtensionsInverseArray)
+  - [AudioSource](#audioSourceExtensions)
+    - [FadeOut](#audioSourceExtensionsFadeOut)
+    - [FadeIn](#audioSourceExtensionsFadeIn)
+    - [CrossFade](#audioSourceExtensionsCrossFade)
   - [Color](#colorExtensions)
     - [ToHexString](#colorExtensionsToHexString)
     - [ToHexUInt](#colorExtensionsToHexUint)
@@ -48,6 +52,7 @@
     - [Inverse](#mathExtensionsInverse)
     - [Clamp](#mathExtensionsClamp)
     - [Clamp01](#mathExtensionsClamp01)
+    - [GetBiasedRandomNumber](#mathExtensionsGetBiasedRandomNumber)
   - [Renderer](#rendererExtensions)
     - [IsVisibleFrom](#rendererExtensionsIsVisibleFrom)
   - [RichText](#richtextExtensions)
@@ -61,21 +66,24 @@
     - [LastChild](#transformExtensionsLastChild)
     - [DestroyAllChildren](#transformExtensionsDestroyAllChildren)
     - [SetActiveAllChildren](#transformExtensionsSetActiveAllChildren)
+    - [ResetTransform](#transformExtensionsResetTransform)
     - [SetParentAndReset](#transformExtensionsSetParentAndReset)
     - [RotateTowards](#transformExtensionsRotateTowards)
     - [DistanceTo](#transformExtensionsDistanceTo)
 - [Contact Information](#contactInformation)
 
 ## 1 - Introduction <a name="introduction"/>
-The "Extensions" package for Unity is a collection of extension methods that add functionality to Unity game engine and C# built-in classes. This package can help you to write cleaner and more concise code by providing useful methods for common tasks.  
+The "Extensions" package for Unity is a collection of utility extensions designed to streamline common tasks and enhance the functionality of various Unity and C# classes. With these extensions, developers can optimize their workflow, write cleaner code, and improve overall productivity. This documentation provides an overview of the extensions included in the package and instructions for their usage.  
 This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.1: Add extension methods to the AudioSource class
 
 ## 3 - Features <a name="features"/>
 - Extension methods for commonly used classes:
   - Array
+  - AudioSource
   - Color
   - GameObject
   - List
@@ -88,6 +96,15 @@ This package was created and tested using Unity version 2022.1, but it should wo
 ## 4 - Get Started <a name="getStarted"/>
 ### 4.1 Using the extensions in the project <a name="usingTheExtensionsInTheProject"/>
 - To use the extensions in your project, just add the "extensions" namespace on your scripts: using Extensions
+- You can then call the extension methods directly on instances of the corresponding classes. For example:
+```csharp
+// Shuffle an array
+int[] numbers = { 1, 2, 3, 4, 5 };
+numbers.Shuffle();
+
+// Reset the transform of a GameObject
+transform.ResetTransform();
+```
 
 ## 5 - Documentation <a name="documentation"/>
 ### 5.1 Array Extensions <a name="arrayExtensions"/>
@@ -220,7 +237,67 @@ void InverseArray();
 ```
 
 
-### 5.2 Color Extensions <a name="colorExtensions"/>
+### 5.2 AudioSource Extensions <a name="audioSourceExtensions"/>
+#### FadeOut <a name="audioSourceExtensionsFadeOut"/>
+Fades out the audio of the audioSource over a specified duration
+#### Declaration
+```csharp
+IEnumerator FadeOut(float fadeOutTime, float startVolume = 1f, float finalVolume = 0f, bool resetVolumeAfterFade = false, Action onFinishedFading = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | fadeOutTime | The duration over which the fade out should occur |
+| float | startVolume | The starting volume level of the audio (between 0 and 1) |
+| float | finalVolume | The final volume level of the audio (between 0 and 1) |
+| bool | resetVolumeAfterEnds | Indicates wheter to reset the volume to its starting value after the fade operation |
+| Action | onFinishedFading | Action to invoke when the fade out is finished |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| IEnumerator | An IEnumerator for the fade out coroutine execution |
+
+
+#### FadeIn <a name="audioSourceExtensionsFadeIn"/>
+Fades in the audio of the audioSource over a specified duration
+#### Declaration
+```csharp
+IEnumerator FadeIn(float fadeInTime, float startVolume = 0f, float finalVolume = 1f, Action onFinishedFading = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | fadeInTime | The duration over which the fade in should occur |
+| float | startVolume | The starting volume level of the audio (between 0 and 1) |
+| float | finalVolume | The final volume level of the audio (between 0 and 1) |
+| Action | onFinishedFading | Action to invoke when the fade in is finished |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| IEnumerator | An IEnumerator for the fade in coroutine execution |
+
+
+#### CrossFade <a name="audioSourceExtensionsCrossFade"/>
+Cross fade the audio of the audioSource to audioSourceIn over a specific duration
+#### Declaration
+```csharp
+IEnumerator CrossFade(AudioSource audioSourceIn, float crossFadeTime, float startVolume = 1f, float finalVolume = 1f, Action onFinishedCrossFading = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| AudioSource | audioSourceIn | The audio source to fade in |
+| float | crossFadeTime | The duration over which the cross fade should occur |
+| float | startVolume | The starting volume level of the audio to fade out (between 0 and 1) |
+| float | finalVolume | The final volume level of the audio to fade in (between 0 and 1) |
+| Action | onFinishedFading | Action to invoke when the cross fade is finished |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| IEnumerator | An IEnumerator for the cross fade coroutine execution |
+
+
+### 5.3 Color Extensions <a name="colorExtensions"/>
 #### ToHexString <a name="colorExtensionsToHexString"/>
 Converts a Color to a hexadecimal string representation
 #### Declaration
@@ -245,7 +322,7 @@ string ToHexUInt();
 | uint | The uint representation of a color |
 
 
-### 5.3 GameObject Extensions <a name="gameObjectExtensions"/>
+### 5.4 GameObject Extensions <a name="gameObjectExtensions"/>
 #### AddOrGetComponent <a name="gameObjectExtensionsAddOrGetComponent"/>
 Try to get a component from a gameObject, if it doesn't exist, add to it and return it
 #### Declaration
@@ -259,7 +336,7 @@ T AddOrGetComponent<T>();
 
 
 
-### 5.4 List Extensions <a name="listExtensions"/>
+### 5.5 List Extensions <a name="listExtensions"/>
 #### HasIndex <a name="listExtensionsHasIndex"/>
 Returns whether an index is within the bounds of a list
 #### Declaration
@@ -446,7 +523,7 @@ IReadOnlyList<T> AsReadOnly<T>();
 | IReadOnlyList<T> | The read-only version of the list |
 
 
-### 5.5 Math Extensions <a name="mathExtensions"/>
+### 5.6 Math Extensions <a name="mathExtensions"/>
 #### InRange <a name="mathExtensionsInRange"/>
 Returns if the value is within the min and max values
 #### Declaration
@@ -553,7 +630,25 @@ float Clamp01();
 | float | The clamped value |
 
 
-### 5.6 Renderer Extensions <a name="rendererExtensions"/>
+#### GetBiasedRandomNumber <a name="mathExtensionsGetBiasedRandomNumber"/>
+Get a random number between min and max (both inclusive) where the probability of said number is biased towards the lower or higher end of the range
+#### Declaration
+```csharp
+int GetBiasedRandomNumber(int min, int max, double power = 1);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| int | min | The mininum possible value for the random number |
+| int | max | The maximum possible value for the random number |
+| double | power | The probability distribution of the generated number.<br/> A value lower than 1 will result in a higher likelihood of larger numbers being generated. The closer to 0, the bigger the chance of a large number.<br/> A value higher than 1 will result in a higher likelihood of smaller numbers being generated. The higher the number, the bigger the chance of a smaller number.<br/> A value equals to 1 will result in a uniform distribution, where all values are equallly likely to occur |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| int | The generated random number |
+
+
+### 5.7 Renderer Extensions <a name="rendererExtensions"/>
 #### IsVisibleFrom <a name="rendererExtensionsIsVisibleFrom"/>
 Checks if a Renderer is visible from a specified camera
 #### Declaration
@@ -570,7 +665,7 @@ bool IsVisibleFrom(Camera camera);
 | bool | Whether the renderer is visible from the camera or not |
 
 
-### 5.7 RichText Extensions <a name="richTextExtensions"/>
+### 5.8 RichText Extensions <a name="richTextExtensions"/>
 #### WrapAround <a name="richTextExtensionsWrapAround"/>
 Wraps a start and end string around another one
 #### Declaration
@@ -646,7 +741,7 @@ string Color(uint hexColor);
 | string | The text with the color applied |
 
 
-### 5.8 Transform Extensions <a name="transformExtensions"/>
+### 5.9 Transform Extensions <a name="transformExtensions"/>
 #### FirstChild <a name="transformExtensionsFirstChild"/>
 Returns the first child transform of a gameObject, returns null if there is no children
 #### Declaration
@@ -689,6 +784,21 @@ void SetActiveAllChildren(bool status);
 | Type | Name | Description |
 | :--- | :--- | :--- |
 | bool | status | True activate all the children, false deactivate all of them |
+
+
+#### ResetTransform <a name="transformExtensionsResetTransform"/>
+Reset the transform to its default values
+#### Declaration
+```csharp
+void ResetTransform(bool isLocal = true, bool resetPosition = true, bool resetRotation = true, bool resetScale = true);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| bool | isLocal | True if the local values should be reset, false if the global ones |
+| bool | resetPosition | Should reset the position? |
+| bool | resetRotation | Should reset the rotation? |
+| bool | resetScale | Should reset the scale? |
 
 
 #### SetParentAndReset <a name="transformExtensionsSetParentAndReset"/>
