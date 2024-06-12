@@ -140,10 +140,23 @@ namespace Extensions
         /// </summary>
         /// <param name="transform">The transform starting point</param>
         /// <param name="other">The transform end point</param>
+        /// <param name="useLocalPosition">If the distance should be calculated using the local position or the global one</param>
         /// <returns>The distance between the two transforms</returns>
-        public static float DistanceTo(this Transform transform, Transform other)
+        public static float DistanceTo(this Transform transform, Transform other, bool useLocalPosition = false)
         {
-            return Vector3.Distance(transform.position, other.position);
+            return transform.DistanceTo(useLocalPosition ? other.localPosition : other.position, useLocalPosition);
+        }
+
+        /// <summary>
+        /// Calculates the distance of this transform in relation to a specific point in space
+        /// </summary>
+        /// <param name="transform">The transform starting point</param>
+        /// <param name="other">The position end point</param>
+        /// <param name="useLocalPosition">If the distance should be calculated using the local position or the global one</param>
+        /// <returns>The distance between the object transform and the point in space</returns>
+        public static float DistanceTo(this Transform transform, Vector3 other, bool useLocalPosition = false)
+        {
+            return Vector3.Distance(useLocalPosition ? transform.localPosition : transform.position, other);
         }
     }
 }

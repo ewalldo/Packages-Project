@@ -20,8 +20,11 @@
     - [InverseArray](#arrayExtensionsInverseArray)
   - [AudioSource](#audioSourceExtensions)
     - [FadeOut](#audioSourceExtensionsFadeOut)
+    - [FadeOutAsync](#audioSourceExtensionsFadeOutAsync)
     - [FadeIn](#audioSourceExtensionsFadeIn)
+    - [FadeInAsync](#audioSourceExtensionsFadeInAsync)
     - [CrossFade](#audioSourceExtensionsCrossFade)
+    - [CrossFadeAsync](#audioSourceExtensionsCrossFadeAsync)
   - [Color](#colorExtensions)
     - [ToHexString](#colorExtensionsToHexString)
     - [ToHexUInt](#colorExtensionsToHexUint)
@@ -70,6 +73,32 @@
     - [SetParentAndReset](#transformExtensionsSetParentAndReset)
     - [RotateTowards](#transformExtensionsRotateTowards)
     - [DistanceTo](#transformExtensionsDistanceTo)
+  - [Vector](#vectorExtensions)
+    - [Vector2:With](#vectorExtensionsVector2With)
+    - [Vector2:WithX](#vectorExtensionsVector2WithX)
+    - [Vector2:WithY](#vectorExtensionsVector2WithY)
+    - [Vector3:With](#vectorExtensionsVector3With)
+    - [Vector3:WithX](#vectorExtensionsVector3WithX)
+    - [Vector3:WithY](#vectorExtensionsVector3WithY)
+    - [Vector3:WithZ](#vectorExtensionsVector3WithZ)
+    - [Vector3:WithXY](#vectorExtensionsVector3WithXY)
+    - [Vector3:WithXZ](#vectorExtensionsVector3WithXZ)
+    - [Vector3:WithYZ](#vectorExtensionsVector3WithYZ)
+    - [Vector4:With](#vectorExtensionsVector4With)
+    - [Vector4:WithX](#vectorExtensionsVector4WithX)
+    - [Vector4:WithY](#vectorExtensionsVector4WithY)
+    - [Vector4:WithZ](#vectorExtensionsVector4WithZ)
+    - [Vector4:WithW](#vectorExtensionsVector4WithW)
+    - [Vector4:WithXY](#vectorExtensionsVector4WithXY)
+    - [Vector4:WithXZ](#vectorExtensionsVector4WithXZ)
+    - [Vector4:WithXW](#vectorExtensionsVector4WithXW)
+    - [Vector4:WithYZ](#vectorExtensionsVector4WithYZ)
+    - [Vector4:WithYW](#vectorExtensionsVector4WithYW)
+    - [Vector4:WithZW](#vectorExtensionsVector4WithZW)
+    - [Vector4:WithXYZ](#vectorExtensionsVector4WithXYZ)
+    - [Vector4:WithXYW](#vectorExtensionsVector4WithXYW)
+    - [Vector4:WithXZW](#vectorExtensionsVector4WithXZW)
+    - [Vector4:WithYZW](#vectorExtensionsVector4WithYZW)
 - [Contact Information](#contactInformation)
 
 ## 1 - Introduction <a name="introduction"/>
@@ -78,7 +107,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
-- 1.1: Add extension methods to the AudioSource class
+- 1.1: Add extension methods to the AudioSource class and Vector2/3/4 structs
 
 ## 3 - Features <a name="features"/>
 - Extension methods for commonly used classes:
@@ -91,6 +120,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
   - Renderer
   - RichText
   - Transform
+  - Vector
 - Code can be easily extended: The code itself is organized in a way that is easy to understand and with comments on all the important parts, making it easier in case you want to extend by adding new functionalities.
 
 ## 4 - Get Started <a name="getStarted"/>
@@ -258,6 +288,27 @@ IEnumerator FadeOut(float fadeOutTime, float startVolume = 1f, float finalVolume
 | IEnumerator | An IEnumerator for the fade out coroutine execution |
 
 
+#### FadeOutAsync <a name="audioSourceExtensionsFadeOutAsync"/>
+Fades out the audio of the audioSource over a specified duration
+#### Declaration
+```csharp
+Task FadeOutAsync(float fadeOutTime, CancellationToken cancellationToken, float startVolume = 1f, float finalVolume = 0f, bool resetVolumeAfterFade = false, Action onFinishedFading = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | fadeOutTime | The duration over which the fade out should occur |
+| CancellationToken | cancellationToken | Cancellation token to safely stop the fade out operation midway through |
+| float | startVolume | The starting volume level of the audio (between 0 and 1) |
+| float | finalVolume | The final volume level of the audio (between 0 and 1) |
+| bool | resetVolumeAfterEnds | Indicates wheter to reset the volume to its starting value after the fade operation |
+| Action | onFinishedFading | Action to invoke when the fade out is finished |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Task | An asynchronous task for the fade out operation |
+
+
 #### FadeIn <a name="audioSourceExtensionsFadeIn"/>
 Fades in the audio of the audioSource over a specified duration
 #### Declaration
@@ -275,6 +326,26 @@ IEnumerator FadeIn(float fadeInTime, float startVolume = 0f, float finalVolume =
 | Type | Description |
 | :--- | :--- |
 | IEnumerator | An IEnumerator for the fade in coroutine execution |
+
+
+#### FadeInAsync <a name="audioSourceExtensionsFadeInAsync"/>
+Fades in the audio of the audioSource over a specified duration
+#### Declaration
+```csharp
+Task FadeInAsync(float fadeInTime, CancellationToken cancellationToken, float startVolume = 0f, float finalVolume = 1f, Action onFinishedFading = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | fadeInTime | The duration over which the fade in should occur |
+| CancellationToken | cancellationToken | Cancellation token to safely stop the fade in operation midway through |
+| float | startVolume | The starting volume level of the audio (between 0 and 1) |
+| float | finalVolume | The final volume level of the audio (between 0 and 1) |
+| Action | onFinishedFading | Action to invoke when the fade in is finished |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Task | An asynchronous task for the fade in operation |
 
 
 #### CrossFade <a name="audioSourceExtensionsCrossFade"/>
@@ -295,6 +366,27 @@ IEnumerator CrossFade(AudioSource audioSourceIn, float crossFadeTime, float star
 | Type | Description |
 | :--- | :--- |
 | IEnumerator | An IEnumerator for the cross fade coroutine execution |
+
+
+#### CrossFadeAsync <a name="audioSourceExtensionsCrossFadeAsync"/>
+Cross fade the audio of the audioSource to audioSourceIn over a specific duration
+#### Declaration
+```csharp
+Task CrossFadeAsync(AudioSource audioSourceIn, float crossFadeTime, CancellationToken cancellationToken, float startVolume = 1f, float finalVolume = 1f, Action onFinishedCrossFading = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| AudioSource | audioSourceIn | The audio source to fade in |
+| float | crossFadeTime | The duration over which the cross fade should occur |
+| CancellationToken | cancellationToken | Cancellation token to safely stop the cross fade operation midway through |
+| float | startVolume | The starting volume level of the audio to fade out (between 0 and 1) |
+| float | finalVolume | The final volume level of the audio to fade in (between 0 and 1) |
+| Action | onFinishedFading | Action to invoke when the cross fade is finished |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Task | An asynchronous task for the cross fade operation |
 
 
 ### 5.3 Color Extensions <a name="colorExtensions"/>
@@ -830,19 +922,446 @@ void RotateTowards(Vector3 target, float speed);
 
 
 #### DistanceTo <a name="transformExtensionsDistanceTo"/>
-Calculates the distance of this transform in relation to another one
+Calculates the distance of this transform in relation to another one or a point in space
 #### Declaration
 ```csharp
-float DistanceTo(Transform other);
+float DistanceTo(Transform other, bool useLocalPosition = false);
+float DistanceTo(Vector3 other, bool useLocalPosition = false)
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
 | Transform | other | The transform end point |
+| Vector3 | other | The position end point |
+| bool | useLocalPosition | If the distance should be calculated using the local position or the global one |
 #### Returns
 | Type | Description |
 | :--- | :--- |
-| float | The distance between the two transforms |
+| float | The distance between the two transforms or the distance between the transform and the point |
+
+
+### 5.10 Vector Extensions <a name="vectorExtensions"/>
+#### Vector2:With <a name="vectorExtensionsVector2With"/>
+Returns a new Vector2 with the specified components replaced
+#### Declaration
+```csharp
+Vector2 With(float? x = null, float? y = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float? | x | Optional X component. If null, the original X component is used |
+| float? | y | Optional Y component. If null, the original Y component is used |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector2 | A new Vector2 with the specified components replaced |
+
+
+#### Vector2:WithX <a name="vectorExtensionsVector2WithX"/>
+Returns a new Vector2 with the X component replaced
+#### Declaration
+```csharp
+Vector2 WithX(float x);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | The new X component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector2 | A new Vector2 with the X component replaced |
+
+
+#### Vector2:WithY <a name="vectorExtensionsVector2WithY"/>
+Returns a new Vector2 with the Y component replaced
+#### Declaration
+```csharp
+Vector2 WithY(float y);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | y | The new Y component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector2 | A new Vector2 with the Y component replaced |
+
+
+#### Vector3:With <a name="vectorExtensionsVector3With"/>
+Returns a new Vector3 with the specified components replaced
+#### Declaration
+```csharp
+Vector3 With(float? x = null, float? y = null, float? z = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float? | x | Optional X component. If null, the original X component is used |
+| float? | y | Optional Y component. If null, the original Y component is used |
+| float? | z | Optional Z component. If null, the original Z component is used |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | A new Vector3 with the specified components replaced |
+
+
+#### Vector3:WithX <a name="vectorExtensionsVector3WithX"/>
+Returns a new Vector3 with the X component replaced
+#### Declaration
+```csharp
+Vector3 WithX(float x);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | The new X component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | A new Vector3 with the X component replaced |
+
+
+#### Vector3:WithY <a name="vectorExtensionsVector3WithY"/>
+Returns a new Vector3 with the Y component replaced
+#### Declaration
+```csharp
+Vector3 WithY(float y);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | y | The new Y component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | A new Vector3 with the Y component replaced |
+
+
+#### Vector3:WithZ <a name="vectorExtensionsVector3WithZ"/>
+Returns a new Vector3 with the Z component replaced
+#### Declaration
+```csharp
+Vector3 WithZ(float z);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | z | The new Z component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | A new Vector3 with the Z component replaced |
+
+
+#### Vector3:WithXY <a name="vectorExtensionsVector3WithXY"/>
+Returns a new Vector3 with the X and Y components replaced
+#### Declaration
+```csharp
+Vector3 WithXY(float x, float y);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | The new X component |
+| float | y | The new y component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | A new Vector3 with the X and Y components replaced |
+
+
+#### Vector3:WithXZ <a name="vectorExtensionsVector3WithXZ"/>
+Returns a new Vector3 with the X and Z components replaced
+#### Declaration
+```csharp
+Vector3 WithXZ(float x, float z);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | The new X component |
+| float | z | The new z component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | A new Vector3 with the X and Z components replaced |
+
+
+#### Vector3:WithYZ <a name="vectorExtensionsVector3WithYZ"/>
+Returns a new Vector3 with the Y and Z components replaced
+#### Declaration
+```csharp
+Vector3 WithXZ(float y, float z);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | y | The new Y component |
+| float | z | The new z component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | A new Vector3 with the Y and Z components replaced |
+
+
+#### Vector4:With <a name="vectorExtensionsVector4With"/>
+Returns a new Vector4 with the specified components replaced
+#### Declaration
+```csharp
+Vector4 With(float? x = null, float? y = null, float? z = null, float? w = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float? | x | Optional X component. If null, the original X component is used |
+| float? | y | Optional Y component. If null, the original Y component is used |
+| float? | z | Optional Z component. If null, the original Z component is used |
+| float? | w | Optional W component. If null, the original W component is used |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the specified components replaced |
+
+
+#### Vector4:WithX <a name="vectorExtensionsVector4WithX"/>
+Returns a new Vector4 with the X component replaced
+#### Declaration
+```csharp
+Vector4 WithX(float x);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | The new X component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the X component replaced |
+
+
+#### Vector4:WithY <a name="vectorExtensionsVector4WithY"/>
+Returns a new Vector4 with the Y component replaced
+#### Declaration
+```csharp
+Vector4 WithY(float y);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | y | The new Y component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the Y component replaced |
+
+
+#### Vector4:WithZ <a name="vectorExtensionsVector4WithZ"/>
+Returns a new Vector4 with the Z component replaced
+#### Declaration
+```csharp
+Vector4 WithZ(float z);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | z | The new Z component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the Z component replaced |
+
+
+#### Vector4:WithW <a name="vectorExtensionsVector4WithW"/>
+Returns a new Vector4 with the W component replaced
+#### Declaration
+```csharp
+Vector4 WithW(float w);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | w | The new W component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the W component replaced |
+
+
+#### Vector4:WithXY <a name="vectorExtensionsVector4WithXY"/>
+Returns a new Vector4 with the X and Y components replaced
+#### Declaration
+```csharp
+Vector4 WithXY(float x, float y);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | The new X component |
+| float | y | The new Y component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the X and Y components replaced |
+
+
+#### Vector4:WithXZ <a name="vectorExtensionsVector4WithXZ"/>
+Returns a new Vector4 with the X and Z components replaced
+#### Declaration
+```csharp
+Vector4 WithXZ(float x, float z);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | The new X component |
+| float | z | The new Z component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the X and Z components replaced |
+
+
+#### Vector4:WithXW <a name="vectorExtensionsVector4WithXW"/>
+Returns a new Vector4 with the X and W components replaced
+#### Declaration
+```csharp
+Vector4 WithXW(float x, float w);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | The new X component |
+| float | w | The new W component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the X and W components replaced |
+
+
+#### Vector4:WithYZ <a name="vectorExtensionsVector4WithYZ"/>
+Returns a new Vector4 with the Y and Z components replaced
+#### Declaration
+```csharp
+Vector4 WithYZ(float y, float z);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | y | The new Y component |
+| float | z | The new Z component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the Y and Z components replaced |
+
+
+#### Vector4:WithYW <a name="vectorExtensionsVector4WithYW"/>
+Returns a new Vector4 with the Y and W components replaced
+#### Declaration
+```csharp
+Vector4 WithYZ(float y, float w);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | y | The new Y component |
+| float | w | The new W component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the Y and W components replaced |
+
+
+#### Vector4:WithZW <a name="vectorExtensionsVector4WithZW"/>
+Returns a new Vector4 with the Z and W components replaced
+#### Declaration
+```csharp
+Vector4 WithZZ(float z, float w);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | z | The new Z component |
+| float | w | The new W component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the Z and W components replaced |
+
+
+#### Vector4:WithXYZ <a name="vectorExtensionsVector4WithXYZ"/>
+Returns a new Vector4 with the X, Y and Z components replaced
+#### Declaration
+```csharp
+Vector4 WithXYZ(float x, float y, float z);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | The new X component |
+| float | y | The new Y component |
+| float | z | The new Z component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the X, Y and Z components replaced |
+
+
+#### Vector4:WithXYW <a name="vectorExtensionsVector4WithXYW"/>
+Returns a new Vector4 with the X, Y and W components replaced
+#### Declaration
+```csharp
+Vector4 WithXYW(float x, float y, float w);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | The new X component |
+| float | y | The new Y component |
+| float | w | The new W component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the X, Y and W components replaced |
+
+
+#### Vector4:WithXZW <a name="vectorExtensionsVector4WithXZW"/>
+Returns a new Vector4 with the X, Z and W components replaced
+#### Declaration
+```csharp
+Vector4 WithXZW(float x, float z, float w);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | The new X component |
+| float | z | The new Z component |
+| float | w | The new W component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the X, Z and W components replaced |
+
+
+#### Vector4:WithYZW <a name="vectorExtensionsVector4WithYZW"/>
+Returns a new Vector4 with the Y, Z and W components replaced
+#### Declaration
+```csharp
+Vector4 WithYZW(float y, float z, float w);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | y | The new Y component |
+| float | z | The new Z component |
+| float | w | The new W component |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the Y, Z and W components replaced |
 
 ## 6 - Contact Information <a name="contactInformation"/>
 If you have any questions or want to report a bug/problem with the package, please contact me at evaldo.lborba@gmail.com
