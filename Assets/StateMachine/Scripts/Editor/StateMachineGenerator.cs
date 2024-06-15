@@ -7,12 +7,13 @@ using UnityEngine;
 namespace StateMachinePattern
 {
     public class StateMachineGenerator : EditorWindow
-	{
+    {
         private string stateMachineClassName;
         private List<string> statesNames;
         private ReorderableList reorderableList;
         private string initialStateName;
 
+        private bool createMonoBehaviourVersion;
         private bool createStatesOnly;
         private bool overwriteNamespace;
         private string scriptsNamespace;
@@ -24,7 +25,7 @@ namespace StateMachinePattern
         public static void ShowWindow()
         {
             EditorWindow window = GetWindow(typeof(StateMachineGenerator));
-            window.minSize = new Vector2(500, 250);
+            window.minSize = new Vector2(700, 250);
             window.titleContent = new GUIContent("State Machine Generator");
         }
 
@@ -37,6 +38,7 @@ namespace StateMachinePattern
 
             stateMachineClassName = "NewStateMachine";
             initialStateName = "";
+            createMonoBehaviourVersion = true;
             createStatesOnly = false;
             overwriteNamespace = false;
             scriptsNamespace = DEFAULT_NAMESPACE;
@@ -95,7 +97,11 @@ namespace StateMachinePattern
 
         private void OnGUI()
         {
+            EditorGUILayout.BeginHorizontal();
             stateMachineClassName = EditorGUILayout.TextField(new GUIContent("State Machine Name", "Enter a name for the state machine class"), stateMachineClassName);
+            createMonoBehaviourVersion = EditorGUILayout.ToggleLeft(new GUIContent("Create MonoBehaviour version", "If true, create a state machine class that inherits from a MonoBehaviour base class."), createMonoBehaviourVersion, GUILayout.Width(200));
+            EditorGUILayout.EndHorizontal();
+
             scrollPos = GUILayout.BeginScrollView(scrollPos);
             Rect topRect = EditorGUILayout.GetControlRect(false, reorderableList.GetHeight());
             reorderableList.DoList(topRect);
@@ -204,14 +210,17 @@ namespace StateMachinePattern
                 outfile.WriteLine("");
                 outfile.WriteLine("namespace " + (overwriteNamespace ? scriptsNamespace : DEFAULT_NAMESPACE));
                 outfile.WriteLine("{");
-                outfile.WriteLine("\tpublic class " + stateMachineClassName + " : StateMachine");
+                outfile.WriteLine("\tpublic class " + stateMachineClassName + " : " + (createMonoBehaviourVersion ? "StateMachineMonoBehaviour" : "StateMachine"));
                 outfile.WriteLine("\t{");
                 foreach (string state in statesNames)
                 {
                     outfile.WriteLine("\t\tpublic " + state + " " + state + "State { get; private set; }");
                 }
                 outfile.WriteLine("");
-                outfile.WriteLine("\t\tprivate void Start()");
+                if (createMonoBehaviourVersion)
+                    outfile.WriteLine("\t\tprivate void Start()");
+                else
+                    outfile.WriteLine("\t\tpublic " + stateMachineClassName + "()");
                 outfile.WriteLine("\t\t{");
                 foreach (string state in statesNames)
                 {

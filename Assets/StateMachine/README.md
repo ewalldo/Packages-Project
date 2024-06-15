@@ -30,6 +30,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.0.0: Initial release
 - 1.0.1: Adjust spacing on automatically generated scripts
 - 1.0.2: Add non-MonoBehaviour version of the State Machine
+- 1.0.3: Edit StateMachine generator tool to allow creation of both MonoBehaviour and non-Monobehaviour version
 
 ## 3 - Features <a name="features"/>
 - Use of interface: Unlike traditional implementations that use enums, the use of a interface for states provide a more flexible, compact and extensible way to define states and their behaviours, making the code cleaner and easier to debug and maintain.
@@ -108,7 +109,7 @@ public IState PreviousState;
 Invoked when the state machine changes to a new state
 #### Declaration
 ```csharp
-public Action<IState> OnStateChanged;
+public event Action<IState> OnStateChanged;
 ```
 #### Parameters
 | Type | Description |
