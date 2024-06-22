@@ -22,6 +22,7 @@ namespace HierarchyEnhancer
 #if UNITY_EDITOR
         private void OnValidate()
         {
+            EditorApplication.delayCall -= UpdateHierarchy;
             EditorApplication.delayCall += UpdateHierarchy;
         }
 

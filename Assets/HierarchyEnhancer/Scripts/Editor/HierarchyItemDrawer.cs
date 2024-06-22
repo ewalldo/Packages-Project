@@ -1,59 +1,43 @@
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 namespace HierarchyEnhancer
 {
     [InitializeOnLoad]
-	public static class HierarchyItemDrawer
-	{
-        // The default width and height of a Unity icon is 16 pixels
-        private const float ICON_SIZE = 16f;
-
+    public static class HierarchyItemDrawer
+    {
         static HierarchyItemDrawer()
         {
-			EditorApplication.hierarchyWindowItemOnGUI += OnHierarchyGUI;
-		}
-
-        [SettingsProvider()]
-        public static SettingsProvider OnSettingsUI()
-        {
-            SettingsProvider provider = new SettingsProvider("Project/Hierarchy Enhancer", SettingsScope.Project)
-            {
-                label = "Hierarchy Enhancer",
-                guiHandler = (searchContext) =>
-                {
-                    GUILayout.Label("Icons Settings");
-
-                    bool shouldDraw = EditorPrefs.GetBool("DrawComponentsIcons", true);
-                    shouldDraw = EditorGUILayout.Toggle("Display Hierarchy Icons?", shouldDraw);
-                    EditorPrefs.SetBool("DrawComponentsIcons", shouldDraw);
-                },
-                keywords = new HashSet<string>(new[] { "Icons, Hierarchy" })
-            };
-
-            return provider;
+            EditorApplication.hierarchyWindowItemOnGUI -= OnHierarchyGUI;
+            EditorApplication.hierarchyWindowItemOnGUI += OnHierarchyGUI;
         }
 
         private static void OnHierarchyGUI(int instanceID, Rect selectionRect)
         {
             GameObject obj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
 
-            if (obj != null)
+            if (obj == null)
+                return;
+
+            // Draw object as header if there is a header component
+            if (obj.TryGetComponent(out HierarchyHeader hierarchyHeader))
             {
-                if (obj.TryGetComponent(out HierarchyHeader hierarchyHeader))
-                {
-                    DrawHeaderInHierarchy(hierarchyHeader, selectionRect);
-                    return;
-                }
+                DrawHeaderInHierarchy(hierarchyHeader, selectionRect);
+                return;
+            }
 
-                if (!EditorPrefs.GetBool("DrawComponentsIcons", true))
-                    return;
-
+            // Draw components icons 
+            if (EditorPrefs.GetBool(HierarchyEnhancerSettings.DRAW_COMPONENTS_ICONS_PREFS_NAME, true))
+            {
                 Component[] components = obj.GetComponents<Component>();
-                float iconX = selectionRect.x + selectionRect.width - ICON_SIZE;
 
-                for (int i = components.Length - 1; i >= 0; i--)
+                int iconsSize = EditorPrefs.GetInt(HierarchyEnhancerSettings.COMPONENTS_ICONS_SIZE_PREFS_NAME, HierarchyEnhancerSettings.DEFAULT_ICON_SIZE);
+                float iconX = selectionRect.x + selectionRect.width - iconsSize;
+
+                int maxIcons = EditorPrefs.GetInt(HierarchyEnhancerSettings.MAX_COMPONENTS_ICONS_PREFS_NAME, HierarchyEnhancerSettings.MAX_COMPONENTS_ICONS) + 1; // Add one because all objects have a transform as the top component (which will be ignored when drawing the icons
+                int totalComponents = Mathf.Min(components.Length, maxIcons);
+
+                for (int i = totalComponents - 1; i >= 0; i--)
                 {
                     Component component = components[i];
 
@@ -64,10 +48,10 @@ namespace HierarchyEnhancer
 
                     if (icon != null)
                     {
-                        Rect iconRect = new Rect(iconX, selectionRect.y, ICON_SIZE, ICON_SIZE);
+                        Rect iconRect = new Rect(iconX, selectionRect.y + ((selectionRect.height - iconsSize) / 2), iconsSize, iconsSize);
                         GUI.DrawTexture(iconRect, icon);
 
-                        iconX -= ICON_SIZE;
+                        iconX -= iconsSize;
                     }
                 }
             }
