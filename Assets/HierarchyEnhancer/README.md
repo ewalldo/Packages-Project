@@ -11,6 +11,7 @@
     - [4.3 Adding headers ](#43-adding-headers-)
     - [4.4 Customizing headers ](#44-customizing-headers-)
     - [4.5 Sorting objects in the hierarchy ](#45-sorting-objects-in-the-hierarchy-)
+    - [4.6 Hierarchy shortcuts ](#46-hierarchy-shortcuts-)
   - [5 - Contact Information ](#5---contact-information-)
 
 ## 1 - Introduction <a name="introduction"/>
@@ -19,6 +20,8 @@ Currently, this package has three main features:
 1) The ability to display all the components attached to a gameObject as icons beside the object name.  
 2) The ability to create header displays to easily organize different sections of objects.  
 3) The ability to sort gameObjects in the hierarchy based on a condition.  
+4) The ability to use shortcuts when hovering over an item in the hierarchy.  
+
 The first feature makes it easier to quickly identify the components attached to a gameObject without having to scroll through the inspector to see which components are attached to it or click through all children of an object to check which one has a specific component. This can save a lot of time when working with large scenes and complex objects.  
 The second feature allows you to create headers in the hierarchy view to group related objects together. This can be especially useful when working on scenes with many objects, as it makes it easier to organize and navigate the hierarchy view.  
 The third feature allows you to automatically sort objects in the hierarchy based on its name or position, thus allowing you to quickly organize objects without having to manually move them in the hierarchy.  
@@ -29,11 +32,13 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.0: Initial release
 - 1.1: Add option to sort hierarchy objects
 - 1.1.1: Add more options in the project settings
+- 1.2: Add shortcuts when hovering an item in the hierarchy
 
 ## 3 - Features <a name="features"/>
 - Useful for identifying which components are attached to which objects.
 - Useful for organizing hierarchy into different groups.
 - Useful for sort objects in the hierarchy.
+- Shortcut options.
 - Icons display can be toggled on and off.
 - The appearance of the headers are customizable.
 - Code can be easily extended: The code itself is organized in a way that is easy to understand, making it easier in case you want to extend by adding new functionalities.
@@ -56,6 +61,11 @@ Objects in the hierarchy can be sorted by right-clicking a game object and selec
 - Sorting Target: Children (sort all children of each selected object), Selected only (sort only the selected objects)  
 - Sorting Type: By Name (sort objects based on its name), By Position X/Y/Z (sort objects based on its position)  
 - Sorting Order: Ascending (objects will be sorted in ascending order), Descending (objects will be sorted in descending order)  
+
+### 4.6 Hierarchy shortcuts <a name="hierarchyShortcuts"/>
+Shortcuts are available when hovering over an item in the hierarchy (make sure that the hierarchy is the focused window). The following supported shortcuts are:  
+- Activate/deactivate: Press "A" when hovering over a gameObject to toggle its status between active and inactive.  
+- Focus: Press "F" when hovering over a gameObject to focus on it on the Scene view.
 
 ## 5 - Contact Information <a name="contactInformation"/>
 If you have any questions or want to report a bug/problem with the package, please contact me at evaldo.lborba@gmail.com
