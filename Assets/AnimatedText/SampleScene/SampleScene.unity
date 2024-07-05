@@ -263,8 +263,8 @@ MonoBehaviour:
   - As you noticed, all the text of this conversation is being typed on the screen,
     creating a nice effect.
   - The speed of the typing can be customized through tags though.
-  - You can make a text go really faa<speed=100>aaaaaaaaaaaaaaaaaaaaaaaaaaa<speed=25>st.
-  - Or really sl<speed=2.5>ooooooooo<speed=25>w.
+  - You can make a text go really faa<speed=0.01>aaaaaaaaaaaaaaaaaaaaaaaaaaa<speed=0.04>st.
+  - Or really sl<speed=0.4>ooooooooo<speed=0.04>w.
   - Can also create pauses during the typing. <pause=2>Which is useful for dramatic
     effects.
   - 3) RichText support.
@@ -287,7 +287,8 @@ MonoBehaviour:
   - You can also set up custom tags to trigger custom actions during the dialogue
     sequences.
   - That actions can be anything, how about activate some particles, trigger a sound
-    effect and activate a gameObject? Let's try.<speed=2.5> 3, 2, 1<speed=25>. <action=spawnChest><pause=1>Done.
+    effect and activate a gameObject? Let's try.<speed=0.4> 3, 2, 1<speed=0.04>.
+    <action=spawnChest><pause=1>Done.
   - Hello Mr. Chest.
   - And goodbye Mr. Chest.<action=destroyChest>
   - With custom actions you can do basically anything you want.
@@ -1330,7 +1331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 870c210914f730d42992c52b077945c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typingSpeed: 25
+  typingSpeed: 0.04
 --- !u!114 &1157658504
 MonoBehaviour:
   m_ObjectHideFlags: 0
