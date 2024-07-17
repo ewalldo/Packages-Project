@@ -5,7 +5,10 @@ namespace HierarchyEnhancer
 {
     public class SetFocusShortcut : IHierarchyShortcut
     {
-        public KeyCode GetShortcutKeyCode => KeyCode.F;
+        public bool IsShortcutPressed()
+        {
+            return Event.current.keyCode == KeyCode.F && Event.current.modifiers == EventModifiers.None;
+        }
 
         public void ShortcutAction(GameObject obj)
         {

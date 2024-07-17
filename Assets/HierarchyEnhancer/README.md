@@ -66,6 +66,8 @@ Objects in the hierarchy can be sorted by right-clicking a game object and selec
 Shortcuts are available when hovering over an item in the hierarchy (make sure that the hierarchy is the focused window). The following supported shortcuts are:  
 - Activate/deactivate: Press "A" when hovering over a gameObject to toggle its status between active and inactive.  
 - Focus: Press "F" when hovering over a gameObject to focus on it on the Scene view.
+- Expand/collapse: Press "C" when hovering over a gameObject to expand/collapse the object in the hierarchy.
+- Delete: Press "Shift + X" when hovering over a gameObject to delete it from the hierarchy.
 
 ## 5 - Contact Information <a name="contactInformation"/>
 If you have any questions or want to report a bug/problem with the package, please contact me at evaldo.lborba@gmail.com

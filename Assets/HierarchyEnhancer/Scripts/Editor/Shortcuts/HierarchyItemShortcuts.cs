@@ -10,15 +10,15 @@ namespace HierarchyEnhancer
     [InitializeOnLoad]
 	public static class HierarchyItemShortcuts
 	{
-		private static List<IHierarchyShortcut> shortcuts;
+        private static List<IHierarchyShortcut> shortcuts;
 
-		static HierarchyItemShortcuts()
+        static HierarchyItemShortcuts()
         {
-			EditorApplication.hierarchyWindowItemOnGUI -= OnShortcutCheck;
-			EditorApplication.hierarchyWindowItemOnGUI += OnShortcutCheck;
+            EditorApplication.hierarchyWindowItemOnGUI -= OnShortcutCheck;
+            EditorApplication.hierarchyWindowItemOnGUI += OnShortcutCheck;
 
-			Type type = typeof(IHierarchyShortcut);
-			IEnumerable<Type> shortcutTypes = Assembly.GetAssembly(type).GetTypes().Where(myType => myType.IsClass && type.IsAssignableFrom(myType));
+            Type type = typeof(IHierarchyShortcut);
+            IEnumerable<Type> shortcutTypes = Assembly.GetAssembly(type).GetTypes().Where(myType => myType.IsClass && type.IsAssignableFrom(myType));
 
             shortcuts = new List<IHierarchyShortcut>();
             foreach (Type shortcutType in shortcutTypes)
@@ -30,26 +30,26 @@ namespace HierarchyEnhancer
 
         private static void OnShortcutCheck(int instanceID, Rect selectionRect)
         {
-			GameObject obj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+            GameObject obj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
 
-			if (obj == null)
-				return;
+            if (obj == null)
+                return;
 
-			bool isHovered = Event.current != null && selectionRect.Contains(Event.current.mousePosition);
+            bool isHovered = Event.current != null && selectionRect.Contains(Event.current.mousePosition);
 
-			if (!isHovered)
-				return;
+            if (!isHovered)
+                return;
 
             if (Event.current.type == EventType.KeyDown)
             {
                 foreach (IHierarchyShortcut shortcut in shortcuts)
                 {
-					if (Event.current.keyCode == shortcut.GetShortcutKeyCode)
+                    if (shortcut.IsShortcutPressed())
                     {
-						shortcut.ShortcutAction(obj);
+                        shortcut.ShortcutAction(obj);
                     }
                 }
             }
-		}
+        }
     }
 }
