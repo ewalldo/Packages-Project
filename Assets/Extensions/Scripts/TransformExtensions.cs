@@ -158,5 +158,93 @@ namespace Extensions
         {
             return Vector3.Distance(useLocalPosition ? transform.localPosition : transform.position, other);
         }
+
+        /// <summary>
+        /// Checks if all corners of a rectTransform are visible on the screen
+        /// </summary>
+        /// <param name="rectTransform">The rect transform to check</param>
+        /// <param name="canvas">The parent canvas of the rect transform.<br/>
+        ///     If the canvas render mode is set to Camera or World, it will use the canvas camera during checking.
+        /// </param>
+        /// <returns>True, if all four corners are on the screen, false otherwise</returns>
+        public static bool IsAllCornersVisible(this RectTransform rectTransform, Canvas canvas)
+        {
+            return CountCornersVisible(rectTransform, canvas) == 4;
+        }
+
+        /// <summary>
+        /// Check if at least one corner of a rectTransform is visible on the screen
+        /// </summary>
+        /// <param name="rectTransform">The rectTransform to check</param>
+        /// <param name="canvas">The parent canvas of the rectTransform.<br/>
+        ///     If the canvas render mode is set to Camera or World, it will use the canvas camera during checking.
+        /// </param>
+        /// <returns>True, if at least one corner is on the screen, false otherwise</returns>
+        public static bool IsAtLeastOneCornerVisible(this RectTransform rectTransform, Canvas canvas)
+        {
+            return CountCornersVisible(rectTransform, canvas) > 0;
+        }
+
+        /// <summary>
+        /// Count how many corners of a rectTransform is on the screen
+        /// </summary>
+        /// <param name="rectTransform">The rectTransform to check</param>
+        /// <param name="canvas">The parent canvas of the rectTransform</param>
+        /// <returns>The number of corners on the screen</returns>
+        private static int CountCornersVisible(this RectTransform rectTransform, Canvas canvas)
+        {
+            if (canvas == null)
+            {
+                canvas = rectTransform.GetComponentInParent<Canvas>();
+
+                if (canvas == null)
+                    throw new ArgumentNullException(nameof(canvas), "RectTransform does not have a parent with a Canvas component");
+            }
+
+            if (canvas.renderMode == RenderMode.ScreenSpaceCamera || canvas.renderMode == RenderMode.WorldSpace)
+            {
+                if (canvas.worldCamera == null)
+                    throw new ArgumentNullException(nameof(canvas.worldCamera), "Canvas component does not have a camera assigned to itself");
+            }
+
+            Rect screenBounds = new Rect();
+            switch (canvas.renderMode)
+            {
+                case RenderMode.ScreenSpaceOverlay:
+                    screenBounds = new Rect(0f, 0f, Screen.width, Screen.height);
+                    break;
+                case RenderMode.ScreenSpaceCamera:
+                    screenBounds = new Rect(0f, 0f, canvas.worldCamera.pixelWidth, canvas.worldCamera.pixelHeight);
+                    break;
+                case RenderMode.WorldSpace:
+                    screenBounds = new Rect(0f, 0f, canvas.pixelRect.width, canvas.pixelRect.height);
+                    break;
+            }
+
+            Vector3[] objectCorners = new Vector3[4];
+            rectTransform.GetWorldCorners(objectCorners);
+
+            int visibleCorners = 0;
+            Vector3 tempScreenSpaceCorner = Vector3.zero;
+            for (var i = 0; i < objectCorners.Length; i++)
+            {
+                switch (canvas.renderMode)
+                {
+                    case RenderMode.ScreenSpaceOverlay:
+                        tempScreenSpaceCorner = objectCorners[i];
+                        break;
+                    case RenderMode.ScreenSpaceCamera:
+                    case RenderMode.WorldSpace:
+                        tempScreenSpaceCorner = canvas.worldCamera.WorldToScreenPoint(objectCorners[i]);
+                        break;
+                }
+
+                if (screenBounds.Contains(tempScreenSpaceCorner))
+                {
+                    visibleCorners++;
+                }
+            }
+            return visibleCorners;
+        }
     }
 }

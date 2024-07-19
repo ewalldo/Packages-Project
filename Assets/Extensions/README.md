@@ -51,7 +51,9 @@
     - [InRange](#mathExtensionsInRange)
     - [Normalize](#mathExtensionsNormalize)
     - [Map](#mathExtensionsMap)
-    - [Map](#mathExtensionsComplement)
+    - [MapUnclamped](#mathExtensionsMapUnclamped)
+    - [MapClamped](#mathExtensionsMapClamped)
+    - [Complement](#mathExtensionsComplement)
     - [Inverse](#mathExtensionsInverse)
     - [Clamp](#mathExtensionsClamp)
     - [Clamp01](#mathExtensionsClamp01)
@@ -64,6 +66,11 @@
     - [Italic](#richTextExtensionsItalic)
     - [Size](#richTextExtensionsSize)
     - [Color](#richTextExtensionsColor)
+  - [String](#stringExtensions)
+    - [ToVector](#stringExtensionsToVector)
+    - [ToColor](#stringExtensionsToColor)
+  - [TMPro](#tmproExtensions)
+    - [ResizeRectTransformToMatchText](#tmproExtensionsResizeRectTransformToMatchText)
   - [Transform](#transformExtensions)
     - [FirstChild](#transformExtensionsFirstChild)
     - [LastChild](#transformExtensionsLastChild)
@@ -73,6 +80,8 @@
     - [SetParentAndReset](#transformExtensionsSetParentAndReset)
     - [RotateTowards](#transformExtensionsRotateTowards)
     - [DistanceTo](#transformExtensionsDistanceTo)
+    - [IsAllCornersVisible](#transformExtensionsIsAllCornersVisible)
+    - [IsAtLeastOneCornerVisible](#transformExtensionsIsAtLeastOneCornerVisible)
   - [Vector](#vectorExtensions)
     - [Vector2:With](#vectorExtensionsVector2With)
     - [Vector2:WithX](#vectorExtensionsVector2WithX)
@@ -107,7 +116,8 @@ This package was created and tested using Unity version 2022.1, but it should wo
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
-- 1.1: Add extension methods to the AudioSource class and Vector2/3/4 structs
+- 1.1: Add extension methods to the AudioSource class and Vector2/3/4 structs plus a few methods to the other extensions
+- 1.2: Add extension methods to the TMPro and string classes plus a few methods to the other extensions
 
 ## 3 - Features <a name="features"/>
 - Extension methods for commonly used classes:
@@ -119,6 +129,8 @@ This package was created and tested using Unity version 2022.1, but it should wo
   - Math
   - Renderer
   - RichText
+  - String
+  - TMPro
   - Transform
   - Vector
 - Code can be easily extended: The code itself is organized in a way that is easy to understand and with comments on all the important parts, making it easier in case you want to extend by adding new functionalities.
@@ -651,18 +663,56 @@ float Normalize(float min, float max);
 
 
 #### Map <a name="mathExtensionsMap"/>
-Map a value to a new range
+Map a value currently in the (min, max) range to a range between (targetMin, targetMax)
 #### Declaration
 ```csharp
-float Map(float min, float max, float targetMin, float targetMax);
+float Map(float min, float max, float newMin, float newMax);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| float | min | The current minimum range |
-| float | max | The current maximum range |
-| float | targetMin | The new target minimum range |
-| float | targetMax | The new target maximum range |
+| float | min | The current minimum value of the range |
+| float | max | The current maximum value of the range |
+| float | newMin | The minimum value of the new range |
+| float | newMax | The maximum value of the new range |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The mapped value |
+
+
+#### MapUnclamped <a name="mathExtensionsMapUnclamped"/>
+Map a value currently in the (min, max) range to a range between (newMin, newMax) without clamping it.
+#### Declaration
+```csharp
+float MapUnclamped(float min, float max, float newMin, float newMax);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | min | The current minimum value of the range |
+| float | max | The current maximum value of the range |
+| float | newMin | The minimum value of the new range |
+| float | newMax | The maximum value of the new range |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The mapped value |
+
+
+#### MapClamped <a name="mathExtensionsMapClamped"/>
+Map a value currently in the (min, max) range to a range between (newMin, newMax) and clamp it between (newMin, newMax).
+#### Declaration
+```csharp
+float MapClamped(float min, float max, float newMin, float newMax);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | min | The current minimum value of the range |
+| float | max | The current maximum value of the range |
+| float | newMin | The minimum value of the new range |
+| float | newMax | The maximum value of the new range |
 #### Returns
 | Type | Description |
 | :--- | :--- |
@@ -833,7 +883,53 @@ string Color(uint hexColor);
 | string | The text with the color applied |
 
 
-### 5.9 Transform Extensions <a name="transformExtensions"/>
+### 5.9 String Extensions <a name="stringExtensions"/>
+#### ToVector <a name="stringExtensionsToVector"/>
+Converts a string representation to a Vector
+#### Declaration
+```csharp
+T ToVector<T>() where T : struct;
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| T | --- | The type of Vector to convert to (2, 2Int, 3, 3Int, 4) |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| T | The Vector representation of the string |
+
+
+#### ToColor <a name="stringExtensionsToColor"/>
+Converts a string representation (in RGBA color format "RGBA(r, g, b, a)" or RGB color format "RGB(r, g, b)) to a Color
+#### Declaration
+```csharp
+Color ToColor();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | The Color representation of the string |
+
+
+### 5.10 TMPro Extensions <a name="tmproExtensions"/>
+#### ResizeRectTransformToMatchText <a name="tmproExtensionsResizeRectTransformToMatchText"/>
+Resize the rectTransform of the TMP_Text to match the text size
+#### Declaration
+```csharp
+void ResizeRectTransformToMatchText(bool shouldResizeHorizontal, bool shouldResizeVertical, Vector2 minSize, Vector2 maxSize, Vector2 padding);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| bool | shouldResizeHorizontal | Should resize the rectTransform horizontally? |
+| bool | shouldResizeVertical | Should resize the rectTransform vertically? |
+| Vector2 | minSize | The minimum size of the rectTransform |
+| Vector2 | maxSize | The maximum size of the rectTransform |
+| Vector2 | padding | Amount of padding to be added to the rectTransform |
+
+
+### 5.11 Transform Extensions <a name="transformExtensions"/>
 #### FirstChild <a name="transformExtensionsFirstChild"/>
 Returns the first child transform of a gameObject, returns null if there is no children
 #### Declaration
@@ -926,7 +1022,7 @@ Calculates the distance of this transform in relation to another one or a point 
 #### Declaration
 ```csharp
 float DistanceTo(Transform other, bool useLocalPosition = false);
-float DistanceTo(Vector3 other, bool useLocalPosition = false)
+float DistanceTo(Vector3 other, bool useLocalPosition = false);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -937,10 +1033,42 @@ float DistanceTo(Vector3 other, bool useLocalPosition = false)
 #### Returns
 | Type | Description |
 | :--- | :--- |
-| float | The distance between the two transforms or the distance between the transform and the point |
+| float | The distance between the two transforms or the ditance between the transform and the point |
 
 
-### 5.10 Vector Extensions <a name="vectorExtensions"/>
+#### IsAllCornersVisible <a name="transformExtensionsIsAllCornersVisible"/>
+Checks if all corners of a rectTransform are visible on the screen
+#### Declaration
+```csharp
+bool IsAllCornersVisible(Canvas canvas);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Canvas | canvas | The parent canvas of the rect transform |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True, if all four corners are on the screen, false otherwise |
+
+
+#### IsAtLeastOneCornerVisible <a name="transformExtensionsIsAtLeastOneCornerVisible"/>
+Check if at least one corner of a rectTransform is visible on the screen
+#### Declaration
+```csharp
+bool IsAtLeastOneCornerVisible(Canvas canvas);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Canvas | canvas | The parent canvas of the rect transform |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True, if at least one corner is on the screen, false otherwise |
+
+
+### 5.12 Vector Extensions <a name="vectorExtensions"/>
 #### Vector2:With <a name="vectorExtensionsVector2With"/>
 Returns a new Vector2 with the specified components replaced
 #### Declaration

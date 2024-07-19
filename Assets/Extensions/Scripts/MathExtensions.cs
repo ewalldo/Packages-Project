@@ -36,26 +36,58 @@ namespace Extensions
         }
 
         /// <summary>
-        /// Map a value to a new range
+        /// Map a value currently in the (<paramref name="min"/>, <paramref name="max"/>) range to a range between (<paramref name="newMin"/>, <paramref name="newMax"/>)
         /// </summary>
         /// <param name="value">The value to be mapped</param>
-        /// <param name="min">The current minimum range</param>
-        /// <param name="max">The current maximum range</param>
-        /// <param name="targetMin">The new target minimum range</param>
-        /// <param name="targetMax">The new target maximum range</param>
+        /// <param name="min">The current minimum value of the range</param>
+        /// <param name="max">The current maximum value of the range</param>
+        /// <param name="newMin">The minimum value of the new range</param>
+        /// <param name="newMax">The maximum value of the new range</param>
         /// <returns>The mapped value</returns>
-        public static float Map(this float value, float min, float max, float targetMin, float targetMax)
+        public static float Map(this float value, float min, float max, float newMin, float newMax)
+        {
+            if (value < min || value > max)
+                throw new ArgumentException("Value should be in between min and max values");
+
+            return value.MapUnclamped(min, max, newMin, newMax);
+        }
+
+        /// <summary>
+        /// Map a value currently in the (<paramref name="min"/>, <paramref name="max"/>) range to a range between (<paramref name="newMin"/>, <paramref name="newMax"/>)
+        /// without clamping it.
+        /// </summary>
+        /// <param name="value">The value to be mapped</param>
+        /// <param name="min">The current minimum value of the range</param>
+        /// <param name="max">The current maximum value of the range</param>
+        /// <param name="newMin">The minimum value of the new range</param>
+        /// <param name="newMax">The maximum value of the new range</param>
+        /// <returns>The mapped value</returns>
+        public static float MapUnclamped(this float value, float min, float max, float newMin, float newMax)
         {
             if (max <= min)
                 throw new ArgumentException("Max value should be higher than min value");
 
-            if (targetMax <= targetMin)
+            if (newMax <= newMin)
                 throw new ArgumentException("Target max value should be higher than target min value");
 
-            if (value < min || value > max)
-                throw new ArgumentException("Value should be in between min and max values");
+            return (value - min) * ((newMax - newMin) / (max - min)) + newMin;
+        }
 
-            return (value - min) * ((targetMax - targetMin) / (max - min)) + targetMin;
+        /// <summary>
+        /// Map a value currently in the (<paramref name="min"/>, <paramref name="max"/>) range to a range between (<paramref name="newMin"/>, <paramref name="newMax"/>)
+        /// and clamp it between <paramref name="newMin"/> and <paramref name="newMax"/>.
+        /// </summary>
+        /// <param name="value">The value to be mapped</param>
+        /// <param name="min">The current minimum value of the range</param>
+        /// <param name="max">The current maximum value of the range</param>
+        /// <param name="newMin">The minimum value of the new range</param>
+        /// <param name="newMax">The maximum value of the new range</param>
+        /// <returns>The mapped value</returns>
+        public static float MapClamped(this float value, float min, float max, float newMin, float newMax)
+        {
+            float newValue = value.MapUnclamped(min, max, newMin, newMax);
+
+            return Mathf.Clamp(newValue, newMin, newMax);
         }
 
         /// <summary>
