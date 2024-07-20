@@ -4,16 +4,18 @@ namespace ExtraAttributes
 {
 	public class AttributesSampleScript : MonoBehaviour
 	{
-		[HeaderPlus("Header plus", new float[] { 0f, 0f, 1f }, TextAnchor.MiddleCenter, "attributeIcon")]
+		[HeaderPlus("Header plus 1", "Blue", TextAnchor.MiddleCenter, "attributeIcon")]
 		[AssetPath] [SerializeField] private string assetPath;
+		[HeaderPlus("Header plus 2", "(0, 0, 1)", TextAnchor.MiddleCenter, "attributeIcon")]
 		[ResourcesPath] [SerializeField] private string resourcesPath;
+		[StreamingAssetsPath] [SerializeField] private string streamingAssetsPath;
 		
 		[Space(10)]
-		
-		[ColorPalette("Red", "Green", "Blue", "(0, 1, 1)")] [SerializeField] private Color colorPalette;
-		
+
+		[ColorPalette("Red", "Green", "Blue", "(0, 1, 1)", "(1,1,0)", "(0.23,0.54,0.83)")] [SerializeField] private Color colorPalette;
+
 		[Space(10)]
-		
+
 		[FloatRangeWithStep(0f, 1f, 0.1f)] [SerializeField] private float floatRangeWithStep;
 		[IntRangeWithStep(0, 10, 2)] [SerializeField] private int intRangeWithStep;
 
@@ -24,7 +26,8 @@ namespace ExtraAttributes
 
 		[Space(10)]
 
-		[PrettyField("Pretty field", new float[] { 0f, 1f, 0f}, "attributeIcon")] [SerializeField] private int prettyField;
+		[PrettyField("Pretty field 1", "Green", "attributeIcon")] [SerializeField] private int prettyField1;
+		[PrettyField("Pretty field 2", "(0, 1, 0)", "attributeIcon")] [SerializeField] private int prettyField2;
 
 		[Space(10)]
 
@@ -45,7 +48,7 @@ namespace ExtraAttributes
 
 		[LayerField] [SerializeField] private int layerField;
 		[SceneField] [SerializeField] private string sceneFieldString;
-		[SceneField] [SerializeField] private string sceneFieldInteger;
+		[SceneField] [SerializeField] private int sceneFieldInteger;
 		[TagField] [SerializeField] private string tagField;
 
 		[HorizontalRule(3, new float[] { 0, 1, 0 })]

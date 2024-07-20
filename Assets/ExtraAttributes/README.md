@@ -26,6 +26,7 @@
   - [ResourcesPath()](#resourcesPath)
   - [SceneField()](#sceneField)
   - [SceneOnly()](#sceneOnly)
+  - [StreamingAssetsPath()](#streamingAssetsPath)
   - [TagField()](#tagField)
 - [Contact Information](#contactInformation)
 
@@ -37,7 +38,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
-- 1.1: Added extra attributes (AnimatorParamField, AssetPreview, HorizontalRule)
+- 1.1: Added extra attributes (AnimatorParamField, AssetPreview, HorizontalRule, StreamingAssetsPath)
 
 ## 3 - Features <a name="features"/>
 - Enhanced Headers and Label Fields: The package offers an enhanced version of headers and labels in the Inspector. These improved headers allow you to customize your component fields, making it simpler to understand their purpose at a glance.
@@ -119,13 +120,13 @@ public FloatRangeWithStep(float minValue, float maxValue, float step);
 Attribute used to add a header above fields in the inspector, can be customized with an icon and/or text color
 #### Declaration
 ```csharp
-public HeaderPlus(string headerText, float[] headerColor = null, TextAnchor textAnchor = TextAnchor.MiddleLeft, string iconName = "");
+public HeaderPlus(string headerText, string headerColor, TextAnchor textAnchor = TextAnchor.MiddleLeft, string iconName = "");
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
 | string | headerText | The text for the header |
-| float[] | headerColor | The color for the text in a float[3] (RGB) or float[4] (RGBA) format |
+| string | headerColor | Color name or its RBG representation in a string format (R, G, B) |
 | TextAnchor | textAnchor | Alignment for the text header |
 | string | iconName | Name of the texture in the Resources folder |
 
@@ -185,13 +186,13 @@ public LayerField();
 Attribute to add customization to the label part of a field
 #### Declaration
 ```csharp
-public PrettyFieldAttribute(string fieldText = "", float[] fieldColor = null, string iconName = "");
+public PrettyFieldAttribute(string fieldText = "", string fieldColor = "", string iconName = "");
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
 | string | fieldText | The text for the label |
-| fieldColor[] | fieldColor | The color for the text in a float[3] (RGB) or float[4] (RGBA) format |
+| string | fieldColor | Color name or its RBG representation in a string format (R, G, B) |
 | string | iconName | Name of the texture in the Resources folder |
 
 
@@ -244,7 +245,7 @@ public ResourcesPath();
 
 
 ### 5.19 SceneField() <a name="sceneField"/>
-Attribute to convert a string field into a scene selection field (string only)
+Attribute to convert a string or int field into a scene selection field (string and int only)
 #### Declaration
 ```csharp
 public SceneField();
@@ -258,8 +259,15 @@ Attribute to restrict the object references to items located in scenes only
 public SceneOnly();
 ```
 
+### 5.21 StreamingAssetsPath() <a name="streamingAssetsPath"/>
+Allows drag/drop of files from within the StreamingAssets folder in this field to automatically fill up with its filename (string only)
+#### Declaration
+```csharp
+public StreamingAssetsPath();
+```
 
-### 5.21 TagField() <a name="tagField"/>
+
+### 5.22 TagField() <a name="tagField"/>
 Attribute to convert a string field into a tag selection field (string only)
 #### Declaration
 ```csharp

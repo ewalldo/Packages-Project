@@ -279,12 +279,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assetPath: Assets/ExtraAttributes/SampleScene/AttributesSampleScript.cs
   resourcesPath: attributeIcon
+  streamingAssetsPath: attributeIcon
   colorPalette: {r: 0, g: 1, b: 0, a: 1}
   floatRangeWithStep: 0
   intRangeWithStep: 0
   hideOnEdit: 0
   hideOnPlay: 0
-  prettyField: 0
+  prettyField1: 0
+  prettyField2: 0
   readOnly: 0
   readOnlyOnEdit: 0
   readOnlyOnPlay: 0
@@ -294,7 +296,7 @@ MonoBehaviour:
   sceneOnly: {fileID: 1556704607}
   layerField: 5
   sceneFieldString: 
-  sceneFieldInteger: 
+  sceneFieldInteger: 0
   tagField: MainCamera
   texturePreview: {fileID: 2800000, guid: 15be7af2a2251a048ac92cb99838486c, type: 3}
   gameObjectPreview: {fileID: 2031603133}

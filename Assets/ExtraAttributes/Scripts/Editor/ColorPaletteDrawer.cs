@@ -18,7 +18,6 @@ namespace ExtraAttributes
             }
 
             ColorPaletteAttribute colorPaletteAttribute = attribute as ColorPaletteAttribute;
-            Color selectedColor = property.colorValue;
 
             EditorGUI.BeginChangeCheck();
 
@@ -31,7 +30,8 @@ namespace ExtraAttributes
                     index = i;
             }
 
-            int newIdx = EditorGUI.Popup(position, label.text, index, colorNames);
+            int newIdx = EditorGUI.Popup(new Rect(position.x, position.y, position.width - position.height, position.height), label.text, index, colorNames);
+            EditorGUI.DrawRect(new Rect(position.x + (position.width - position.height), position.y, position.height, position.height), property.colorValue);
 
             if (EditorGUI.EndChangeCheck())
             {

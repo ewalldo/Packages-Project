@@ -89,6 +89,11 @@ namespace ExtraAttributes
 
         private void DrawPropertyForString(Rect position, SerializedProperty property, GUIContent label, List<AnimatorControllerParameter> animatorParameters)
         {
+            if (string.IsNullOrEmpty(property.stringValue))
+            {
+                property.stringValue = animatorParameters[0].name;
+            }
+
             int index = 0;
             GUIContent[] gUIContents = new GUIContent[animatorParameters.Count];
 
@@ -112,6 +117,7 @@ namespace ExtraAttributes
         {
             int index = 0;
             GUIContent[] gUIContents = new GUIContent[animatorParameters.Count];
+
             for (int i = 0; i < animatorParameters.Count; i++)
             {
                 gUIContents[i] = new GUIContent(animatorParameters[i].name + ": Hash(" + animatorParameters[i].nameHash.ToString() + ")");

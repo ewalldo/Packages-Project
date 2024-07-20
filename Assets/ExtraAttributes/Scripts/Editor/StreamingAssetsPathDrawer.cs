@@ -3,16 +3,16 @@ using UnityEditor;
 
 namespace ExtraAttributes
 {
-    [CustomPropertyDrawer(typeof(ResourcesPathAttribute))]
-    public class ResourcesPathDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(StreamingAssetsPathAttribute))]
+    public class StreamingAssetsPathDrawer : PropertyDrawer
 	{
-        private const string resourcesPath = "Resources/";
+        private const string streamingAssetsPath = "StreamingAssets/";
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (property.propertyType != SerializedPropertyType.String)
             {
-                string errorMessage = "ResourcesPath attribute: Must be used with string property type!";
+                string errorMessage = "StreamingAssetsPath attribute: Must be used with string property type!";
 
                 Debug.LogError(errorMessage);
                 EditorGUI.HelpBox(position, errorMessage, MessageType.Error);
@@ -37,7 +37,7 @@ namespace ExtraAttributes
                 DragAndDrop.AcceptDrag();
                 string path = DragAndDrop.paths[0];
 
-                int startIndex = path.IndexOf(resourcesPath) + resourcesPath.Length;
+                int startIndex = path.IndexOf(streamingAssetsPath) + streamingAssetsPath.Length;
                 int endIndex = path.LastIndexOf('.');
                 if (endIndex > startIndex)
                 {
@@ -57,7 +57,7 @@ namespace ExtraAttributes
             if (DragAndDrop.paths != null && DragAndDrop.paths.Length > 0)
             {
                 string path = DragAndDrop.paths[0];
-                return !string.IsNullOrEmpty(path) && System.IO.File.Exists(path) && path.Contains(resourcesPath);
+                return !string.IsNullOrEmpty(path) && System.IO.File.Exists(path) && path.Contains(streamingAssetsPath);
             }
             return false;
         }

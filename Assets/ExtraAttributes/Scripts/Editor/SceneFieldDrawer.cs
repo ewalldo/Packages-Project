@@ -27,6 +27,11 @@ namespace ExtraAttributes
                 return;
             }
 
+            if (property.propertyType == SerializedPropertyType.String && string.IsNullOrEmpty(property.stringValue))
+            {
+                property.stringValue = GetStringNameFromFullPath(buildScenes[0].path);
+            }
+
             int index = 0;
             GUIContent[] gUIContents = new GUIContent[buildScenes.Length];
             for (int i = 0; i < buildScenes.Length; i++)
@@ -40,7 +45,7 @@ namespace ExtraAttributes
                 }
                 else if (property.propertyType == SerializedPropertyType.Integer)
                 {
-                    gUIContents[i] = new GUIContent($"({i}): " + buildScenes[i].path.Split('/')[^1].Replace(".unity", ""));
+                    gUIContents[i] = new GUIContent($"({i}): " + GetStringNameFromFullPath(buildScenes[i].path));
                     if (property.intValue == i)
                         index = i;
                 }
