@@ -22,6 +22,11 @@ namespace Tween
             }
         }
 
+        /// <summary>
+        /// Create an instance of an EasingFunction based on an EasingType
+        /// </summary>
+        /// <param name="easingType">The EasingType of the EasingFunction to instantiate</param>
+        /// <returns>An EasingFunction instance</returns>
         public static EasingFunction GetEasing(EasingType easingType)
         {
             if (!easingByName.ContainsKey(easingType))
@@ -30,6 +35,21 @@ namespace Tween
             Type type = easingByName[easingType];
             EasingFunction easing = Activator.CreateInstance(type) as EasingFunction;
             return easing;
+        }
+
+        /// <summary>
+        /// Create an instance of an EasingFunction based on an EasingType string
+        /// </summary>
+        /// <param name="easingTypeString">The EasingType of the EasingFunction to instantiate in string format</param>
+        /// <returns>An EasingFunction instance</returns>
+        public static EasingFunction GetEasing(string easingTypeString)
+        {
+            if (Enum.TryParse(easingTypeString, out EasingType easingType))
+            {
+                return GetEasing(easingType);
+            }
+
+            return null;
         }
 
         public static IEnumerable<EasingType> GetEasingNames()

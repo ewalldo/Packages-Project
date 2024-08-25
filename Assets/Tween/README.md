@@ -17,6 +17,8 @@
       - [TweenRotateQuaternion()](#tweenRotateQuaternion)
       - [TweenRotateVector3()](#tweenRotateVector3)
       - [TweenScale()](#tweenScale)
+    - [Camera Tweens](#cameraTweens)
+      - [TweenCameraFOV()](#tweenCameraFOV)
     - [Canvas Group Tweens](#canvasGroupTweens)
       - [TweenCanvasGroupFade()](#tweenCanvasGroupFade)
     - [Image Tweens](#imageTweens)
@@ -64,6 +66,7 @@
     - [EaseOutElastic()](#easeOutElastic)
     - [EaseInOutElastic()](#easeInOutElastic)
     - [SpringEasing()](#springEasing)
+    - [EasingFactory.GetEasing()](#easingFactoryGetEasing)
   - [Looping Functions](#loopingFunctions)
     - [RestartLoop()](#restartLoop)
     - [PingPongLoop()](#pingPongLoop)
@@ -81,6 +84,8 @@
       - [TweenRotateQuaternion()](#tweenRotateQuaternionExtensions)
       - [TweenRotateVector3()](#tweenRotateVector3Extensions)
       - [TweenScale()](#tweenScaleExtensions)
+    - [Camera Tweens extensions](#cameraTweensExtensions)
+      - [TweenCameraFOV()](#tweenCameraFOVExtensions)
     - [Canvas Group Tweens extensions](#canvasGroupTweensExtensions)
       - [TweenCanvasGroupFade()](#tweenCanvasGroupFadeExtensions)
     - [Image Tweens extensions](#imageTweensExtensions)
@@ -108,6 +113,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.1: Add tween options to the Camera class
 
 ## 3 - Features <a name="features"/>
 - Offers the possibility of "tween" many types of components.
@@ -243,9 +249,30 @@ public TweenScale(Transform targetObject, Vector3 to, float duration, float dela
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.1.2 Canvas Group Tweens <a name="canvasGroupTweens"/>
+#### 5.1.2 Camera Tweens <a name="cameraTweens"/>
+Tweens that are applied to the Camera component.
+##### 5.1.2.1 TweenCameraFOV() <a name="tweenCameraFOV"/>
+Apply tween to the FOV attribute of the Camera component
+#### Declaration
+```csharp
+public TweenCameraFOV(Camera targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenCameraFOV(Camera targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Camera | targetObject | The target Camera to apply the tween |
+| float | from | The initial value of the FOV |
+| float | to | The final value of the FOV |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+#### 5.1.3 Canvas Group Tweens <a name="canvasGroupTweens"/>
 Tweens that are applied to the Canvas Group component.
-##### 5.1.2.1 TweenCanvasGroupFade() <a name="tweenCanvasGroupFade"/>
+##### 5.1.3.1 TweenCanvasGroupFade() <a name="tweenCanvasGroupFade"/>
 Apply tween to the alpha attribute of the Canvas Group component
 #### Declaration
 ```csharp
@@ -264,9 +291,9 @@ public TweenCanvasGroupFade(CanvasGroup targetObject, float to, float duration, 
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.1.3 Image Tweens <a name="imageTweens"/>
+#### 5.1.4 Image Tweens <a name="imageTweens"/>
 Tweens that are applied to the Image component.
-##### 5.1.3.1 TweenImageColor() <a name="tweenImageColor"/>
+##### 5.1.4.1 TweenImageColor() <a name="tweenImageColor"/>
 Apply tween to the color attribute of the Image component
 #### Declaration
 ```csharp
@@ -285,7 +312,7 @@ public TweenImageColor(Image targetObject, Color to, float duration, float delay
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-##### 5.1.3.2 TweenImageFade() <a name="tweenImageFade"/>
+##### 5.1.4.2 TweenImageFade() <a name="tweenImageFade"/>
 Apply tween to the alpha attribute of the Image component
 #### Declaration
 ```csharp
@@ -304,7 +331,7 @@ public TweenImageFade(Image targetObject, float to, float duration, float delay 
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-##### 5.1.3.3 TweenImageFillAmount() <a name="tweenImageFillAmount"/>
+##### 5.1.4.3 TweenImageFillAmount() <a name="tweenImageFillAmount"/>
 Apply tween to the fillAmount attribute of the Image component
 #### Declaration
 ```csharp
@@ -323,9 +350,9 @@ public TweenImageFillAmount(Image targetObject, float to, float duration, float 
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.1.4 Light Tweens <a name="lightTweens"/>
+#### 5.1.5 Light Tweens <a name="lightTweens"/>
 Tweens that are applied to the Light component.
-##### 5.1.4.1 TweenLightColor() <a name="tweenLightColor"/>
+##### 5.1.5.1 TweenLightColor() <a name="tweenLightColor"/>
 Apply tween to the color attribute of the Light component
 #### Declaration
 ```csharp
@@ -344,7 +371,7 @@ public TweenLightColor(Light targetObject, Color to, float duration, float delay
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-##### 5.1.4.2 TweenLightIntensity() <a name="tweenLightIntensity"/>
+##### 5.1.5.2 TweenLightIntensity() <a name="tweenLightIntensity"/>
 Apply tween to the intensity attribute of the Light component
 #### Declaration
 ```csharp
@@ -363,9 +390,9 @@ public TweenLightIntensity(Light targetObject, float to, float duration, float d
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.1.5 Renderer Tweens <a name="rendererTweens"/>
+#### 5.1.6 Renderer Tweens <a name="rendererTweens"/>
 Tweens that are applied to the Renderer component.
-##### 5.1.5.1 TweenRendererColor() <a name="tweenRendererColor"/>
+##### 5.1.6.1 TweenRendererColor() <a name="tweenRendererColor"/>
 Apply tween to the color attribute of the Renderer component
 #### Declaration
 ```csharp
@@ -384,9 +411,9 @@ public TweenRendererColor(Renderer targetObject, Color to, float duration, float
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.1.6 Text Tweens <a name="textTweens"/>
+#### 5.1.7 Text Tweens <a name="textTweens"/>
 Tweens that are applied to the TMP_Text component.
-##### 5.1.6.1 TweenTextColor() <a name="tweenTextColor"/>
+##### 5.1.7.1 TweenTextColor() <a name="tweenTextColor"/>
 Apply tween to the color attribute of the TMP_Text component
 #### Declaration
 ```csharp
@@ -405,7 +432,7 @@ public TweenTextColor(TMP_Text targetObject, Color to, float duration, float del
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-##### 5.1.6.2 TweenTextFade() <a name="tweenTextFade"/>
+##### 5.1.7.2 TweenTextFade() <a name="tweenTextFade"/>
 Apply tween to the alpha attribute of the TMP_Text component
 #### Declaration
 ```csharp
@@ -617,6 +644,23 @@ public class EaseInOutElastic();
 ```csharp
 public class SpringEasing();
 ```
+
+#### 5.2.33 EasingFactory.GetEasing() <a name="easingFactoryGetEasing"/>
+Create an instance of an EasingFunction based on an EasingType
+#### Declaration
+```csharp
+public static EasingFunction GetEasing(EasingType easingType);
+public static EasingFunction GetEasing(string easingTypeString)
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| EasingType | easingType | The EasingType of the EasingFunction to instantiate |
+| string | easingTypeString | The EasingType of the EasingFunction to instantiate in string format |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| EasingFunction | An EasingFunction instance |
 
 ### 5.3 Looping Functions <a name="loopingFunctions"/>
 Looping functions specify how the tween should loop upon completion.
@@ -837,9 +881,30 @@ public static Transform TweenScaleZ(this Transform targetObject, float to, float
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.5.2 Canvas Group extensions <a name="canvasGroupTweensExtensions"/>
+#### 5.5.2 Camera extensions <a name="cameraTweensExtensions"/>
+Tween extensions for the Camera class
+##### 5.5.2.1 TweenCameraFOV() <a name="tweenCameraFOVExtensions"/>
+Apply tween to the FOV attribute of the Camera component
+#### Declaration
+```csharp
+public static Camera TweenFOV(this Camera targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Camera TweenFOV(this Camera targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Camera | targetObject | The target Camera to apply the tween |
+| float | from | The initial value of the FOV |
+| float | to | The final value of the FOV |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+#### 5.5.3 Canvas Group extensions <a name="canvasGroupTweensExtensions"/>
 Tween extensions for the CanvasGroup class
-##### 5.2.2.1 TweenCanvasGroupFade() <a name="tweenCanvasGroupFadeExtensions"/>
+##### 5.5.3.1 TweenCanvasGroupFade() <a name="tweenCanvasGroupFadeExtensions"/>
 Apply tween to the alpha attribute of the Canvas Group component
 #### Declaration
 ```csharp
@@ -858,9 +923,9 @@ public static CanvasGroup TweenFade(this CanvasGroup targetObject, float to, flo
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.5.3 Image Tweens extensions <a name="imageTweensExtensions"/>
+#### 5.5.4 Image Tweens extensions <a name="imageTweensExtensions"/>
 Tweens extensions for the Image class
-##### 5.5.3.1 TweenImageColor() <a name="tweenImageColorExtensions"/>
+##### 5.5.4.1 TweenImageColor() <a name="tweenImageColorExtensions"/>
 Apply tween to the color attribute of the Image component
 #### Declaration
 ```csharp
@@ -879,7 +944,7 @@ public static Image TweenColor(this Image targetObject, Color to, float duration
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-##### 5.5.3.2 TweenImageFade() <a name="tweenImageFadeExtensions"/>
+##### 5.5.4.2 TweenImageFade() <a name="tweenImageFadeExtensions"/>
 Apply tween to the alpha attribute of the Image component
 #### Declaration
 ```csharp
@@ -898,7 +963,7 @@ public static Image TweenFade(this Image targetObject, float to, float duration,
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-##### 5.5.3.3 TweenImageFillAmount() <a name="tweenImageFillAmountExtensions"/>
+##### 5.5.4.3 TweenImageFillAmount() <a name="tweenImageFillAmountExtensions"/>
 Apply tween to the fillAmount attribute of the Image component
 #### Declaration
 ```csharp
@@ -917,9 +982,9 @@ public static Image TweenFillAmount(this Image targetObject, float to, float dur
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.5.4 Light Tweens extensions <a name="lightTweensExtensions"/>
+#### 5.5.5 Light Tweens extensions <a name="lightTweensExtensions"/>
 Tweens extensions for the Light class
-##### 5.5.4.1 TweenLightColor() <a name="tweenLightColorExtensions"/>
+##### 5.5.5.1 TweenLightColor() <a name="tweenLightColorExtensions"/>
 Apply tween to the color attribute of the Light component
 #### Declaration
 ```csharp
@@ -938,7 +1003,7 @@ public static Light TweenColor(this Light targetObject, Color to, float duration
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-##### 5.5.4.2 TweenLightIntensity() <a name="tweenLightIntensityExtensions"/>
+##### 5.5.5.2 TweenLightIntensity() <a name="tweenLightIntensityExtensions"/>
 Apply tween to the intensity attribute of the Light component
 #### Declaration
 ```csharp
@@ -957,9 +1022,9 @@ public static Light TweenIntensity(this Light targetObject, float to, float dura
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.5.5 Renderer Tweens extensions <a name="rendererTweensExtensions"/>
+#### 5.5.6 Renderer Tweens extensions <a name="rendererTweensExtensions"/>
 Tweens extensions for the Renderer class
-##### 5.5.5.1 TweenRendererColor() <a name="tweenRendererColorExtensions"/>
+##### 5.5.6.1 TweenRendererColor() <a name="tweenRendererColorExtensions"/>
 Apply tween to the color attribute of the Renderer component
 #### Declaration
 ```csharp
@@ -978,9 +1043,9 @@ public static Renderer TweenColor(this Renderer targetObject, Color to, float du
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.5.6 Text Tweens extensions <a name="textTweensExtensions"/>
+#### 5.5.7 Text Tweens extensions <a name="textTweensExtensions"/>
 Tweens extensions for the TMP_Text class
-##### 5.5.6.1 TweenTextColor() <a name="tweenTextColorExtensions"/>
+##### 5.5.7.1 TweenTextColor() <a name="tweenTextColorExtensions"/>
 Apply tween to the color attribute of the TMP_Text component
 #### Declaration
 ```csharp
@@ -999,7 +1064,7 @@ public static TMP_Text TweenColor(this TMP_Text targetObject, Color to, float du
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-##### 5.5.6.2 TweenTextFade() <a name="tweenTextFadeExtensions"/>
+##### 5.5.7.2 TweenTextFade() <a name="tweenTextFadeExtensions"/>
 Apply tween to the alpha attribute of the TMP_Text component
 #### Declaration
 ```csharp
