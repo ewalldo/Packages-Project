@@ -114,6 +114,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
 - 1.1: Add tween options to the Camera class
+- 1.1.1: Refactor tween classes to make extendibility easier
 
 ## 3 - Features <a name="features"/>
 - Offers the possibility of "tween" many types of components.
