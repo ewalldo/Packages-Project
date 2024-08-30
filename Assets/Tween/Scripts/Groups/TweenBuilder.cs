@@ -29,7 +29,7 @@ namespace Tween
         public void Execute()
         {
             completedTweens = 0;
-            owner.StopAllCoroutines();
+            
             foreach (ITweener tween in tweens)
             {
                 owner.StartCoroutine(tween.Execute());
@@ -39,12 +39,13 @@ namespace Tween
         public void Reset()
         {
             tweens.Clear();
+            OnAllTweensCompleted = null;
+            completedTweens = 0;
         }
 
         private void OnTweenComplete()
         {
             completedTweens++;
-            //tween.OnComplete -= OnTweenComplete;
 
             if (completedTweens >= tweens.Count)
                 OnAllTweensCompleted?.Invoke();

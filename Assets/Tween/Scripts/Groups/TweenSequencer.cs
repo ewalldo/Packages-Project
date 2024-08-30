@@ -30,20 +30,20 @@ namespace Tween
 
         public void Execute()
         {
-            owner.StopAllCoroutines();
             owner.StartCoroutine(tweens[curTween].Execute());
         }
 
         public void Reset()
         {
             tweens.Clear();
+            OnAllTweensCompleted = null;
+            curTween = 0;
         }
 
         private void OnTweenComplete()
         {
             completedTweens++;
             curTween++;
-            //tween.OnComplete -= OnTweenComplete;
 
             if (completedTweens >= tweens.Count)
                 AllTweensComplete();
