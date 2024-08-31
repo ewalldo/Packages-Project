@@ -27,7 +27,7 @@ namespace Tween
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                rendererTest.GetComponent<Renderer>().TweenColor(Color.red, 3f, 0f, new EaseInOutBack(), new PingPongLoop(0, 2.5f));
+                rendererTest.GetComponent<Renderer>().TweenColor(Color.red, 3f, 0f, 0, new EaseInOutBack(), new PingPongLoop(0, 2.5f));
                 tweenBuilder.Execute();
                 //textTest.TweenFade(0f, 2f, 0f, null, new PingPongLoop(0));
             }

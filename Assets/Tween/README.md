@@ -28,8 +28,12 @@
     - [Light Tweens](#lightTweens)
       - [TweenLightColor()](#tweenLightColor)
       - [TweenLightIntensity()](#tweenLightIntensity)
+    - [Material Tweens](#materialTweens)
+      - [TweenMaterialColor()](#tweenMaterialColor)
+      - [TweenMaterialFade()](#tweenMaterialFade)
     - [Renderer Tweens](#rendererTweens)
       - [TweenRendererColor()](#tweenRendererColor)
+      - [TweenRendererFade()](#tweenRendererFade)
     - [Text Tweens](#textTweens)
       - [TweenTextColor()](#tweenTextColor)
       - [TweenTextFade()](#tweenTextFade)
@@ -95,8 +99,12 @@
     - [Light Tweens extensions](#lightTweensExtensions)
       - [TweenLightColor()](#tweenLightColorExtensions)
       - [TweenLightIntensity()](#tweenLightIntensityExtensions)
+    - [Material Tweens extensions](#lightTweensExtensions)
+      - [TweenMaterialColor()](#tweenMaterialColorExtensions)
+      - [TweenMaterialFade()](#tweenMaterialFadeExtensions)
     - [Renderer Tweens extensions](#rendererTweensExtensions)
       - [TweenRendererColor()](#tweenRendererColorExtensions)
+      - [TweenRendererFade()](#tweenRendererFadeExtensions)
     - [Text Tweens extensions](#textTweensExtensions)
       - [TweenTextColor()](#tweenTextColorExtensions)
       - [TweenTextFade()](#tweenTextFadeExtensions)
@@ -115,6 +123,9 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.0: Initial release
 - 1.1: Add tween options to the Camera class
 - 1.1.1: Refactor tween classes to make extendibility easier
+- 1.1.2: Edit group tweens
+- 1.1.3: Add more options to Renderer tweens
+- 1.2: Add material tweens
 
 ## 3 - Features <a name="features"/>
 - Offers the possibility of "tween" many types of components.
@@ -391,14 +402,54 @@ public TweenLightIntensity(Light targetObject, float to, float duration, float d
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.1.6 Renderer Tweens <a name="rendererTweens"/>
-Tweens that are applied to the Renderer component.
-##### 5.1.6.1 TweenRendererColor() <a name="tweenRendererColor"/>
-Apply tween to the color attribute of the Renderer component
+#### 5.1.6 Material Tweens <a name="materialTweens"/>
+Tweens that are applied to the Material component.
+##### 5.1.6.1 TweenMaterialColor() <a name="tweenMaterialColor"/>
+Apply tween to the color attribute of the Material component
 #### Declaration
 ```csharp
-public TweenRendererColor(Renderer targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public TweenRendererColor(Renderer targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMaterialColor(Material targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMaterialColor(Material targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Material | targetObject | The target Material to apply the tween |
+| Color | from | The initial value of the color |
+| Color | to | The final value of the color |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+##### 5.1.6.2 TweenMaterialFade() <a name="tweenMaterialFade"/>
+Apply tween to the alpha attribute of the Material component
+#### Declaration
+```csharp
+public TweenMaterialFade(Material targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMaterialFade(Material targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Material | targetObject | The target Material to apply the tween |
+| float | from | The initial value of the alpha |
+| float | to | The final value of the alpha |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+#### 5.1.7 Renderer Tweens <a name="rendererTweens"/>
+Tweens that are applied to the Renderer component.
+##### 5.1.7.1 TweenRendererColor() <a name="tweenRendererColor"/>
+Apply tween to the color attribute of the Renderer's material component
+#### Declaration
+```csharp
+public TweenRendererColor(Renderer targetObject, Color from, Color to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRendererColor(Renderer targetObject, Color to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -408,13 +459,34 @@ public TweenRendererColor(Renderer targetObject, Color to, float duration, float
 | Color | to | The final value of the color |
 | float | duration | How long the tween will take to complete |
 | float | delay | How long should it wait until the tween starts |
+| int | materialIndex | The index of the material to which the tween will be applied to |
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.1.7 Text Tweens <a name="textTweens"/>
+##### 5.1.7.2 TweenRendererFade() <a name="tweenRendererFade"/>
+Apply tween to the alpha attribute of the Renderer's material component
+#### Declaration
+```csharp
+public TweenRendererFade(Renderer targetObject, float from, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRendererFade(Renderer targetObject, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Renderer | targetObject | The target Renderer to apply the tween |
+| float | from | The initial value of the alpha |
+| float | to | The final value of the alpha |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| int | materialIndex | The index of the material to which the tween will be applied to |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+#### 5.1.8 Text Tweens <a name="textTweens"/>
 Tweens that are applied to the TMP_Text component.
-##### 5.1.7.1 TweenTextColor() <a name="tweenTextColor"/>
+##### 5.1.8.1 TweenTextColor() <a name="tweenTextColor"/>
 Apply tween to the color attribute of the TMP_Text component
 #### Declaration
 ```csharp
@@ -433,7 +505,7 @@ public TweenTextColor(TMP_Text targetObject, Color to, float duration, float del
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-##### 5.1.7.2 TweenTextFade() <a name="tweenTextFade"/>
+##### 5.1.8.2 TweenTextFade() <a name="tweenTextFade"/>
 Apply tween to the alpha attribute of the TMP_Text component
 #### Declaration
 ```csharp
@@ -1023,14 +1095,54 @@ public static Light TweenIntensity(this Light targetObject, float to, float dura
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.5.6 Renderer Tweens extensions <a name="rendererTweensExtensions"/>
-Tweens extensions for the Renderer class
-##### 5.5.6.1 TweenRendererColor() <a name="tweenRendererColorExtensions"/>
-Apply tween to the color attribute of the Renderer component
+#### 5.5.6 Material Tweens extensions <a name="materialTweensExtensions"/>
+Tweens extensions for the Material class
+##### 5.5.6.1 TweenMaterialColor() <a name="tweenMaterialColorExtensions"/>
+Apply tween to the color attribute of the Material component
 #### Declaration
 ```csharp
-public static Renderer TweenColor(this Renderer targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Renderer TweenColor(this Renderer targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Material TweenColor(this Material targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Material TweenColor(this Material targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Material | targetObject | The target Material to apply the tween |
+| Color | from | The initial value of the color |
+| Color | to | The final value of the color |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+##### 5.5.6.2 TweenMaterialFade() <a name="tweenMaterialFadeExtensions"/>
+Apply tween to the alpha attribute of the Material component
+#### Declaration
+```csharp
+public static Material TweenFade(this Material targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Material TweenFade(this Material targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Material | targetObject | The target Material to apply the tween |
+| float | from | The initial value of the alpha |
+| float | to | The final value of the alpha |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+#### 5.5.7 Renderer Tweens extensions <a name="rendererTweensExtensions"/>
+Tweens extensions for the Renderer class
+##### 5.5.7.1 TweenRendererColor() <a name="tweenRendererColorExtensions"/>
+Apply tween to the color attribute of the Renderer's material component
+#### Declaration
+```csharp
+public static Renderer TweenColor(this Renderer targetObject, Color from, Color to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Renderer TweenColor(this Renderer targetObject, Color to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -1040,13 +1152,34 @@ public static Renderer TweenColor(this Renderer targetObject, Color to, float du
 | Color | to | The final value of the color |
 | float | duration | How long the tween will take to complete |
 | float | delay | How long should it wait until the tween starts |
+| int | materialIndex | The index of the material to which the tween will be applied to |
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-#### 5.5.7 Text Tweens extensions <a name="textTweensExtensions"/>
+##### 5.5.7.2 TweenRendererFade() <a name="tweenRendererFadeExtensions"/>
+Apply tween to the alpha attribute of the Renderer's material component
+#### Declaration
+```csharp
+public static Renderer TweenFade(this Renderer targetObject, float from, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Renderer TweenFade(this Renderer targetObject, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Renderer | targetObject | The target Renderer to apply the tween |
+| float | from | The initial value of the alpha |
+| float | to | The final value of the alpha |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| int | materialIndex | The index of the material to which the tween will be applied to |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+#### 5.5.8 Text Tweens extensions <a name="textTweensExtensions"/>
 Tweens extensions for the TMP_Text class
-##### 5.5.7.1 TweenTextColor() <a name="tweenTextColorExtensions"/>
+##### 5.5.8.1 TweenTextColor() <a name="tweenTextColorExtensions"/>
 Apply tween to the color attribute of the TMP_Text component
 #### Declaration
 ```csharp
@@ -1065,7 +1198,7 @@ public static TMP_Text TweenColor(this TMP_Text targetObject, Color to, float du
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
-##### 5.5.7.2 TweenTextFade() <a name="tweenTextFadeExtensions"/>
+##### 5.5.8.2 TweenTextFade() <a name="tweenTextFadeExtensions"/>
 Apply tween to the alpha attribute of the TMP_Text component
 #### Declaration
 ```csharp
