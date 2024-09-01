@@ -70,6 +70,7 @@
     - [EaseOutElastic()](#easeOutElastic)
     - [EaseInOutElastic()](#easeInOutElastic)
     - [SpringEasing()](#springEasing)
+    - [AnimationCurveEasing()](#animationCurveEasing)
     - [EasingFactory.GetEasing()](#easingFactoryGetEasing)
   - [Looping Functions](#loopingFunctions)
     - [RestartLoop()](#restartLoop)
@@ -126,6 +127,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.1.2: Edit group tweens
 - 1.1.3: Add more options to Renderer tweens
 - 1.2: Add material tweens
+- 1.2.1: Add AnimationCurveEasing
 
 ## 3 - Features <a name="features"/>
 - Offers the possibility of "tween" many types of components.
@@ -718,18 +720,29 @@ public class EaseInOutElastic();
 public class SpringEasing();
 ```
 
-#### 5.2.33 EasingFactory.GetEasing() <a name="easingFactoryGetEasing"/>
+#### 5.2.33 AnimationCurveEasing() <a name="animationCurveEasing"/>
+#### Declaration
+```csharp
+public class AnimationCurveEasing(AnimationCurve animationCurve);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| AnimationCurve | animationCurve | The AnimationCurve which the easing will be based on |
+
+#### 5.2.34 EasingFactory.GetEasing() <a name="easingFactoryGetEasing"/>
 Create an instance of an EasingFunction based on an EasingType
 #### Declaration
 ```csharp
-public static EasingFunction GetEasing(EasingType easingType);
-public static EasingFunction GetEasing(string easingTypeString)
+public static EasingFunction GetEasing(EasingType easingType, params object[] constructorArgs);
+public static EasingFunction GetEasing(string easingTypeString, params object[] constructorArgs)
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
 | EasingType | easingType | The EasingType of the EasingFunction to instantiate |
 | string | easingTypeString | The EasingType of the EasingFunction to instantiate in string format |
+| params object[] | constructorArgs | Optional arguments for the constructor |
 #### Returns
 | Type | Description |
 | :--- | :--- |

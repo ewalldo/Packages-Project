@@ -519,4 +519,29 @@ namespace Tween
             return start + (end - start) * value;
         }
     }
+
+    public class AnimationCurveEasing : EasingFunction
+    {
+        public AnimationCurve EasingCurve { get; set; }
+
+        public override EasingType EasingName => EasingType.AnimationCurveEasing;
+
+        public AnimationCurveEasing(AnimationCurve animationCurve)
+        {
+            EasingCurve = animationCurve;
+        }
+
+        public AnimationCurveEasing() { }
+
+        public override float Evaluate(float start, float end, float value)
+        {
+            if (EasingCurve == null)
+            {
+                Debug.LogError("EasingCurve is not set in AnimationCurveEasing.");
+                return default;
+            }
+
+            return EasingCurve.Evaluate(value);
+        }
+    }
 }

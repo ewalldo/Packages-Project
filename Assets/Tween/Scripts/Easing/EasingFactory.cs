@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace Tween
 {
@@ -26,27 +27,38 @@ namespace Tween
         /// Create an instance of an EasingFunction based on an EasingType
         /// </summary>
         /// <param name="easingType">The EasingType of the EasingFunction to instantiate</param>
+        /// <param name="constructorArgs">Optional arguments for the constructor</param>
         /// <returns>An EasingFunction instance</returns>
-        public static EasingFunction GetEasing(EasingType easingType)
+        public static EasingFunction GetEasing(EasingType easingType, params object[] constructorArgs)
         {
             if (!easingByName.ContainsKey(easingType))
                 return null;
 
             Type type = easingByName[easingType];
-            EasingFunction easing = Activator.CreateInstance(type) as EasingFunction;
-            return easing;
+
+            try
+            {
+                EasingFunction easing = Activator.CreateInstance(type, constructorArgs) as EasingFunction;
+                return easing;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to create easing function of the type {easingType}: {ex.Message}");
+                return null;
+            }
         }
 
         /// <summary>
         /// Create an instance of an EasingFunction based on an EasingType string
         /// </summary>
         /// <param name="easingTypeString">The EasingType of the EasingFunction to instantiate in string format</param>
+        /// <param name="constructorArgs">Optional arguments for the constructor</param>
         /// <returns>An EasingFunction instance</returns>
-        public static EasingFunction GetEasing(string easingTypeString)
+        public static EasingFunction GetEasing(string easingTypeString, params object[] constructorArgs)
         {
             if (Enum.TryParse(easingTypeString, out EasingType easingType))
             {
-                return GetEasing(easingType);
+                return GetEasing(easingType, constructorArgs);
             }
 
             return null;
