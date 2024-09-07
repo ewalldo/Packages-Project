@@ -43,6 +43,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.3: Add option to rename multiple objects
 - 1.4: Add option to ignore specific component's icons
 - 1.4.1: Add shortcut related settings
+- 1.5: Add new shortcuts
 
 ## 3 - Features <a name="features"/>
 - Useful for identifying which components are attached to which objects.
@@ -89,7 +90,9 @@ Objects in the hierarchy can be renamed simultaneously by right-clicking a game 
 Shortcuts are available when hovering over an item in the hierarchy (make sure that the hierarchy is the focused window). The currently supported shortcuts are:  
 - Activate/deactivate: Press "A" when hovering over a gameObject to toggle its status between active and inactive.  
 - Focus: Press "F" when hovering over a gameObject to focus on it on the Scene view.
+- Isolate: Press "I" when hovering over a gameObject to activate isolation mode for this object and its children.
 - Expand/collapse: Press "C" when hovering over a gameObject to expand/collapse the object in the hierarchy.
+- Hide/Unhide: Press "H" when hovering over a gameObject to hide/unhide the object in the hierarchy.
 - Delete: Press "Shift + X" when hovering over a gameObject to delete it from the hierarchy.
 
 ## 5 - Contact Information <a name="contactInformation"/>

@@ -8,6 +8,8 @@ namespace HierarchyEnhancer
         public const string SHORTCUTS_ACTIVE_ALL_PREFS_NAME = "shortcutsAllActive";
         public const string SHORTCUTS_ACTIVE_DELETE_PREFS_NAME = "shortcutsDeleteActive";
         public const string SHORTCUTS_ACTIVE_EXPAND_COLLAPSE_PREFS_NAME = "shortcutsExpandCollapseActive";
+        public const string SHORTCUTS_ACTIVE_HIDE_UNHIDE_PREFS_NAME = "shortcutsHideUnhideActive";
+        public const string SHORTCUTS_ACTIVE_ISOLATE_PREFS_NAME = "shortcutsIsolateActive";
         public const string SHORTCUTS_ACTIVE_SET_ACTIVE_PREFS_NAME = "shortcutsSetActiveActive";
         public const string SHORTCUTS_ACTIVE_SET_FOCUS_PREFS_NAME = "shortcutsSetFocusActive";
 
@@ -38,6 +40,14 @@ namespace HierarchyEnhancer
             isExpandCollapseShortcutActive = EditorGUILayout.ToggleLeft("Expand/Collapse shortcut (C)", isExpandCollapseShortcutActive);
             EditorPrefs.SetBool(SHORTCUTS_ACTIVE_EXPAND_COLLAPSE_PREFS_NAME, isExpandCollapseShortcutActive);
 
+            bool isHideUnhideShortcutActive = EditorPrefs.GetBool(SHORTCUTS_ACTIVE_HIDE_UNHIDE_PREFS_NAME, true);
+            isHideUnhideShortcutActive = EditorGUILayout.ToggleLeft("Hide/unhide shortcut (H)", isHideUnhideShortcutActive);
+            EditorPrefs.SetBool(SHORTCUTS_ACTIVE_HIDE_UNHIDE_PREFS_NAME, isHideUnhideShortcutActive);
+
+            bool isIsolateShortcutActive = EditorPrefs.GetBool(SHORTCUTS_ACTIVE_ISOLATE_PREFS_NAME, true);
+            isIsolateShortcutActive = EditorGUILayout.ToggleLeft("Isolate shortcut (I)", isIsolateShortcutActive);
+            EditorPrefs.SetBool(SHORTCUTS_ACTIVE_ISOLATE_PREFS_NAME, isIsolateShortcutActive);
+
             bool isSetActiveShortcutActive = EditorPrefs.GetBool(SHORTCUTS_ACTIVE_SET_ACTIVE_PREFS_NAME, true);
             isSetActiveShortcutActive = EditorGUILayout.ToggleLeft("Set active shortcut (A)", isSetActiveShortcutActive);
             EditorPrefs.SetBool(SHORTCUTS_ACTIVE_SET_ACTIVE_PREFS_NAME, isSetActiveShortcutActive);
@@ -55,6 +65,8 @@ namespace HierarchyEnhancer
             EditorPrefs.SetBool(SHORTCUTS_ACTIVE_ALL_PREFS_NAME, true);
             EditorPrefs.SetBool(SHORTCUTS_ACTIVE_DELETE_PREFS_NAME, true);
             EditorPrefs.SetBool(SHORTCUTS_ACTIVE_EXPAND_COLLAPSE_PREFS_NAME, true);
+            EditorPrefs.SetBool(SHORTCUTS_ACTIVE_HIDE_UNHIDE_PREFS_NAME, true);
+            EditorPrefs.SetBool(SHORTCUTS_ACTIVE_ISOLATE_PREFS_NAME, true);
             EditorPrefs.SetBool(SHORTCUTS_ACTIVE_SET_ACTIVE_PREFS_NAME, true);
             EditorPrefs.SetBool(SHORTCUTS_ACTIVE_SET_FOCUS_PREFS_NAME, true);
         }
