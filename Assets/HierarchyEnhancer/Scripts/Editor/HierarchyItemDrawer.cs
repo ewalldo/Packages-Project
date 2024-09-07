@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -27,21 +28,23 @@ namespace HierarchyEnhancer
             }
 
             // Draw components icons 
-            if (EditorPrefs.GetBool(HierarchyEnhancerSettings.DRAW_COMPONENTS_ICONS_PREFS_NAME, true))
+            if (EditorPrefs.GetBool(IconSettings.DRAW_COMPONENTS_ICONS_PREFS_NAME, true))
             {
                 Component[] components = obj.GetComponents<Component>();
 
-                int iconsSize = EditorPrefs.GetInt(HierarchyEnhancerSettings.COMPONENTS_ICONS_SIZE_PREFS_NAME, HierarchyEnhancerSettings.DEFAULT_ICON_SIZE);
+                int iconsSize = EditorPrefs.GetInt(IconSettings.COMPONENTS_ICONS_SIZE_PREFS_NAME, IconSettings.DEFAULT_ICON_SIZE);
                 float iconX = selectionRect.x + selectionRect.width - iconsSize;
 
-                int maxIcons = EditorPrefs.GetInt(HierarchyEnhancerSettings.MAX_COMPONENTS_ICONS_PREFS_NAME, HierarchyEnhancerSettings.MAX_COMPONENTS_ICONS) + 1; // Add one because all objects have a transform as the top component (which will be ignored when drawing the icons
-                int totalComponents = Mathf.Min(components.Length, maxIcons);
+                int maxIcons = EditorPrefs.GetInt(IconSettings.MAX_COMPONENTS_ICONS_PREFS_NAME, IconSettings.MAX_COMPONENTS_ICONS);
 
-                for (int i = totalComponents - 1; i >= 0; i--)
+                List<string> ignoredComponents = new List<string>(EditorPrefs.GetString(IconSettings.IGNORED_COMPONENTS_PREFS_NAME, IconSettings.DEFAULT_IGNORED_COMPONENTS).Split(','));
+
+                int drewIcons = 0;
+                for (int i = components.Length - 1; i >= 0; i--)
                 {
                     Component component = components[i];
 
-                    if (component is Transform)
+                    if (ignoredComponents.Contains(component.GetType().Name))
                         continue;
 
                     Texture icon = GetIconForComponent(component);
@@ -52,6 +55,10 @@ namespace HierarchyEnhancer
                         GUI.DrawTexture(iconRect, icon);
 
                         iconX -= iconsSize;
+
+                        drewIcons++;
+                        if (drewIcons >= maxIcons)
+                            break;
                     }
                 }
             }
@@ -76,10 +83,12 @@ namespace HierarchyEnhancer
 
         private static void DrawHeaderInHierarchy(HierarchyHeader hierarchyHeader, Rect selectionRect)
         {
-            GUIStyle headerStyle = new GUIStyle(EditorStyles.label);
-            headerStyle.alignment = hierarchyHeader.GetTextAnchor;
-            headerStyle.fontStyle = hierarchyHeader.GetFontStyle;
-            headerStyle.fontSize = hierarchyHeader.GetFontSize;
+            GUIStyle headerStyle = new GUIStyle(EditorStyles.label)
+            {
+                alignment = hierarchyHeader.GetTextAnchor,
+                fontStyle = hierarchyHeader.GetFontStyle,
+                fontSize = hierarchyHeader.GetFontSize
+            };
             headerStyle.normal.textColor = hierarchyHeader.GetFontColor;
 
             EditorGUI.DrawRect(selectionRect, hierarchyHeader.GetHeaderColor);

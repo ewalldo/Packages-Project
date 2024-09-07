@@ -4,7 +4,8 @@ namespace HierarchyEnhancer
 {
 	public interface IHierarchyShortcut
 	{
-		bool IsShortcutPressed();
+		bool IsShortcutActive { get; }
+		bool IsShortcutPressed { get; }
 		void ShortcutAction(GameObject obj);
 	}
 }

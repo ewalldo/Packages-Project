@@ -5,10 +5,9 @@ namespace HierarchyEnhancer
 {
 	public class DeleteShortcut : IHierarchyShortcut
 	{
-        public bool IsShortcutPressed()
-        {
-            return Event.current.keyCode == KeyCode.X && Event.current.modifiers == EventModifiers.Shift;
-        }
+        public bool IsShortcutActive => EditorPrefs.GetBool(ShortcutSettings.SHORTCUTS_ACTIVE_DELETE_PREFS_NAME, true);
+
+        public bool IsShortcutPressed => Event.current.keyCode == KeyCode.X && Event.current.modifiers == EventModifiers.Shift;
 
         public void ShortcutAction(GameObject obj)
         {

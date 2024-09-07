@@ -41,6 +41,8 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.1.1: Add more options in the project settings
 - 1.2: Add shortcuts when hovering an item in the hierarchy
 - 1.3: Add option to rename multiple objects
+- 1.4: Add option to ignore specific component's icons
+- 1.4.1: Add shortcut related settings
 
 ## 3 - Features <a name="features"/>
 - Useful for identifying which components are attached to which objects.
@@ -54,18 +56,18 @@ This package was created and tested using Unity version 2022.1, but it should wo
 
 ## 4 - Get Started <a name="getStarted"/>
 ### 4.1 Hierarchy settings <a name="hierarchySettings"/>
-The settings for this package can be adjusted from the "Project Settings" menu. Click on the "Hierarchy Enhancer" option on the left and adjust your settings. The currents supported settings are icons display, icons size and icons limit.
+Adjust the settings for the Hierarchy Enhancer package via the "Project Settings" menu. Select "Hierarchy Enhancer" from the left menu to configure your preferences, including enabling/disabling shortcuts, controlling icon display, adjusting icon size and number, and filtering which icons should be ignored in the hierarchy view.
 
 ### 4.2 Displaying icons <a name="displayingIcons"/>
-By default, icons should be displayed as soons as your add this package to your project. If in case the icons are not being displayed, go to "Project Settings", click on the "Hierarchy Enhancer" option in the left menu and turn on the icons display.
+Icons are displayed by default when you add the Hierarchy Enhancer package to your project. If icons are not displayed, navigate to "Project Settings," select "Hierarchy Enhancer" from the left menu, and ensure the icon display is enabled. You can also specify which components should be ignored, with Transform and RectTransform icons excluded by default.
 
 ### 4.3 Adding headers <a name="addingHeaders"/>
-Headers can be added in two different ways:  
-1) using the add object menu (it can be opened by right-clicking the hierarchy view or by clicking on the + sign at the top or by clicking on the GameObject option at the top of the unity project) and selecting the "Header" option (it should be located near the create empty option).  
-2) by attaching the "HierarchyHeader" script to an gameObject.  
+Headers can be added in two ways:  
+1) Open the add object menu by right-clicking in the hierarchy view, clicking the "+" sign at the top, or selecting "GameObject" from the Unity project menu. Then, choose "Header" (located near the "Create Empty" option).  
+2) Attach the "HierarchyHeader" script to a GameObject to designate it as a header.  
 
 ### 4.4 Customizing headers <a name="customizingHeaders"/>
-Headers appearance can be customized in the inspector when you select them in the hierarchy. Options include the header and font color, font size, alignment and style.
+Customize header appearance through the inspector when a header is selected in the hierarchy. Options include adjusting the header color, font color, font size, alignment, and style.
 
 ### 4.5 Sorting objects in the hierarchy <a name="sortingObjectsInTheHierarchy"/>
 Objects in the hierarchy can be sorted by right-clicking a game object and selecting the option "Sort". This should open an editor window where you can choose how the sorting will be performed. Below is an overview of the sorting options.  
@@ -81,10 +83,10 @@ Objects in the hierarchy can be renamed simultaneously by right-clicking a game 
 - Start value: The start number value for the affix.  
 - Minimum number of digits: How many digits at minimum will be displayed in the affix.  
 - Affix template: The format of the affix to be attached to the name of all objects (must include one and only one lowercase 'x' character, which will be replaced by a number).  
-- Preview: preview display of what the name will look like.  
+- Preview: Preview the new names before applying the changes.
 
 ### 4.7 Hierarchy shortcuts <a name="hierarchyShortcuts"/>
-Shortcuts are available when hovering over an item in the hierarchy (make sure that the hierarchy is the focused window). The following supported shortcuts are:  
+Shortcuts are available when hovering over an item in the hierarchy (make sure that the hierarchy is the focused window). The currently supported shortcuts are:  
 - Activate/deactivate: Press "A" when hovering over a gameObject to toggle its status between active and inactive.  
 - Focus: Press "F" when hovering over a gameObject to focus on it on the Scene view.
 - Expand/collapse: Press "C" when hovering over a gameObject to expand/collapse the object in the hierarchy.

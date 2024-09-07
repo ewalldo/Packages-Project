@@ -30,6 +30,9 @@ namespace HierarchyEnhancer
 
         private static void OnShortcutCheck(int instanceID, Rect selectionRect)
         {
+            if (!EditorPrefs.GetBool(ShortcutSettings.SHORTCUTS_ACTIVE_ALL_PREFS_NAME, true))
+                return;
+
             GameObject obj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
 
             if (obj == null)
@@ -44,7 +47,10 @@ namespace HierarchyEnhancer
             {
                 foreach (IHierarchyShortcut shortcut in shortcuts)
                 {
-                    if (shortcut.IsShortcutPressed())
+                    if (!shortcut.IsShortcutActive)
+                        continue;
+
+                    if (shortcut.IsShortcutPressed)
                     {
                         shortcut.ShortcutAction(obj);
                     }
