@@ -39,6 +39,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
 - 1.1: Added extra attributes (AnimatorParamField, AssetPreview, HorizontalRule, StreamingAssetsPath)
+- 1.2: Added check when starting Play Mode for the RequiredField attribute
 
 ## 3 - Features <a name="features"/>
 - Enhanced Headers and Label Fields: The package offers an enhanced version of headers and labels in the Inspector. These improved headers allow you to customize your component fields, making it simpler to understand their purpose at a glance.
