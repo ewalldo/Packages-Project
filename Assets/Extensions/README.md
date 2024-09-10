@@ -86,6 +86,7 @@
     - [Vector2:With](#vectorExtensionsVector2With)
     - [Vector2:WithX](#vectorExtensionsVector2WithX)
     - [Vector2:WithY](#vectorExtensionsVector2WithY)
+    - [Vector2:PointToSphereSurface](#vectorExtensionsVector2PointToSphereSurface)
     - [Vector3:With](#vectorExtensionsVector3With)
     - [Vector3:WithX](#vectorExtensionsVector3WithX)
     - [Vector3:WithY](#vectorExtensionsVector3WithY)
@@ -118,6 +119,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.0: Initial release
 - 1.1: Add extension methods to the AudioSource class and Vector2/3/4 structs plus a few methods to the other extensions
 - 1.2: Add extension methods to the TMPro and string classes plus a few methods to the other extensions
+- 1.2.1: Add extension methods to the Vector2 struct
 
 ## 3 - Features <a name="features"/>
 - Extension methods for commonly used classes:
@@ -1116,6 +1118,31 @@ Vector2 WithY(float y);
 | Type | Description |
 | :--- | :--- |
 | Vector2 | A new Vector2 with the Y component replaced |
+
+
+#### Vector2:PointToSphereSurface <a name="vectorExtensionsVector2PointToSphereSurface"/>
+Map a 2D point to a sphere surface.
+  The middle of the 2D point will be mapped to the front of the sphere (0, 0, radius).
+  While the values of the X edges (minX and maxX) will be mapped to the back (0, 0, -radius).
+#### Declaration
+```csharp
+Vector3 PointToSphereSurface(float radius, float minX = 0, float maxX = 1, float minY = 0, float maxY = 1);
+Vector3 PointToSphereSurface(float radius, Vector2 xRange, Vector2 yRange);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | radius | The sphere radius |
+| float | minX | The minimum X value of the range |
+| float | maxX | The maximum X value of the range |
+| float | minY | The minimum Y value of the range |
+| float | maxY | The maximum Y value of the range |
+| Vector2 | xRange | The range of the X value [xMin, xMax] |
+| Vector2 | yRange | The range of the Y value [yMin, yMax] |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | The point on the sphere surface |
 
 
 #### Vector3:With <a name="vectorExtensionsVector3With"/>

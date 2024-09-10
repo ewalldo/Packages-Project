@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Extensions
@@ -33,6 +34,62 @@ namespace Extensions
         /// <param name="yValue">The new Y component.</param>
         /// <returns>A new Vector2 with the X component replaced.</returns>
         public static Vector2 WithY(this Vector2 v, float yValue) => v.With(y: yValue);
+
+        /// <summary>
+        /// Map a 2D point to a sphere surface.<br/>
+        ///     The middle of the 2D point will be mapped to the front of the sphere (0, 0, radius).<br/>
+        ///     While the values of the X edges (minX and maxX) will be mapped to the back (0, 0, -radius).
+        /// </summary>
+        /// <param name="v">The 2D point to map to a sphere surface</param>
+        /// <param name="radius">The sphere radius</param>
+        /// <param name="minX">The minimum X value of the range</param>
+        /// <param name="maxX">The maximum X value of the range</param>
+        /// <param name="minY">The minimum Y value of the range</param>
+        /// <param name="maxY">The maximum Y value of the range</param>
+        /// <returns>The point on the sphere surface</returns>
+        public static Vector3 PointToSphereSurface(this Vector2 v, float radius, float minX = 0, float maxX = 1, float minY = 0, float maxY = 1)
+        {
+            if (maxX <= minX)
+                throw new ArgumentException("Max X value should be higher than min X value");
+
+            if (maxY <= minY)
+                throw new ArgumentException("Max Y value should be higher than min Y value");
+
+            if (v.x < minX || v.x > maxX)
+                throw new ArgumentException("X value should be in between minX and maxX values");
+
+            if (v.y < minY || v.y > maxY)
+                throw new ArgumentException("Y value should be in between minY and maxY values");
+
+            float normalizedX = v.x.Normalize(minX, maxX);
+            float normalizedY = v.y.Normalize(minY, maxY);
+
+            // Convert to theta, range [-pi, pi]
+            float theta = Mathf.PI * (2 * normalizedX - 1);
+            // Convert to phi, range [-pi/2, pi/2]
+            float phi = Mathf.PI * (normalizedY - 0.5f);
+
+            float x = radius * Mathf.Cos(phi) * Mathf.Sin(theta);
+            float y = radius * Mathf.Sin(phi);
+            float z = radius * Mathf.Cos(phi) * Mathf.Cos(theta);
+
+            return new Vector3(x, y, z);
+        }
+
+        /// <summary>
+        /// Map a 2D point to a sphere surface.<br/>
+        ///     The middle of the 2D point will be mapped to the front of the sphere (0, 0, radius).<br/>
+        ///     While the values of the X edges (minX and maxX) will be mapped to the back (0, 0, -radius).
+        /// </summary>
+        /// <param name="v">The 2D point to map to a sphere surface</param>
+        /// <param name="radius">The sphere radius</param>
+        /// <param name="xRange">The range of the X value [xMin, xMax]</param>
+        /// <param name="yRange">The range of the Y value [yMin, yMax]</param>
+        /// <returns>The point on the sphere surface</returns>
+        public static Vector3 PointToSphereSurface(this Vector2 v, float radius, Vector2 xRange, Vector2 yRange)
+        {
+            return v.PointToSphereSurface(radius, xRange.x, xRange.y, yRange.x, yRange.y);
+        }
 
         #endregion
 
