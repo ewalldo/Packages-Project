@@ -34,6 +34,7 @@ namespace Tween
         EaseOutElastic,
         EaseInOutElastic,
         SpringEasing,
+        PunchEasing,
         AnimationCurveEasing
     }
 }

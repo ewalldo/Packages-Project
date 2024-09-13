@@ -17,6 +17,9 @@
       - [TweenRotateQuaternion()](#tweenRotateQuaternion)
       - [TweenRotateVector3()](#tweenRotateVector3)
       - [TweenScale()](#tweenScale)
+      - [TweenShakePosition()](#tweenShakePosition)
+      - [TweenShakeRotation()](#tweenShakeRotation)
+      - [TweenShakeScale()](#tweenShakeScale)
     - [Camera Tweens](#cameraTweens)
       - [TweenCameraFOV()](#tweenCameraFOV)
     - [Canvas Group Tweens](#canvasGroupTweens)
@@ -70,6 +73,7 @@
     - [EaseOutElastic()](#easeOutElastic)
     - [EaseInOutElastic()](#easeInOutElastic)
     - [SpringEasing()](#springEasing)
+    - [PunchEasing()](#punchEasing)
     - [AnimationCurveEasing()](#animationCurveEasing)
     - [EasingFactory.GetEasing()](#easingFactoryGetEasing)
   - [Looping Functions](#loopingFunctions)
@@ -89,6 +93,9 @@
       - [TweenRotateQuaternion()](#tweenRotateQuaternionExtensions)
       - [TweenRotateVector3()](#tweenRotateVector3Extensions)
       - [TweenScale()](#tweenScaleExtensions)
+      - [TweenShakePosition()](#tweenShakePositionExtensions)
+      - [TweenShakeRotation()](#tweenShakeRotationExtensions)
+      - [TweenShakeScale()](#tweenShakeScaleExtensions)
     - [Camera Tweens extensions](#cameraTweensExtensions)
       - [TweenCameraFOV()](#tweenCameraFOVExtensions)
     - [Canvas Group Tweens extensions](#canvasGroupTweensExtensions)
@@ -128,6 +135,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.1.3: Add more options to Renderer tweens
 - 1.2: Add material tweens
 - 1.2.1: Add AnimationCurveEasing
+- 1.3: Add Shake tweens to the Transform component and PunchEasing
 
 ## 3 - Features <a name="features"/>
 - Offers the possibility of "tween" many types of components.
@@ -261,6 +269,77 @@ public TweenScale(Transform targetObject, Vector3 to, float duration, float dela
 | float | delay | How long should it wait until the tween starts |
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+##### 5.1.1.5 TweenShakePosition() <a name="tweenShakePosition"/>
+Apply shake motion to the position or localPosition attribute of the Transform component
+#### Declaration
+```csharp
+public TweenShakePosition(Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakePosition(Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | targetObject | The target Transform to apply the tween |
+| Vector3 | from | The initial value of the position/localPosition |
+| Vector3 | direction | The direction of the shake on each axis |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| float | speed | The speed of the shake |
+| float | maxMagnitude | The max value that the shake can reach |
+| float | noiseMagnitude | The amount of noise to add to each shake |
+| IgnoreAxisNoise | ignoreAxisNoise | Which axis noise won't be applied to |
+| bool | isLocalPosition | Should the tween be applied on the Transform localPosition or position |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| RestartLoop | loopType | The restart loop for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+##### 5.1.1.6 TweenShakeRotation() <a name="tweenShakeRotation"/>
+Apply shake motion to the rotation attribute of the Transform component
+#### Declaration
+```csharp
+public TweenShakeRotation(Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakeRotation(Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | targetObject | The target Transform to apply the tween |
+| Vector3 | from | The initial value of the rotation/localRotation |
+| Vector3 | direction | The direction of the shake on each axis |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| float | speed | The speed of the shake |
+| float | maxMagnitude | The max value that the shake can reach |
+| float | noiseMagnitude | The amount of noise to add to each shake |
+| IgnoreAxisNoise | ignoreAxisNoise | Which axis noise won't be applied to |
+| bool | isLocalPosition | Should the tween be applied on the Transform localRotation or rotation |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| RestartLoop | loopType | The restart loop for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+##### 5.1.1.7 TweenShakeScale() <a name="tweenShakeScale"/>
+Apply shake motion to the localScale attribute of the Transform component
+#### Declaration
+```csharp
+public TweenShakeScale(Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakeScale(Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | targetObject | The target Transform to apply the tween |
+| Vector3 | from | The initial value of the scale |
+| Vector3 | direction | The direction of the shake on each axis |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| float | speed | The speed of the shake |
+| float | maxMagnitude | The max value that the shake can reach |
+| float | noiseMagnitude | The amount of noise to add to each shake |
+| IgnoreAxisNoise | ignoreAxisNoise | Which axis noise won't be applied to |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| RestartLoop | loopType | The restart loop for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
 #### 5.1.2 Camera Tweens <a name="cameraTweens"/>
@@ -720,7 +799,13 @@ public class EaseInOutElastic();
 public class SpringEasing();
 ```
 
-#### 5.2.33 AnimationCurveEasing() <a name="animationCurveEasing"/>
+#### 5.2.33 PunchEasing() <a name="punchEasing"/>
+#### Declaration
+```csharp
+public class PunchEasing();
+```
+
+#### 5.2.34 AnimationCurveEasing() <a name="animationCurveEasing"/>
 #### Declaration
 ```csharp
 public class AnimationCurveEasing(AnimationCurve animationCurve);
@@ -730,7 +815,7 @@ public class AnimationCurveEasing(AnimationCurve animationCurve);
 | :--- | :--- | :--- |
 | AnimationCurve | animationCurve | The AnimationCurve which the easing will be based on |
 
-#### 5.2.34 EasingFactory.GetEasing() <a name="easingFactoryGetEasing"/>
+#### 5.2.35 EasingFactory.GetEasing() <a name="easingFactoryGetEasing"/>
 Create an instance of an EasingFunction based on an EasingType
 #### Declaration
 ```csharp
@@ -965,6 +1050,77 @@ public static Transform TweenScaleZ(this Transform targetObject, float to, float
 | float | delay | How long should it wait until the tween starts |
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+##### 5.5.1.5 TweenShakePosition() <a name="tweenShakePositionExtensions"/>
+Apply shake motion to the position or localPosition attribute of the Transform component
+#### Declaration
+```csharp
+public static Transform TweenShakePosition(this Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakePosition(this Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | targetObject | The target Transform to apply the tween |
+| Vector3 | from | The initial value of the position/localPosition |
+| Vector3 | direction | The direction of the shake on each axis |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| float | speed | The speed of the shake |
+| float | maxMagnitude | The max value that the shake can reach |
+| float | noiseMagnitude | The amount of noise to add to each shake |
+| IgnoreAxisNoise | ignoreAxisNoise | Which axis noise won't be applied to |
+| bool | isLocalPosition | Should the tween be applied on the Transform localPosition or position |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| RestartLoop | loopType | The restart loop for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+##### 5.5.1.6 TweenShakeRotation() <a name="tweenShakeRotationExtensions"/>
+Apply shake motion to the rotation or localRotation attribute of the Transform component
+#### Declaration
+```csharp
+public static Transform TweenShakeRotation(this Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakeRotation(this Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | targetObject | The target Transform to apply the tween |
+| Vector3 | from | The initial value of the rotation/localRotation |
+| Vector3 | direction | The direction of the shake on each axis |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| float | speed | The speed of the shake |
+| float | maxMagnitude | The max value that the shake can reach |
+| float | noiseMagnitude | The amount of noise to add to each shake |
+| IgnoreAxisNoise | ignoreAxisNoise | Which axis noise won't be applied to |
+| bool | isLocalPosition | Should the tween be applied on the Transform localRotation or rotation |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| RestartLoop | loopType | The restart loop for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+
+##### 5.5.1.7 TweenShakeScale() <a name="tweenShakeScaleExtensions"/>
+Apply shake motion to the localScale attribute of the Transform component
+#### Declaration
+```csharp
+public static Transform TweenShakeScale(this Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakeScale(this Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | targetObject | The target Transform to apply the tween |
+| Vector3 | from | The initial value of the scale |
+| Vector3 | direction | The direction of the shake on each axis |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| float | speed | The speed of the shake |
+| float | maxMagnitude | The max value that the shake can reach |
+| float | noiseMagnitude | The amount of noise to add to each shake |
+| IgnoreAxisNoise | ignoreAxisNoise | Which axis noise won't be applied to |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| RestartLoop | loopType | The restart loop for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
 
 #### 5.5.2 Camera extensions <a name="cameraTweensExtensions"/>

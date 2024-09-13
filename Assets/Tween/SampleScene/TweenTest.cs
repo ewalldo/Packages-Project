@@ -31,6 +31,12 @@ namespace Tween
                 tweenBuilder.Execute();
                 //textTest.TweenFade(0f, 2f, 0f, null, new PingPongLoop(0));
             }
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                TweenShakeRotation shake = new TweenShakeRotation(Camera.main.transform, new Vector3(0f, 0f, 1f), 0.5f, 0f, maxMagnitude: 5, easingFunction: new EaseInCirc());
+                StartCoroutine(shake.Execute());
+            }
         }
     }
 }
