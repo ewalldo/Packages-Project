@@ -13,6 +13,16 @@ namespace Tween
 
         public event Action OnComplete;
 
+        public BaseTween(float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
+        {
+            this.duration = duration;
+            this.delay = delay;
+            this.easingFunction = easingFunction == null ? new LinearEasing() : easingFunction;
+            this.loopType = loopType;
+
+            OnComplete += onComplete;
+        }
+
         public IEnumerator Execute()
         {
             int curLoops = 0;

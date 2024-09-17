@@ -9,20 +9,13 @@ namespace Tween
         private int materialIndex;
 
         public TweenRendererFade(Renderer targetObject, float from, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+            : base(from, to, duration, delay, easingFunction, loopType, onComplete)
         {
             if (materialIndex < 0 || materialIndex >= targetObject.materials.Length)
                 throw new IndexOutOfRangeException("MaterialIndex was out of range");
 
             this.targetObject = targetObject;
-            initialValue = from;
-            endValue = to;
-            this.duration = duration;
-            this.delay = delay;
             this.materialIndex = materialIndex;
-            this.easingFunction = easingFunction == null ? new LinearEasing() : easingFunction;
-            this.loopType = loopType;
-
-            OnComplete += onComplete;
         }
 
         public TweenRendererFade(Renderer targetObject, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)

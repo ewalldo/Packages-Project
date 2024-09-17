@@ -9,17 +9,10 @@ namespace Tween
         private bool isLocalRotation;
 
         public TweenRotateQuaternion(Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+            : base(from, to, duration, delay, easingFunction, loopType, onComplete)
         {
             this.targetObject = targetObject;
-            initialValue = from;
-            endValue = to;
-            this.duration = duration;
-            this.delay = delay;
             this.isLocalRotation = isLocalRotation;
-            this.easingFunction = easingFunction == null ? new LinearEasing() : easingFunction;
-            this.loopType = loopType;
-
-            OnComplete += onComplete;
         }
 
         public TweenRotateQuaternion(Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)

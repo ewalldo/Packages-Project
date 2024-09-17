@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Tween
@@ -10,16 +11,17 @@ namespace Tween
 		private readonly IgnoreAxisNoise ignoreAxisNoise;
 		private readonly Vector3 seed;
 
-        public ShakeTween(float speed, float maxMagnitude, float noiseMagnitude, IgnoreAxisNoise ignoreAxisNoise)
-        {
+        public ShakeTween(Vector3 from, Vector3 direction, float duration, float delay, float speed, float maxMagnitude, float noiseMagnitude, IgnoreAxisNoise ignoreAxisNoise, EasingFunction easingFunction, RestartLoop loopType, Action onComplete)
+			: base(from, direction, duration, delay, easingFunction, loopType, onComplete)
+		{
 			this.speed = speed;
 			this.maxMagnitude = maxMagnitude;
 			this.noiseMagnitude = noiseMagnitude;
 			this.ignoreAxisNoise = ignoreAxisNoise;
 			seed = new Vector3(
-				Random.value,
-				Random.value,
-				Random.value);
+				UnityEngine.Random.value,
+				UnityEngine.Random.value,
+				UnityEngine.Random.value);
 		}
 
         protected override void TweenValue(float progress)

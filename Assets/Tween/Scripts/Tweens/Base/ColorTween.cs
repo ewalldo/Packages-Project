@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Tween
@@ -6,6 +7,13 @@ namespace Tween
     {
         protected Color initialValue;
         protected Color endValue;
+
+        protected ColorTween(Color initialValue, Color endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
+            : base(duration, delay, easingFunction, loopType, onComplete)
+        {
+            this.initialValue = initialValue;
+            this.endValue = endValue;
+        }
 
         protected override void AdjustTweenValuesOnLoop()
         {

@@ -9,16 +9,9 @@ namespace Tween
         private Image targetObject;
 
         public TweenImageFillAmount(Image targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+            : base(from, to, duration, delay, easingFunction, loopType, onComplete)
         {
             this.targetObject = targetObject;
-            initialValue = from;
-            endValue = to;
-            this.duration = duration;
-            this.delay = delay;
-            this.easingFunction = easingFunction == null ? new LinearEasing() : easingFunction;
-            this.loopType = loopType;
-
-            OnComplete += onComplete;
         }
 
         public TweenImageFillAmount(Image targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
