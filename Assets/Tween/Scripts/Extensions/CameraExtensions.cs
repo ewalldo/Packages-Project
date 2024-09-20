@@ -19,5 +19,10 @@ namespace Tween
         {
 			return TweenFOV(targetObject, targetObject.fieldOfView, to, duration, delay, easingFunction, loopType, onComplete);
         }
+
+		public static Camera TweenFOV(this Camera targetObject, TweenParameters<float> tweenParameters, Action onComplete = null)
+        {
+			return TweenFOV(targetObject, tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete);
+		}
 	}
 }

@@ -8,12 +8,15 @@ namespace Tween
         protected Vector2 initialValue;
         protected Vector2 endValue;
 
-        protected Vector2Tween(Vector2 initialValue, Vector2 endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
+        public Vector2Tween(Vector2 initialValue, Vector2 endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
             : base(duration, delay, easingFunction, loopType, onComplete)
         {
             this.initialValue = initialValue;
             this.endValue = endValue;
         }
+
+        public Vector2Tween(TweenParameters<Vector2> tweenParameters, Action onComplete)
+            : this(tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete) { }
 
         protected override void AdjustTweenValuesOnLoop()
         {

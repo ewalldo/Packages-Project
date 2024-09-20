@@ -17,6 +17,12 @@ namespace Tween
         public TweenImageFade(Image targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
             : this(targetObject, targetObject.color.a, to, duration, delay, easingFunction, loopType, onComplete) { }
 
+        public TweenImageFade(Image targetObject, TweenParameters<float> tweenParameters, Action onComplete = null)
+            : base(tweenParameters, onComplete)
+        {
+            this.targetObject = targetObject;
+        }
+
         protected override bool IsTargetObjectNull()
         {
             return targetObject == null;

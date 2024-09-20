@@ -16,6 +16,12 @@ namespace Tween
         public TweenScale(Transform targetObject, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
             : this(targetObject, targetObject.localScale, to, duration, delay, easingFunction, loopType, onComplete) { }
 
+        public TweenScale(Transform targetObject, TweenParameters<Vector3> tweenParameters, Action onComplete = null)
+            : base(tweenParameters, onComplete)
+        {
+            this.targetObject = targetObject;
+        }
+
         protected override bool IsTargetObjectNull()
         {
             return targetObject == null;

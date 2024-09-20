@@ -18,13 +18,21 @@ namespace Tween
 			this.maxMagnitude = maxMagnitude;
 			this.noiseMagnitude = noiseMagnitude;
 			this.ignoreAxisNoise = ignoreAxisNoise;
-			seed = new Vector3(
-				UnityEngine.Random.value,
-				UnityEngine.Random.value,
-				UnityEngine.Random.value);
+			seed = GenerateSeed();
 		}
 
-        protected override void TweenValue(float progress)
+		public ShakeTween(ShakeParameters shakeParameters, Action onComplete)
+			: base(shakeParameters.GetInitialValue, shakeParameters.GetDirection.normalized, shakeParameters.GetDuration, shakeParameters.GetDelay, shakeParameters.GetEasing, shakeParameters.GetLoop, onComplete)
+        {
+			speed = shakeParameters.GetSpeed;
+			maxMagnitude = shakeParameters.GetMaxMagnitude;
+			noiseMagnitude = shakeParameters.GetNoiseMagnitude;
+			ignoreAxisNoise = shakeParameters.GetIgnoreAxisNoise;
+			seed = GenerateSeed();
+		}
+
+
+		protected override void TweenValue(float progress)
         {
 			float strength = 1 - progress;
 			strength = EasingEquations.Evaluate(easingFunction, strength);
@@ -49,5 +57,12 @@ namespace Tween
 				ignoreAxisNoise.HasFlag(IgnoreAxisNoise.Z) ? 0f : Mathf.PerlinNoise(seed.z, time) - 0.5f);
 		}
 
+		private Vector3 GenerateSeed()
+        {
+			return new Vector3(
+				UnityEngine.Random.value,
+				UnityEngine.Random.value,
+				UnityEngine.Random.value);
+		}
 	}
 }

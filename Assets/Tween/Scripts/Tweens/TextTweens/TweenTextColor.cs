@@ -17,6 +17,12 @@ namespace Tween
         public TweenTextColor(TMP_Text targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
             : this(targetObject, targetObject.color, to, duration, delay, easingFunction, loopType, onComplete) { }
 
+        public TweenTextColor(TMP_Text targetObject, TweenParameters<Color> tweenParameters, Action onComplete = null)
+            : base(tweenParameters, onComplete)
+        {
+            this.targetObject = targetObject;
+        }
+
         protected override bool IsTargetObjectNull()
         {
             return targetObject == null;

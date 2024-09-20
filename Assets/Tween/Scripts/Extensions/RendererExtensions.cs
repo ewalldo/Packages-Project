@@ -20,6 +20,11 @@ namespace Tween
             return TweenColor(targetObject, targetObject.materials[materialIndex].color, to, duration, delay, materialIndex, easingFunction, loopType, onComplete);
         }
 
+        public static Renderer TweenColor(this Renderer targetObject, TweenParameters<Color> tweenParameters, int materialIndex = 0, Action onComplete = null)
+        {
+            return TweenColor(targetObject, tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, materialIndex, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete);
+        }
+
         public static Renderer TweenFade(this Renderer targetObject, float from, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
             if (easingFunction == null)
@@ -33,6 +38,11 @@ namespace Tween
         public static Renderer TweenFade(this Renderer targetObject, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
             return TweenFade(targetObject, targetObject.materials[materialIndex].color.a, to, duration, delay, materialIndex, easingFunction, loopType, onComplete);
+        }
+
+        public static Renderer TweenFade(this Renderer targetObject, TweenParameters<float> tweenParameters, int materialIndex = 0, Action onComplete = null)
+        {
+            return TweenFade(targetObject, tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, materialIndex, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete);
         }
     }
 }

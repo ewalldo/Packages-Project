@@ -21,6 +21,16 @@ namespace Tween
         public TweenRendererFade(Renderer targetObject, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
             : this(targetObject, targetObject.materials[materialIndex].color.a, to, duration, delay, materialIndex, easingFunction, loopType, onComplete) { }
 
+        public TweenRendererFade(Renderer targetObject, TweenParameters<float> tweenParameters, int materialIndex = 0, Action onComplete = null)
+            : base(tweenParameters, onComplete)
+        {
+            if (materialIndex < 0 || materialIndex >= targetObject.materials.Length)
+                throw new IndexOutOfRangeException("MaterialIndex was out of range");
+
+            this.targetObject = targetObject;
+            this.materialIndex = materialIndex;
+        }
+
         protected override bool IsTargetObjectNull()
         {
             return targetObject == null;

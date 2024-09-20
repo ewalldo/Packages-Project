@@ -16,6 +16,12 @@ namespace Tween
         public TweenLightIntensity(Light targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
             : this(targetObject, targetObject.intensity, to, duration, delay, easingFunction, loopType, onComplete) { }
 
+        public TweenLightIntensity(Light targetObject, TweenParameters<float> tweenParameters, Action onComplete = null)
+            : base(tweenParameters, onComplete)
+        {
+            this.targetObject = targetObject;
+        }
+
         protected override bool IsTargetObjectNull()
         {
             return targetObject == null;

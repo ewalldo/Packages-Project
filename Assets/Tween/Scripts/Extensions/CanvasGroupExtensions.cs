@@ -19,5 +19,10 @@ namespace Tween
         {
             return TweenFade(targetObject, targetObject.alpha, to, duration, delay, easingFunction, loopType, onComplete);
         }
+
+        public static CanvasGroup TweenFade(this CanvasGroup targetObject, TweenParameters<float> tweenParameters, Action onComplete = null)
+        {
+            return TweenFade(targetObject, tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete);
+        }
     }
 }

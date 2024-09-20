@@ -8,12 +8,15 @@ namespace Tween
         protected Color initialValue;
         protected Color endValue;
 
-        protected ColorTween(Color initialValue, Color endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
+        public ColorTween(Color initialValue, Color endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
             : base(duration, delay, easingFunction, loopType, onComplete)
         {
             this.initialValue = initialValue;
             this.endValue = endValue;
         }
+
+        public ColorTween(TweenParameters<Color> tweenParameters, Action onComplete)
+            : this(tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete) { }
 
         protected override void AdjustTweenValuesOnLoop()
         {
