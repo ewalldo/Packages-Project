@@ -8,17 +8,17 @@ namespace Tween
         private Transform targetObject;
         private bool isLocalPosition;
 
-        public TweenMove(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public TweenMove(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
             : base(from, to, duration, delay, easingFunction, loopType, onComplete)
         {
             this.targetObject = targetObject;
             this.isLocalPosition = isLocalPosition;
         }
 
-        public TweenMove(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public TweenMove(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
             : this(targetObject, isLocalPosition ? targetObject.localPosition : targetObject.position, to, duration, delay, isLocalPosition, easingFunction, loopType, onComplete) { }
 
-        public TweenMove(Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalPosition = false, Action onComplete = null)
+        public TweenMove(Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalPosition = true, Action onComplete = null)
             : base(tweenParameters, onComplete)
         {
             this.targetObject = targetObject;

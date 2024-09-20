@@ -8,17 +8,17 @@ namespace Tween
         private Transform targetObject;
         private bool isLocalRotation;
 
-        public TweenRotateVector3(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public TweenRotateVector3(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
             : base(from, to, duration, delay, easingFunction, loopType, onComplete)
         {
             this.targetObject = targetObject;
             this.isLocalRotation = isLocalRotation;
         }
 
-        public TweenRotateVector3(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public TweenRotateVector3(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
             : this(targetObject, isLocalRotation ? targetObject.localRotation.eulerAngles : targetObject.rotation.eulerAngles, to, duration, delay, isLocalRotation, easingFunction, loopType, onComplete) { }
 
-        public TweenRotateVector3(Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalRotation = false, Action onComplete = null)
+        public TweenRotateVector3(Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalRotation = true, Action onComplete = null)
             : base(tweenParameters, onComplete)
         {
             this.targetObject = targetObject;

@@ -137,6 +137,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.2.1: Add AnimationCurveEasing
 - 1.3: Add Shake tweens to the Transform component and PunchEasing
 - 1.4: Add TweenParameters and ShakeParameters classes
+- 1.4.1: Change default values for local transform to be true
 
 ## 3 - Features <a name="features"/>
 - Offers the possibility of "tween" many types of components.
@@ -197,9 +198,9 @@ Tweens that are applied to the Transform component.
 Apply tween to the position or localPosition attribute of the Transform component
 #### Declaration
 ```csharp
-public TweenMove(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public TweenMove(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public TweenMove(Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalPosition = false, Action onComplete = null);
+public TweenMove(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMove(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMove(Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalPosition = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -219,9 +220,9 @@ public TweenMove(Transform targetObject, TweenParameters<Vector3> tweenParameter
 Apply tween to the rotation attribute of the Transform component by using Quaternions
 #### Declaration
 ```csharp
-public TweenRotateQuaternion(Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public TweenRotateQuaternion(Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public TweenRotateQuaternion(Transform targetObject, TweenParameters<Quaternion> tweenParameters, bool isLocalRotation = false, Action onComplete = null);
+public TweenRotateQuaternion(Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRotateQuaternion(Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRotateQuaternion(Transform targetObject, TweenParameters<Quaternion> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -241,9 +242,9 @@ public TweenRotateQuaternion(Transform targetObject, TweenParameters<Quaternion>
 Apply tween to the rotation attribute of the Transform component by using Vector3
 #### Declaration
 ```csharp
-public TweenRotateVector3(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public TweenRotateVector3(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public TweenRotateVector3(Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalRotation = false, Action onComplete = null);
+public TweenRotateVector3(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRotateVector3(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRotateVector3(Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -284,9 +285,9 @@ public TweenScale(Transform targetObject, TweenParameters<Vector3> tweenParamete
 Apply shake motion to the position or localPosition attribute of the Transform component
 #### Declaration
 ```csharp
-public TweenShakePosition(Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
-public TweenShakePosition(Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
-public TweenShakePosition(Transform targetObject, ShakeParameters shakeParameters, bool isLocalPosition = false, Action onComplete = null);
+public TweenShakePosition(Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakePosition(Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakePosition(Transform targetObject, ShakeParameters shakeParameters, bool isLocalPosition = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -310,9 +311,9 @@ public TweenShakePosition(Transform targetObject, ShakeParameters shakeParameter
 Apply shake motion to the rotation attribute of the Transform component
 #### Declaration
 ```csharp
-public TweenShakeRotation(Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
-public TweenShakeRotation(Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
-public TweenShakeRotation(Transform targetObject, ShakeParameters shakeParameters, bool isLocalRotation = false, Action onComplete = null);
+public TweenShakeRotation(Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakeRotation(Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakeRotation(Transform targetObject, ShakeParameters shakeParameters, bool isLocalRotation = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -986,18 +987,18 @@ Tween extensions for the Transform class
 Apply tween to the position or localPosition attribute of the Transform component
 #### Declaration
 ```csharp
-public static Transform TweenMove(this Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMove(this Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMove(this Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalPosition = false, Action onComplete = null);
-public static Transform TweenMoveX(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMoveX(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMoveX(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalPosition = false, Action onComplete = null);
-public static Transform TweenMoveY(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMoveY(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMoveY(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalPosition = false, Action onComplete = null);
-public static Transform TweenMoveZ(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMoveZ(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMoveZ(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalPosition = false, Action onComplete = null);
+public static Transform TweenMove(this Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMove(this Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMove(this Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalPosition = true, Action onComplete = null);
+public static Transform TweenMoveX(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMoveX(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMoveX(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalPosition = true, Action onComplete = null);
+public static Transform TweenMoveY(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMoveY(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMoveY(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalPosition = true, Action onComplete = null);
+public static Transform TweenMoveZ(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMoveZ(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMoveZ(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalPosition = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -1019,18 +1020,18 @@ public static Transform TweenMoveZ(this Transform targetObject, TweenParameters<
 Apply tween to the rotation attribute of the Transform component by using Quaternions
 #### Declaration
 ```csharp
-public static Transform TweenRotate(this Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotate(this Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotate(this Transform targetObject, TweenParameters<Quaternion> tweenParameters, bool isLocalRotation = false, Action onComplete = null);
-public static Transform TweenRotateXQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateXQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateXQuaternion(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = false, Action onComplete = null);
-public static Transform TweenRotateYQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateYQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateYQuaternion(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = false, Action onComplete = null);
-public static Transform TweenRotateZQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateZQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateZQuaternion(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = false, Action onComplete = null);
+public static Transform TweenRotate(this Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotate(this Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotate(this Transform targetObject, TweenParameters<Quaternion> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
+public static Transform TweenRotateXQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateXQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateXQuaternion(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
+public static Transform TweenRotateYQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateYQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateYQuaternion(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
+public static Transform TweenRotateZQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateZQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateZQuaternion(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -1052,18 +1053,18 @@ public static Transform TweenRotateZQuaternion(this Transform targetObject, Twee
 Apply tween to the rotation attribute of the Transform component by using Vector3
 #### Declaration
 ```csharp
-public static Transform TweenRotate(this Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotate(this Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotate(this Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalRotation = false, Action onComplete = null);
-public static Transform TweenRotateXVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateXVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateXVector3(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = false, Action onComplete = null);
-public static Transform TweenRotateYVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateYVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateYVector3(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = false, Action onComplete = null);
-public static Transform TweenRotateZVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateZVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateZVector3(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = false, Action onComplete = null);
+public static Transform TweenRotate(this Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotate(this Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotate(this Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
+public static Transform TweenRotateXVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateXVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateXVector3(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
+public static Transform TweenRotateYVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateYVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateYVector3(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
+public static Transform TweenRotateZVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateZVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateZVector3(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -1117,9 +1118,9 @@ public static Transform TweenScaleZ(this Transform targetObject, TweenParameters
 Apply shake motion to the position or localPosition attribute of the Transform component
 #### Declaration
 ```csharp
-public static Transform TweenShakePosition(this Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
-public static Transform TweenShakePosition(this Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
-public static Transform TweenShakePosition(this Transform targetObject, ShakeParameters shakeParameters, bool isLocalPosition = false, Action onComplete = null);
+public static Transform TweenShakePosition(this Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakePosition(this Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakePosition(this Transform targetObject, ShakeParameters shakeParameters, bool isLocalPosition = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -1143,9 +1144,9 @@ public static Transform TweenShakePosition(this Transform targetObject, ShakePar
 Apply shake motion to the rotation or localRotation attribute of the Transform component
 #### Declaration
 ```csharp
-public static Transform TweenShakeRotation(this Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
-public static Transform TweenShakeRotation(this Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = false, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
-public static Transform TweenShakeRotation(this Transform targetObject, ShakeParameters shakeParameters, bool isLocalRotation = false, Action onComplete = null);
+public static Transform TweenShakeRotation(this Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakeRotation(this Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakeRotation(this Transform targetObject, ShakeParameters shakeParameters, bool isLocalRotation = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |

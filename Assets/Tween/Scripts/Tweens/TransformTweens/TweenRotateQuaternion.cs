@@ -8,17 +8,17 @@ namespace Tween
         private Transform targetObject;
         private bool isLocalRotation;
 
-        public TweenRotateQuaternion(Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public TweenRotateQuaternion(Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
             : base(from, to, duration, delay, easingFunction, loopType, onComplete)
         {
             this.targetObject = targetObject;
             this.isLocalRotation = isLocalRotation;
         }
 
-        public TweenRotateQuaternion(Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public TweenRotateQuaternion(Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
             : this(targetObject, isLocalRotation ? targetObject.localRotation : targetObject.rotation, to, duration, delay, isLocalRotation, easingFunction, loopType, onComplete) { }
 
-        public TweenRotateQuaternion(Transform targetObject, TweenParameters<Quaternion> tweenParameters, bool isLocalRotation = false, Action onComplete = null)
+        public TweenRotateQuaternion(Transform targetObject, TweenParameters<Quaternion> tweenParameters, bool isLocalRotation = true, Action onComplete = null)
             : base(tweenParameters, onComplete)
         {
             this.targetObject = targetObject;
