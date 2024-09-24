@@ -142,6 +142,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.4: Add TweenParameters and ShakeParameters classes
 - 1.4.1: Change default values for local transform to be true
 - 1.5: Add extra options to group tweens
+- 1.5.1: Fixed issue with looping not resetting
 
 ## 3 - Features <a name="features"/>
 - Offers the possibility of "tween" many types of components.

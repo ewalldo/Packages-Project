@@ -8,6 +8,9 @@ namespace Tween
         protected Vector2 initialValue;
         protected Vector2 endValue;
 
+        protected Vector2 from;
+        protected Vector2 to;
+
         public Vector2Tween(Vector2 initialValue, Vector2 endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
             : base(duration, delay, easingFunction, loopType, onComplete)
         {
@@ -18,14 +21,20 @@ namespace Tween
         public Vector2Tween(TweenParameters<Vector2> tweenParameters, Action onComplete)
             : this(tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete) { }
 
+        protected override void SaveInitialTweenValues()
+        {
+            from = initialValue;
+            to = endValue;
+        }
+
         protected override void AdjustTweenValuesOnLoop()
         {
-            (initialValue, endValue) = loopType.AdjustTweenValues(initialValue, endValue);
+            (from, to) = loopType.AdjustTweenValues(from, to);
         }
 
         protected override void TweenValue(float progress)
         {
-            Vector2 newValue = Vector2.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
+            Vector2 newValue = Vector2.LerpUnclamped(from, to, EasingEquations.Evaluate(easingFunction, progress));
             ApplyTween(newValue);
         }
 

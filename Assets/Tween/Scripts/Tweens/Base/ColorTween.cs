@@ -8,6 +8,9 @@ namespace Tween
         protected Color initialValue;
         protected Color endValue;
 
+        protected Color from;
+        protected Color to;
+
         public ColorTween(Color initialValue, Color endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
             : base(duration, delay, easingFunction, loopType, onComplete)
         {
@@ -18,14 +21,20 @@ namespace Tween
         public ColorTween(TweenParameters<Color> tweenParameters, Action onComplete)
             : this(tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete) { }
 
+        protected override void SaveInitialTweenValues()
+        {
+            from = initialValue;
+            to = endValue;
+        }
+
         protected override void AdjustTweenValuesOnLoop()
         {
-            (initialValue, endValue) = loopType.AdjustTweenValues(initialValue, endValue);
+            (from, to) = loopType.AdjustTweenValues(from, to);
         }
 
         protected override void TweenValue(float progress)
         {
-            Color newColor = Color.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
+            Color newColor = Color.LerpUnclamped(from, to, EasingEquations.Evaluate(easingFunction, progress));
             ApplyTween(newColor);
         }
 

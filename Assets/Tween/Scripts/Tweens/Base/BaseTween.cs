@@ -25,6 +25,8 @@ namespace Tween
 
         public IEnumerator Execute()
         {
+            SaveInitialTweenValues();
+
             int curLoops = 0;
 
             float progress = 0f;
@@ -65,6 +67,7 @@ namespace Tween
             OnComplete?.Invoke();
         }
 
+        protected abstract void SaveInitialTweenValues();
         protected abstract bool IsTargetObjectNull();
         protected abstract void TweenValue(float progress);
         protected abstract void AdjustTweenValuesOnLoop();
