@@ -9,8 +9,9 @@ namespace Tween
         private MonoBehaviour owner;
         private readonly List<ITweener> tweens;
 
-        private int completedTweens;
         private int curTween;
+
+        private Coroutine sequence;
 
         public event Action OnAllTweensCompleted;
 
@@ -28,9 +29,19 @@ namespace Tween
             return this;
         }
 
+        public ITweenGroup AddDelay(float duration)
+        {
+            return AddTween(new TweenDelay(duration));
+        }
+
+        public ITweenGroup AddConditional(Func<bool> condition, float checkInterval)
+        {
+            return AddTween(new TweenConditional(condition, checkInterval));
+        }
+
         public void Execute()
         {
-            owner.StartCoroutine(tweens[curTween].Execute());
+            sequence = owner.StartCoroutine(tweens[curTween].Execute());
         }
 
         public void Reset()
@@ -40,12 +51,17 @@ namespace Tween
             curTween = 0;
         }
 
+        public void Stop()
+        {
+            curTween = 0;
+            owner.StopCoroutine(sequence);
+        }
+
         private void OnTweenComplete()
         {
-            completedTweens++;
             curTween++;
 
-            if (completedTweens >= tweens.Count)
+            if (curTween >= tweens.Count)
                 AllTweensComplete();
             else
                 Execute();
@@ -53,7 +69,6 @@ namespace Tween
 
         private void AllTweensComplete()
         {
-            completedTweens = 0;
             curTween = 0;
             OnAllTweensCompleted?.Invoke();
         }

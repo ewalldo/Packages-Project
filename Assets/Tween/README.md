@@ -87,6 +87,9 @@
     - [ITweenGroup.AddTween()](#iTweenGroupAddTween)
     - [ITweenGroup.Execute()](#iTweenGroupExecute)
     - [ITweenGroup.Reset()](#iTweenGroupReset)
+    - [ITweenGroup.Stop()](#iTweenGroupStop)
+    - [TweenSequenceer.AddDelay()](#tweenSequenceerAddDelay)
+    - [TweenSequenceer.AddConditional()](#tweenSequenceerAddConditional)
   - [Tweens Extensions](#tweenExtensions)
     - [Transform Tweens extensions](#transformTweensExtensions)
       - [TweenMove()](#tweenMoveExtensions)
@@ -138,6 +141,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.3: Add Shake tweens to the Transform component and PunchEasing
 - 1.4: Add TweenParameters and ShakeParameters classes
 - 1.4.1: Change default values for local transform to be true
+- 1.5: Add extra options to group tweens
 
 ## 3 - Features <a name="features"/>
 - Offers the possibility of "tween" many types of components.
@@ -162,7 +166,7 @@ StartCoroutine(tweenMove.Execute());
 ```
 
 ### 4.3 Grouping tweens <a name="groupingTweens"/>
-Tweens can be grouped to be triggered in parallel or in sequence. For parallel execution, please use the TweenBuilder class, for sequential the TweenSequencer class can be used. Below is and example of a group tween create to move and scale an object at the same time while changing a text color.  
+Tweens can be grouped to be triggered in parallel or in sequence. For parallel execution, please use the TweenBuilder class, for sequential the TweenSequencer class can be used. Below is and example of how to create a group tween to move and scale an object at the same time while changing a text color.  
 ```csharp
 TweenBuilder tweenBuilder = new TweenBuilder(monobehaviourClass);
 tweenBuilder.AddTween(new TweenMove(objectToMove, pointA, pointB, 2f));
@@ -978,6 +982,44 @@ Clear all tweens in the group
 ```csharp
 public void Reset();
 ```
+
+#### 5.4.7 ITweenGroup.Stop() <a name="iTweenGroupStop"/>
+Stop the execution of the tween group
+#### Declaration
+```csharp
+public void Stop();
+```
+
+#### 5.4.8 TweenSequenceer.AddDelay() <a name="tweenSequenceerAddDelay"/>
+Add a delay to a sequence.
+#### Declaration
+```csharp
+public ITweenGroup AddDelay(float duration);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | duration | How long the delay should last |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| ITweenGroup | The tween group with the new delay added to it |
+
+#### 5.4.9 TweenSequenceer.AddConditional() <a name="tweenSequenceerAddConditional"/>
+Add a conditional check to a sequence, i.e. it will only proceed to the next tween in the sequence when the condition is fulfilled
+#### Declaration
+```csharp
+public ITweenGroup AddConditional(Func<bool> condition, float checkInterval);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Func<bool> | condition | Func to check if the sequence should proceed to the next tween |
+| float | checkInterval | How often should check the condition |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| ITweenGroup | The tween group with the new condition added to it |
 
 ### 5.5 Tween Extensions <a name="tweenExtensions"/>
 Extensions methods were created for each tween, so it can be more easily used. (For better control, we still recommend the use of the Tween classes or groups instead)
