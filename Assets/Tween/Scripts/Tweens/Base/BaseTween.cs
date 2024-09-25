@@ -4,20 +4,28 @@ using UnityEngine;
 
 namespace Tween
 {
-	public abstract class BaseTween : ITweener
+	public abstract class BaseTween<T> : ITweener
+        where T : struct
 	{
+        protected T initialValue;
+        protected T endValue;
         protected float duration;
         protected float delay;
         protected EasingFunction easingFunction;
         protected ILoopType loopType;
 
+        protected T from;
+        protected T to;
+
         public event Action OnComplete;
 
-        public BaseTween(float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
+        public BaseTween(T initialValue, T endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
         {
+            this.initialValue = initialValue;
+            this.endValue = endValue;
             this.duration = duration;
             this.delay = delay;
-            this.easingFunction = easingFunction == null ? new LinearEasing() : easingFunction;
+            this.easingFunction = easingFunction ?? new LinearEasing();
             this.loopType = loopType;
 
             OnComplete += onComplete;
@@ -41,7 +49,8 @@ namespace Tween
                     yield break;
 
                 progress = Mathf.Clamp01((Time.time - startTime) / duration);
-                TweenValue(progress);
+                T newValue = TweenValue(progress);
+                ApplyTween(newValue);
 
                 yield return null;
 
@@ -67,9 +76,15 @@ namespace Tween
             OnComplete?.Invoke();
         }
 
-        protected abstract void SaveInitialTweenValues();
+        protected void SaveInitialTweenValues()
+        {
+            from = initialValue;
+            to = endValue;
+        }
+
         protected abstract bool IsTargetObjectNull();
-        protected abstract void TweenValue(float progress);
+        protected abstract T TweenValue(float progress);
+        protected abstract void ApplyTween(T newValue);
         protected abstract void AdjustTweenValuesOnLoop();
     }
 }

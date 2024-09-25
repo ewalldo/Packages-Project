@@ -3,41 +3,22 @@ using UnityEngine;
 
 namespace Tween
 {
-	public abstract class QuaternionTween : BaseTween
+	public abstract class QuaternionTween : BaseTween<Quaternion>
 	{
-        protected Quaternion initialValue;
-        protected Quaternion endValue;
-
-        protected Quaternion from;
-        protected Quaternion to;
-
         public QuaternionTween(Quaternion initialValue, Quaternion endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
-            : base(duration, delay, easingFunction, loopType, onComplete)
-        {
-            this.initialValue = initialValue;
-            this.endValue = endValue;
-        }
+            : base(initialValue, endValue, duration, delay, easingFunction, loopType, onComplete) { }
 
         public QuaternionTween(TweenParameters<Quaternion> tweenParameters, Action onComplete)
             : this(tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete) { }
-
-        protected override void SaveInitialTweenValues()
-        {
-            from = initialValue;
-            to = endValue;
-        }
 
         protected override void AdjustTweenValuesOnLoop()
         {
             (from, to) = loopType.AdjustTweenValues(from, to);
         }
 
-        protected override void TweenValue(float progress)
+        protected override Quaternion TweenValue(float progress)
         {
-            Quaternion newQuaternion = Quaternion.SlerpUnclamped(from, to, EasingEquations.Evaluate(easingFunction, progress));
-            ApplyTween(newQuaternion);
+            return Quaternion.SlerpUnclamped(from, to, EasingEquations.Evaluate(easingFunction, progress));
         }
-
-        protected abstract void ApplyTween(Quaternion newQuaternion);
     }
 }

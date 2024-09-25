@@ -32,7 +32,7 @@ namespace Tween
 		}
 
 
-		protected override void TweenValue(float progress)
+		protected override Vector3 TweenValue(float progress)
         {
 			float strength = 1 - progress;
 			strength = EasingEquations.Evaluate(easingFunction, strength);
@@ -41,7 +41,8 @@ namespace Tween
 			Vector3 direction = endValue + GetNoise();
 			direction.Normalize();
 			Vector3 delta = direction * sin;
-			ApplyTween(initialValue + (maxMagnitude * strength * delta));
+
+			return (initialValue + (maxMagnitude * strength * delta));
 		}
 
 		private Vector3 GetNoise()
