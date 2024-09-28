@@ -23,6 +23,7 @@ namespace ChronoTools
         public Timer(float value)
         {
             initialTime = value;
+            CurrentTime = value;
         }
 
         /// <summary>
