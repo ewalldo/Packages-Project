@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace Tween
@@ -7,67 +6,39 @@ namespace Tween
 	public class TweenRendererColor : ColorTween
     {
         private Renderer targetObject;
+        private int materialIndex;
 
-        public override event Action OnComplete;
-
-        public TweenRendererColor(Renderer targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+        public TweenRendererColor(Renderer targetObject, Color from, Color to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+            : base(from, to, duration, delay, easingFunction, loopType, onComplete)
         {
-            this.targetObject = targetObject;
-            initialValue = from;
-            endValue = to;
-            this.duration = duration;
-            this.delay = delay;
-            this.easingFunction = easingFunction == null ? new LinearEasing() : easingFunction;
-            this.loopType = loopType;
+            if (materialIndex < 0 || materialIndex >= targetObject.materials.Length)
+                throw new IndexOutOfRangeException("MaterialIndex was out of range");
 
-            OnComplete += onComplete;
+            this.targetObject = targetObject;
+            this.materialIndex = materialIndex;
         }
 
-        public TweenRendererColor(Renderer targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
-            : this(targetObject, targetObject.material.color, to, duration, delay, easingFunction, loopType, onComplete) { }
+        public TweenRendererColor(Renderer targetObject, Color to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
+            : this(targetObject, targetObject.materials[materialIndex].color, to, duration, delay, materialIndex, easingFunction, loopType, onComplete) { }
 
-        public override IEnumerator Execute()
+        public TweenRendererColor(Renderer targetObject, TweenParameters<Color> tweenParameters, int materialIndex = 0, Action onComplete = null)
+            : base(tweenParameters, onComplete)
         {
-            int curLoops = 0;
+            if (materialIndex < 0 || materialIndex >= targetObject.materials.Length)
+                throw new IndexOutOfRangeException("MaterialIndex was out of range");
 
-            float progress = 0f;
-            float startTime = Time.time + delay;
+            this.targetObject = targetObject;
+            this.materialIndex = materialIndex;
+        }
 
-            while (Time.time < startTime)
-                yield return null;
+        protected override bool IsTargetObjectNull()
+        {
+            return targetObject == null;
+        }
 
-            while (progress < 1f)
-            {
-                if (targetObject == null)
-                    yield break;
-
-                progress = Mathf.Clamp01((Time.time - startTime) / duration);
-                Color newColor = Color.LerpUnclamped(initialValue, endValue, EasingEquations.Evaluate(easingFunction, progress));
-
-                targetObject.material.color = newColor;
-
-                yield return null;
-
-                if (progress >= 1f && loopType != null && !loopType.EarlyExitCondition())
-                {
-                    if (loopType.IsInfiniteLoop || curLoops < loopType.NumLoops)
-                    {
-                        progress = 0f;
-                        loopType.OnOneLoopCompleted?.Invoke();
-                        startTime = Time.time + loopType.DelayBetweenLoops;
-
-                        while (Time.time < startTime)
-                            yield return null;
-
-                        (initialValue, endValue) = loopType.AdjustTweenValues(initialValue, endValue);
-
-                        if (!loopType.IsInfiniteLoop)
-                            curLoops++;
-                    }
-                }
-            }
-
-            OnComplete?.Invoke();
+        protected override void ApplyTween(Color newColor)
+        {
+            targetObject.materials[materialIndex].color = newColor;
         }
     }
 }

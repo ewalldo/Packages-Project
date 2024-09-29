@@ -8,5 +8,6 @@ namespace Tween
 		ITweenGroup AddTween(ITweener tween);
 		void Execute();
 		void Reset();
+		void Stop();
 	}
 }

@@ -1,25 +1,24 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace Tween
 {
-	public abstract class Vector3Tween : ITweener
+	public abstract class Vector3Tween : BaseTween<Vector3>
 	{
-        protected Vector3 initialValue;
-        protected Vector3 endValue;
-        protected float duration;
-        protected float delay;
-        protected EasingFunction easingFunction;
-        protected ILoopType loopType;
+        public Vector3Tween(Vector3 initialValue, Vector3 endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
+            : base(initialValue, endValue, duration, delay, easingFunction, loopType, onComplete) { }
 
-        public virtual event Action OnComplete;
+        public Vector3Tween(TweenParameters<Vector3> tweenParameters, Action onComplete)
+            : this(tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete) { }
 
-        public virtual IEnumerator Execute()
+        protected override void AdjustTweenValuesOnLoop()
         {
-            yield return null;
+            (from, to) = loopType.AdjustTweenValues(from, to);
+        }
 
-            OnComplete?.Invoke();
+        protected override Vector3 TweenValue(float progress)
+        {
+            return Vector3.LerpUnclamped(from, to, EasingEquations.Evaluate(easingFunction, progress));
         }
     }
 }

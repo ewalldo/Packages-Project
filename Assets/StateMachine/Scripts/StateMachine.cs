@@ -20,7 +20,7 @@ namespace StateMachinePattern
         /// Invoked when the state machine changes to a new state
         /// </summary>
         /// <param name="curState">IState: the current state that it has changed to</param>
-        public Action<IState> OnStateChanged;
+        public event Action<IState> OnStateChanged;
 
         public virtual void Update()
         {

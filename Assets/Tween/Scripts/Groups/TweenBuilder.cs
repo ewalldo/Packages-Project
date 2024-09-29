@@ -11,6 +11,8 @@ namespace Tween
 
         private int completedTweens;
 
+        private List<Coroutine> group;
+
         public event Action OnAllTweensCompleted;
 
         public TweenBuilder(MonoBehaviour monoBehaviour)
@@ -29,22 +31,36 @@ namespace Tween
         public void Execute()
         {
             completedTweens = 0;
-            owner.StopAllCoroutines();
+            group = new List<Coroutine>();
+
             foreach (ITweener tween in tweens)
             {
-                owner.StartCoroutine(tween.Execute());
+                Coroutine coroutine = owner.StartCoroutine(tween.Execute());
+                group.Add(coroutine);
             }
         }
 
         public void Reset()
         {
             tweens.Clear();
+            group.Clear();
+            OnAllTweensCompleted = null;
+            completedTweens = 0;
+        }
+
+        public void Stop()
+        {
+            completedTweens = 0;
+
+            foreach (Coroutine coroutine in group)
+            {
+                owner.StopCoroutine(coroutine);
+            }
         }
 
         private void OnTweenComplete()
         {
             completedTweens++;
-            //tween.OnComplete -= OnTweenComplete;
 
             if (completedTweens >= tweens.Count)
                 OnAllTweensCompleted?.Invoke();

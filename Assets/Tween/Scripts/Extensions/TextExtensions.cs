@@ -21,6 +21,11 @@ namespace Tween
             return TweenColor(targetObject, targetObject.color, to, duration, delay, easingFunction, loopType, onComplete);
         }
 
+        public static TMP_Text TweenColor(this TMP_Text targetObject, TweenParameters<Color> tweenParameters, Action onComplete = null)
+        {
+            return TweenColor(targetObject, tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete);
+        }
+
         public static TMP_Text TweenFade(this TMP_Text targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
             if (easingFunction == null)
@@ -34,6 +39,11 @@ namespace Tween
         public static TMP_Text TweenFade(this TMP_Text targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
             return TweenFade(targetObject, targetObject.alpha, to, duration, delay, easingFunction, loopType, onComplete);
+        }
+
+        public static TMP_Text TweenFade(this TMP_Text targetObject, TweenParameters<float> tweenParameters, Action onComplete = null)
+        {
+            return TweenFade(targetObject, tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete);
         }
     }
 }

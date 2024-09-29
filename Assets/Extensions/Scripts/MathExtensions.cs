@@ -36,26 +36,58 @@ namespace Extensions
         }
 
         /// <summary>
-        /// Map a value to a new range
+        /// Map a value currently in the (<paramref name="min"/>, <paramref name="max"/>) range to a range between (<paramref name="newMin"/>, <paramref name="newMax"/>)
         /// </summary>
         /// <param name="value">The value to be mapped</param>
-        /// <param name="min">The current minimum range</param>
-        /// <param name="max">The current maximum range</param>
-        /// <param name="targetMin">The new target minimum range</param>
-        /// <param name="targetMax">The new target maximum range</param>
+        /// <param name="min">The current minimum value of the range</param>
+        /// <param name="max">The current maximum value of the range</param>
+        /// <param name="newMin">The minimum value of the new range</param>
+        /// <param name="newMax">The maximum value of the new range</param>
         /// <returns>The mapped value</returns>
-        public static float Map(this float value, float min, float max, float targetMin, float targetMax)
+        public static float Map(this float value, float min, float max, float newMin, float newMax)
+        {
+            if (value < min || value > max)
+                throw new ArgumentException("Value should be in between min and max values");
+
+            return value.MapUnclamped(min, max, newMin, newMax);
+        }
+
+        /// <summary>
+        /// Map a value currently in the (<paramref name="min"/>, <paramref name="max"/>) range to a range between (<paramref name="newMin"/>, <paramref name="newMax"/>)
+        /// without clamping it.
+        /// </summary>
+        /// <param name="value">The value to be mapped</param>
+        /// <param name="min">The current minimum value of the range</param>
+        /// <param name="max">The current maximum value of the range</param>
+        /// <param name="newMin">The minimum value of the new range</param>
+        /// <param name="newMax">The maximum value of the new range</param>
+        /// <returns>The mapped value</returns>
+        public static float MapUnclamped(this float value, float min, float max, float newMin, float newMax)
         {
             if (max <= min)
                 throw new ArgumentException("Max value should be higher than min value");
 
-            if (targetMax <= targetMin)
+            if (newMax <= newMin)
                 throw new ArgumentException("Target max value should be higher than target min value");
 
-            if (value < min || value > max)
-                throw new ArgumentException("Value should be in between min and max values");
+            return (value - min) * ((newMax - newMin) / (max - min)) + newMin;
+        }
 
-            return (value - min) * ((targetMax - targetMin) / (max - min)) + targetMin;
+        /// <summary>
+        /// Map a value currently in the (<paramref name="min"/>, <paramref name="max"/>) range to a range between (<paramref name="newMin"/>, <paramref name="newMax"/>)
+        /// and clamp it between <paramref name="newMin"/> and <paramref name="newMax"/>.
+        /// </summary>
+        /// <param name="value">The value to be mapped</param>
+        /// <param name="min">The current minimum value of the range</param>
+        /// <param name="max">The current maximum value of the range</param>
+        /// <param name="newMin">The minimum value of the new range</param>
+        /// <param name="newMax">The maximum value of the new range</param>
+        /// <returns>The mapped value</returns>
+        public static float MapClamped(this float value, float min, float max, float newMin, float newMax)
+        {
+            float newValue = value.MapUnclamped(min, max, newMin, newMax);
+
+            return Mathf.Clamp(newValue, newMin, newMax);
         }
 
         /// <summary>
@@ -117,6 +149,33 @@ namespace Extensions
         public static int Clamp(this int value, int min, int max)
         {
             return Mathf.Clamp(value, min, max);
+        }
+
+        /// <summary>
+        /// Get a random number between min and max (both inclusive) where the probability of said number is biased towards the lower or higher end of the range
+        /// </summary>
+        /// <param name="min">The mininum possible value for the random number</param>
+        /// <param name="max">The maximum possible value for the random number</param>
+        /// <param name="power">The probability distribution of the generated number.<br/>
+        ///     A value lower than 1 will result in a higher likelihood of larger numbers being generated. The closer to 0, the bigger the chance of a large number.<br/>
+        ///     A value higher than 1 will result in a higher likelihood of smaller numbers being generated. The higher the number, the bigger the chance of a smaller number.<br/>
+        ///     A value equals to 1 will result in a uniform distribution, where all values are equallly likely to occur.
+        /// </param>
+        /// <returns>The generated random number</returns>
+        public static int GetBiasedRandomNumber(int min, int max, double power = 1)
+        {
+            if (max <= min)
+                throw new ArgumentException("Max value should be higher than min value");
+
+            if (power <= 0)
+                throw new ArgumentOutOfRangeException(nameof(power), "Value has to be higher than zero");
+
+            System.Random rand = new System.Random();
+
+            double u = rand.NextDouble();
+            double randNum = Math.Floor(min + (max + 1 - min) * (Math.Pow(u, power)));
+
+            return (int)randNum;
         }
     }
 }

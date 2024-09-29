@@ -20,9 +20,8 @@ namespace ExtraAttributes
             }
 
             EditorGUI.BeginProperty(position, label, property);
-            EditorGUI.BeginChangeCheck();
 
-            string resourceName = EditorGUI.TextField(position, label, property.stringValue);
+            EditorGUI.TextField(position, label, property.stringValue);
 
             bool isDragEventAboveField = IsMousePositionOnTheProperty(position);
 
@@ -44,11 +43,6 @@ namespace ExtraAttributes
                 {
                     property.stringValue = path.Substring(startIndex, endIndex - startIndex);
                 }
-            }
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                property.stringValue = resourceName;
             }
 
             EditorGUI.EndProperty();

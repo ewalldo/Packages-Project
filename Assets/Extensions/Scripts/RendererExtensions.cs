@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Extensions
@@ -12,6 +13,9 @@ namespace Extensions
 		/// <returns>True is visible, false otherwise</returns>
 		public static bool IsVisibleFrom(this Renderer renderer, Camera camera)
 		{
+			if (camera == null)
+				throw new ArgumentNullException(nameof(camera), "Camera can't be null");
+
 			Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
 			return GeometryUtility.TestPlanesAABB(planes, renderer.bounds);
 		}

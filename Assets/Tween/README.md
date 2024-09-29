@@ -17,6 +17,11 @@
       - [TweenRotateQuaternion()](#tweenRotateQuaternion)
       - [TweenRotateVector3()](#tweenRotateVector3)
       - [TweenScale()](#tweenScale)
+      - [TweenShakePosition()](#tweenShakePosition)
+      - [TweenShakeRotation()](#tweenShakeRotation)
+      - [TweenShakeScale()](#tweenShakeScale)
+    - [Camera Tweens](#cameraTweens)
+      - [TweenCameraFOV()](#tweenCameraFOV)
     - [Canvas Group Tweens](#canvasGroupTweens)
       - [TweenCanvasGroupFade()](#tweenCanvasGroupFade)
     - [Image Tweens](#imageTweens)
@@ -26,8 +31,12 @@
     - [Light Tweens](#lightTweens)
       - [TweenLightColor()](#tweenLightColor)
       - [TweenLightIntensity()](#tweenLightIntensity)
+    - [Material Tweens](#materialTweens)
+      - [TweenMaterialColor()](#tweenMaterialColor)
+      - [TweenMaterialFade()](#tweenMaterialFade)
     - [Renderer Tweens](#rendererTweens)
       - [TweenRendererColor()](#tweenRendererColor)
+      - [TweenRendererFade()](#tweenRendererFade)
     - [Text Tweens](#textTweens)
       - [TweenTextColor()](#tweenTextColor)
       - [TweenTextFade()](#tweenTextFade)
@@ -64,6 +73,9 @@
     - [EaseOutElastic()](#easeOutElastic)
     - [EaseInOutElastic()](#easeInOutElastic)
     - [SpringEasing()](#springEasing)
+    - [PunchEasing()](#punchEasing)
+    - [AnimationCurveEasing()](#animationCurveEasing)
+    - [EasingFactory.GetEasing()](#easingFactoryGetEasing)
   - [Looping Functions](#loopingFunctions)
     - [RestartLoop()](#restartLoop)
     - [PingPongLoop()](#pingPongLoop)
@@ -75,12 +87,20 @@
     - [ITweenGroup.AddTween()](#iTweenGroupAddTween)
     - [ITweenGroup.Execute()](#iTweenGroupExecute)
     - [ITweenGroup.Reset()](#iTweenGroupReset)
+    - [ITweenGroup.Stop()](#iTweenGroupStop)
+    - [TweenSequenceer.AddDelay()](#tweenSequenceerAddDelay)
+    - [TweenSequenceer.AddConditional()](#tweenSequenceerAddConditional)
   - [Tweens Extensions](#tweenExtensions)
     - [Transform Tweens extensions](#transformTweensExtensions)
       - [TweenMove()](#tweenMoveExtensions)
       - [TweenRotateQuaternion()](#tweenRotateQuaternionExtensions)
       - [TweenRotateVector3()](#tweenRotateVector3Extensions)
       - [TweenScale()](#tweenScaleExtensions)
+      - [TweenShakePosition()](#tweenShakePositionExtensions)
+      - [TweenShakeRotation()](#tweenShakeRotationExtensions)
+      - [TweenShakeScale()](#tweenShakeScaleExtensions)
+    - [Camera Tweens extensions](#cameraTweensExtensions)
+      - [TweenCameraFOV()](#tweenCameraFOVExtensions)
     - [Canvas Group Tweens extensions](#canvasGroupTweensExtensions)
       - [TweenCanvasGroupFade()](#tweenCanvasGroupFadeExtensions)
     - [Image Tweens extensions](#imageTweensExtensions)
@@ -90,8 +110,12 @@
     - [Light Tweens extensions](#lightTweensExtensions)
       - [TweenLightColor()](#tweenLightColorExtensions)
       - [TweenLightIntensity()](#tweenLightIntensityExtensions)
+    - [Material Tweens extensions](#lightTweensExtensions)
+      - [TweenMaterialColor()](#tweenMaterialColorExtensions)
+      - [TweenMaterialFade()](#tweenMaterialFadeExtensions)
     - [Renderer Tweens extensions](#rendererTweensExtensions)
       - [TweenRendererColor()](#tweenRendererColorExtensions)
+      - [TweenRendererFade()](#tweenRendererFadeExtensions)
     - [Text Tweens extensions](#textTweensExtensions)
       - [TweenTextColor()](#tweenTextColorExtensions)
       - [TweenTextFade()](#tweenTextFadeExtensions)
@@ -108,6 +132,18 @@ This package was created and tested using Unity version 2022.1, but it should wo
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.1: Add tween options to the Camera class
+- 1.1.1: Refactor tween classes to make extendibility easier
+- 1.1.2: Edit group tweens
+- 1.1.3: Add more options to Renderer tweens
+- 1.2: Add material tweens
+- 1.2.1: Add AnimationCurveEasing
+- 1.3: Add Shake tweens to the Transform component and PunchEasing
+- 1.4: Add TweenParameters and ShakeParameters classes
+- 1.4.1: Change default values for local transform to be true
+- 1.5: Add extra options to group tweens
+- 1.5.1: Fixed issue with looping not resetting
+- 1.5.2: Refactor tween classes
 
 ## 3 - Features <a name="features"/>
 - Offers the possibility of "tween" many types of components.
@@ -132,7 +168,7 @@ StartCoroutine(tweenMove.Execute());
 ```
 
 ### 4.3 Grouping tweens <a name="groupingTweens"/>
-Tweens can be grouped to be triggered in parallel or in sequence. For parallel execution, please use the TweenBuilder class, for sequential the TweenSequencer class can be used. Below is and example of a group tween create to move and scale an object at the same time while changing a text color.  
+Tweens can be grouped to be triggered in parallel or in sequence. For parallel execution, please use the TweenBuilder class, for sequential the TweenSequencer class can be used. Below is and example of how to create a group tween to move and scale an object at the same time while changing a text color.  
 ```csharp
 TweenBuilder tweenBuilder = new TweenBuilder(monobehaviourClass);
 tweenBuilder.AddTween(new TweenMove(objectToMove, pointA, pointB, 2f));
@@ -168,8 +204,9 @@ Tweens that are applied to the Transform component.
 Apply tween to the position or localPosition attribute of the Transform component
 #### Declaration
 ```csharp
-public TweenMove(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public TweenMove(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMove(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMove(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMove(Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalPosition = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -183,13 +220,15 @@ public TweenMove(Transform targetObject, Vector3 to, float duration, float delay
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
 ##### 5.1.1.2 TweenRotateQuaternion() <a name="tweenRotateQuaternion"/>
 Apply tween to the rotation attribute of the Transform component by using Quaternions
 #### Declaration
 ```csharp
-public TweenRotateQuaternion(Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public TweenRotateQuaternion(Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRotateQuaternion(Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRotateQuaternion(Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRotateQuaternion(Transform targetObject, TweenParameters<Quaternion> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -203,13 +242,15 @@ public TweenRotateQuaternion(Transform targetObject, Quaternion to, float durati
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
 ##### 5.1.1.3 TweenRotateVector3() <a name="tweenRotateVector3"/>
 Apply tween to the rotation attribute of the Transform component by using Vector3
 #### Declaration
 ```csharp
-public TweenRotateVector3(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public TweenRotateVector3(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRotateVector3(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRotateVector3(Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRotateVector3(Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -223,6 +264,7 @@ public TweenRotateVector3(Transform targetObject, Vector3 to, float duration, fl
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
 ##### 5.1.1.4 TweenScale() <a name="tweenScale"/>
 Apply tween to the localScale attribute of the Transform component
@@ -230,6 +272,7 @@ Apply tween to the localScale attribute of the Transform component
 ```csharp
 public TweenScale(Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public TweenScale(Transform targetObject, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenScale(Transform targetObject, TweenParameters<Vector3> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -242,15 +285,117 @@ public TweenScale(Transform targetObject, Vector3 to, float duration, float dela
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-#### 5.1.2 Canvas Group Tweens <a name="canvasGroupTweens"/>
+##### 5.1.1.5 TweenShakePosition() <a name="tweenShakePosition"/>
+Apply shake motion to the position or localPosition attribute of the Transform component
+#### Declaration
+```csharp
+public TweenShakePosition(Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakePosition(Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakePosition(Transform targetObject, ShakeParameters shakeParameters, bool isLocalPosition = true, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | targetObject | The target Transform to apply the tween |
+| Vector3 | from | The initial value of the position/localPosition |
+| Vector3 | direction | The direction of the shake on each axis |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| float | speed | The speed of the shake |
+| float | maxMagnitude | The max value that the shake can reach |
+| float | noiseMagnitude | The amount of noise to add to each shake |
+| IgnoreAxisNoise | ignoreAxisNoise | Which axis noise won't be applied to |
+| bool | isLocalPosition | Should the tween be applied on the Transform localPosition or position |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| RestartLoop | loopType | The restart loop for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| ShakeParameters | shakeParameters | Class containing the basic values for the tween |
+
+##### 5.1.1.6 TweenShakeRotation() <a name="tweenShakeRotation"/>
+Apply shake motion to the rotation attribute of the Transform component
+#### Declaration
+```csharp
+public TweenShakeRotation(Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakeRotation(Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakeRotation(Transform targetObject, ShakeParameters shakeParameters, bool isLocalRotation = true, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | targetObject | The target Transform to apply the tween |
+| Vector3 | from | The initial value of the rotation/localRotation |
+| Vector3 | direction | The direction of the shake on each axis |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| float | speed | The speed of the shake |
+| float | maxMagnitude | The max value that the shake can reach |
+| float | noiseMagnitude | The amount of noise to add to each shake |
+| IgnoreAxisNoise | ignoreAxisNoise | Which axis noise won't be applied to |
+| bool | isLocalPosition | Should the tween be applied on the Transform localRotation or rotation |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| RestartLoop | loopType | The restart loop for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| ShakeParameters | shakeParameters | Class containing the basic values for the tween |
+
+##### 5.1.1.7 TweenShakeScale() <a name="tweenShakeScale"/>
+Apply shake motion to the localScale attribute of the Transform component
+#### Declaration
+```csharp
+public TweenShakeScale(Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakeScale(Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public TweenShakeScale(Transform targetObject, ShakeParameters shakeParameters, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | targetObject | The target Transform to apply the tween |
+| Vector3 | from | The initial value of the scale |
+| Vector3 | direction | The direction of the shake on each axis |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| float | speed | The speed of the shake |
+| float | maxMagnitude | The max value that the shake can reach |
+| float | noiseMagnitude | The amount of noise to add to each shake |
+| IgnoreAxisNoise | ignoreAxisNoise | Which axis noise won't be applied to |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| RestartLoop | loopType | The restart loop for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| ShakeParameters | shakeParameters | Class containing the basic values for the tween |
+
+#### 5.1.2 Camera Tweens <a name="cameraTweens"/>
+Tweens that are applied to the Camera component.
+##### 5.1.2.1 TweenCameraFOV() <a name="tweenCameraFOV"/>
+Apply tween to the FOV attribute of the Camera component
+#### Declaration
+```csharp
+public TweenCameraFOV(Camera targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenCameraFOV(Camera targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenCameraFOV(Camera targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Camera | targetObject | The target Camera to apply the tween |
+| float | from | The initial value of the FOV |
+| float | to | The final value of the FOV |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
+
+#### 5.1.3 Canvas Group Tweens <a name="canvasGroupTweens"/>
 Tweens that are applied to the Canvas Group component.
-##### 5.1.2.1 TweenCanvasGroupFade() <a name="tweenCanvasGroupFade"/>
+##### 5.1.3.1 TweenCanvasGroupFade() <a name="tweenCanvasGroupFade"/>
 Apply tween to the alpha attribute of the Canvas Group component
 #### Declaration
 ```csharp
 public TweenCanvasGroupFade(CanvasGroup targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public TweenCanvasGroupFade(CanvasGroup targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenCanvasGroupFade(CanvasGroup targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -263,15 +408,17 @@ public TweenCanvasGroupFade(CanvasGroup targetObject, float to, float duration, 
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-#### 5.1.3 Image Tweens <a name="imageTweens"/>
+#### 5.1.4 Image Tweens <a name="imageTweens"/>
 Tweens that are applied to the Image component.
-##### 5.1.3.1 TweenImageColor() <a name="tweenImageColor"/>
+##### 5.1.4.1 TweenImageColor() <a name="tweenImageColor"/>
 Apply tween to the color attribute of the Image component
 #### Declaration
 ```csharp
 public TweenImageColor(Image targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public TweenImageColor(Image targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenImageColor(Image targetObject, TweenParameters<Color> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -284,13 +431,15 @@ public TweenImageColor(Image targetObject, Color to, float duration, float delay
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-##### 5.1.3.2 TweenImageFade() <a name="tweenImageFade"/>
+##### 5.1.4.2 TweenImageFade() <a name="tweenImageFade"/>
 Apply tween to the alpha attribute of the Image component
 #### Declaration
 ```csharp
 public TweenImageFade(Image targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public TweenImageFade(Image targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenImageFade(Image targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -303,13 +452,15 @@ public TweenImageFade(Image targetObject, float to, float duration, float delay 
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-##### 5.1.3.3 TweenImageFillAmount() <a name="tweenImageFillAmount"/>
+##### 5.1.4.3 TweenImageFillAmount() <a name="tweenImageFillAmount"/>
 Apply tween to the fillAmount attribute of the Image component
 #### Declaration
 ```csharp
 public TweenImageFillAmount(Image targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public TweenImageFillAmount(Image targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenImageFillAmount(Image targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -322,15 +473,17 @@ public TweenImageFillAmount(Image targetObject, float to, float duration, float 
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-#### 5.1.4 Light Tweens <a name="lightTweens"/>
+#### 5.1.5 Light Tweens <a name="lightTweens"/>
 Tweens that are applied to the Light component.
-##### 5.1.4.1 TweenLightColor() <a name="tweenLightColor"/>
+##### 5.1.5.1 TweenLightColor() <a name="tweenLightColor"/>
 Apply tween to the color attribute of the Light component
 #### Declaration
 ```csharp
 public TweenLightColor(Light targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public TweenLightColor(Light targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenLightColor(Light targetObject, TweenParameters<Color> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -343,13 +496,15 @@ public TweenLightColor(Light targetObject, Color to, float duration, float delay
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-##### 5.1.4.2 TweenLightIntensity() <a name="tweenLightIntensity"/>
+##### 5.1.5.2 TweenLightIntensity() <a name="tweenLightIntensity"/>
 Apply tween to the intensity attribute of the Light component
 #### Declaration
 ```csharp
 public TweenLightIntensity(Light targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public TweenLightIntensity(Light targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenLightIntensity(Light targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -362,15 +517,61 @@ public TweenLightIntensity(Light targetObject, float to, float duration, float d
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-#### 5.1.5 Renderer Tweens <a name="rendererTweens"/>
-Tweens that are applied to the Renderer component.
-##### 5.1.5.1 TweenRendererColor() <a name="tweenRendererColor"/>
-Apply tween to the color attribute of the Renderer component
+#### 5.1.6 Material Tweens <a name="materialTweens"/>
+Tweens that are applied to the Material component.
+##### 5.1.6.1 TweenMaterialColor() <a name="tweenMaterialColor"/>
+Apply tween to the color attribute of the Material component
 #### Declaration
 ```csharp
-public TweenRendererColor(Renderer targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public TweenRendererColor(Renderer targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMaterialColor(Material targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMaterialColor(Material targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMaterialColor(Material targetObject, TweenParameters<Color> tweenParameters, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Material | targetObject | The target Material to apply the tween |
+| Color | from | The initial value of the color |
+| Color | to | The final value of the color |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
+
+##### 5.1.6.2 TweenMaterialFade() <a name="tweenMaterialFade"/>
+Apply tween to the alpha attribute of the Material component
+#### Declaration
+```csharp
+public TweenMaterialFade(Material targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMaterialFade(Material targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenMaterialFade(Material targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Material | targetObject | The target Material to apply the tween |
+| float | from | The initial value of the alpha |
+| float | to | The final value of the alpha |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
+
+#### 5.1.7 Renderer Tweens <a name="rendererTweens"/>
+Tweens that are applied to the Renderer component.
+##### 5.1.7.1 TweenRendererColor() <a name="tweenRendererColor"/>
+Apply tween to the color attribute of the Renderer's material component
+#### Declaration
+```csharp
+public TweenRendererColor(Renderer targetObject, Color from, Color to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRendererColor(Renderer targetObject, Color to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRendererColor(Renderer targetObject, TweenParameters<Color> tweenParameters, int materialIndex = 0, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -380,18 +581,43 @@ public TweenRendererColor(Renderer targetObject, Color to, float duration, float
 | Color | to | The final value of the color |
 | float | duration | How long the tween will take to complete |
 | float | delay | How long should it wait until the tween starts |
+| int | materialIndex | The index of the material to which the tween will be applied to |
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-#### 5.1.6 Text Tweens <a name="textTweens"/>
+##### 5.1.7.2 TweenRendererFade() <a name="tweenRendererFade"/>
+Apply tween to the alpha attribute of the Renderer's material component
+#### Declaration
+```csharp
+public TweenRendererFade(Renderer targetObject, float from, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRendererFade(Renderer targetObject, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRendererFade(Renderer targetObject, TweenParameters<float> tweenParameters, int materialIndex = 0, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Renderer | targetObject | The target Renderer to apply the tween |
+| float | from | The initial value of the alpha |
+| float | to | The final value of the alpha |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| int | materialIndex | The index of the material to which the tween will be applied to |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
+
+#### 5.1.8 Text Tweens <a name="textTweens"/>
 Tweens that are applied to the TMP_Text component.
-##### 5.1.6.1 TweenTextColor() <a name="tweenTextColor"/>
+##### 5.1.8.1 TweenTextColor() <a name="tweenTextColor"/>
 Apply tween to the color attribute of the TMP_Text component
 #### Declaration
 ```csharp
 public TweenTextColor(TMP_Text targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public TweenTextColor(TMP_Text targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenTextColor(TMP_Text targetObject, TweenParameters<Color> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -404,13 +630,15 @@ public TweenTextColor(TMP_Text targetObject, Color to, float duration, float del
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-##### 5.1.6.2 TweenTextFade() <a name="tweenTextFade"/>
+##### 5.1.8.2 TweenTextFade() <a name="tweenTextFade"/>
 Apply tween to the alpha attribute of the TMP_Text component
 #### Declaration
 ```csharp
 public TweenTextFade(TMP_Text targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public TweenTextFade(TMP_Text targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenTextFade(TMP_Text targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -423,6 +651,7 @@ public TweenTextFade(TMP_Text targetObject, float to, float duration, float dela
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
 ### 5.2 Easing Functions <a name="easingFunctions"/>
 Easing functions specify the rate of change of a parameter over time.
@@ -618,6 +847,40 @@ public class EaseInOutElastic();
 public class SpringEasing();
 ```
 
+#### 5.2.33 PunchEasing() <a name="punchEasing"/>
+#### Declaration
+```csharp
+public class PunchEasing();
+```
+
+#### 5.2.34 AnimationCurveEasing() <a name="animationCurveEasing"/>
+#### Declaration
+```csharp
+public class AnimationCurveEasing(AnimationCurve animationCurve);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| AnimationCurve | animationCurve | The AnimationCurve which the easing will be based on |
+
+#### 5.2.35 EasingFactory.GetEasing() <a name="easingFactoryGetEasing"/>
+Create an instance of an EasingFunction based on an EasingType
+#### Declaration
+```csharp
+public static EasingFunction GetEasing(EasingType easingType, params object[] constructorArgs);
+public static EasingFunction GetEasing(string easingTypeString, params object[] constructorArgs)
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| EasingType | easingType | The EasingType of the EasingFunction to instantiate |
+| string | easingTypeString | The EasingType of the EasingFunction to instantiate in string format |
+| params object[] | constructorArgs | Optional arguments for the constructor |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| EasingFunction | An EasingFunction instance |
+
 ### 5.3 Looping Functions <a name="loopingFunctions"/>
 Looping functions specify how the tween should loop upon completion.
 #### 5.3.1 RestartLoop() <a name="restartLoop"/>
@@ -722,6 +985,44 @@ Clear all tweens in the group
 public void Reset();
 ```
 
+#### 5.4.7 ITweenGroup.Stop() <a name="iTweenGroupStop"/>
+Stop the execution of the tween group
+#### Declaration
+```csharp
+public void Stop();
+```
+
+#### 5.4.8 TweenSequenceer.AddDelay() <a name="tweenSequenceerAddDelay"/>
+Add a delay to a sequence.
+#### Declaration
+```csharp
+public ITweenGroup AddDelay(float duration);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | duration | How long the delay should last |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| ITweenGroup | The tween group with the new delay added to it |
+
+#### 5.4.9 TweenSequenceer.AddConditional() <a name="tweenSequenceerAddConditional"/>
+Add a conditional check to a sequence, i.e. it will only proceed to the next tween in the sequence when the condition is fulfilled
+#### Declaration
+```csharp
+public ITweenGroup AddConditional(Func<bool> condition, float checkInterval);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Func<bool> | condition | Func to check if the sequence should proceed to the next tween |
+| float | checkInterval | How often should check the condition |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| ITweenGroup | The tween group with the new condition added to it |
+
 ### 5.5 Tween Extensions <a name="tweenExtensions"/>
 Extensions methods were created for each tween, so it can be more easily used. (For better control, we still recommend the use of the Tween classes or groups instead)
 #### 5.5.1 Transform Tweens extensions <a name="transformTweensExtensions"/>
@@ -730,14 +1031,18 @@ Tween extensions for the Transform class
 Apply tween to the position or localPosition attribute of the Transform component
 #### Declaration
 ```csharp
-public static Transform TweenMove(this Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMove(this Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMoveX(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMoveX(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMoveY(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMoveY(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMoveZ(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenMoveZ(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalPosition = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMove(this Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMove(this Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMove(this Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalPosition = true, Action onComplete = null);
+public static Transform TweenMoveX(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMoveX(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMoveX(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalPosition = true, Action onComplete = null);
+public static Transform TweenMoveY(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMoveY(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMoveY(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalPosition = true, Action onComplete = null);
+public static Transform TweenMoveZ(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMoveZ(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalPosition = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenMoveZ(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalPosition = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -753,19 +1058,24 @@ public static Transform TweenMoveZ(this Transform targetObject, float to, float 
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
 ##### 5.5.1.2 TweenRotateQuaternion() <a name="tweenRotateQuaternionExtensions"/>
 Apply tween to the rotation attribute of the Transform component by using Quaternions
 #### Declaration
 ```csharp
-public static Transform TweenRotate(this Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotate(this Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateXQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateXQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateYQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateYQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateZQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateZQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotate(this Transform targetObject, Quaternion from, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotate(this Transform targetObject, Quaternion to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotate(this Transform targetObject, TweenParameters<Quaternion> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
+public static Transform TweenRotateXQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateXQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateXQuaternion(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
+public static Transform TweenRotateYQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateYQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateYQuaternion(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
+public static Transform TweenRotateZQuaternion(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateZQuaternion(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateZQuaternion(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -781,19 +1091,24 @@ public static Transform TweenRotateZQuaternion(this Transform targetObject, floa
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
 ##### 5.5.1.3 TweenRotateVector3() <a name="tweenRotateVector3Extensions"/>
 Apply tween to the rotation attribute of the Transform component by using Vector3
 #### Declaration
 ```csharp
-public static Transform TweenRotate(this Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotate(this Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateXVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateXVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateYVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateYVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateZVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Transform TweenRotateZVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = false, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotate(this Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotate(this Transform targetObject, Vector3 to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotate(this Transform targetObject, TweenParameters<Vector3> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
+public static Transform TweenRotateXVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateXVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateXVector3(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
+public static Transform TweenRotateYVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateYVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateYVector3(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
+public static Transform TweenRotateZVector3(this Transform targetObject, float from, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateZVector3(this Transform targetObject, float to, float duration, float delay = 0f, bool isLocalRotation = true, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenRotateZVector3(this Transform targetObject, TweenParameters<float> tweenParameters, bool isLocalRotation = true, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -809,6 +1124,7 @@ public static Transform TweenRotateZVector3(this Transform targetObject, float t
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
 ##### 5.5.1.4 TweenScale() <a name="tweenScaleExtensions"/>
 Apply tween to the localScale attribute of the Transform component
@@ -816,12 +1132,16 @@ Apply tween to the localScale attribute of the Transform component
 ```csharp
 public static Transform TweenScale(this Transform targetObject, Vector3 from, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public static Transform TweenScale(this Transform targetObject, Vector3 to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenScale(this Transform targetObject, TweenParameters<Vector3> tweenParameters, Action onComplete = null);
 public static Transform TweenScaleX(this Transform targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public static Transform TweenScaleX(this Transform targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenScaleX(this Transform targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 public static Transform TweenScaleY(this Transform targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public static Transform TweenScaleY(this Transform targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenScaleY(this Transform targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 public static Transform TweenScaleZ(this Transform targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public static Transform TweenScaleZ(this Transform targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Transform TweenScaleZ(this Transform targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -836,15 +1156,117 @@ public static Transform TweenScaleZ(this Transform targetObject, float to, float
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-#### 5.5.2 Canvas Group extensions <a name="canvasGroupTweensExtensions"/>
+##### 5.5.1.5 TweenShakePosition() <a name="tweenShakePositionExtensions"/>
+Apply shake motion to the position or localPosition attribute of the Transform component
+#### Declaration
+```csharp
+public static Transform TweenShakePosition(this Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakePosition(this Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalPosition = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakePosition(this Transform targetObject, ShakeParameters shakeParameters, bool isLocalPosition = true, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | targetObject | The target Transform to apply the tween |
+| Vector3 | from | The initial value of the position/localPosition |
+| Vector3 | direction | The direction of the shake on each axis |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| float | speed | The speed of the shake |
+| float | maxMagnitude | The max value that the shake can reach |
+| float | noiseMagnitude | The amount of noise to add to each shake |
+| IgnoreAxisNoise | ignoreAxisNoise | Which axis noise won't be applied to |
+| bool | isLocalPosition | Should the tween be applied on the Transform localPosition or position |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| RestartLoop | loopType | The restart loop for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| ShakeParameters | shakeParameters | Class containing the basic values for the tween |
+
+##### 5.5.1.6 TweenShakeRotation() <a name="tweenShakeRotationExtensions"/>
+Apply shake motion to the rotation or localRotation attribute of the Transform component
+#### Declaration
+```csharp
+public static Transform TweenShakeRotation(this Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakeRotation(this Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, bool isLocalRotation = true, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakeRotation(this Transform targetObject, ShakeParameters shakeParameters, bool isLocalRotation = true, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | targetObject | The target Transform to apply the tween |
+| Vector3 | from | The initial value of the rotation/localRotation |
+| Vector3 | direction | The direction of the shake on each axis |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| float | speed | The speed of the shake |
+| float | maxMagnitude | The max value that the shake can reach |
+| float | noiseMagnitude | The amount of noise to add to each shake |
+| IgnoreAxisNoise | ignoreAxisNoise | Which axis noise won't be applied to |
+| bool | isLocalPosition | Should the tween be applied on the Transform localRotation or rotation |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| RestartLoop | loopType | The restart loop for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| ShakeParameters | shakeParameters | Class containing the basic values for the tween |
+
+##### 5.5.1.7 TweenShakeScale() <a name="tweenShakeScaleExtensions"/>
+Apply shake motion to the localScale attribute of the Transform component
+#### Declaration
+```csharp
+public static Transform TweenShakeScale(this Transform targetObject, Vector3 from, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakeScale(this Transform targetObject, Vector3 direction, float duration, float delay = 0f, float speed = 20f, float maxMagnitude = 1f, float noiseMagnitude = 0.3f, IgnoreAxisNoise ignoreAxisNoise = IgnoreAxisNoise.None, EasingFunction easingFunction = null, RestartLoop loopType = null, Action onComplete = null);
+public static Transform TweenShakeScale(this Transform targetObject, ShakeParameters shakeParameters, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | targetObject | The target Transform to apply the tween |
+| Vector3 | from | The initial value of the scale |
+| Vector3 | direction | The direction of the shake on each axis |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| float | speed | The speed of the shake |
+| float | maxMagnitude | The max value that the shake can reach |
+| float | noiseMagnitude | The amount of noise to add to each shake |
+| IgnoreAxisNoise | ignoreAxisNoise | Which axis noise won't be applied to |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| RestartLoop | loopType | The restart loop for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| ShakeParameters | shakeParameters | Class containing the basic values for the tween |
+
+#### 5.5.2 Camera extensions <a name="cameraTweensExtensions"/>
+Tween extensions for the Camera class
+##### 5.5.2.1 TweenCameraFOV() <a name="tweenCameraFOVExtensions"/>
+Apply tween to the FOV attribute of the Camera component
+#### Declaration
+```csharp
+public static Camera TweenFOV(this Camera targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Camera TweenFOV(this Camera targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Camera TweenFOV(this Camera targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Camera | targetObject | The target Camera to apply the tween |
+| float | from | The initial value of the FOV |
+| float | to | The final value of the FOV |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
+
+#### 5.5.3 Canvas Group extensions <a name="canvasGroupTweensExtensions"/>
 Tween extensions for the CanvasGroup class
-##### 5.2.2.1 TweenCanvasGroupFade() <a name="tweenCanvasGroupFadeExtensions"/>
+##### 5.5.3.1 TweenCanvasGroupFade() <a name="tweenCanvasGroupFadeExtensions"/>
 Apply tween to the alpha attribute of the Canvas Group component
 #### Declaration
 ```csharp
 public static CanvasGroup TweenFade(this CanvasGroup targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public static CanvasGroup TweenFade(this CanvasGroup targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static CanvasGroup TweenFade(this CanvasGroup targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -857,15 +1279,17 @@ public static CanvasGroup TweenFade(this CanvasGroup targetObject, float to, flo
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-#### 5.5.3 Image Tweens extensions <a name="imageTweensExtensions"/>
+#### 5.5.4 Image Tweens extensions <a name="imageTweensExtensions"/>
 Tweens extensions for the Image class
-##### 5.5.3.1 TweenImageColor() <a name="tweenImageColorExtensions"/>
+##### 5.5.4.1 TweenImageColor() <a name="tweenImageColorExtensions"/>
 Apply tween to the color attribute of the Image component
 #### Declaration
 ```csharp
 public static Image TweenColor(this Image targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public static Image TweenColor(this Image targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Image TweenColor(this Image targetObject, TweenParameters<Color> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -878,13 +1302,15 @@ public static Image TweenColor(this Image targetObject, Color to, float duration
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-##### 5.5.3.2 TweenImageFade() <a name="tweenImageFadeExtensions"/>
+##### 5.5.4.2 TweenImageFade() <a name="tweenImageFadeExtensions"/>
 Apply tween to the alpha attribute of the Image component
 #### Declaration
 ```csharp
 public static Image TweenFade(this Image targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public static Image TweenFade(this Image targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Image TweenFade(this Image targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -897,13 +1323,15 @@ public static Image TweenFade(this Image targetObject, float to, float duration,
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-##### 5.5.3.3 TweenImageFillAmount() <a name="tweenImageFillAmountExtensions"/>
+##### 5.5.4.3 TweenImageFillAmount() <a name="tweenImageFillAmountExtensions"/>
 Apply tween to the fillAmount attribute of the Image component
 #### Declaration
 ```csharp
 public static Image TweenFillAmount(this Image targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public static Image TweenFillAmount(this Image targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Image TweenFillAmount(this Image targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -916,15 +1344,17 @@ public static Image TweenFillAmount(this Image targetObject, float to, float dur
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-#### 5.5.4 Light Tweens extensions <a name="lightTweensExtensions"/>
+#### 5.5.5 Light Tweens extensions <a name="lightTweensExtensions"/>
 Tweens extensions for the Light class
-##### 5.5.4.1 TweenLightColor() <a name="tweenLightColorExtensions"/>
+##### 5.5.5.1 TweenLightColor() <a name="tweenLightColorExtensions"/>
 Apply tween to the color attribute of the Light component
 #### Declaration
 ```csharp
 public static Light TweenColor(this Light targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public static Light TweenColor(this Light targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Light TweenColor(this Light targetObject, TweenParameters<Color> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -937,13 +1367,15 @@ public static Light TweenColor(this Light targetObject, Color to, float duration
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-##### 5.5.4.2 TweenLightIntensity() <a name="tweenLightIntensityExtensions"/>
+##### 5.5.5.2 TweenLightIntensity() <a name="tweenLightIntensityExtensions"/>
 Apply tween to the intensity attribute of the Light component
 #### Declaration
 ```csharp
 public static Light TweenIntensity(this Light targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public static Light TweenIntensity(this Light targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Light TweenIntensity(this Light targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -956,15 +1388,61 @@ public static Light TweenIntensity(this Light targetObject, float to, float dura
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-#### 5.5.5 Renderer Tweens extensions <a name="rendererTweensExtensions"/>
-Tweens extensions for the Renderer class
-##### 5.5.5.1 TweenRendererColor() <a name="tweenRendererColorExtensions"/>
-Apply tween to the color attribute of the Renderer component
+#### 5.5.6 Material Tweens extensions <a name="materialTweensExtensions"/>
+Tweens extensions for the Material class
+##### 5.5.6.1 TweenMaterialColor() <a name="tweenMaterialColorExtensions"/>
+Apply tween to the color attribute of the Material component
 #### Declaration
 ```csharp
-public static Renderer TweenColor(this Renderer targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
-public static Renderer TweenColor(this Renderer targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Material TweenColor(this Material targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Material TweenColor(this Material targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Material TweenColor(this Material targetObject, TweenParameters<Color> tweenParameters, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Material | targetObject | The target Material to apply the tween |
+| Color | from | The initial value of the color |
+| Color | to | The final value of the color |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
+
+##### 5.5.6.2 TweenMaterialFade() <a name="tweenMaterialFadeExtensions"/>
+Apply tween to the alpha attribute of the Material component
+#### Declaration
+```csharp
+public static Material TweenFade(this Material targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Material TweenFade(this Material targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Material TweenFade(this Material targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Material | targetObject | The target Material to apply the tween |
+| float | from | The initial value of the alpha |
+| float | to | The final value of the alpha |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
+
+#### 5.5.7 Renderer Tweens extensions <a name="rendererTweensExtensions"/>
+Tweens extensions for the Renderer class
+##### 5.5.7.1 TweenRendererColor() <a name="tweenRendererColorExtensions"/>
+Apply tween to the color attribute of the Renderer's material component
+#### Declaration
+```csharp
+public static Renderer TweenColor(this Renderer targetObject, Color from, Color to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Renderer TweenColor(this Renderer targetObject, Color to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Renderer TweenColor(this Renderer targetObject, TweenParameters<Color> tweenParameters, int materialIndex = 0, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -974,18 +1452,43 @@ public static Renderer TweenColor(this Renderer targetObject, Color to, float du
 | Color | to | The final value of the color |
 | float | duration | How long the tween will take to complete |
 | float | delay | How long should it wait until the tween starts |
+| int | materialIndex | The index of the material to which the tween will be applied to |
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-#### 5.5.6 Text Tweens extensions <a name="textTweensExtensions"/>
+##### 5.5.7.2 TweenRendererFade() <a name="tweenRendererFadeExtensions"/>
+Apply tween to the alpha attribute of the Renderer's material component
+#### Declaration
+```csharp
+public static Renderer TweenFade(this Renderer targetObject, float from, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Renderer TweenFade(this Renderer targetObject, float to, float duration, float delay = 0f, int materialIndex = 0, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static Renderer TweenFade(this Renderer targetObject, TweenParameters<float> tweenParameters, int materialIndex = 0, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Renderer | targetObject | The target Renderer to apply the tween |
+| float | from | The initial value of the alpha |
+| float | to | The final value of the alpha |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| int | materialIndex | The index of the material to which the tween will be applied to |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
+
+#### 5.5.8 Text Tweens extensions <a name="textTweensExtensions"/>
 Tweens extensions for the TMP_Text class
-##### 5.5.6.1 TweenTextColor() <a name="tweenTextColorExtensions"/>
+##### 5.5.8.1 TweenTextColor() <a name="tweenTextColorExtensions"/>
 Apply tween to the color attribute of the TMP_Text component
 #### Declaration
 ```csharp
 public static TMP_Text TweenColor(this TMP_Text targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public static TMP_Text TweenColor(this TMP_Text targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static TMP_Text TweenColor(this TMP_Text targetObject, TweenParameters<Color> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -998,13 +1501,15 @@ public static TMP_Text TweenColor(this TMP_Text targetObject, Color to, float du
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-##### 5.5.6.2 TweenTextFade() <a name="tweenTextFadeExtensions"/>
+##### 5.5.8.2 TweenTextFade() <a name="tweenTextFadeExtensions"/>
 Apply tween to the alpha attribute of the TMP_Text component
 #### Declaration
 ```csharp
 public static TMP_Text TweenFade(this TMP_Text targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
 public static TMP_Text TweenFade(this TMP_Text targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public static TMP_Text TweenFade(this TMP_Text targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -1017,6 +1522,7 @@ public static TMP_Text TweenFade(this TMP_Text targetObject, float to, float dur
 | EasingFunction | easingFunction | The easing function to be applied when tweening the values |
 | ILoopType | loopType | The type of looping for this tween |
 | Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
 ## 6 - Contact Information <a name="contactInformation"/>
 If you have any questions or want to report a bug/problem with the package, please contact me at evaldo.lborba@gmail.com

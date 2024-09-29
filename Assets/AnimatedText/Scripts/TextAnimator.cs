@@ -9,7 +9,8 @@ namespace AnimatedText
 	[RequireComponent(typeof(TextMeshProUGUI))]
 	public class TextAnimator : MonoBehaviour
 	{
-        [SerializeField] private float typingSpeed = 25f;
+        [Tooltip("The pause between characters (in seconds) when typing the text on screen")]
+        [SerializeField] private float typingSpeed = 0.04f;
 
         private TextMeshProUGUI textMeshProUGUI;
 
@@ -28,7 +29,7 @@ namespace AnimatedText
         private Stack<ITextAnimator> currentlyTextAnimationList;
 
         private Coroutine typingCoroutine;
-        private float defaultTypingSpeed;
+        public float DefaultTypingSpeed { get; set; }
 
         public Action<char> OnCharTyped;
         public Action OnStartedTyping;
@@ -38,7 +39,7 @@ namespace AnimatedText
         private void Awake()
         {
             textMeshProUGUI = GetComponent<TextMeshProUGUI>();
-            defaultTypingSpeed = typingSpeed;
+            DefaultTypingSpeed = typingSpeed;
         }
 
         private void LateUpdate()
@@ -155,7 +156,7 @@ namespace AnimatedText
             int subCounter = 0;
             int visibleCounter = 0;
 
-            typingSpeed = defaultTypingSpeed;
+            typingSpeed = DefaultTypingSpeed;
             OnStartedTyping?.Invoke();
 
             while (subCounter < subTexts.Length)
@@ -169,7 +170,7 @@ namespace AnimatedText
                         visibleCounter++;
                         textMeshProUGUI.maxVisibleCharacters++;
 
-                        yield return new WaitForSeconds(1f / typingSpeed);
+                        yield return new WaitForSeconds(typingSpeed);
                     }
                     visibleCounter = 0;
                 }

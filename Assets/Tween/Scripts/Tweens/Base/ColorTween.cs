@@ -1,25 +1,24 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace Tween
 {
-	public abstract class ColorTween : ITweener
-	{
-        protected Color initialValue;
-        protected Color endValue;
-        protected float duration;
-        protected float delay;
-        protected EasingFunction easingFunction;
-        protected ILoopType loopType;
+	public abstract class ColorTween : BaseTween<Color>
+    {
+        public ColorTween(Color initialValue, Color endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
+            : base(initialValue, endValue, duration, delay, easingFunction, loopType, onComplete) { }
 
-        public virtual event Action OnComplete;
+        public ColorTween(TweenParameters<Color> tweenParameters, Action onComplete)
+            : this(tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete) { }
 
-        public virtual IEnumerator Execute()
+        protected override void AdjustTweenValuesOnLoop()
         {
-            yield return null;
+            (from, to) = loopType.AdjustTweenValues(from, to);
+        }
 
-            OnComplete?.Invoke();
+        protected override Color TweenValue(float progress)
+        {
+            return Color.LerpUnclamped(from, to, EasingEquations.Evaluate(easingFunction, progress));
         }
     }
 }

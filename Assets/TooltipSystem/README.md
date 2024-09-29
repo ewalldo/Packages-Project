@@ -44,6 +44,8 @@ The Tooltip System package comes equipped with a rich set of features, making it
 Whether you aim to provide informative hints, interactive guidance, or context-sensitive help, this package is a valuable asset for enhancing the overall user experience of your Unity projects.  
 This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
 
+- **Package requirements: TMPro**
+
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
 
@@ -68,7 +70,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - To make a object trigger a tooltip, a "TooltipTrigger" must be attached to it. The trigger looks similar to the tooltip script. On the top, it has a field for a TooltipStyle, which holds the information for the tooltip contents. Under the TooltipStyle, on the left side, a label indicates the ID of the field and on the right side you can set the value for that ID. The value on the right side will be displayed on the tooltip everytime it is triggered. Under that there is an option to set where the tooltip should appear (for more details please check the 4.5 section called "TooltipPosition" or the documentation). Under the position, there is a field to set how long is the delay before a tooltip appears.
 
 ### 4.4 The "TooltipController" <a name="theTooltipController"/>
-- In order to display tooltips, a TooltipController must exists in the scene. You can add the "TooltipController.cs" script to an object in the scene, or just use the "........" in the prefabs folder. The prefab is basically an Canvas gameObject with SortOrder set to its maximum value to assure that the tooltips shows above all other UI elements. The TooltipController has a few fields, the first one is a list containing the tooltips prefabs that the program is able to display (you should add your tooltips here). The second one is a toggle that allows tooltips to be turned on/off, following that there is a section to control the fade options for the tooltips. In here you can set if the tooltips should have fade-in/out behaviour, as well as how the type of fade.
+- In order to display tooltips, a TooltipController must exists in the scene. You can add the "TooltipController.cs" script to an object in the scene, or just use the TooltipCanvas prefab in the prefabs folder. The prefab is basically an Canvas gameObject with SortOrder set to its maximum value to assure that the tooltips shows above all other UI elements. The TooltipController has a few fields, the first one is a list containing the tooltips prefabs that the program is able to display (you should add your tooltips here). The second one is a toggle that allows tooltips to be turned on/off, following that there is a section to control the fade options for the tooltips. In here you can set if the tooltips should have fade-in/out behaviour, as well as how the type of fade.
 
 ### 4.5 The "TooltipPosition" <a name="theTooltipPosition"/>
 On each trigger, you can set where the tooltip will be displayed. Currently, the tooltip system supports the following options.  

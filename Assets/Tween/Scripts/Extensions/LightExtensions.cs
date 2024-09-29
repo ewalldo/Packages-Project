@@ -20,6 +20,11 @@ namespace Tween
             return TweenColor(targetObject, targetObject.color, to, duration, delay, easingFunction, loopType, onComplete);
         }
 
+        public static Light TweenColor(this Light targetObject, TweenParameters<Color> tweenParameters, Action onComplete = null)
+        {
+            return TweenColor(targetObject, tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete);
+        }
+
         public static Light TweenIntensity(this Light targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
             if (easingFunction == null)
@@ -33,6 +38,11 @@ namespace Tween
         public static Light TweenIntensity(this Light targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null)
         {
             return TweenIntensity(targetObject, targetObject.intensity, to, duration, delay, easingFunction, loopType, onComplete);
+        }
+
+        public static Light TweenIntensity(this Light targetObject, TweenParameters<float> tweenParameters, Action onComplete = null)
+        {
+            return TweenIntensity(targetObject, tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete);
         }
     }
 }

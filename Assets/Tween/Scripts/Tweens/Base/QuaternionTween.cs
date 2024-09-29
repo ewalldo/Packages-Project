@@ -1,25 +1,24 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace Tween
 {
-	public abstract class QuaternionTween : ITweener
+	public abstract class QuaternionTween : BaseTween<Quaternion>
 	{
-        protected Quaternion initialValue;
-        protected Quaternion endValue;
-        protected float duration;
-        protected float delay;
-        protected EasingFunction easingFunction;
-        protected ILoopType loopType;
+        public QuaternionTween(Quaternion initialValue, Quaternion endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
+            : base(initialValue, endValue, duration, delay, easingFunction, loopType, onComplete) { }
 
-        public virtual event Action OnComplete;
+        public QuaternionTween(TweenParameters<Quaternion> tweenParameters, Action onComplete)
+            : this(tweenParameters.GetInitialValue, tweenParameters.GetEndValue, tweenParameters.GetDuration, tweenParameters.GetDelay, tweenParameters.GetEasing, tweenParameters.GetLoop, onComplete) { }
 
-        public virtual IEnumerator Execute()
+        protected override void AdjustTweenValuesOnLoop()
         {
-            yield return null;
+            (from, to) = loopType.AdjustTweenValues(from, to);
+        }
 
-            OnComplete?.Invoke();
+        protected override Quaternion TweenValue(float progress)
+        {
+            return Quaternion.SlerpUnclamped(from, to, EasingEquations.Evaluate(easingFunction, progress));
         }
     }
 }

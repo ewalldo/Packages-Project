@@ -11,6 +11,7 @@
   - [Using the richText tags](#usingTheRichTextTags)
   - [Typing text](#typingText)
 - [Documentation](#documentation)
+  - [TextAnimator.DefaultTypingSpeed](#textAnimatorDefaultTypingSpeed)
   - [TextAnimator.OnCharTyped](#textAnimatorOnCharTyped)
   - [TextAnimator.OnStartedTyping](#textAnimatorOnStartedTyping)
   - [TextAnimator.OnFinishedTyping](#textAnimatorOnFinishedTyping)
@@ -32,6 +33,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.1: Add option to change default typing speed from code
 
 ## 3 - Features <a name="features"/>
 - Easy to add a typing animation to texts, just attach a script and call one method.
@@ -74,7 +76,18 @@ This package supports all TextMeshPro's RichText tags, so it can be used in the 
 To start typing a text, just invoke the TypeText() method in the TextAnimator class by passing a string (with your tags) as an attribute.
 
 ## 5 - Documentation <a name="documentation"/>
-### 5.1 TextAnimator.OnCharTyped <a name="textAnimatorOnCharTyped"/>
+### 5.1 TextAnimator.DefaultTypingSpeed <a name="textAnimatorDefaultTypingSpeed"/>
+The speed (pause between characters in seconds) of the texts being typed
+#### Declaration
+```csharp
+public float DefaultTypingSpeed;
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The speed (pause between characters in seconds) of the texts being typed |
+
+### 5.2 TextAnimator.OnCharTyped <a name="textAnimatorOnCharTyped"/>
 Invoked when a char is typed on the screen
 #### Declaration
 ```csharp
@@ -86,7 +99,7 @@ public Action<char> OnCharTyped;
 | char | The char value typed on the screen |
 
 
-### 5.2 TextAnimator.OnStartedTyping <a name="textAnimatorOnStartedTyping"/>
+### 5.3 TextAnimator.OnStartedTyping <a name="textAnimatorOnStartedTyping"/>
 Invoked when a text starts being typed on the screen
 #### Declaration
 ```csharp
@@ -94,7 +107,7 @@ public Action OnStartedTyping;
 ```
 
 
-### 5.3 TextAnimator.OnFinishedTyping <a name="textAnimatorOnFinishedTyping"/>
+### 5.4 TextAnimator.OnFinishedTyping <a name="textAnimatorOnFinishedTyping"/>
 Invoked when a text is finished being typed on the screen
 #### Declaration
 ```csharp
@@ -102,7 +115,7 @@ public Action OnFinishedTyping;
 ```
 
 
-### 5.4 TextAnimator.OnDialogueAction <a name="textAnimatorOnDialogueAction"/>
+### 5.5 TextAnimator.OnDialogueAction <a name="textAnimatorOnDialogueAction"/>
 Invoked when an action tag is evaluated during typing
 #### Declaration
 ```csharp
@@ -114,7 +127,7 @@ public Action<string> OnDialogueAction;
 | string | The value of the action tag |
 
 
-### 5.5 TextAnimator.TypeText() <a name="textAnimatorTypeText"/>
+### 5.6 TextAnimator.TypeText() <a name="textAnimatorTypeText"/>
 Start typing the text on screen
 #### Declaration
 ```csharp
@@ -126,7 +139,7 @@ public void TypeText(string textToType);
 | string | textToType | The string containing the text information to be typed on the screen |
 
 
-### 5.6 ReplaceTagParser.AddEntry() <a name="replaceTagParserAddEntry"/>
+### 5.7 ReplaceTagParser.AddEntry() <a name="replaceTagParserAddEntry"/>
 Add an entry to the parser dictionary
 #### Declaration
 ```csharp
@@ -139,7 +152,7 @@ public static void AddEntry(string key, string value);
 | string | value | The corresponding value to be associated with the key |
 
 
-### 5.7 ReplaceTagParser.ParseKey() <a name="replaceTagParserParseKey"/>
+### 5.8 ReplaceTagParser.ParseKey() <a name="replaceTagParserParseKey"/>
 Get the value associated with a key
 #### Declaration
 ```csharp
@@ -155,7 +168,7 @@ public static string ParseKey(string key);
 | string | The value associated with the key, or empty string if the value does not exist |
 
 
-### 5.8 ReplaceTagParser.GetTagsParserDictionary() <a name="replaceTagParserGetTagsParserDictionary"/>
+### 5.9 ReplaceTagParser.GetTagsParserDictionary() <a name="replaceTagParserGetTagsParserDictionary"/>
 Get the whole tags dictionary
 #### Declaration
 ```csharp
