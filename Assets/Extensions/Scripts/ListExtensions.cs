@@ -18,6 +18,14 @@ namespace Extensions
         public static bool HasIndex<T>(this IList<T> list, int index) => index.InRange(0, list.Count - 1);
 
         /// <summary>
+        /// Returns whether a list is null or empty
+        /// </summary>
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="list">The list to check</param>
+        /// <returns>True, if the list is null or empty, false otherwise</returns>
+        public static bool IsNullOrEmpty<T>(this IList<T> list) => list == null || list.Count > 0;
+
+        /// <summary>
         /// Return the first element of a list
         /// </summary>
         /// <typeparam name="T">The type of the list</typeparam>

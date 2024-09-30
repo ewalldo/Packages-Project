@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Extensions
@@ -41,6 +42,17 @@ namespace Extensions
         }
 
         /// <summary>
+        /// Retrieves all children from the Transform
+        /// </summary>
+        /// <param name="transform">The Transform to get the children from</param>
+        /// <returns>IEnumerable containing all child Transform</returns>
+        public static IEnumerable<Transform> Children(this Transform transform)
+        {
+            foreach (Transform child in transform)
+                yield return child;
+        }
+
+        /// <summary>
         /// Destroy all children of a transform
         /// </summary>
         /// <param name="transform">The transform to have the children destroyed</param>
@@ -49,10 +61,7 @@ namespace Extensions
             if (transform == null)
                 throw new ArgumentNullException(nameof(transform));
 
-            foreach (Transform child in transform)
-            {
-                UnityEngine.Object.Destroy(child.gameObject);
-            }
+            transform.ForEveryChild((child) => UnityEngine.Object.Destroy(child.gameObject));
         }
 
         /// <summary>
@@ -65,10 +74,7 @@ namespace Extensions
             if (transform == null)
                 throw new ArgumentNullException(nameof(transform));
 
-            foreach (Transform child in transform)
-            {
-                child.gameObject.SetActive(status);
-            }
+            transform.ForEveryChild((child) => child.gameObject.SetActive(status));
         }
 
         /// <summary>
@@ -157,6 +163,19 @@ namespace Extensions
         public static float DistanceTo(this Transform transform, Vector3 other, bool useLocalPosition = false)
         {
             return Vector3.Distance(useLocalPosition ? transform.localPosition : transform.position, other);
+        }
+
+        /// <summary>
+        /// Performs an action on every child of the Transform
+        /// </summary>
+        /// <param name="transform">The parent Transform</param>
+        /// <param name="action">Action to be performed on every child</param>
+        public static void ForEveryChild(this Transform transform, Action<Transform> action)
+        {
+            for (int i = transform.childCount - 1; i >= 0; i--)
+            {
+                action(transform.GetChild(i));
+            }
         }
 
         /// <summary>

@@ -9,13 +9,22 @@ namespace Extensions
     public static class MathExtensions
     {
         /// <summary>
-        /// Returns if the value is within the min and max values
+        /// Returns true if the value is within the min and max values, false otherwise
         /// </summary>
         /// <param name="value">The value to check</param>
         /// <param name="min">The minimum value</param>
         /// <param name="max">The maximum value</param>
-        /// <returns>Whether the value is within the range</returns>
+        /// <returns>True if the value is within the range, false otherwise</returns>
         public static bool InRange(this int value, int min, int max) => value >= min && value <= max;
+
+        /// <summary>
+        /// Returns true if the value is within the min and max values, false otherwise
+        /// </summary>
+        /// <param name="value">The value to check</param>
+        /// <param name="min">The minimum value</param>
+        /// <param name="max">The maximum value</param>
+        /// <returns>True if the value is within the range, false otherwise</returns>
+        public static bool InRange(this float value, float min, float max) => value >= min && value <= max;
 
         /// <summary>
         /// Normalize a value between 0 and 1
@@ -176,6 +185,66 @@ namespace Extensions
             double randNum = Math.Floor(min + (max + 1 - min) * (Math.Pow(u, power)));
 
             return (int)randNum;
+        }
+
+        /// <summary>
+        /// Gets the minimum between two values
+        /// </summary>
+        /// <param name="a">The first value</param>
+        /// <param name="b">The second value</param>
+        /// <returns>The minimum between two values</returns>
+        public static float Minimum(this float a, float b)
+        {
+            return (a < b) ? a : b;
+        }
+
+        /// <summary>
+        /// Gets the minimum value in a set of values
+        /// </summary>
+        /// <param name="values">The set of values</param>
+        /// <returns>The minimum value of the set</returns>
+        public static float Minimum(params float[] values)
+        {
+            if (values.Length <= 0)
+                throw new ArgumentException("Values should contain at least one element");
+
+            float min = values[0];
+            for (int i = 1; i < values.Length; i++)
+            {
+                min = min.Minimum(values[i]);
+            }
+
+            return min;
+        }
+
+        /// <summary>
+        /// Gets the maximum between two values
+        /// </summary>
+        /// <param name="a">The first value</param>
+        /// <param name="b">The second value</param>
+        /// <returns>The maximum between two values</returns>
+        public static float Maximum(this float a, float b)
+        {
+            return (a > b) ? a : b;
+        }
+
+        /// <summary>
+        /// Gets the maximum value in a set of values
+        /// </summary>
+        /// <param name="values">The set of values</param>
+        /// <returns>The maximum value of the set</returns>
+        public static float Maximum(params float[] values)
+        {
+            if (values.Length <= 0)
+                throw new ArgumentException("Values should contain at least one element");
+
+            float max = values[0];
+            for (int i = 1; i < values.Length; i++)
+            {
+                max = max.Maximum(values[i]);
+            }
+
+            return max;
         }
     }
 }

@@ -28,10 +28,19 @@
   - [Color](#colorExtensions)
     - [ToHexString](#colorExtensionsToHexString)
     - [ToHexUInt](#colorExtensionsToHexUint)
+    - [WithAlpha](#colorExtensionsWithAlpha)
+    - [Blend](#colorExtensionsBlend)
+    - [Invert](#colorExtensionsInvert)
+  - [Enumerable](#enumerableExtensions)
+    - [ForEach](#enumerableExtensionsForEach)
   - [GameObject](#gameObjectExtensions)
     - [AddOrGetComponent](#gameObjectExtensionsAddOrGetComponent)
+    - [GetOrNull](#gameObjectExtensionsGetOrNull)
+    - [GetPath](#gameObjectExtensionsGetPath)
+    - [GetFullPath](#gameObjectExtensionsGetFullPath)
   - [List](#listExtensions)
     - [HasIndex](#listExtensionsHasIndex)
+    - [IsNullOrEmpty](#listExtensionsIsNullOrEmpty)
     - [First](#listExtensionsFirst)
     - [Last](#listExtensionsLast)
     - [RandomElement](#listExtensionsRandomElement)
@@ -58,6 +67,8 @@
     - [Clamp](#mathExtensionsClamp)
     - [Clamp01](#mathExtensionsClamp01)
     - [GetBiasedRandomNumber](#mathExtensionsGetBiasedRandomNumber)
+    - [Minimum](#mathExtensionsMinimum)
+    - [Maximum](#mathExtensionsMaximum)
   - [Renderer](#rendererExtensions)
     - [IsVisibleFrom](#rendererExtensionsIsVisibleFrom)
   - [RichText](#richtextExtensions)
@@ -67,26 +78,42 @@
     - [Size](#richTextExtensionsSize)
     - [Color](#richTextExtensionsColor)
   - [String](#stringExtensions)
+    - [IsNullOrEmpty](#stringExtensionsIsNullOrEmpty)
+    - [IsNullOrWhiteSpace](#stringExtensionsIsNullOrWhiteSpace)
+    - [HasValue](#stringExtensionsHasValue)
+    - [ValueOrEmpty](#stringExtensionsValueOrEmpty)
     - [ToVector](#stringExtensionsToVector)
     - [ToColor](#stringExtensionsToColor)
+    - [FromHexString](#stringExtensionsFromHexString)
+    - [GetFileExtension](#stringExtensionsGetFileExtension)
+    - [Shorten](#stringExtensionsShorten)
+    - [ToInt](#stringExtensionsToInt)
+    - [ToFloat](#stringExtensionsToFloat)
   - [TMPro](#tmproExtensions)
     - [ResizeRectTransformToMatchText](#tmproExtensionsResizeRectTransformToMatchText)
   - [Transform](#transformExtensions)
     - [FirstChild](#transformExtensionsFirstChild)
     - [LastChild](#transformExtensionsLastChild)
+    - [Children](#transformExtensionsChildren)
     - [DestroyAllChildren](#transformExtensionsDestroyAllChildren)
     - [SetActiveAllChildren](#transformExtensionsSetActiveAllChildren)
     - [ResetTransform](#transformExtensionsResetTransform)
     - [SetParentAndReset](#transformExtensionsSetParentAndReset)
     - [RotateTowards](#transformExtensionsRotateTowards)
     - [DistanceTo](#transformExtensionsDistanceTo)
+    - [ForEveryChild](#transformExtensionsForEveryChild)
     - [IsAllCornersVisible](#transformExtensionsIsAllCornersVisible)
     - [IsAtLeastOneCornerVisible](#transformExtensionsIsAtLeastOneCornerVisible)
   - [Vector](#vectorExtensions)
+    - [Vector2:AddToAxis](#vectorExtensionsVector2AddToAxis)
+    - [Vector2:InRangeOf](#vectorExtensionsVector2InRangeOf)
     - [Vector2:With](#vectorExtensionsVector2With)
     - [Vector2:WithX](#vectorExtensionsVector2WithX)
     - [Vector2:WithY](#vectorExtensionsVector2WithY)
+    - [Vector2:RandomPointInAnnulus](#vectorExtensionsVector2RandomPointInAnnulus)
     - [Vector2:PointToSphereSurface](#vectorExtensionsVector2PointToSphereSurface)
+    - [Vector3:AddToAxis](#vectorExtensionsVector3AddToAxis)
+    - [Vector3:InRangeOf](#vectorExtensionsVector3InRangeOf)
     - [Vector3:With](#vectorExtensionsVector3With)
     - [Vector3:WithX](#vectorExtensionsVector3WithX)
     - [Vector3:WithY](#vectorExtensionsVector3WithY)
@@ -94,6 +121,9 @@
     - [Vector3:WithXY](#vectorExtensionsVector3WithXY)
     - [Vector3:WithXZ](#vectorExtensionsVector3WithXZ)
     - [Vector3:WithYZ](#vectorExtensionsVector3WithYZ)
+    - [Vector3:RandomPointInAnnulus](#vectorExtensionsVector3RandomPointInAnnulus)
+    - [Vector4:AddToAxis](#vectorExtensionsVector4AddToAxis)
+    - [Vector4:InRangeOf](#vectorExtensionsVector4InRangeOf)
     - [Vector4:With](#vectorExtensionsVector4With)
     - [Vector4:WithX](#vectorExtensionsVector4WithX)
     - [Vector4:WithY](#vectorExtensionsVector4WithY)
@@ -120,6 +150,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.1: Add extension methods to the AudioSource class and Vector2/3/4 structs plus a few methods to the other extensions
 - 1.2: Add extension methods to the TMPro and string classes plus a few methods to the other extensions
 - 1.2.1: Add extension methods to the Vector2 struct
+- 1.3: Add extension method to the IEnumerable interface, plus new extension methods to Color, GameObject, IList, Math, String, Transform and Vector
 
 ## 3 - Features <a name="features"/>
 - Extension methods for commonly used classes:
@@ -428,7 +459,65 @@ string ToHexUInt();
 | uint | The uint representation of a color |
 
 
-### 5.4 GameObject Extensions <a name="gameObjectExtensions"/>
+#### WithAlpha <a name="colorExtensionsWithAlpha"/>
+Returns a new Color with the alpha component replaced
+#### Declaration
+```csharp
+Color WithAlpha(float alpha);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | alpha | The new alpha value |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | New Color with the alpha component replaced |
+
+
+#### Blend <a name="colorExtensionsBlend"/>
+Blend two colors based on a specified ratio
+#### Declaration
+```csharp
+Color Blend(Color color2, float ratio);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Color | color2 | The second color of the blend |
+| float | ratio | The blend ratio of the colors |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | The blended color based on the specified ratio |
+
+
+#### Invert <a name="colorExtensionsInvert"/>
+Inverts the color
+#### Declaration
+```csharp
+Color Invert();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | The inverted color |
+
+
+### 5.4 Enumerable Extensions <a name="enumerableExtensions"/>
+#### ForEach <a name="enumerableExtensionsForEach"/>
+Performs an action on each element of the sequence
+#### Declaration
+```csharp
+void ForEach<T>(Action<T> action);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Action<T> | action | The action to be performed on each element |
+
+
+### 5.5 GameObject Extensions <a name="gameObjectExtensions"/>
 #### AddOrGetComponent <a name="gameObjectExtensionsAddOrGetComponent"/>
 Try to get a component from a gameObject, if it doesn't exist, add to it and return it
 #### Declaration
@@ -441,8 +530,43 @@ T AddOrGetComponent<T>();
 | T | The component in the gameObject |
 
 
+#### GetOrNull <a name="gameObjectExtensionsGetOrNull"/>
+Return a gameObject itself if exists, null otherwise
+#### Declaration
+```csharp
+T GetOrNull<T>();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| T | The object itself if it exists and it is not destroyed, null otherwise |
 
-### 5.5 List Extensions <a name="listExtensions"/>
+
+#### GetPath <a name="gameObjectExtensionsGetPath"/>
+Get the full hierarchical path, from the root until parent, for this specific GameObject
+#### Declaration
+```csharp
+string GetPath();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| string | String representation of the hierarchical path |
+
+
+#### GetFullPath <a name="gameObjectExtensionsGetFullPath"/>
+Get the full hierarchical path, from the root until gameObject, for this specific GameObject
+#### Declaration
+```csharp
+string GetFullPath();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| string | String representation of the full hierarchical path |
+
+
+### 5.6 List Extensions <a name="listExtensions"/>
 #### HasIndex <a name="listExtensionsHasIndex"/>
 Returns whether an index is within the bounds of a list
 #### Declaration
@@ -457,6 +581,18 @@ bool HasIndex(int index);
 | Type | Description |
 | :--- | :--- |
 | bool | Wheter the index is within the bounds of the array or not |
+
+
+#### IsNullOrEmpty <a name="listExtensionsIsNullOrEmpty"/>
+Returns whether a list is null or empty
+#### Declaration
+```csharp
+bool IsNullOrEmpty();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool |True, if the list is null or empty, false otherwise |
 
 
 #### First <a name="listExtensionsFirst"/>
@@ -629,18 +765,19 @@ IReadOnlyList<T> AsReadOnly<T>();
 | IReadOnlyList<T> | The read-only version of the list |
 
 
-### 5.6 Math Extensions <a name="mathExtensions"/>
+### 5.7 Math Extensions <a name="mathExtensions"/>
 #### InRange <a name="mathExtensionsInRange"/>
 Returns if the value is within the min and max values
 #### Declaration
 ```csharp
 bool InRange(int min, int max);
+bool InRange(float min, float max);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| int | min | The minimum value |
-| int | max | The maximum value |
+| int/float | min | The minimum value |
+| int/float | max | The maximum value |
 #### Returns
 | Type | Description |
 | :--- | :--- |
@@ -792,7 +929,45 @@ int GetBiasedRandomNumber(int min, int max, double power = 1);
 | int | The generated random number |
 
 
-### 5.7 Renderer Extensions <a name="rendererExtensions"/>
+#### Minimum <a name="mathExtensionsMinimum"/>
+Gets the minimum between two values
+Gets the minimum value in a set of values
+#### Declaration
+```csharp
+float Minimum(float b);
+float Minimum(params float[] values)
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | b | The second value to compare with |
+| float[] | values | Set of values to get the minimum from |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The minimum value between the two/in a set |
+
+
+#### Maximum <a name="mathExtensionsMaximum"/>
+Gets the maximum between two values
+Gets the maximum value in a set of values
+#### Declaration
+```csharp
+float Maximum(float b);
+float Maximum(params float[] values)
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | b | The second value to compare with |
+| float[] | values | Set of values to get the maximum from |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The maximum value between the two/in a set |
+
+
+### 5.8 Renderer Extensions <a name="rendererExtensions"/>
 #### IsVisibleFrom <a name="rendererExtensionsIsVisibleFrom"/>
 Checks if a Renderer is visible from a specified camera
 #### Declaration
@@ -809,7 +984,7 @@ bool IsVisibleFrom(Camera camera);
 | bool | Whether the renderer is visible from the camera or not |
 
 
-### 5.8 RichText Extensions <a name="richTextExtensions"/>
+### 5.9 RichText Extensions <a name="richTextExtensions"/>
 #### WrapAround <a name="richTextExtensionsWrapAround"/>
 Wraps a start and end string around another one
 #### Declaration
@@ -885,7 +1060,55 @@ string Color(uint hexColor);
 | string | The text with the color applied |
 
 
-### 5.9 String Extensions <a name="stringExtensions"/>
+### 5.10 String Extensions <a name="stringExtensions"/>
+#### IsNullOrEmpty <a name="stringExtensionsIsNullOrEmpty"/>
+Checks if a string is null or empty
+#### Declaration
+```csharp
+bool IsNullOrEmpty();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True, if null or empty, false otherwise |
+
+
+#### IsNullOrWhiteSpace <a name="stringExtensionsIsNullOrWhiteSpace"/>
+Checks if a string is null or composed of white space
+#### Declaration
+```csharp
+bool IsNullOrWhiteSpace();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True, if null or composed of white spaces, false otherwise |
+
+
+#### HasValue <a name="stringExtensionsHasValue"/>
+Checks if a string has a value, i.e. not null, not empty and not white spaces only
+#### Declaration
+```csharp
+bool hasValue();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True, if the string has value, false otherwise |
+
+
+#### ValueOrEmpty <a name="stringExtensionsValueOrEmpty"/>
+Gets the value of a string or an empty one if the string is null
+#### Declaration
+```csharp
+string ValueOrEmpty();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| string | The string value or an empty string if null |
+
+
 #### ToVector <a name="stringExtensionsToVector"/>
 Converts a string representation to a Vector
 #### Declaration
@@ -914,7 +1137,71 @@ Color ToColor();
 | Color | The Color representation of the string |
 
 
-### 5.10 TMPro Extensions <a name="tmproExtensions"/>
+#### FromHexString <a name="stringExtensionsFromHexString"/>
+Converts a hex string into a Color
+#### Declaration
+```csharp
+Color FromHexString();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | The Color represented by the hex string |
+
+
+#### GetFileExtension <a name="stringExtensionsGetFileExtension"/>
+Gets the file extension of a file in a string format
+#### Declaration
+```csharp
+string GetFileExtension();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| string | The corresponding file extension |
+
+
+#### Shorten <a name="stringExtensionsShorten"/>
+Shortens a string to a specified maxLength. If the string is smaller, the original string is returned
+#### Declaration
+```csharp
+string Shorten(int maxLength);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| int | maxLength | The max length of the new string |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| string | The shortened string |
+
+
+#### ToInt <a name="stringExtensionsToInt"/>
+Converts a string to an int value
+#### Declaration
+```csharp
+int ToInt();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| int | The int value represented by the string |
+
+
+#### ToFloat <a name="stringExtensionsToFloat"/>
+Converts a string to an float value
+#### Declaration
+```csharp
+float ToFloat();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The float value represented by the string |
+
+
+### 5.11 TMPro Extensions <a name="tmproExtensions"/>
 #### ResizeRectTransformToMatchText <a name="tmproExtensionsResizeRectTransformToMatchText"/>
 Resize the rectTransform of the TMP_Text to match the text size
 #### Declaration
@@ -931,7 +1218,7 @@ void ResizeRectTransformToMatchText(bool shouldResizeHorizontal, bool shouldResi
 | Vector2 | padding | Amount of padding to be added to the rectTransform |
 
 
-### 5.11 Transform Extensions <a name="transformExtensions"/>
+### 5.12 Transform Extensions <a name="transformExtensions"/>
 #### FirstChild <a name="transformExtensionsFirstChild"/>
 Returns the first child transform of a gameObject, returns null if there is no children
 #### Declaration
@@ -954,6 +1241,18 @@ transform LastChild();
 | Type | Description |
 | :--- | :--- |
 | Transform | The last child |
+
+
+#### Children <a name="transformExtensionsChildren"/>
+Retrieves all children from the Transform
+#### Declaration
+```csharp
+IEnumerable<Transform> Children();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| IEnumerable<Transform> | IEnumerable containing all child Transform |
 
 
 #### DestroyAllChildren <a name="transformExtensionsDestroyAllChildren"/>
@@ -1038,6 +1337,18 @@ float DistanceTo(Vector3 other, bool useLocalPosition = false);
 | float | The distance between the two transforms or the ditance between the transform and the point |
 
 
+#### ForEveryChild <a name="transformExtensionsForEveryChild"/>
+Performs an action on every child of the Transform
+#### Declaration
+```csharp
+void ForEveryChild(Action<Transform> action);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Action<Transform> | action | Action to be performed on every child |
+
+
 #### IsAllCornersVisible <a name="transformExtensionsIsAllCornersVisible"/>
 Checks if all corners of a rectTransform are visible on the screen
 #### Declaration
@@ -1070,7 +1381,41 @@ bool IsAtLeastOneCornerVisible(Canvas canvas);
 | bool | True, if at least one corner is on the screen, false otherwise |
 
 
-### 5.12 Vector Extensions <a name="vectorExtensions"/>
+### 5.13 Vector Extensions <a name="vectorExtensions"/>
+#### Vector2:AddToAxis <a name="vectorExtensionsVector2AddToAxis"/>
+Returns a new Vector2 with a specific amount added to each axis
+#### Declaration
+```csharp
+Vector2 AddToAxis(float x = 0, float y = 0);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | Amount to add to the X-axis. Defaults to 0 |
+| float | y | Amount to add to the Y-axis. Defaults to 0 |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector2 | A new Vector2 with the value added to the specified components |
+
+
+#### Vector2:InRangeOf <a name="vectorExtensionsVector2InRangeOf"/>
+Returns true if current Vector2 is in range of specified Vector2 and range
+#### Declaration
+```csharp
+bool InRangeOf(Vector2 origin, float range);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Vector2 | origin | The Vector4 to compare with |
+| float | range | The range of the specified Vector2 |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True, if the current Vector2 is in range, false otherwise |
+
+
 #### Vector2:With <a name="vectorExtensionsVector2With"/>
 Returns a new Vector2 with the specified components replaced
 #### Declaration
@@ -1120,6 +1465,23 @@ Vector2 WithY(float y);
 | Vector2 | A new Vector2 with the Y component replaced |
 
 
+#### Vector2:RandomPointInAnnulus <a name="vectorExtensionsVector2RandomPointInAnnulus"/>
+Gets a random point inside an annulus using the current Vector2 as origin
+#### Declaration
+```csharp
+Vector2 RandomPointInAnnulus(float smallerRadius, float largerRadius);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | smallerRadius | The radius of the smaller circle |
+| float | largerRadius | The radius of the larger circle |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector2 | A random point inside the specified annulus |
+
+
 #### Vector2:PointToSphereSurface <a name="vectorExtensionsVector2PointToSphereSurface"/>
 Map a 2D point to a sphere surface.
   The middle of the 2D point will be mapped to the front of the sphere (0, 0, radius).
@@ -1143,6 +1505,41 @@ Vector3 PointToSphereSurface(float radius, Vector2 xRange, Vector2 yRange);
 | Type | Description |
 | :--- | :--- |
 | Vector3 | The point on the sphere surface |
+
+
+#### Vector3:AddToAxis <a name="vectorExtensionsVector3AddToAxis"/>
+Returns a new Vector3 with a specific amount added to each axis
+#### Declaration
+```csharp
+Vector3 AddToAxis(float x = 0, float y = 0, float z = 0);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | Amount to add to the X-axis. Defaults to 0 |
+| float | y | Amount to add to the Y-axis. Defaults to 0 |
+| float | z | Amount to add to the Z-axis. Defaults to 0 |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | A new Vector3 with the value added to the specified components |
+
+
+#### Vector3:InRangeOf <a name="vectorExtensionsVector3InRangeOf"/>
+Returns true if current Vector3 is in range of specified Vector3 and range
+#### Declaration
+```csharp
+bool InRangeOf(Vector3 origin, float range);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Vector3 | origin | The Vector3 to compare with |
+| float | range | The range of the specified Vector3 |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True, if the current Vector3 is in range, false otherwise |
 
 
 #### Vector3:With <a name="vectorExtensionsVector3With"/>
@@ -1260,6 +1657,58 @@ Vector3 WithXZ(float y, float z);
 | Type | Description |
 | :--- | :--- |
 | Vector3 | A new Vector3 with the Y and Z components replaced |
+
+#### Vector3:RandomPointInAnnulus <a name="vectorExtensionsVector3RandomPointInAnnulus"/>
+Gets a random point inside an annulus using the current Vector3 as origin
+#### Declaration
+```csharp
+Vector3 RandomPointInAnnulus(float smallerRadius, float largerRadius);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | smallerRadius | The radius of the smaller circle |
+| float | largerRadius | The radius of the larger circle |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | A random point inside the specified annulus |
+
+
+#### Vector4:AddToAxis <a name="vectorExtensionsVector4AddToAxis"/>
+Returns a new Vector4 with a specific amount added to each axis
+#### Declaration
+```csharp
+Vector4 AddToAxis(float x = 0, float y = 0, float z = 0, float w = 0);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | x | Amount to add to the X-axis. Defaults to 0 |
+| float | y | Amount to add to the Y-axis. Defaults to 0 |
+| float | z | Amount to add to the Z-axis. Defaults to 0 |
+| float | w | Amount to add to the W-axis. Defaults to 0 |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector4 | A new Vector4 with the value added to the specified components |
+
+
+#### Vector4:InRangeOf <a name="vectorExtensionsVector4InRangeOf"/>
+Returns true if current Vector4 is in range of specified Vector4 and range
+#### Declaration
+```csharp
+bool InRangeOf(Vector4 origin, float range);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Vector4 | origin | The Vector4 to compare with |
+| float | range | The range of the specified Vector4 |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True, if the current Vector4 is in range, false otherwise |
 
 
 #### Vector4:With <a name="vectorExtensionsVector4With"/>
