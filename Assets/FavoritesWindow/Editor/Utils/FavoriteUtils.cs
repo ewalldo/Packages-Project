@@ -5,12 +5,18 @@ namespace FavoritesWindow
 {
 	public static class FavoriteUtils
 	{
-		public static System.Comparison<Object> NameComparison(bool sortByFullPath)
-        {
+		public static System.Comparison<PathObjectPair> NameComparison(bool sortByFullPath)
+		{
 			if (sortByFullPath)
-				return (Object x, Object y) => AssetDatabase.GetAssetPath(y).CompareTo(AssetDatabase.GetAssetPath(x));
+				return (PathObjectPair x, PathObjectPair y) => y.Path.CompareTo(x.Path);
 			else
-				return (Object x, Object y) => y.name.CompareTo(x.name);
+				return (PathObjectPair x, PathObjectPair y) =>
+				{
+					if (y.Obj == null || x.Obj == null)
+						return y.Path.CompareTo(x.Path);
+
+					return y.Obj.name.CompareTo(x.Obj.name);
+				};
 		}
 	}
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,10 +8,9 @@ namespace FavoritesWindow
 	[System.Serializable]
 	public class FavoritePanel
 	{
-        [SerializeField] private List<string> favoritesData;
+        [SerializeField] private List<PathObjectPair> favoritesData;
         [SerializeField] private string panelName;
 
-        public List<Object> Favorites { get; private set; }
         public string PanelName => panelName;
 
         private GUIStyle buttonStyle;
@@ -18,7 +18,7 @@ namespace FavoritesWindow
         public FavoritePanel(string panelName)
         {
             this.panelName = panelName;
-            Favorites = new List<Object>();
+            favoritesData = new List<PathObjectPair>();
         }
 
         public void RenamePanel(string newName)
@@ -28,35 +28,50 @@ namespace FavoritesWindow
 
         public void AddFavorite(Object newFavorite, bool displayFullPath)
         {
-            if (!Favorites.Contains(newFavorite) && AssetDatabase.Contains(newFavorite))
+            string path = AssetDatabase.GetAssetPath(newFavorite);
+            PathObjectPair pathObjectPair = new PathObjectPair()
             {
-                Favorites.Add(newFavorite);
+                Path = path,
+                Obj = newFavorite
+            };
+
+            if (AssetDatabase.Contains(newFavorite) && !favoritesData.Any(pathObjPair => pathObjPair.Obj == newFavorite))
+            {
+                favoritesData.Add(pathObjectPair);
                 SortFavorites(displayFullPath);
             }
         }
 
         public void ClearAll()
         {
-            Favorites.Clear();
+            favoritesData.Clear();
         }
 
         public void SortFavorites(bool displayFullPath)
         {
-            Favorites.Sort(FavoriteUtils.NameComparison(displayFullPath));
+            favoritesData.Sort(FavoriteUtils.NameComparison(displayFullPath));
         }
 
         public void DrawPanel(bool displayFullPath, bool displayIcon)
         {
             buttonStyle ??= StyleUtils.GetFavoriteButtonStyle();
 
-            for (int i = Favorites.Count - 1; i >= 0; i--)
+            for (int i = favoritesData.Count - 1; i >= 0; i--)
             {
-                Object favorite = Favorites[i];
+                Object favorite = favoritesData[i].Obj;
 
                 if (favorite == null)
                 {
-                    Favorites.RemoveAt(i);
-                    continue;
+                    favorite = AssetDatabase.LoadAssetAtPath<Object>(favoritesData[i].Path);
+                    if (favorite != null)
+                    {
+                        favoritesData[i].Obj = favorite;
+                    }
+                    else
+                    {
+                        favoritesData.RemoveAt(i);
+                        continue;
+                    }
                 }
 
                 EditorGUILayout.BeginHorizontal();
@@ -66,40 +81,23 @@ namespace FavoritesWindow
                 if (displayIcon)
                     gUIContent.image = AssetPreview.GetMiniThumbnail(favorite);
 
-                if (GUILayout.Button(gUIContent, buttonStyle))
+                using (var iconSizeScope = new EditorGUIUtility.IconSizeScope(new Vector2(16, 16)))
                 {
-                    if (AssetDatabase.IsValidFolder(assetPath))
-                        AssetDatabase.OpenAsset(favorite);
-                    else
-                        EditorGUIUtility.PingObject(favorite);
+                    if (GUILayout.Button(gUIContent, buttonStyle))
+                    {
+                        if (AssetDatabase.IsValidFolder(assetPath))
+                            AssetDatabase.OpenAsset(favorite);
+                        else
+                            EditorGUIUtility.PingObject(favorite);
+                    }
                 }
 
                 if (GUILayout.Button("X", GUILayout.Width(StyleUtils.FAVORITE_BUTTON_HEIGHT), GUILayout.ExpandWidth(false), GUILayout.Height(StyleUtils.FAVORITE_BUTTON_HEIGHT)))
                 {
-                    Favorites.RemoveAt(i);
+                    favoritesData.RemoveAt(i);
                 }
 
                 EditorGUILayout.EndHorizontal();
-            }
-        }
-
-        public void SaveData()
-        {
-            favoritesData = new List<string>();
-
-            foreach (Object obj in Favorites)
-            {
-                favoritesData.Add(AssetDatabase.GetAssetPath(obj));
-            }
-        }
-
-        public void LoadData()
-        {
-            Favorites = new List<Object>();
-
-            foreach (string path in favoritesData)
-            {
-                Favorites.Add(AssetDatabase.LoadAssetAtPath<Object>(path));
             }
         }
     }

@@ -17,28 +17,13 @@ namespace FavoritesWindow
 
             FavoritesData data = JsonUtility.FromJson<FavoritesData>(jsonData);
 
-            List<FavoritePanel> favoritePanels = new List<FavoritePanel>();
-
-            foreach (FavoritePanel favoritePanel in data.FavoritePanels)
-            {
-                favoritePanel.LoadData();
-                favoritePanels.Add(favoritePanel);
-            }
-
-            foreach (FavoritePanel panel in favoritePanels)
-                panel.Favorites.RemoveAll(favorite => favorite == null);
-
-            return favoritePanels;
+            return data.FavoritePanels;
         }
 
         public static void SaveFavorites(List<FavoritePanel> favoritePanels)
         {
             FavoritesData data = new FavoritesData { FavoritePanels = favoritePanels };
-            foreach (FavoritePanel favoritePanel in data.FavoritePanels)
-            {
-                favoritePanel.SaveData();
-            }
-
+            
             string jsonData = JsonUtility.ToJson(data);
             EditorPrefs.SetString(DATA_KEY + PlayerSettings.productGUID.ToString(), jsonData);
         }

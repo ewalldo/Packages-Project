@@ -63,6 +63,7 @@ namespace FavoritesWindow
             {
                 if (!IsValidIndex)
                 {
+                    currentPanel = 0;
                     EditorGUILayout.EndHorizontal();
                     return;
                 }
@@ -112,6 +113,8 @@ namespace FavoritesWindow
                         {
                             favoritePanels[currentPanel].AddFavorite(draggedObject, displayFullPath);
                         }
+
+                        SaveLoadUtils.SaveFavorites(favoritePanels);
                     }
 
                     Event.current.Use();
@@ -143,7 +146,10 @@ namespace FavoritesWindow
             DrawButton("Clear all favorites", () =>
             {
                 if (EditorUtility.DisplayDialog("Clear panel", "Are you sure you want to clear this panel?", "Yes", "No"))
+                {
                     favoritePanels[currentPanel].ClearAll();
+                    SaveLoadUtils.SaveFavorites(favoritePanels);
+                }
             });
 
             EditorGUILayout.EndHorizontal();
@@ -158,6 +164,7 @@ namespace FavoritesWindow
                     FavoritePanel favoritePanel = new FavoritePanel(newPanelName);
                     favoritePanels.Add(favoritePanel);
                     currentPanel = favoritePanels.Count - 1;
+                    SaveLoadUtils.SaveFavorites(favoritePanels);
                     return true;
                 }
                 else
@@ -180,6 +187,7 @@ namespace FavoritesWindow
                 if (IsUniquePanelName(newPanelName))
                 {
                     favoritePanels[currentPanel].RenamePanel(newPanelName);
+                    SaveLoadUtils.SaveFavorites(favoritePanels);
                     return true;
                 }
                 else
@@ -200,6 +208,7 @@ namespace FavoritesWindow
             {
                 favoritePanels.RemoveAt(currentPanel);
                 currentPanel--;
+                SaveLoadUtils.SaveFavorites(favoritePanels);
 
                 if (currentPanel < 0 && favoritePanels.Count > 0)
                     currentPanel = favoritePanels.Count - 1;

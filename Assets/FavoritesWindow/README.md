@@ -17,6 +17,7 @@ This package has been tested with Unity version 2022.1 and is expected to work w
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.0.1: Fixed asset loading issue with different version of Unity
 
 ## 3 - Features <a name="features"/>
 - Customizable Panels: Create and manage multiple favorite panels to suit your organizational needs.

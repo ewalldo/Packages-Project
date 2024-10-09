@@ -1,8 +1,6 @@
-using UnityEngine;
-
 namespace FavoritesWindow
 {
-	[System.Serializable]
+    [System.Serializable]
 	public class FavoriteSettings
 	{
 		public bool DisplayFullPath;
