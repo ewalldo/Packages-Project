@@ -16,6 +16,7 @@ Repository to hold the packages of the tools I have developed for Unity.
 * [Loot Pool](Assets/LootPool/README.md)
 * [Measuring Tool](Assets/MeasuringTool/README.md)
 * [Scripts Generator](Assets/ScriptGenerator/README.md)
+* [Selection History](Assets/SelectionHistory/README.md)
 * [Singleton Collection](Assets/SingletonCollection/README.md)
 * [State Machine](Assets/StateMachine/README.md)
 * [Stats System](Assets/StatsSystem/README.md)
