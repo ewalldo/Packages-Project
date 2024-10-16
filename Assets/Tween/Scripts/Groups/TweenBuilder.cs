@@ -19,6 +19,7 @@ namespace Tween
         {
             owner = monoBehaviour;
             tweens = new List<ITweener>();
+            group = new List<Coroutine>();
         }
 
         public ITweenGroup AddTween(ITweener tween)
@@ -31,7 +32,7 @@ namespace Tween
         public void Execute()
         {
             completedTweens = 0;
-            group = new List<Coroutine>();
+            group.Clear();
 
             foreach (ITweener tween in tweens)
             {

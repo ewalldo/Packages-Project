@@ -54,7 +54,9 @@ namespace Tween
         public void Stop()
         {
             curTween = 0;
-            owner.StopCoroutine(sequence);
+
+            if (sequence != null)
+                owner.StopCoroutine(sequence);
         }
 
         private void OnTweenComplete()
