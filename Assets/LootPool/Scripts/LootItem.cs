@@ -26,12 +26,7 @@ namespace LootSystem
         /// Instantiate a new loot item with the default values
         /// </summary>
         public LootItem()
-        {
-            weight = 0f;
-            item = null;
-            minCountItem = 0;
-            maxCountItem = 0;
-        }
+            : this(0, null, 1, 1) { }
 
         /// <summary>
         /// Instantiate a new loot item

@@ -22,6 +22,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.0.1: Refactor editor code
 
 ## 3 - Features <a name="features"/>
 - Easier to create and manage loot pools: By using ScriptablesObjects, loot pools can be created and managed from the editor, without the need of any code.
