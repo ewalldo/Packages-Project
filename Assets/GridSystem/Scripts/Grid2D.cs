@@ -8,12 +8,12 @@ namespace GridSystem
 {
 	public class Grid2D<T>
 	{
-        private int width;
-        private int height;
-        private float cellSizeX;
-        private float cellSizeZ;
-        private Vector3 gridOriginPosition;
-        private T[,] gridObjectArray;
+        private readonly int width;
+        private readonly int height;
+        private readonly float cellSizeX;
+        private readonly float cellSizeZ;
+        private readonly Vector3 gridOriginPosition;
+        private Dictionary<GridPosition2D, T> grid;
 
         /// <summary>
         /// Get the width of the grid
@@ -77,7 +77,7 @@ namespace GridSystem
             this.cellSizeZ = cellSizeZ;
             this.gridOriginPosition = gridOriginPosition;
 
-            gridObjectArray = new T[width, height];
+            grid = new Dictionary<GridPosition2D, T>();
 
             for (int x = 0; x < width; x++)
             {
@@ -87,9 +87,9 @@ namespace GridSystem
 
                     // ex: grid2D = new Grid2D<GridObject>(width, height, cellSize, cellSize, Vector3.Zero, (Grid2D<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
                     if (gridObjectInitializer != null)
-                        gridObjectArray[x, z] = gridObjectInitializer(this, gridPosition2D);
+                        grid[new GridPosition2D(x, z)] = gridObjectInitializer(this, gridPosition2D);
                     else
-                        gridObjectArray[x, z] = default(T);
+                        grid[new GridPosition2D(x, z)] = default(T);
                 }
             }
         }
@@ -128,42 +128,20 @@ namespace GridSystem
 
         public T this[int x, int z]
         {
-            get
-            {
-                GridPosition2D gridPosition2D = new GridPosition2D(x, z);
-
-                return GetGridObjectAtGridPosition2D(gridPosition2D);
-            }
-            set
-            {
-                GridPosition2D gridPosition2D = new GridPosition2D(x, z);
-
-                SetGridObjectAtGridPosition2D(gridPosition2D, value, true);
-            }
+            get => GetGridObjectAtGridPosition2D(new GridPosition2D(x, z));
+            set => SetGridObjectAtGridPosition2D(new GridPosition2D(x, z), value, true);
         }
 
         public T this[GridPosition2D gridPosition2D]
         {
-            get
-            {
-                return GetGridObjectAtGridPosition2D(gridPosition2D);
-            }
-            set
-            {
-                SetGridObjectAtGridPosition2D(gridPosition2D, value, true);
-            }
+            get => GetGridObjectAtGridPosition2D(gridPosition2D);
+            set => SetGridObjectAtGridPosition2D(gridPosition2D, value, true);
         }
 
         public T this[Vector3 worldPosition]
         {
-            get
-            {
-                return GetGridObjectAtWorldPosition(worldPosition);
-            }
-            set
-            {
-                SetGridObjectAtWorldPosition(worldPosition, value, true);
-            }
+            get => GetGridObjectAtWorldPosition(worldPosition);
+            set => SetGridObjectAtWorldPosition(worldPosition, value, true);
         }
 
         /// <summary>
@@ -243,7 +221,7 @@ namespace GridSystem
         /// <returns>The element at the specified grid position</returns>
         public T GetGridObjectAtGridPosition2D(GridPosition2D gridPosition2D)
         {
-            return gridObjectArray[gridPosition2D.X, gridPosition2D.Z];
+            return grid[gridPosition2D];
         }
 
         /// <summary>
@@ -254,7 +232,6 @@ namespace GridSystem
         public T GetGridObjectAtWorldPosition(Vector3 worldPosition)
         {
             GridPosition2D gridPosition2D = GetGridPosition2DFromWorldPosition(worldPosition);
-
             return GetGridObjectAtGridPosition2D(gridPosition2D);
         }
 
@@ -309,6 +286,19 @@ namespace GridSystem
         }
 
         /// <summary>
+        /// Gets the wrapped position of the grid
+        /// </summary>
+        /// <param name="x">The x-coordinate of the position</param>
+        /// <param name="z">The z-coordinate of the position</param>
+        /// <returns>The wrapped position</returns>
+        public GridPosition2D GetWrappedGridPosition(int x, int z)
+        {
+            int wrappedX = (x + GetWidth) % GetWidth;
+            int wrappedZ = (z + GetHeight) % GetHeight;
+            return new GridPosition2D(wrappedX, wrappedZ);
+        }
+
+        /// <summary>
         /// Set a grid object in a determined grid position
         /// </summary>
         /// <param name="gridPosition2D">The grid position of the object</param>
@@ -317,22 +307,11 @@ namespace GridSystem
         /// <returns>The new object was set successfully or not</returns>
         public bool SetGridObjectAtGridPosition2D(GridPosition2D gridPosition2D, T newObject, bool replaceIfExistAnObjectAlready = true)
         {
-            if (replaceIfExistAnObjectAlready) // always replace
+            if ((replaceIfExistAnObjectAlready) || // always replace
+                (default(T) is null && grid[gridPosition2D] == null) || // check if it is a nullable type AND if it is, check if the position is null, if yes set the position
+                (grid[gridPosition2D].Equals(default(T)))) // it is a non-nullable type, check if the position is at default value, if yes set the position
             {
-                gridObjectArray[gridPosition2D.X, gridPosition2D.Z] = newObject;
-                OnGridPositionValueChanged?.Invoke(gridPosition2D, newObject);
-                return true;
-            }
-            // replace if empty position only
-            else if (default(T) is null && gridObjectArray[gridPosition2D.X, gridPosition2D.Z] == null) // check if it is a nullable type AND if it is, check if the position is null, if yes set the position
-            {
-                gridObjectArray[gridPosition2D.X, gridPosition2D.Z] = newObject;
-                OnGridPositionValueChanged?.Invoke(gridPosition2D, newObject);
-                return true;
-            }
-            else if (gridObjectArray[gridPosition2D.X, gridPosition2D.Z].Equals(default(T))) // it is a non-nullable type, check if the position is at default value, if yes set the position
-            {
-                gridObjectArray[gridPosition2D.X, gridPosition2D.Z] = newObject;
+                grid[gridPosition2D] = newObject;
                 OnGridPositionValueChanged?.Invoke(gridPosition2D, newObject);
                 return true;
             }
@@ -569,27 +548,14 @@ namespace GridSystem
         {
             List<GridPosition2D> neighboursList = new List<GridPosition2D>();
 
-            for (int x = -1; x <= 1; x++)
+            foreach (GridPosition2D neighbour in includeDiagonalNeighbours ? center.Neighbours : center.DirectNeighbours)
             {
-                for (int z = -1; z <= 1; z++)
-                {
-                    GridPosition2D gridPositionNeighbour = center + (new GridPosition2D(x, z));
-
-                    if (!IsWithinGrid2DBounds(gridPositionNeighbour))
-                        continue;
-
-                    if (center == gridPositionNeighbour && !includeCenterPosition)
-                        continue;
-
-                    if (!includeDiagonalNeighbours)
-                    {
-                        if (x != 0 && z != 0)
-                            continue;
-                    }
-
-                    neighboursList.Add(gridPositionNeighbour);
-                }
+                if (IsWithinGrid2DBounds(neighbour))
+                    neighboursList.Add(neighbour);
             }
+
+            if (includeCenterPosition)
+                neighboursList.Add(center);
 
             return neighboursList;
         }
@@ -600,29 +566,19 @@ namespace GridSystem
         /// <param name="center">The center position to calculate the range from</param>
         /// <param name="range">The lenght of the range (in grid units)</param>
         /// <param name="includeCenterPosition">Should include the center position in the return list</param>
-        /// <returns>List containing all the positions within a certain range</returns>
+        /// <returns>List containing all the positions within the range</returns>
         public List<GridPosition2D> GetGridPositionsFromADistanceRange(GridPosition2D center, int range, bool includeCenterPosition = false)
         {
             List<GridPosition2D> rangeList = new List<GridPosition2D>();
 
-            for (int x = -range; x <= range; x++)
+            foreach (GridPosition2D inRange in center.GetGridPositionsFromADistanceRange(range))
             {
-                for (int z = -range; z <= range; z++)
-                {
-                    if (Mathf.Abs(x) + Mathf.Abs(z) > range)
-                        continue;
-
-                    GridPosition2D testGridPosition = center + (new GridPosition2D(x, z));
-
-                    if (!IsWithinGrid2DBounds(testGridPosition))
-                        continue;
-
-                    if (center == testGridPosition && !includeCenterPosition)
-                        continue;
-
-                    rangeList.Add(testGridPosition);
-                }
+                if (IsWithinGrid2DBounds(inRange))
+                    rangeList.Add(inRange);
             }
+
+            if (includeCenterPosition)
+                rangeList.Add(center);
 
             return rangeList;
         }
@@ -633,26 +589,42 @@ namespace GridSystem
         /// <param name="center">The center position to calculate the range from</param>
         /// <param name="range">The length of the range (in grid units)</param>
         /// <param name="includeCenterPosition">Should include the center position in the return list</param>
-        /// <returns>List containing all the positions within a certain square range</returns>
+        /// <returns>List containing all the positions within the square range</returns>
         public List<GridPosition2D> GetGridPositionsFromASquareRange(GridPosition2D center, int range, bool includeCenterPosition = false)
         {
             List<GridPosition2D> rangeList = new List<GridPosition2D>();
 
-            for (int x = -range; x <= range; x++)
+            foreach (GridPosition2D inRange in center.GetGridPositionsFromASquareRange(range))
             {
-                for (int z = -range; z <= range; z++)
-                {
-                    GridPosition2D testGridPosition = center + (new GridPosition2D(x, z));
-
-                    if (!IsWithinGrid2DBounds(testGridPosition))
-                        continue;
-
-                    if (center == testGridPosition && !includeCenterPosition)
-                        continue;
-
-                    rangeList.Add(testGridPosition);
-                }
+                if (IsWithinGrid2DBounds(inRange))
+                    rangeList.Add(inRange);
             }
+
+            if (includeCenterPosition)
+                rangeList.Add(center);
+
+            return rangeList;
+        }
+
+        /// <summary>
+        /// Get all grid positions within a circular range
+        /// </summary>
+        /// <param name="center">The center position to calculate the range from</param>
+        /// <param name="range">The length of the range (in grid units)</param>
+        /// <param name="includeCenterPosition">Should include the center position in the return list</param>
+        /// <returns>List containing all the positions within the circular range</returns>
+        public List<GridPosition2D> GetGridPositionsFromACircularRange(GridPosition2D center, float range, bool includeCenterPosition = false)
+        {
+            List<GridPosition2D> rangeList = new List<GridPosition2D>();
+
+            foreach (GridPosition2D inRange in center.GetGridPositionsFromACircularRange(range))
+            {
+                if (IsWithinGrid2DBounds(inRange))
+                    rangeList.Add(inRange);
+            }
+
+            if (includeCenterPosition)
+                rangeList.Add(center);
 
             return rangeList;
         }
@@ -728,7 +700,7 @@ namespace GridSystem
                 using (FileStream stream = File.OpenWrite(filename))
                 {
                     BinaryFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(stream, gridObjectArray);
+                    formatter.Serialize(stream, grid);
                 }
 
                 return true;
@@ -752,7 +724,7 @@ namespace GridSystem
                 using (FileStream stream = File.OpenRead(filename))
                 {
                     BinaryFormatter formatter = new BinaryFormatter();
-                    gridObjectArray = (T[,])formatter.Deserialize(stream);
+                    grid = (Dictionary<GridPosition2D, T>)formatter.Deserialize(stream);
 
                     return true;
                 }
