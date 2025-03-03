@@ -10,9 +10,11 @@ namespace Tween
         private readonly List<ITweener> tweens;
 
         private int completedTweens;
+        private bool isExecuting;
 
         private List<Coroutine> group;
 
+        public bool IsExecuting => isExecuting;
         public event Action OnAllTweensCompleted;
 
         public TweenBuilder(MonoBehaviour monoBehaviour)
@@ -20,6 +22,7 @@ namespace Tween
             owner = monoBehaviour;
             tweens = new List<ITweener>();
             group = new List<Coroutine>();
+            isExecuting = false;
         }
 
         public ITweenGroup AddTween(ITweener tween)
@@ -31,7 +34,11 @@ namespace Tween
 
         public void Execute()
         {
+            if (tweens.Count == 0)
+                return;
+
             completedTweens = 0;
+            isExecuting = true;
             group.Clear();
 
             foreach (ITweener tween in tweens)
@@ -47,11 +54,13 @@ namespace Tween
             group.Clear();
             OnAllTweensCompleted = null;
             completedTweens = 0;
+            isExecuting = false;
         }
 
         public void Stop()
         {
             completedTweens = 0;
+            isExecuting = false;
 
             foreach (Coroutine coroutine in group)
             {
@@ -64,7 +73,10 @@ namespace Tween
             completedTweens++;
 
             if (completedTweens >= tweens.Count)
+            {
                 OnAllTweensCompleted?.Invoke();
+                isExecuting = false;
+            }
         }
     }
 }

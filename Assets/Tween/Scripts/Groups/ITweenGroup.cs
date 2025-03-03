@@ -6,6 +6,7 @@ namespace Tween
 	{
 		event Action OnAllTweensCompleted;
 		ITweenGroup AddTween(ITweener tween);
+		bool IsExecuting { get; }
 		void Execute();
 		void Reset();
 		void Stop();

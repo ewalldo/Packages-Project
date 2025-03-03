@@ -10,9 +10,11 @@ namespace Tween
         private readonly List<ITweener> tweens;
 
         private int curTween;
+        private bool isExecuting;
 
         private Coroutine sequence;
 
+        public bool IsExecuting => isExecuting;
         public event Action OnAllTweensCompleted;
 
         public TweenSequencer(MonoBehaviour monoBehaviour)
@@ -20,6 +22,7 @@ namespace Tween
             owner = monoBehaviour;
             tweens = new List<ITweener>();
             curTween = 0;
+            isExecuting = false;
         }
 
         public ITweenGroup AddTween(ITweener tween)
@@ -41,7 +44,11 @@ namespace Tween
 
         public void Execute()
         {
+            if (tweens.Count == 0)
+                return;
+
             sequence = owner.StartCoroutine(tweens[curTween].Execute());
+            isExecuting = true;
         }
 
         public void Reset()
@@ -49,11 +56,13 @@ namespace Tween
             tweens.Clear();
             OnAllTweensCompleted = null;
             curTween = 0;
+            isExecuting = false;
         }
 
         public void Stop()
         {
             curTween = 0;
+            isExecuting = false;
 
             if (sequence != null)
                 owner.StopCoroutine(sequence);
@@ -73,6 +82,7 @@ namespace Tween
         {
             curTween = 0;
             OnAllTweensCompleted?.Invoke();
+            isExecuting = false;
         }
     }
 }

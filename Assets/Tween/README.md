@@ -972,28 +972,39 @@ public ITweenGroup AddTween(ITweener tween);
 | :--- | :--- |
 | ITweenGroup | The tween group with the new tween added to it |
 
-#### 5.4.5 ITweenGroup.Execute() <a name="iTweenGroupExecute"/>
+#### 5.4.5 ITweenGroup.IsExecuting <a name="iTweenGroupIsExecuting"/>
+True if the group is currently running, false otherwise.
+#### Declaration
+```csharp
+public bool IsExecuting;
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | Boolean indicating if the group is currently running |
+
+#### 5.4.6 ITweenGroup.Execute() <a name="iTweenGroupExecute"/>
 Starts the execution of the tween group.
 #### Declaration
 ```csharp
 public void Execute();
 ```
 
-#### 5.4.6 ITweenGroup.Reset() <a name="iTweenGroupReset"/>
+#### 5.4.7 ITweenGroup.Reset() <a name="iTweenGroupReset"/>
 Clear all tweens in the group
 #### Declaration
 ```csharp
 public void Reset();
 ```
 
-#### 5.4.7 ITweenGroup.Stop() <a name="iTweenGroupStop"/>
+#### 5.4.8 ITweenGroup.Stop() <a name="iTweenGroupStop"/>
 Stop the execution of the tween group
 #### Declaration
 ```csharp
 public void Stop();
 ```
 
-#### 5.4.8 TweenSequenceer.AddDelay() <a name="tweenSequenceerAddDelay"/>
+#### 5.4.9 TweenSequenceer.AddDelay() <a name="tweenSequenceerAddDelay"/>
 Add a delay to a sequence.
 #### Declaration
 ```csharp
@@ -1008,7 +1019,7 @@ public ITweenGroup AddDelay(float duration);
 | :--- | :--- |
 | ITweenGroup | The tween group with the new delay added to it |
 
-#### 5.4.9 TweenSequenceer.AddConditional() <a name="tweenSequenceerAddConditional"/>
+#### 5.4.10 TweenSequenceer.AddConditional() <a name="tweenSequenceerAddConditional"/>
 Add a conditional check to a sequence, i.e. it will only proceed to the next tween in the sequence when the condition is fulfilled
 #### Declaration
 ```csharp
