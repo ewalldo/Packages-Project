@@ -59,13 +59,19 @@ namespace Tween
             isExecuting = false;
         }
 
-        public void Stop()
+        public void Stop(bool forceFinish = false)
         {
             curTween = 0;
             isExecuting = false;
 
             if (sequence != null)
                 owner.StopCoroutine(sequence);
+
+            if (forceFinish)
+            {
+                foreach (ITweener tween in tweens)
+                    tween.ForceFinish();
+            }
         }
 
         private void OnTweenComplete()

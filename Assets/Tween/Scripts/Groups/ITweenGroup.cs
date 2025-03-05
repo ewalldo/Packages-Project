@@ -9,6 +9,6 @@ namespace Tween
 		bool IsExecuting { get; }
 		void Execute();
 		void Reset();
-		void Stop();
+		void Stop(bool forceFinish);
 	}
 }

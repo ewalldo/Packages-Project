@@ -82,6 +82,12 @@ namespace Tween
             isExecuting = false;
         }
 
+        public void ForceFinish()
+        {
+            isExecuting = false;
+            ApplyTween(endValue);
+        }
+
         protected void SaveInitialTweenValues()
         {
             from = initialValue;

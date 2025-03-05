@@ -12,7 +12,7 @@ namespace Tween
         private int completedTweens;
         private bool isExecuting;
 
-        private List<Coroutine> group;
+        private Dictionary<Coroutine, ITweener> group;
 
         public bool IsExecuting => isExecuting;
         public event Action OnAllTweensCompleted;
@@ -21,7 +21,7 @@ namespace Tween
         {
             owner = monoBehaviour;
             tweens = new List<ITweener>();
-            group = new List<Coroutine>();
+            group = new Dictionary<Coroutine, ITweener>();
             isExecuting = false;
         }
 
@@ -44,7 +44,7 @@ namespace Tween
             foreach (ITweener tween in tweens)
             {
                 Coroutine coroutine = owner.StartCoroutine(tween.Execute());
-                group.Add(coroutine);
+                group.Add(coroutine, tween);
             }
         }
 
@@ -57,14 +57,17 @@ namespace Tween
             isExecuting = false;
         }
 
-        public void Stop()
+        public void Stop(bool forceFinish = false)
         {
             completedTweens = 0;
             isExecuting = false;
 
-            foreach (Coroutine coroutine in group)
+            foreach (KeyValuePair<Coroutine, ITweener> coroutineTweenPair in group)
             {
-                owner.StopCoroutine(coroutine);
+                owner.StopCoroutine(coroutineTweenPair.Key);
+
+                if (forceFinish && coroutineTweenPair.Value.IsExecuting)
+                    coroutineTweenPair.Value.ForceFinish();
             }
         }
 

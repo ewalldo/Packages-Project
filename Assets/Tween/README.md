@@ -85,6 +85,7 @@
     - [TweenSequencer()](#tweenSequencer)
     - [ITweenGroup.OnAllTweensCompleted()](#iTweenGroupOnAllTweensCompleted)
     - [ITweenGroup.AddTween()](#iTweenGroupAddTween)
+    - [ITweenGroup.IsExecuting()](#iTweenGroupIsExecuting)
     - [ITweenGroup.Execute()](#iTweenGroupExecute)
     - [ITweenGroup.Reset()](#iTweenGroupReset)
     - [ITweenGroup.Stop()](#iTweenGroupStop)
@@ -1001,8 +1002,12 @@ public void Reset();
 Stop the execution of the tween group
 #### Declaration
 ```csharp
-public void Stop();
+public void Stop(bool forceFinish);
 ```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| bool | forceFinish | True for all tweens in the group to become their final value on stop, false otherwise |
 
 #### 5.4.9 TweenSequenceer.AddDelay() <a name="tweenSequenceerAddDelay"/>
 Add a delay to a sequence.

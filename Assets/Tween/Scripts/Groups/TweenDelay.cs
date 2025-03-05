@@ -8,6 +8,9 @@ namespace Tween
     {
         private readonly float duration;
 
+        private bool isExecuting;
+
+        public bool IsExecuting => isExecuting;
         public event Action OnComplete;
 
         public TweenDelay(float duration)
@@ -17,9 +20,17 @@ namespace Tween
 
         public IEnumerator Execute()
         {
+            isExecuting = true;
             yield return new WaitForSeconds(duration);
 
             OnComplete?.Invoke();
+            isExecuting = false;
+        }
+
+        public void ForceFinish()
+        {
+            isExecuting = false;
+            return;
         }
     }
 }
