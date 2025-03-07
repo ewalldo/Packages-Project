@@ -34,6 +34,9 @@
     - [Material Tweens](#materialTweens)
       - [TweenMaterialColor()](#tweenMaterialColor)
       - [TweenMaterialFade()](#tweenMaterialFade)
+    - [RawImage Tweens](#rawImageTweens)
+      - [TweenRawImageColor()](#tweenRawImageColor)
+      - [TweenRawImageFade()](#tweenRawImageFade)
     - [Renderer Tweens](#rendererTweens)
       - [TweenRendererColor()](#tweenRendererColor)
       - [TweenRendererFade()](#tweenRendererFade)
@@ -565,9 +568,53 @@ public TweenMaterialFade(Material targetObject, TweenParameters<float> tweenPara
 | Action | onComplete | Action to be executed when the tween is completed |
 | TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-#### 5.1.7 Renderer Tweens <a name="rendererTweens"/>
+#### 5.1.7 RawImage Tweens <a name="rawImageTweens"/>
+Tweens that are applied to the RawImage component.
+##### 5.1.7.1 TweenRawImageColor() <a name="tweenRawImageColor"/>
+Apply tween to the color attribute of the RawImage's component
+#### Declaration
+```csharp
+public TweenRawImageColor(RawImage targetObject, Color from, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRawImageColor(RawImage targetObject, Color to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRawImageColor(RawImage targetObject, TweenParameters<Color> tweenParameters, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| RawImage | targetObject | The target RawImage to apply the tween |
+| Color | from | The initial value of the color |
+| Color | to | The final value of the color |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
+
+##### 5.1.7.2 TweenRawImageFade() <a name="tweenRawImageFade"/>
+Apply tween to the alpha attribute of the RawImage's color component
+#### Declaration
+```csharp
+public TweenRawImageFade(RawImage targetObject, float from, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRawImageFade(RawImage targetObject, float to, float duration, float delay = 0f, EasingFunction easingFunction = null, ILoopType loopType = null, Action onComplete = null);
+public TweenRawImageFade(RawImage targetObject, TweenParameters<float> tweenParameters, Action onComplete = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| RawImage | targetObject | The target RawImage to apply the tween |
+| float | from | The initial value of the alpha |
+| float | to | The final value of the alpha |
+| float | duration | How long the tween will take to complete |
+| float | delay | How long should it wait until the tween starts |
+| EasingFunction | easingFunction | The easing function to be applied when tweening the values |
+| ILoopType | loopType | The type of looping for this tween |
+| Action | onComplete | Action to be executed when the tween is completed |
+| TweenParameters | tweenParameters | Class containing the basic values for the tween |
+
+#### 5.1.8 Renderer Tweens <a name="rendererTweens"/>
 Tweens that are applied to the Renderer component.
-##### 5.1.7.1 TweenRendererColor() <a name="tweenRendererColor"/>
+##### 5.1.8.1 TweenRendererColor() <a name="tweenRendererColor"/>
 Apply tween to the color attribute of the Renderer's material component
 #### Declaration
 ```csharp
@@ -589,7 +636,7 @@ public TweenRendererColor(Renderer targetObject, TweenParameters<Color> tweenPar
 | Action | onComplete | Action to be executed when the tween is completed |
 | TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-##### 5.1.7.2 TweenRendererFade() <a name="tweenRendererFade"/>
+##### 5.1.8.2 TweenRendererFade() <a name="tweenRendererFade"/>
 Apply tween to the alpha attribute of the Renderer's material component
 #### Declaration
 ```csharp
@@ -611,9 +658,9 @@ public TweenRendererFade(Renderer targetObject, TweenParameters<float> tweenPara
 | Action | onComplete | Action to be executed when the tween is completed |
 | TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-#### 5.1.8 Text Tweens <a name="textTweens"/>
+#### 5.1.9 Text Tweens <a name="textTweens"/>
 Tweens that are applied to the TMP_Text component.
-##### 5.1.8.1 TweenTextColor() <a name="tweenTextColor"/>
+##### 5.1.9.1 TweenTextColor() <a name="tweenTextColor"/>
 Apply tween to the color attribute of the TMP_Text component
 #### Declaration
 ```csharp
@@ -634,7 +681,7 @@ public TweenTextColor(TMP_Text targetObject, TweenParameters<Color> tweenParamet
 | Action | onComplete | Action to be executed when the tween is completed |
 | TweenParameters | tweenParameters | Class containing the basic values for the tween |
 
-##### 5.1.8.2 TweenTextFade() <a name="tweenTextFade"/>
+##### 5.1.9.2 TweenTextFade() <a name="tweenTextFade"/>
 Apply tween to the alpha attribute of the TMP_Text component
 #### Declaration
 ```csharp
