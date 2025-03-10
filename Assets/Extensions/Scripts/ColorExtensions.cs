@@ -5,12 +5,12 @@ namespace Extensions
 {
     public static class ColorExtensions
 	{
-		/// <summary>
-		/// Converts a Color to a hexadecimal string representation
-		/// </summary>
-		/// <param name="color">The color to be converted</param>
-		/// <returns>The hex string representation of the color</returns>
-		public static string ToHexString(this Color color)
+        /// <summary>
+        /// Converts a Color to a hexadecimal string representation
+        /// </summary>
+        /// <param name="color">The color to be converted</param>
+        /// <returns>The hex string representation of the color</returns>
+        public static string ToHexString(this Color color)
 		{
 			return "#" + ColorUtility.ToHtmlStringRGBA(color);
 		}
@@ -30,6 +30,44 @@ namespace Extensions
 		}
 
 		/// <summary>
+		/// Returns a new Color with the specified components replaced.
+		/// </summary>
+		/// <param name="color">The original Color</param>
+		/// <param name="r">Optional R component. If null, the original R component is used.</param>
+		/// <param name="g">Optional G component. If null, the original G component is used.</param>
+		/// <param name="b">Optional B component. If null, the original B component is used.</param>
+		/// <param name="a">Optional A component. If null, the original A component is used.</param>
+		/// <returns>A new Color with the specified components replaced.</returns>
+		public static Color With(this Color color, float? r = null, float? g = null, float? b = null, float? a = null)
+		{
+			return new Color(r ?? color.r, g ?? color.g, b ?? color.b, a ?? color.a);
+		}
+
+		/// <summary>
+		/// Returns a new Color with the R component replaced.
+		/// </summary>
+		/// <param name="color">The original Color</param>
+		/// <param name="rValue">The new R component.</param>
+		/// <returns>A new Color with the R component replaced.</returns>
+		public static Color WithRed(this Color color, float rValue) => color.With(r: rValue);
+
+		/// <summary>
+		/// Returns a new Color with the G component replaced.
+		/// </summary>
+		/// <param name="color">The original Color</param>
+		/// <param name="gValue">The new G component.</param>
+		/// <returns>A new Color with the G component replaced.</returns>
+		public static Color WithGreen(this Color color, float gValue) => color.With(g: gValue);
+
+		/// <summary>
+		/// Returns a new Color with the B component replaced.
+		/// </summary>
+		/// <param name="color">The original Color</param>
+		/// <param name="bValue">The new B component.</param>
+		/// <returns>A new Color with the B component replaced.</returns>
+		public static Color WithBlue(this Color color, float bValue) => color.With(b: bValue);
+
+		/// <summary>
 		/// Returns a new Color with the alpha component replaced
 		/// </summary>
 		/// <param name="color">The original color</param>
@@ -40,7 +78,7 @@ namespace Extensions
 			if (!alpha.InRange(0f, 1f))
 				throw new ArgumentException("Alpha value should be between the range [0, 1]");
 
-			return new Color(color.r, color.g, color.b, alpha);
+			return color.With(a: alpha);
 		}
 
 		/// <summary>

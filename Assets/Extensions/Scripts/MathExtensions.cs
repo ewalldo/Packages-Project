@@ -246,5 +246,19 @@ namespace Extensions
 
             return max;
         }
+
+        /// <summary>
+        /// Converts a value to its representation in percentage (between 0 and 100%)
+        /// </summary>
+        /// <param name="value">The value to convert</param>
+        /// <param name="total">The value which represents 100%</param>
+        /// <returns>The value representation in percentage</returns>
+        public static float ToPercentage(this float value, float total = 1f)
+        {
+            if (total <= 0)
+                throw new ArgumentOutOfRangeException(nameof(total), "Value should positive and higher than zero.");
+
+            return (value / total) * 100f;
+        }
     }
 }

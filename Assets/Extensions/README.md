@@ -28,7 +28,10 @@
   - [Color](#colorExtensions)
     - [ToHexString](#colorExtensionsToHexString)
     - [ToHexUInt](#colorExtensionsToHexUint)
-    - [WithAlpha](#colorExtensionsWithAlpha)
+    - [WithAlpha](#colorExtensionsWith)
+    - [WithAlpha](#colorExtensionsWithRed)
+    - [WithAlpha](#colorExtensionsWithGreen)
+    - [WithAlpha](#colorExtensionsWithBlue)
     - [Blend](#colorExtensionsBlend)
     - [Invert](#colorExtensionsInvert)
   - [Enumerable](#enumerableExtensions)
@@ -69,6 +72,7 @@
     - [GetBiasedRandomNumber](#mathExtensionsGetBiasedRandomNumber)
     - [Minimum](#mathExtensionsMinimum)
     - [Maximum](#mathExtensionsMaximum)
+    - [ToPercentage](#mathExtensionsToPercentage)
   - [Renderer](#rendererExtensions)
     - [IsVisibleFrom](#rendererExtensionsIsVisibleFrom)
   - [RichText](#richtextExtensions)
@@ -457,6 +461,73 @@ string ToHexUInt();
 | Type | Description |
 | :--- | :--- |
 | uint | The uint representation of a color |
+
+
+#### With <a name="colorExtensionsWith"/>
+Returns a new Color with the specified components replaced
+#### Declaration
+```csharp
+Color With(float? r = null, float? g = null, float? b = null, float? a = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float? | r | The new r value |
+| float? | g | The new g value |
+| float? | b | The new b value |
+| float? | a | The new a value |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | New Color with the specified components replaced |
+
+
+#### WithRed <a name="colorExtensionsWithRed"/>
+Returns a new Color with the R component replaced
+#### Declaration
+```csharp
+Color WithRed(float rValue);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | rValue | The new R value |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | New Color with the R component replaced |
+
+
+#### WithGreen <a name="colorExtensionsWithGreen"/>
+Returns a new Color with the G component replaced
+#### Declaration
+```csharp
+Color WithGreen(float gValue);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | gValue | The new G value |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | New Color with the G component replaced |
+
+
+#### WithBlue <a name="colorExtensionsWithBlue"/>
+Returns a new Color with the B component replaced
+#### Declaration
+```csharp
+Color WithBlue(float bValue);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | bValue | The new B value |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | New Color with the B component replaced |
 
 
 #### WithAlpha <a name="colorExtensionsWithAlpha"/>
@@ -965,6 +1036,22 @@ float Maximum(params float[] values)
 | Type | Description |
 | :--- | :--- |
 | float | The maximum value between the two/in a set |
+
+
+#### ToPercentage <a name="mathExtensionsToPercentage"/>
+Converts a value to its representation in percentage (between 0 and 100%)
+#### Declaration
+```csharp
+float Maximum(float total = 1f);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | total | The value which represents 100% |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The value representation in percentage |
 
 
 ### 5.8 Renderer Extensions <a name="rendererExtensions"/>
