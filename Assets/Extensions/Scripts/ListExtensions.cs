@@ -210,6 +210,19 @@ namespace Extensions
         }
 
         /// <summary>
+        /// Remove all duplicates in a list
+        /// </summary>
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="list">The list which will have the duplicates removed from</param>
+        public static void RemoveDuplicates<T>(this IList<T> list)
+        {
+            HashSet<T> uniqueItems = new HashSet<T>();
+            for (int i = list.Count - 1; i >= 0; i--)
+                if (!uniqueItems.Add(list[i]))
+                    list.RemoveAt(i);
+        }
+
+        /// <summary>
         /// Shuffle a list by using Fisher-Yates
         /// </summary>
         /// <typeparam name="T">The type of the list</typeparam>

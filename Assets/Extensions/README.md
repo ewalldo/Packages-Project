@@ -53,6 +53,7 @@
     - [RotateLeft](#listExtensionsRotateLeft)
     - [RotateRight](#listExtensionsRotateRight)
     - [RemoveNullValues](#listExtensionsRemoveNullValues)
+    - [RemoveDuplicates](#listExtensionsRemoveDuplicates)
     - [Shuffle](#listExtensionsShuffle)
     - [NormalizeList](#listExtensionsNormalizeList)
     - [MapList](#listExtensionsMapList)
@@ -73,6 +74,8 @@
     - [Minimum](#mathExtensionsMinimum)
     - [Maximum](#mathExtensionsMaximum)
     - [ToPercentage](#mathExtensionsToPercentage)
+    - [FromMeters](#mathExtensionsFromMeters)
+    - [ToMeters](#mathExtensionsToMeters)
   - [Renderer](#rendererExtensions)
     - [IsVisibleFrom](#rendererExtensionsIsVisibleFrom)
   - [RichText](#richtextExtensions)
@@ -93,6 +96,7 @@
     - [Shorten](#stringExtensionsShorten)
     - [ToInt](#stringExtensionsToInt)
     - [ToFloat](#stringExtensionsToFloat)
+    - [ToEnum](#stringExtensionsToEnum)
   - [TMPro](#tmproExtensions)
     - [ResizeRectTransformToMatchText](#tmproExtensionsResizeRectTransformToMatchText)
   - [Transform](#transformExtensions)
@@ -105,6 +109,8 @@
     - [SetParentAndReset](#transformExtensionsSetParentAndReset)
     - [RotateTowards](#transformExtensionsRotateTowards)
     - [DistanceTo](#transformExtensionsDistanceTo)
+    - [DirectionTo](#transformExtensionsDirectionTo)
+    - [DirectionFrom](#transformExtensionsDirectionFrom)
     - [ForEveryChild](#transformExtensionsForEveryChild)
     - [IsAllCornersVisible](#transformExtensionsIsAllCornersVisible)
     - [IsAtLeastOneCornerVisible](#transformExtensionsIsAtLeastOneCornerVisible)
@@ -771,6 +777,14 @@ void RemoveNullValues();
 ```
 
 
+#### RemoveDuplicates <a name="listExtensionsRemoveDuplicates"/>
+Remove all duplicates in a list
+#### Declaration
+```csharp
+void RemoveDuplicates();
+```
+
+
 #### Shuffle <a name="listExtensionsShuffle"/>
 Shuffle a list by using Fisher-Yates
 #### Declaration
@@ -1054,6 +1068,38 @@ float Maximum(float total = 1f);
 | float | The value representation in percentage |
 
 
+#### FromMeters <a name="mathExtensionsFromMeters"/>
+Converts a float value from meters to a specific unit of length
+#### Declaration
+```csharp
+float FromMeters(LengthUnitType lengthUnitType);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| LengthUnitType | lengthUnitType | The unit of length to convert to |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | Float value representing the distance in the desired unit of length |
+
+
+#### ToMeters <a name="mathExtensionsToMeters"/>
+Converts a float value from a specific unit of length to meters
+#### Declaration
+```csharp
+float ToMeters(LengthUnitType lengthUnitType);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| LengthUnitType | lengthUnitType | The unit of length to convert from |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | Float value representing the distance in meters |
+
+
 ### 5.8 Renderer Extensions <a name="rendererExtensions"/>
 #### IsVisibleFrom <a name="rendererExtensionsIsVisibleFrom"/>
 Checks if a Renderer is visible from a specified camera
@@ -1288,6 +1334,22 @@ float ToFloat();
 | float | The float value represented by the string |
 
 
+#### ToEnum <a name="stringExtensionsToEnum"/>
+Converts a string to an enum value
+#### Declaration
+```csharp
+T ToEnum<T>() where T: struct, Enum;
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| T | --- | The Enum type to convert to |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| T | The enum value represented by the string |
+
+
 ### 5.11 TMPro Extensions <a name="tmproExtensions"/>
 #### ResizeRectTransformToMatchText <a name="tmproExtensionsResizeRectTransformToMatchText"/>
 Resize the rectTransform of the TMP_Text to match the text size
@@ -1422,6 +1484,44 @@ float DistanceTo(Vector3 other, bool useLocalPosition = false);
 | Type | Description |
 | :--- | :--- |
 | float | The distance between the two transforms or the ditance between the transform and the point |
+
+
+#### DirectionTo <a name="transformExtensionsDirectionTo"/>
+Calculates the direction between this transform in relation to another one or a point in space
+#### Declaration
+```csharp
+Vector3 DirectionTo(Transform other, bool useLocalPosition = false);
+Vector3 DirectionTo(Vector3 other, bool useLocalPosition = false);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | other | The transform to calculate the direction to |
+| Vector3 | other | The position to calculate the direction to |
+| bool | useLocalPosition | If the direction should be calculated using the local position or the global one |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | The normalized directional vector from this transform to the target |
+
+
+#### DirectionFrom <a name="transformExtensionsDirectionFrom"/>
+Calculates the direction between another transform or point in space in relation to this one
+#### Declaration
+```csharp
+Vector3 DirectionFrom(Transform other, bool useLocalPosition = false);
+Vector3 DirectionFrom(Vector3 other, bool useLocalPosition = false);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Transform | other | The transform to calculate the direction from |
+| Vector3 | other | The position to calculate the direction from |
+| bool | useLocalPosition | If the direction should be calculated using the local position or the global one |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | The normalized directional vector from the target to this transform |
 
 
 #### ForEveryChild <a name="transformExtensionsForEveryChild"/>

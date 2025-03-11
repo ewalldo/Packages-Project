@@ -166,6 +166,54 @@ namespace Extensions
         }
 
         /// <summary>
+        /// Calculates the direction between this transform in relation to another one
+        /// </summary>
+        /// <param name="transform">The transform origin point</param>
+        /// <param name="other">The transform to calculate the direction to</param>
+        /// <param name="useLocalPosition">If the direction should be calculated using the local position or the global one</param>
+        /// <returns>The normalized directional vector from this transform to the target one</returns>
+        public static Vector3 DirectionTo(this Transform transform, Transform other, bool useLocalPosition = false)
+        {
+            return transform.DirectionTo(useLocalPosition ? other.localPosition : other.position, useLocalPosition);
+        }
+
+        /// <summary>
+        /// Calculates the direction between this transform in relation to a specific point in space
+        /// </summary>
+        /// <param name="transform">The transform origin point</param>
+        /// <param name="other">The position to calculate the direction to</param>
+        /// <param name="useLocalPosition">If the direction should be calculated using the local position or the global one</param>
+        /// <returns>The normalized directional vector from this transform to the target position</returns>
+        public static Vector3 DirectionTo(this Transform transform, Vector3 other, bool useLocalPosition = false)
+        {
+            return (other - (useLocalPosition ? transform.localPosition : transform.position)).normalized;
+        }
+
+        /// <summary>
+        /// Calculates the direction between another transform in relation to this one
+        /// </summary>
+        /// <param name="transform">The transform to get the direction from</param>
+        /// <param name="other">The transform origin point</param>
+        /// <param name="useLocalPosition">If the direction should be calculated using the local position or the global one</param>
+        /// <returns>The normalized directional vector from the target transform to this one</returns>
+        public static Vector3 DirectionFrom(this Transform transform, Transform other, bool useLocalPosition = false)
+        {
+            return transform.DirectionFrom(useLocalPosition ? other.localPosition : other.position, useLocalPosition);
+        }
+
+        /// <summary>
+        /// Calculates the direction between a specific point in space and this transform
+        /// </summary>
+        /// <param name="transform">The transform to get the direction from</param>
+        /// <param name="other">The position of the origin point</param>
+        /// <param name="useLocalPosition">If the direction should be calculated using the local position or the global one</param>
+        /// <returns>The normalized directional vector from the target position to this transform</returns>
+        public static Vector3 DirectionFrom(this Transform transform, Vector3 other, bool useLocalPosition = false)
+        {
+            return ((useLocalPosition ? transform.localPosition : transform.position) - other).normalized;
+        }
+
+        /// <summary>
         /// Performs an action on every child of the Transform
         /// </summary>
         /// <param name="transform">The parent Transform</param>

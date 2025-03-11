@@ -162,5 +162,19 @@ namespace Extensions
 
             throw new ArgumentException($"Can't convert string '{input}' to float");
         }
+
+        /// <summary>
+        /// Converts a string to an enum value
+        /// </summary>
+        /// <typeparam name="T">The Enum type to convert to</typeparam>
+        /// <param name="input">String to be converted</param>
+        /// <returns>The enum value represented by the string</returns>
+        public static T ToEnum<T>(this string input) where T: struct, Enum
+        {
+            if (Enum.TryParse<T>(input, out T result))
+                return result;
+
+            throw new ArgumentException($"Can't convert string '{input}' to Enum '{typeof(T).Name}'");
+        }
     }
 }
