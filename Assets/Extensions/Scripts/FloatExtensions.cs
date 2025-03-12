@@ -4,19 +4,10 @@ using UnityEngine;
 namespace Extensions
 {
     /// <summary>
-    /// Extension methods for math operations
+    /// Extension methods for float types
     /// </summary>
-    public static class MathExtensions
-    {
-        /// <summary>
-        /// Returns true if the value is within the min and max values, false otherwise
-        /// </summary>
-        /// <param name="value">The value to check</param>
-        /// <param name="min">The minimum value</param>
-        /// <param name="max">The maximum value</param>
-        /// <returns>True if the value is within the range, false otherwise</returns>
-        public static bool InRange(this int value, int min, int max) => value >= min && value <= max;
-
+	public static class FloatExtensions
+	{
         /// <summary>
         /// Returns true if the value is within the min and max values, false otherwise
         /// </summary>
@@ -120,13 +111,6 @@ namespace Extensions
         public static float Inverse(this float value) => value * -1;
 
         /// <summary>
-        /// Inverse the signal of a value
-        /// </summary>
-        /// <param name="value">The value to inverse</param>
-        /// <returns>The inverted value</returns>
-        public static int Inverse(this int value) => value * -1;
-
-        /// <summary>
         /// Clamp the value between a min and max
         /// </summary>
         /// <param name="value">The value to be clamped</param>
@@ -146,45 +130,6 @@ namespace Extensions
         public static float Clamp01(this float value)
         {
             return Mathf.Clamp(value, 0f, 1f);
-        }
-
-        /// <summary>
-        /// Clamp the value between a min and max
-        /// </summary>
-        /// <param name="value">The value to be clamped</param>
-        /// <param name="min">The minimum value</param>
-        /// <param name="max">The maximum value</param>
-        /// <returns>The clamped value</returns>
-        public static int Clamp(this int value, int min, int max)
-        {
-            return Mathf.Clamp(value, min, max);
-        }
-
-        /// <summary>
-        /// Get a random number between min and max (both inclusive) where the probability of said number is biased towards the lower or higher end of the range
-        /// </summary>
-        /// <param name="min">The mininum possible value for the random number</param>
-        /// <param name="max">The maximum possible value for the random number</param>
-        /// <param name="power">The probability distribution of the generated number.<br/>
-        ///     A value lower than 1 will result in a higher likelihood of larger numbers being generated. The closer to 0, the bigger the chance of a large number.<br/>
-        ///     A value higher than 1 will result in a higher likelihood of smaller numbers being generated. The higher the number, the bigger the chance of a smaller number.<br/>
-        ///     A value equals to 1 will result in a uniform distribution, where all values are equallly likely to occur.
-        /// </param>
-        /// <returns>The generated random number</returns>
-        public static int GetBiasedRandomNumber(int min, int max, double power = 1)
-        {
-            if (max <= min)
-                throw new ArgumentException("Max value should be higher than min value");
-
-            if (power <= 0)
-                throw new ArgumentOutOfRangeException(nameof(power), "Value has to be higher than zero");
-
-            System.Random rand = new System.Random();
-
-            double u = rand.NextDouble();
-            double randNum = Math.Floor(min + (max + 1 - min) * (Math.Pow(u, power)));
-
-            return (int)randNum;
         }
 
         /// <summary>
@@ -260,90 +205,5 @@ namespace Extensions
 
             return (value / total) * 100f;
         }
-
-        #region LengthUnitTypes
-        private static readonly float METER_VALUE = 1f;
-        private static readonly float CENTIMETER_VALUE = 0.01f;
-        private static readonly float MILLIMETER_VALUE = 0.001f;
-        private static readonly float KILOMETER_VALUE = 1000f;
-        private static readonly float INCH_VALUE = 0.0254f;
-        private static readonly float FOOT_VALUE = 0.3048f;
-        private static readonly float YARD_VALUE = 0.9144f;
-        private static readonly float MILE_VALUE = 1609.34f;
-
-        public enum LengthUnitType
-        {
-            Meter,
-            Centimeter,
-            Millimeter,
-            Kilometer,
-            Inch,
-            Foot,
-            Yard,
-            Mile
-        }
-
-        /// <summary>
-        /// Converts a float value from meters to a specific unit of length
-        /// </summary>
-        /// <param name="length">The length in meters to convert from</param>
-        /// <param name="lengthUnitType">The unit of length to convert to</param>
-        /// <returns>Float value representing the distance in the desired unit of length</returns>
-        public static float FromMeters(this float length, LengthUnitType lengthUnitType)
-        {
-            switch (lengthUnitType)
-            {
-                case LengthUnitType.Meter:
-                    return length / METER_VALUE;
-                case LengthUnitType.Centimeter:
-                    return length / CENTIMETER_VALUE;
-                case LengthUnitType.Millimeter:
-                    return length / MILLIMETER_VALUE;
-                case LengthUnitType.Kilometer:
-                    return length / KILOMETER_VALUE;
-                case LengthUnitType.Inch:
-                    return length / INCH_VALUE;
-                case LengthUnitType.Foot:
-                    return length / FOOT_VALUE;
-                case LengthUnitType.Yard:
-                    return length / YARD_VALUE;
-                case LengthUnitType.Mile:
-                    return length / MILE_VALUE;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(lengthUnitType), "Unsupported unit of lengths.");
-            }
-        }
-
-        /// <summary>
-        /// Converts a float value from a specific unit of length to meters
-        /// </summary>
-        /// <param name="length">The length to convert from</param>
-        /// <param name="lengthUnitType">The unit of length to convert from</param>
-        /// <returns>Float value representing the distance in meters</returns>
-        public static float ToMeters(this float length, LengthUnitType lengthUnitType)
-        {
-            switch (lengthUnitType)
-            {
-                case LengthUnitType.Meter:
-                    return length * METER_VALUE;
-                case LengthUnitType.Centimeter:
-                    return length * CENTIMETER_VALUE;
-                case LengthUnitType.Millimeter:
-                    return length * MILLIMETER_VALUE;
-                case LengthUnitType.Kilometer:
-                    return length * KILOMETER_VALUE;
-                case LengthUnitType.Inch:
-                    return length * INCH_VALUE;
-                case LengthUnitType.Foot:
-                    return length * FOOT_VALUE;
-                case LengthUnitType.Yard:
-                    return length * YARD_VALUE;
-                case LengthUnitType.Mile:
-                    return length * MILE_VALUE;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(lengthUnitType), "Unsupported unit of lengths.");
-            }
-        }
-        #endregion
     }
 }

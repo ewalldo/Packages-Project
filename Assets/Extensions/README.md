@@ -36,11 +36,31 @@
     - [Invert](#colorExtensionsInvert)
   - [Enumerable](#enumerableExtensions)
     - [ForEach](#enumerableExtensionsForEach)
+  - [Float](#floatExtensions)
+    - [InRange](#floatExtensionsInRange)
+    - [Normalize](#floatExtensionsNormalize)
+    - [Map](#floatExtensionsMap)
+    - [MapUnclamped](#floatExtensionsMapUnclamped)
+    - [MapClamped](#floatExtensionsMapClamped)
+    - [Complement](#floatExtensionsComplement)
+    - [Inverse](#floatExtensionsInverse)
+    - [Clamp](#floatExtensionsClamp)
+    - [Clamp01](#floatExtensionsClamp01)
+    - [Minimum](#floatExtensionsMinimum)
+    - [Maximum](#floatExtensionsMaximum)
+    - [ToPercentage](#floatExtensionsToPercentage)
   - [GameObject](#gameObjectExtensions)
     - [AddOrGetComponent](#gameObjectExtensionsAddOrGetComponent)
     - [GetOrNull](#gameObjectExtensionsGetOrNull)
     - [GetPath](#gameObjectExtensionsGetPath)
     - [GetFullPath](#gameObjectExtensionsGetFullPath)
+  - [Int](#intExtensions)
+    - [InRange](#intExtensionsInRange)
+    - [Inverse](#intExtensionsInverse)
+    - [Clamp](#intExtensionsClamp)
+    - [Minimum](#intExtensionsMinimum)
+    - [Maximum](#intExtensionsMaximum)
+    - [GetBiasedRandomNumber](#intExtensionsGetBiasedRandomNumber)
   - [List](#listExtensions)
     - [HasIndex](#listExtensionsHasIndex)
     - [IsNullOrEmpty](#listExtensionsIsNullOrEmpty)
@@ -60,22 +80,9 @@
     - [ComplementList](#listExtensionsComplementList)
     - [InverseList](#listExtensionsInverseList)
     - [AsReadOnly](#listExtensionsAsReadOnly)
-  - [Math](#mathExtensions)
-    - [InRange](#mathExtensionsInRange)
-    - [Normalize](#mathExtensionsNormalize)
-    - [Map](#mathExtensionsMap)
-    - [MapUnclamped](#mathExtensionsMapUnclamped)
-    - [MapClamped](#mathExtensionsMapClamped)
-    - [Complement](#mathExtensionsComplement)
-    - [Inverse](#mathExtensionsInverse)
-    - [Clamp](#mathExtensionsClamp)
-    - [Clamp01](#mathExtensionsClamp01)
-    - [GetBiasedRandomNumber](#mathExtensionsGetBiasedRandomNumber)
-    - [Minimum](#mathExtensionsMinimum)
-    - [Maximum](#mathExtensionsMaximum)
-    - [ToPercentage](#mathExtensionsToPercentage)
-    - [FromMeters](#mathExtensionsFromMeters)
-    - [ToMeters](#mathExtensionsToMeters)
+  - [Measurements](#measurementExtensions)
+    - [FromMeters](#measurementExtensionsFromMeters)
+    - [ToMeters](#measurementExtensionsToMeters)
   - [Renderer](#rendererExtensions)
     - [IsVisibleFrom](#rendererExtensionsIsVisibleFrom)
   - [RichText](#richtextExtensions)
@@ -594,7 +601,206 @@ void ForEach<T>(Action<T> action);
 | Action<T> | action | The action to be performed on each element |
 
 
-### 5.5 GameObject Extensions <a name="gameObjectExtensions"/>
+### 5.5 Float Extensions <a name="floatExtensions"/>
+#### InRange <a name="floatExtensionsInRange"/>
+Returns if the value is within the min and max values
+#### Declaration
+```csharp
+bool InRange(float min, float max);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | min | The minimum value |
+| float | max | The maximum value |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | Whether the value is within the range or not |
+
+
+#### Normalize <a name="floatExtensionsNormalize"/>
+Normalize a value between 0 and 1
+#### Declaration
+```csharp
+float Normalize(float min, float max);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | min | The minimum value |
+| float | max | The maximum value |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The normalized value |
+
+
+#### Map <a name="floatExtensionsMap"/>
+Map a value currently in the (min, max) range to a range between (targetMin, targetMax)
+#### Declaration
+```csharp
+float Map(float min, float max, float newMin, float newMax);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | min | The current minimum value of the range |
+| float | max | The current maximum value of the range |
+| float | newMin | The minimum value of the new range |
+| float | newMax | The maximum value of the new range |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The mapped value |
+
+
+#### MapUnclamped <a name="floatExtensionsMapUnclamped"/>
+Map a value currently in the (min, max) range to a range between (newMin, newMax) without clamping it.
+#### Declaration
+```csharp
+float MapUnclamped(float min, float max, float newMin, float newMax);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | min | The current minimum value of the range |
+| float | max | The current maximum value of the range |
+| float | newMin | The minimum value of the new range |
+| float | newMax | The maximum value of the new range |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The mapped value |
+
+
+#### MapClamped <a name="floatExtensionsMapClamped"/>
+Map a value currently in the (min, max) range to a range between (newMin, newMax) and clamp it between (newMin, newMax).
+#### Declaration
+```csharp
+float MapClamped(float min, float max, float newMin, float newMax);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | min | The current minimum value of the range |
+| float | max | The current maximum value of the range |
+| float | newMin | The minimum value of the new range |
+| float | newMax | The maximum value of the new range |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The mapped value |
+
+
+#### Complement <a name="floatExtensionsComplement"/>
+Return the complement of a value (1 - value)
+#### Declaration
+```csharp
+float Complement();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The complement of the value |
+
+
+#### Inverse <a name="floatExtensionsInverse"/>
+Inverse the signal of a value
+#### Declaration
+```csharp
+float Inverse();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The inverted value |
+
+
+#### Clamp <a name="floatExtensionsClamp"/>
+Clamp the value between a min and max
+#### Declaration
+```csharp
+float Clamp(float min, float max);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | min | The minimum value |
+| float | max | The maximum value |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The clamped value |
+
+
+#### Clamp01 <a name="floatExtensionsClamp01"/>
+Clamp the value between 0 and 1
+#### Declaration
+```csharp
+float Clamp01();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The clamped value |
+
+
+#### Minimum <a name="floatExtensionsMinimum"/>
+Gets the minimum between two values
+Gets the minimum value in a set of values
+#### Declaration
+```csharp
+float Minimum(float b);
+float Minimum(params float[] values)
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | b | The second value to compare with |
+| float[] | values | Set of values to get the minimum from |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The minimum value between the two/in a set |
+
+
+#### Maximum <a name="floatExtensionsMaximum"/>
+Gets the maximum between two values
+Gets the maximum value in a set of values
+#### Declaration
+```csharp
+float Maximum(float b);
+float Maximum(params float[] values)
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | b | The second value to compare with |
+| float[] | values | Set of values to get the maximum from |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The maximum value between the two/in a set |
+
+
+#### ToPercentage <a name="floatExtensionsToPercentage"/>
+Converts a value to its representation in percentage (between 0 and 100%)
+#### Declaration
+```csharp
+float ToPercentage(float total = 1f);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | total | The value which represents 100% |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The value representation in percentage |
+
+
+### 5.6 GameObject Extensions <a name="gameObjectExtensions"/>
 #### AddOrGetComponent <a name="gameObjectExtensionsAddOrGetComponent"/>
 Try to get a component from a gameObject, if it doesn't exist, add to it and return it
 #### Declaration
@@ -643,7 +849,110 @@ string GetFullPath();
 | string | String representation of the full hierarchical path |
 
 
-### 5.6 List Extensions <a name="listExtensions"/>
+### 5.7 Int Extensions <a name="intExtensions"/>
+#### InRange <a name="intExtensionsInRange"/>
+Returns if the value is within the min and max values
+#### Declaration
+```csharp
+bool InRange(int min, int max);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| int | min | The minimum value |
+| int | max | The maximum value |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | Whether the value is within the range or not |
+
+
+#### Inverse <a name="intExtensionsInverse"/>
+Inverse the signal of a value
+#### Declaration
+```csharp
+int Inverse();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| int | The inverted value |
+
+
+#### Clamp <a name="intExtensionsClamp"/>
+Clamp the value between a min and max
+#### Declaration
+```csharp
+int Clamp(int min, int max);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| int | min | The minimum value |
+| int | max | The maximum value |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| int | The clamped value |
+
+
+#### Minimum <a name="intExtensionsMinimum"/>
+Gets the minimum between two values
+Gets the minimum value in a set of values
+#### Declaration
+```csharp
+int Minimum(int b);
+int Minimum(params int[] values)
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| int | b | The second value to compare with |
+| int[] | values | Set of values to get the minimum from |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| int | The minimum value between the two/in a set |
+
+
+#### Maximum <a name="intExtensionsMaximum"/>
+Gets the maximum between two values
+Gets the maximum value in a set of values
+#### Declaration
+```csharp
+int Maximum(int b);
+int Maximum(params int[] values)
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| int | b | The second value to compare with |
+| int[] | values | Set of values to get the maximum from |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| int | The maximum value between the two/in a set |
+
+
+#### GetBiasedRandomNumber <a name="intExtensionsGetBiasedRandomNumber"/>
+Get a random number between min and max (both inclusive) where the probability of said number is biased towards the lower or higher end of the range
+#### Declaration
+```csharp
+int GetBiasedRandomNumber(int min, int max, double power = 1);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| int | min | The mininum possible value for the random number |
+| int | max | The maximum possible value for the random number |
+| double | power | The probability distribution of the generated number.<br/> A value lower than 1 will result in a higher likelihood of larger numbers being generated. The closer to 0, the bigger the chance of a large number.<br/> A value higher than 1 will result in a higher likelihood of smaller numbers being generated. The higher the number, the bigger the chance of a smaller number.<br/> A value equals to 1 will result in a uniform distribution, where all values are equallly likely to occur |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| int | The generated random number |
+
+
+### 5.8 List Extensions <a name="listExtensions"/>
 #### HasIndex <a name="listExtensionsHasIndex"/>
 Returns whether an index is within the bounds of a list
 #### Declaration
@@ -850,225 +1159,8 @@ IReadOnlyList<T> AsReadOnly<T>();
 | IReadOnlyList<T> | The read-only version of the list |
 
 
-### 5.7 Math Extensions <a name="mathExtensions"/>
-#### InRange <a name="mathExtensionsInRange"/>
-Returns if the value is within the min and max values
-#### Declaration
-```csharp
-bool InRange(int min, int max);
-bool InRange(float min, float max);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| int/float | min | The minimum value |
-| int/float | max | The maximum value |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| bool | Whether the value is within the range or not |
-
-
-#### Normalize <a name="mathExtensionsNormalize"/>
-Normalize a value between 0 and 1
-#### Declaration
-```csharp
-float Normalize(float min, float max);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | min | The minimum value |
-| float | max | The maximum value |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| float | The normalized value |
-
-
-#### Map <a name="mathExtensionsMap"/>
-Map a value currently in the (min, max) range to a range between (targetMin, targetMax)
-#### Declaration
-```csharp
-float Map(float min, float max, float newMin, float newMax);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | min | The current minimum value of the range |
-| float | max | The current maximum value of the range |
-| float | newMin | The minimum value of the new range |
-| float | newMax | The maximum value of the new range |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| float | The mapped value |
-
-
-#### MapUnclamped <a name="mathExtensionsMapUnclamped"/>
-Map a value currently in the (min, max) range to a range between (newMin, newMax) without clamping it.
-#### Declaration
-```csharp
-float MapUnclamped(float min, float max, float newMin, float newMax);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | min | The current minimum value of the range |
-| float | max | The current maximum value of the range |
-| float | newMin | The minimum value of the new range |
-| float | newMax | The maximum value of the new range |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| float | The mapped value |
-
-
-#### MapClamped <a name="mathExtensionsMapClamped"/>
-Map a value currently in the (min, max) range to a range between (newMin, newMax) and clamp it between (newMin, newMax).
-#### Declaration
-```csharp
-float MapClamped(float min, float max, float newMin, float newMax);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | min | The current minimum value of the range |
-| float | max | The current maximum value of the range |
-| float | newMin | The minimum value of the new range |
-| float | newMax | The maximum value of the new range |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| float | The mapped value |
-
-
-#### Complement <a name="mathExtensionsComplement"/>
-Return the complement of a value (1 - value)
-#### Declaration
-```csharp
-float Complement();
-```
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| float | The complement of the value |
-
-
-#### Inverse <a name="mathExtensionsInverse"/>
-Inverse the signal of a value
-#### Declaration
-```csharp
-float Inverse();
-```
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| float | The inverted value |
-
-
-#### Clamp <a name="mathExtensionsClamp"/>
-Clamp the value between a min and max
-#### Declaration
-```csharp
-float Clamp(float min, float max);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | min | The minimum value |
-| float | max | The maximum value |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| float | The clamped value |
-
-
-#### Clamp01 <a name="mathExtensionsClamp01"/>
-Clamp the value between 0 and 1
-#### Declaration
-```csharp
-float Clamp01();
-```
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| float | The clamped value |
-
-
-#### GetBiasedRandomNumber <a name="mathExtensionsGetBiasedRandomNumber"/>
-Get a random number between min and max (both inclusive) where the probability of said number is biased towards the lower or higher end of the range
-#### Declaration
-```csharp
-int GetBiasedRandomNumber(int min, int max, double power = 1);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| int | min | The mininum possible value for the random number |
-| int | max | The maximum possible value for the random number |
-| double | power | The probability distribution of the generated number.<br/> A value lower than 1 will result in a higher likelihood of larger numbers being generated. The closer to 0, the bigger the chance of a large number.<br/> A value higher than 1 will result in a higher likelihood of smaller numbers being generated. The higher the number, the bigger the chance of a smaller number.<br/> A value equals to 1 will result in a uniform distribution, where all values are equallly likely to occur |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| int | The generated random number |
-
-
-#### Minimum <a name="mathExtensionsMinimum"/>
-Gets the minimum between two values
-Gets the minimum value in a set of values
-#### Declaration
-```csharp
-float Minimum(float b);
-float Minimum(params float[] values)
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | b | The second value to compare with |
-| float[] | values | Set of values to get the minimum from |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| float | The minimum value between the two/in a set |
-
-
-#### Maximum <a name="mathExtensionsMaximum"/>
-Gets the maximum between two values
-Gets the maximum value in a set of values
-#### Declaration
-```csharp
-float Maximum(float b);
-float Maximum(params float[] values)
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | b | The second value to compare with |
-| float[] | values | Set of values to get the maximum from |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| float | The maximum value between the two/in a set |
-
-
-#### ToPercentage <a name="mathExtensionsToPercentage"/>
-Converts a value to its representation in percentage (between 0 and 100%)
-#### Declaration
-```csharp
-float Maximum(float total = 1f);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | total | The value which represents 100% |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| float | The value representation in percentage |
-
-
-#### FromMeters <a name="mathExtensionsFromMeters"/>
+### 5.9 Measurements Extensions <a name="measurementExtensions"/>
+#### FromMeters <a name="measurementExtensionsFromMeters"/>
 Converts a float value from meters to a specific unit of length
 #### Declaration
 ```csharp
@@ -1084,7 +1176,7 @@ float FromMeters(LengthUnitType lengthUnitType);
 | float | Float value representing the distance in the desired unit of length |
 
 
-#### ToMeters <a name="mathExtensionsToMeters"/>
+#### ToMeters <a name="measurementExtensionsToMeters"/>
 Converts a float value from a specific unit of length to meters
 #### Declaration
 ```csharp
@@ -1100,7 +1192,7 @@ float ToMeters(LengthUnitType lengthUnitType);
 | float | Float value representing the distance in meters |
 
 
-### 5.8 Renderer Extensions <a name="rendererExtensions"/>
+### 5.10 Renderer Extensions <a name="rendererExtensions"/>
 #### IsVisibleFrom <a name="rendererExtensionsIsVisibleFrom"/>
 Checks if a Renderer is visible from a specified camera
 #### Declaration
@@ -1117,7 +1209,7 @@ bool IsVisibleFrom(Camera camera);
 | bool | Whether the renderer is visible from the camera or not |
 
 
-### 5.9 RichText Extensions <a name="richTextExtensions"/>
+### 5.11 RichText Extensions <a name="richTextExtensions"/>
 #### WrapAround <a name="richTextExtensionsWrapAround"/>
 Wraps a start and end string around another one
 #### Declaration
@@ -1193,7 +1285,7 @@ string Color(uint hexColor);
 | string | The text with the color applied |
 
 
-### 5.10 String Extensions <a name="stringExtensions"/>
+### 5.12 String Extensions <a name="stringExtensions"/>
 #### IsNullOrEmpty <a name="stringExtensionsIsNullOrEmpty"/>
 Checks if a string is null or empty
 #### Declaration
@@ -1350,7 +1442,7 @@ T ToEnum<T>() where T: struct, Enum;
 | T | The enum value represented by the string |
 
 
-### 5.11 TMPro Extensions <a name="tmproExtensions"/>
+### 5.13 TMPro Extensions <a name="tmproExtensions"/>
 #### ResizeRectTransformToMatchText <a name="tmproExtensionsResizeRectTransformToMatchText"/>
 Resize the rectTransform of the TMP_Text to match the text size
 #### Declaration
@@ -1367,7 +1459,7 @@ void ResizeRectTransformToMatchText(bool shouldResizeHorizontal, bool shouldResi
 | Vector2 | padding | Amount of padding to be added to the rectTransform |
 
 
-### 5.12 Transform Extensions <a name="transformExtensions"/>
+### 5.14 Transform Extensions <a name="transformExtensions"/>
 #### FirstChild <a name="transformExtensionsFirstChild"/>
 Returns the first child transform of a gameObject, returns null if there is no children
 #### Declaration
@@ -1568,7 +1660,7 @@ bool IsAtLeastOneCornerVisible(Canvas canvas);
 | bool | True, if at least one corner is on the screen, false otherwise |
 
 
-### 5.13 Vector Extensions <a name="vectorExtensions"/>
+### 5.15 Vector Extensions <a name="vectorExtensions"/>
 #### Vector2:AddToAxis <a name="vectorExtensionsVector2AddToAxis"/>
 Returns a new Vector2 with a specific amount added to each axis
 #### Declaration
