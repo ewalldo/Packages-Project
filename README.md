@@ -9,7 +9,7 @@ Repository to hold the packages of the tools I have developed for Unity.
 * [Extensions](Assets/Extensions/Documentation/README.md)
 * [Extra Attributes](Assets/ExtraAttributes/README.md)
 * [Favorites Window](Assets/FavoritesWindow/README.md)
-* [Grid System](Assets/GridSystem/README.md)
+* [Grid System](Assets/GridSystem/Documentation/README.md)
 * [Health System](Assets/HealthSystem/README.md)
 * [Hierarchy Enhancer](Assets/HierarchyEnhancer/README.md)
 * [Indicators System](Assets/IndicatorSystem/README.md)
