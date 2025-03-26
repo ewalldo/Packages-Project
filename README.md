@@ -21,7 +21,7 @@ Repository to hold the packages of the tools I have developed for Unity.
 * [State Machine](Assets/StateMachine/README.md)
 * [Stats System](Assets/StatsSystem/README.md)
 * [Tooltip System](Assets/TooltipSystem/README.md)
-* [Tween System](Assets/Tween/README.md)
+* [Tween System](Assets/Tween/Documentation/README.md)
 
 ## Tools in development
 * Dialogue System
