@@ -33,6 +33,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.2: Add extension methods to the TMPro and string classes plus a few methods to the other extensions
 - 1.2.1: Add extension methods to the Vector2 struct
 - 1.3: Add extension method to the IEnumerable interface, plus new extension methods to Color, GameObject, IList, Math, String, Transform and Vector
+- 1.4: Add extension method to Color, string, IList, and Transform. Divide math extensions into int, float and measurements.
 
 ## 3 - Features <a name="features"/>
 - Extension methods for commonly used classes:
