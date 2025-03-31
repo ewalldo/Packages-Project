@@ -6,51 +6,36 @@ using UnityEngine;
 namespace LootSystem
 {
     [CustomEditor(typeof(LootPool))]
-    public class LootPoolEditor : Editor
+    public abstract class LootPoolEditor : Editor
     {
-        private LootPool lootPool;
+        protected LootPool lootPool;
 
-        private ReorderableList independentList;
-        private ReorderableList dependentList;
+        protected ReorderableList lootList;
 
-        private SerializedProperty independentLootProperty;
-        private SerializedProperty dependentLootProperty;
-
-        private GUIStyle smallHeaderStyle;
-        private GUIStyle bigHeaderStyle;
+        private SerializedProperty lootListProperty;
 
         private readonly float listItemHeight = 40f;
         private readonly float listItemSpacing = 2f;
 
-        private readonly float progressBarHeight = 25f;
+        private GUIStyle smallHeaderStyle;
+        private GUIStyle bigHeaderStyle;
 
-        private void OnEnable()
+        protected readonly float progressBarHeight = 25f;
+
+        protected virtual void OnEnable()
         {
             lootPool = target as LootPool;
 
-            independentLootProperty = serializedObject.FindProperty(nameof(LootPool.independentLootPool));
-            dependentLootProperty = serializedObject.FindProperty(nameof(LootPool.dependentLootPool));
-
-            independentList = CreateReorderableList(independentLootProperty, DrawIndependentList, AddToList);
-            dependentList = CreateReorderableList(dependentLootProperty, DrawDependentList, AddToList);
+            lootListProperty = serializedObject.FindProperty(LootPool.GetNameOfLootPool);
+            lootList = CreateReorderableList(lootListProperty, DrawList, AddToList);
 
             smallHeaderStyle = StyleUtils.GetSmallHeaderStyle();
             bigHeaderStyle = StyleUtils.GetBigHeaderStyle();
         }
 
-        private void DrawIndependentList(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            SerializedProperty element = independentList.serializedProperty.GetArrayElementAtIndex(index);
-            DrawItem(independentList, rect, index, (weight) => element.FindPropertyRelative(nameof(LootItem.weight)).floatValue = weight);
-        }
-
-        private void DrawDependentList(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            DrawItem(dependentList, rect, index, (weight) => lootPool.ValidateWeights(index, weight));
-        }
-
         public override void OnInspectorGUI()
         {
+            //base.OnInspectorGUI();
             serializedObject.Update();
 
             EditorGUILayout.LabelField("<color=white>Loot Pool</color>", smallHeaderStyle);
@@ -60,13 +45,7 @@ namespace LootSystem
 
             EditorGUI.BeginChangeCheck();
 
-            independentLootProperty.isExpanded = EditorGUILayout.Foldout(independentLootProperty.isExpanded, "Independent Loot Pool");
-            if (independentLootProperty.isExpanded)
-                independentList.DoLayoutList();
-
-            dependentLootProperty.isExpanded = EditorGUILayout.Foldout(dependentLootProperty.isExpanded, "Dependent Loot Pool");
-            if (dependentLootProperty.isExpanded)
-                dependentList.DoLayoutList();
+            lootList.DoLayoutList();
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -79,40 +58,13 @@ namespace LootSystem
 
             Rect percentageRect = EditorGUILayout.BeginVertical();
 
-            for (int i = 0; i < lootPool.independentLootPool.Count; i++)
-            {
-                Rect messageRect = new Rect(percentageRect.x, percentageRect.y + (progressBarHeight * i), percentageRect.width, progressBarHeight);
-                if (lootPool.independentLootPool[i].item == null)
-                    EditorGUI.HelpBox(messageRect, $"Independent Loot Pool at index {i}: Missing Game Object", MessageType.Warning);
-                else
-                    DrawProgressBar(messageRect, lootPool.independentLootPool[i]);
-            }
+            DrawListTable(percentageRect);
 
-            float extraHeightSpacing = 0f;
-            if (lootPool.independentLootPool.Count > 0)
-            {
-                EditorGUI.LabelField(new Rect(percentageRect.x, percentageRect.y + (progressBarHeight * lootPool.independentLootPool.Count), percentageRect.width, progressBarHeight), "<color=white>+ one of the following</color>", smallHeaderStyle);
-                extraHeightSpacing = progressBarHeight;
-            }
-
-            float dependentLootTotal = 0f;
-            for (int i = 0; i < lootPool.dependentLootPool.Count; i++)
-            {
-                dependentLootTotal += lootPool.dependentLootPool[i].weight;
-
-                Rect messageRect = new Rect(percentageRect.x, percentageRect.y + (progressBarHeight * i) + (lootPool.independentLootPool.Count * progressBarHeight) + extraHeightSpacing, percentageRect.width, progressBarHeight);
-                if (lootPool.dependentLootPool[i].item == null)
-                    EditorGUI.HelpBox(messageRect, $"Dependent Loot Pool at index {i}: Missing Game Object", MessageType.Warning);
-                else
-                    DrawProgressBar(messageRect, lootPool.dependentLootPool[i]);
-            }
-
-            if (dependentLootTotal < 1f)
-                EditorGUI.ProgressBar(new Rect(percentageRect.x, percentageRect.y + (lootPool.independentLootPool.Count * progressBarHeight) + (lootPool.dependentLootPool.Count * progressBarHeight) + extraHeightSpacing, percentageRect.width, progressBarHeight), (1 - dependentLootTotal), $" --- No Item ---  - {(1 - dependentLootTotal) * 100:F2}%");
-
-            EditorGUILayout.Space((progressBarHeight * lootPool.independentLootPool.Count) + extraHeightSpacing + (lootPool.dependentLootPool.Count * progressBarHeight) + progressBarHeight);
+            EditorGUILayout.Space((progressBarHeight * lootPool.LootPoolList.Count) + progressBarHeight);
             EditorGUILayout.EndVertical();
         }
+
+        protected abstract void DrawList(Rect rect, int index, bool isActive, bool isFocused);
 
         private ReorderableList CreateReorderableList(SerializedProperty property, ReorderableList.ElementCallbackDelegate drawCallback, ReorderableList.AddCallbackDelegate addCallback)
         {
@@ -144,7 +96,7 @@ namespace LootSystem
             element.FindPropertyRelative(nameof(LootItem.maxCountItem)).intValue = 1;
         }
 
-        private void DrawItem(ReorderableList list, Rect rect, int index, Action<float> onSliderChanged)
+        protected void DrawItem(ReorderableList list, Rect rect, int index, Action<float> onSliderChanged)
         {
             SerializedProperty element = list.serializedProperty.GetArrayElementAtIndex(index);
 
@@ -171,7 +123,9 @@ namespace LootSystem
             }
         }
 
-        private void DrawProgressBar(Rect rect, LootItem lootItem)
+        protected abstract void DrawListTable(Rect tableRect);
+
+        protected void DrawProgressBar(Rect rect, LootItem lootItem)
         {
             EditorGUI.ProgressBar(rect, lootItem.weight, GetProgressBarMessage(lootItem));
         }

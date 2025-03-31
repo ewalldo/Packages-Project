@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c59d1435098474cac4f661e0ac2d89, type: 3}
+  m_Name: IndependentLootPool
+  m_EditorClassIdentifier: 
+  lootPool:
+  - weight: 1
+    item: {fileID: 7835944758312380898, guid: 52229d0c969162744bbd5dd50d6c22ae, type: 3}
+    minCountItem: 1
+    maxCountItem: 3
+  - weight: 0.5
+    item: {fileID: 7540951513014733063, guid: dfff28482c8985f449f5b4112308a951, type: 3}
+    minCountItem: 1
+    maxCountItem: 2

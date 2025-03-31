@@ -554,7 +554,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6739764d8f75e454aa6cb774f3acf46b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lootPool: {fileID: 11400000, guid: f4e9393bd1228c340bb1dd3bacbfe3eb, type: 2}
+  independentLootPool: {fileID: 11400000, guid: cd767db1d900893479dfcee6f82ddbed,
+    type: 2}
+  dependentLootPool: {fileID: 11400000, guid: d90120de2afa72544908e50874b9da7e, type: 2}
   numIndependentPulls: 1
   numDependentPulls: 1
   offsetRange: {x: 1, y: 1, z: 0}
