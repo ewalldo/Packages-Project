@@ -3,17 +3,15 @@ using UnityEngine;
 
 namespace HealthSystem
 {
-	public class Health
-	{
+	public class Health : IHealth, IDamageable, IHealable, IHealthStatus
+    {
         public string GetNameOfMaxCurrentHealth => nameof(maxHealth);
         public string GetNameOfCurrentHealth => nameof(curHealth);
-        public string GetNameOfStartAtMaxHealth => nameof(startAtMaxHealth);
         public string GetNameOfCriticalHealthThreshold => nameof(criticalHealthThreshold);
 
         private float maxHealth;
         private float curHealth;
-        private bool startAtMaxHealth;
-        private float criticalHealthThreshold;
+        private readonly float criticalHealthThreshold;
 
         private bool isCurrentlyAtCriticalHealth;
 

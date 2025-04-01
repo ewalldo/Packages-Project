@@ -6,29 +6,30 @@
 - [Get started](#getStarted)
   - [Adding health to a gameObject](#addingHealthToAGameObject)
   - [Modifying the health through damage or heal](#modifyingTheHealthThroughDamageOrHeal)
-  - [HealthComponent events](#healthComponentEvents)
+  - [Health events](#healthEvents)
+  - [Interface support](#healthInterfaceSupport)
 - [Documentation](#documentation)
-  - [Health())](#healthConstructor)
-  - [HealthComponent.GetHealth](#healthComponentGetHealth)
-  - [HealthComponent.GetHealthNormalized](#healthComponentGetHealthNormalized)
-  - [HealthComponent.GetMaxHealth](#healthComponentGetMaxHealth)
-  - [HealthComponent.IsDead](#healthComponentIsDead)
-  - [HealthComponent.IsOnCriticalHealth](#healthComponentIsOnCriticalHealth)
-  - [HealthComponent.IsOnFullHealth](#healthComponentIsOnFullHealth)
-  - [HealthComponent.OnCurrentHealthChanged](#healthComponentOnCurrentHealthChanged)
-  - [HealthComponent.OnMaxHealthChanged](#healthComponentOnMaxHealthChanged)
-  - [HealthComponent.OnDamageTaken](#healthComponentOnDamageTaken)
-  - [HealthComponent.OnDamageHealed](#healthComponentOnDamageHealed)
-  - [HealthComponent.OnCriticalHealthStarted](#healthComponentOnCriticalHealthStarted)
-  - [HealthComponent.OnCriticalHealthEnded](#healthComponentOnCriticalHealthEnded)
-  - [HealthComponent.OnDeath](#healthComponentOnDeath)
-  - [HealthComponent.OnRevive](#healthComponentOnRevive)
-  - [HealthComponent.TakeDamage()](#healthComponentTakeDamage)
-  - [HealthComponent.Die()](#healthComponentDie)
-  - [HealthComponent.HealDamage()](#healthComponentHealDamage)
-  - [HealthComponent.HealToFull()](#healthComponentHealToFull)
-  - [HealthComponent.SetMaxHealth()](#healthComponentSetMaxHealth)
-  - [HealthComponent.SetHealth()](#healthComponentSetHealth)
+  - [Health()](#healthConstructor)
+  - [GetHealth](#healthGetHealth)
+  - [GetHealthNormalized](#healthGetHealthNormalized)
+  - [GetMaxHealth](#healthGetMaxHealth)
+  - [IsDead](#healthIsDead)
+  - [IsOnCriticalHealth](#healthIsOnCriticalHealth)
+  - [IsOnFullHealth](#healthIsOnFullHealth)
+  - [OnCurrentHealthChanged](#healthOnCurrentHealthChanged)
+  - [OnMaxHealthChanged](#healthOnMaxHealthChanged)
+  - [OnDamageTaken](#healthOnDamageTaken)
+  - [OnDamageHealed](#healthOnDamageHealed)
+  - [OnCriticalHealthStarted](#healthOnCriticalHealthStarted)
+  - [OnCriticalHealthEnded](#healthOnCriticalHealthEnded)
+  - [OnDeath](#healthOnDeath)
+  - [OnRevive](#healthOnRevive)
+  - [TakeDamage()](#healthTakeDamage)
+  - [Die()](#healthDie)
+  - [HealDamage()](#healthHealDamage)
+  - [HealToFull()](#healthHealToFull)
+  - [SetMaxHealth()](#healthSetMaxHealth)
+  - [SetHealth()](#healthSetHealth)
 - [Contact Information](#contactInformation)
 
 ## 1 - Introduction <a name="introduction"/>
@@ -40,6 +41,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0.0: Initial release
 - 1.0.1: Add a non-MonoBehaviour version of the health component
+- 1.1: Add multiple interface support
 
 ## 3 - Features <a name="features"/>
 - Easy to use: Just add a script to any object that needs health, such as characters or props.
@@ -62,14 +64,14 @@ private Health characterHealth = new Health(100, 100, 03f);
 ```
 
 ### 4.2 Modifying the health through damage or heal <a name="modifyingTheHealthThroughDamageOrHeal"/>
-To apply damage or healing to the health component, just the invoke the TakeDamage() and HealDamage() functions in the HealthComponent script.  
+To apply damage or healing to the health, just the invoke the TakeDamage() and HealDamage() functions in the HealthComponent script.  
 ```csharp
 public void TakeDamage(float amountDamage, object damageCauser);
 public void HealDamage(float amountHeal, object healingCauser);
 ```
 
-### 4.3 HealthComponent events <a name="healthComponentEvents"/>
-The HealthComponent script has many events related to changing the health value. For more details on the events, please check the documentation section.  
+### 4.3 Health events <a name="healthEvents"/>
+The HealthComponent and Health script has many events related to changing the health value. For more details on the events, please check the documentation section.  
 ```csharp
 public event Action<float, float, object> OnCurrentHealthChanged;
 public event Action<float, float, object> OnMaxHealthChanged;
@@ -79,6 +81,15 @@ public event Action OnCriticalHealthStarted;
 public event Action OnCriticalHealthEnded;
 public event Action<object> OnDeath;
 public event Action<float, object> OnRevive;
+```
+
+### 4.4 Interface support <a name="healthInterfaceSupport"/>
+The HealthComponent and Health script implements the following interfaces. Feel free to reference them in your code if need it.  
+```csharp
+IHealth
+IDamageable
+IHealable
+IHealthStatus
 ```
 
 ## 5 - Documentation <a name="documentation"/>
@@ -96,7 +107,11 @@ public Health(float maxHealth, float curHealth, float criticalHealthThreshold = 
 | float | criticalHealthThreshold | The percentage that the health should be (related to max health) to be considered in a critical state |
 
 
-### 5.2 HealthComponent.GetHealth <a name="healthComponentGetHealth"/>
+### 5.2 GetHealth <a name="healthGetHealth"/>
+### 5.2.1 Health.GetHealth
+### 5.2.2 HealthComponent.GetHealth
+### 5.2.3 IHealth.GetHealth
+### 5.2.4 IHealthStatus.GetHealth
 Get the current health of the health component
 #### Declaration
 ```csharp
@@ -108,7 +123,11 @@ public float GetHealth;
 | float | The current health |
 
 
-### 5.3 HealthComponent.GetHealthNormalized <a name="healthComponentGetHealthNormalized"/>
+### 5.3 GetHealthNormalized <a name="healthGetHealthNormalized"/>
+### 5.3.1 Health.GetHealthNormalized
+### 5.3.2 HealthComponent.GetHealthNormalized
+### 5.3.3 IHealth.GetHealthNormalized
+### 5.3.4 IHealthStatus.GetHealthNormalized
 Get the normalized current health of the health component
 #### Declaration
 ```csharp
@@ -120,7 +139,11 @@ public float GetHealthNormalized;
 | float | The current health normalized |
 
 
-### 5.4 HealthComponent.GetMaxHealth <a name="healthComponentGetMaxHealth"/>
+### 5.4 GetMaxHealth <a name="healthGetMaxHealth"/>
+### 5.4.1 Health.GetMaxHealth
+### 5.4.2 HealthComponent.GetMaxHealth
+### 5.4.3 IHealth.GetMaxHealth
+### 5.4.4 IHealthStatus.GetMaxHealth
 Get the maxHealth value of this health component
 #### Declaration
 ```csharp
@@ -132,7 +155,11 @@ public float GetMaxHealth;
 | float | The max health value |
 
 
-### 5.5 HealthComponent.IsDead <a name="healthComponentIsDead"/>
+### 5.5 IsDead <a name="healthIsDead"/>
+### 5.5.1 Health.IsDead
+### 5.5.2 HealthComponent.IsDead
+### 5.5.3 IHealth.IsDead
+### 5.5.4 IHealthStatus.IsDead
 Check if the current health is zero or below
 #### Declaration
 ```csharp
@@ -144,7 +171,11 @@ public bool IsDead;
 | bool | Is the health value zero or below |
 
 
-### 5.6 HealthComponent.IsOnCriticalHealth <a name="healthComponentIsOnCriticalHealth"/>
+### 5.6 IsOnCriticalHealth <a name="healthIsOnCriticalHealth"/>
+### 5.6.1 Health.IsOnCriticalHealth
+### 5.6.2 HealthComponent.IsOnCriticalHealth
+### 5.6.3 IHealth.IsOnCriticalHealth
+### 5.6.4 IHealthStatus.IsOnCriticalHealth
 Check if the current health is on a critical value
 #### Declaration
 ```csharp
@@ -156,7 +187,11 @@ public bool IsOnCriticalHealth;
 | bool | Is the health value under the critical threshold |
 
 
-### 5.7 HealthComponent.IsOnFullHealth <a name="healthComponentIsOnFullHealth"/>
+### 5.7 IsOnFullHealth <a name="healthIsOnFullHealth"/>
+### 5.7.1 Health.IsOnFullHealth
+### 5.7.2 HealthComponent.IsOnFullHealth
+### 5.7.3 IHealth.IsOnFullHealth
+### 5.7.4 IHealthStatus.IsOnFullHealth
 Check if the current health value is the same as the full health
 #### Declaration
 ```csharp
@@ -168,7 +203,10 @@ public bool IsOnFullHealth;
 | bool | Is the current health value the same as the full health |
 
 
-### 5.8 HealthComponent.OnCurrentHealthChanged <a name="healthComponentOnCurrentHealthChanged"/>
+### 5.8 OnCurrentHealthChanged <a name="healthOnCurrentHealthChanged"/>
+### 5.8.1 Health.IsOnFullHealth
+### 5.8.2 HealthComponent.IsOnFullHealth
+### 5.8.3 IHealth.IsOnFullHealth
 Invoked when the current health value changes
 #### Declaration
 ```csharp
@@ -182,7 +220,10 @@ public Action<float, float, object> OnCurrentHealthChanged;
 | object | The object who caused the current health to change |
 
 
-### 5.9 HealthComponent.OnMaxHealthChanged <a name="healthComponentOnMaxHealthChanged"/>
+### 5.9 OnMaxHealthChanged <a name="healthOnMaxHealthChanged"/>
+### 5.9.1 Health.OnMaxHealthChanged
+### 5.9.2 HealthComponent.OnMaxHealthChanged
+### 5.9.3 IHealth.OnMaxHealthChanged
 Invoked when the max health value changes
 #### Declaration
 ```csharp
@@ -196,7 +237,11 @@ public Action<float, float, object> OnMaxHealthChanged;
 | object | The object who caused the max health to change |
 
 
-### 5.10 HealthComponent.OnDamageTaken <a name="healthComponentOnDamageTaken"/>
+### 5.10 OnDamageTaken <a name="healthOnDamageTaken"/>
+### 5.10.1 Health.OnDamageTaken
+### 5.10.2 HealthComponent.OnDamageTaken
+### 5.10.3 IHealth.OnDamageTaken
+### 5.10.4 IDamageable.OnDamageTaken
 Invoked when some damage is applied to the health
 #### Declaration
 ```csharp
@@ -210,7 +255,11 @@ public Action<float, float, object> OnDamageTaken;
 | object | The object who caused damage |
 
 
-### 5.11 HealthComponent.OnDamageHealed <a name="healthComponentOnDamageHealed"/>
+### 5.11 OnDamageHealed <a name="healthOnDamageHealed"/>
+### 5.11.1 Health.OnDamageHealed
+### 5.11.2 HealthComponent.OnDamageHealed
+### 5.11.3 IHealth.OnDamageHealed
+### 5.11.4 IHealable.OnDamageHealed
 Invoked when some healing is applied to the health
 #### Declaration
 ```csharp
@@ -224,7 +273,11 @@ public Action<float, float, object> OnDamageHealed;
 | object | The object who caused healing |
 
 
-### 5.12 HealthComponent.OnCriticalHealthStarted <a name="healthComponentOnCriticalHealthStarted"/>
+### 5.12 OnCriticalHealthStarted <a name="healthOnCriticalHealthStarted"/>
+### 5.12.1 Health.OnCriticalHealthStarted
+### 5.12.2 HealthComponent.OnCriticalHealthStarted
+### 5.12.3 IHealth.OnCriticalHealthStarted
+### 5.12.4 IHealthStatus.OnCriticalHealthStarted
 Invoked when the health reaches a critical value
 #### Declaration
 ```csharp
@@ -232,7 +285,11 @@ public Action OnCriticalHealthStarted;
 ```
 
 
-### 5.13 HealthComponent.OnCriticalHealthEnded <a name="healthComponentOnCriticalHealthEnded"/>
+### 5.13 OnCriticalHealthEnded <a name="healthOnCriticalHealthEnded"/>
+### 5.13.1 Health.OnCriticalHealthEnded
+### 5.13.2 HealthComponent.OnCriticalHealthEnded
+### 5.13.3 IHealth.OnCriticalHealthEnded
+### 5.13.4 IHealthStatus.OnCriticalHealthEnded
 Invoked when the health leaves the critical value threshold
 #### Declaration
 ```csharp
@@ -240,7 +297,11 @@ public Action OnCriticalHealthEnded;
 ```
 
 
-### 5.14 HealthComponent.OnDeath <a name="healthComponentOnDeath"/>
+### 5.14 OnDeath <a name="healthOnDeath"/>
+### 5.14.1 Health.OnDeath
+### 5.14.2 HealthComponent.OnDeath
+### 5.14.3 IHealth.OnDeath
+### 5.14.4 IDamageable.OnDeath
 Invoked when the health reaches 0
 #### Declaration
 ```csharp
@@ -252,7 +313,11 @@ public Action<object> OnDeath;
 | object | The object who caused the death |
 
 
-### 5.15 HealthComponent.OnRevive <a name="healthComponentOnRevive"/>
+### 5.15 OnRevive <a name="healthOnRevive"/>
+### 5.15.1 Health.OnRevive
+### 5.15.2 HealthComponent.OnRevive
+### 5.15.3 IHealth.OnRevive
+### 5.15.4 IHealable.OnRevive
 Invoked when the health goes from 0 to a positive value
 #### Declaration
 ```csharp
@@ -265,7 +330,11 @@ public Action<float, object> OnRevive;
 | object | The object who caused the revive |
 
 
-### 5.16 HealthComponent.TakeDamage <a name="healthComponentTakeDamage"/>
+### 5.16 TakeDamage <a name="healthTakeDamage"/>
+### 5.16.1 Health.TakeDamage
+### 5.16.2 HealthComponent.TakeDamage
+### 5.16.3 IHealth.TakeDamage
+### 5.16.4 IDamageable.TakeDamage
 Apply damage to the healthComponent
 #### Declaration
 ```csharp
@@ -278,7 +347,11 @@ public void TakeDamage(float amountDamage, object damageCauser);
 | object | damageCauser | The object responsible to cause damage to this healthComponent |
 
 
-### 5.17 HealthComponent.Die <a name="healthComponentDie"/>
+### 5.17 Die <a name="healthDie"/>
+### 5.17.1 Health.Die
+### 5.17.2 HealthComponent.Die
+### 5.17.3 IHealth.Die
+### 5.17.4 IDamageable.Die
 Reduce the health value to zero
 #### Declaration
 ```csharp
@@ -290,7 +363,11 @@ public void Die(object deathCauser);
 | object | deathCauser | The object responsible for the death |
 
 
-### 5.18 HealthComponent.HealDamage <a name="healthComponentHealDamage"/>
+### 5.18 HealDamage <a name="healthHealDamage"/>
+### 5.18.1 Health.HealDamage
+### 5.18.2 HealthComponent.HealDamage
+### 5.18.3 IHealth.HealDamage
+### 5.18.4 IHealable.HealDamage
 Apply healing to the healthComponent
 #### Declaration
 ```csharp
@@ -303,7 +380,11 @@ public void HealDamage(float amountHeal, object healingCauser);
 | object | healingCauser | The object responsible to heal this healthComponent |
 
 
-### 5.19 HealthComponent.HealToFull <a name="healthComponentHealToFull"/>
+### 5.19 HealToFull <a name="healthHealToFull"/>
+### 5.19.1 Health.HealToFull
+### 5.19.2 HealthComponent.HealToFull
+### 5.19.3 IHealth.HealToFull
+### 5.19.4 IHealable.HealToFull
 Heal this healthComponent to its maximum capacity
 #### Declaration
 ```csharp
@@ -315,7 +396,10 @@ public void HealToFull(object healingCauser);
 | object | healingCauser | The object responsible to full heal this healthComponent |
 
 
-### 5.20 HealthComponent.SetMaxHealth <a name="healthComponentSetMaxHealth"/>
+### 5.20 SetMaxHealth <a name="healthSetMaxHealth"/>
+### 5.20.1 Health.SetMaxHealth
+### 5.20.2 HealthComponent.SetMaxHealth
+### 5.20.3 IHealth.SetMaxHealth
 Update the maxHealth value of this component
 #### Declaration
 ```csharp
@@ -329,7 +413,10 @@ public void SetMaxHealth(float newMaxHealth, bool updateToFullHealth, object cha
 | object | changeCauser | The object responsible for modifying the maxHealth of this healthComponent |
 
 
-### 5.21 HealthComponent.SetHealth <a name="healthComponentSetHealth"/>
+### 5.21 SetHealth <a name="healthSetHealth"/>
+### 5.21.1 Health.SetHealth
+### 5.21.2 HealthComponent.SetHealth
+### 5.21.3 IHealth.SetHealth
 Set the health to a specific amount
 #### Declaration
 ```csharp
