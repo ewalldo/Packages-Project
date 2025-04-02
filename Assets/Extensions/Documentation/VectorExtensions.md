@@ -4,13 +4,14 @@
   - [Vector](#vectorExtensions)
       - [Vector2:AddToAxis](#vectorExtensionsVector2AddToAxis)
       - [Vector2:InRangeOf](#vectorExtensionsVector2InRangeOf)
+      - [Vector2:PointToSphereSurface](#vectorExtensionsVector2PointToSphereSurface)
+      - [Vector2:RandomPointInAnnulus](#vectorExtensionsVector2RandomPointInAnnulus)
       - [Vector2:With](#vectorExtensionsVector2With)
       - [Vector2:WithX](#vectorExtensionsVector2WithX)
       - [Vector2:WithY](#vectorExtensionsVector2WithY)
-      - [Vector2:RandomPointInAnnulus](#vectorExtensionsVector2RandomPointInAnnulus)
-      - [Vector2:PointToSphereSurface](#vectorExtensionsVector2PointToSphereSurface)
       - [Vector3:AddToAxis](#vectorExtensionsVector3AddToAxis)
       - [Vector3:InRangeOf](#vectorExtensionsVector3InRangeOf)
+      - [Vector3:RandomPointInAnnulus](#vectorExtensionsVector3RandomPointInAnnulus)
       - [Vector3:With](#vectorExtensionsVector3With)
       - [Vector3:WithX](#vectorExtensionsVector3WithX)
       - [Vector3:WithY](#vectorExtensionsVector3WithY)
@@ -18,7 +19,6 @@
       - [Vector3:WithXY](#vectorExtensionsVector3WithXY)
       - [Vector3:WithXZ](#vectorExtensionsVector3WithXZ)
       - [Vector3:WithYZ](#vectorExtensionsVector3WithYZ)
-      - [Vector3:RandomPointInAnnulus](#vectorExtensionsVector3RandomPointInAnnulus)
       - [Vector4:AddToAxis](#vectorExtensionsVector4AddToAxis)
       - [Vector4:InRangeOf](#vectorExtensionsVector4InRangeOf)
       - [Vector4:With](#vectorExtensionsVector4With)
@@ -73,6 +73,48 @@ bool InRangeOf(Vector2 origin, float range);
 | bool | True, if the current Vector2 is in range, false otherwise |
 
 
+#### Vector2:PointToSphereSurface <a name="vectorExtensionsVector2PointToSphereSurface"/>
+Map a 2D point to a sphere surface.
+  The middle of the 2D point will be mapped to the front of the sphere (0, 0, radius).
+  While the values of the X edges (minX and maxX) will be mapped to the back (0, 0, -radius).
+#### Declaration
+```csharp
+Vector3 PointToSphereSurface(float radius, float minX = 0, float maxX = 1, float minY = 0, float maxY = 1);
+Vector3 PointToSphereSurface(float radius, Vector2 xRange, Vector2 yRange);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | radius | The sphere radius |
+| float | minX | The minimum X value of the range |
+| float | maxX | The maximum X value of the range |
+| float | minY | The minimum Y value of the range |
+| float | maxY | The maximum Y value of the range |
+| Vector2 | xRange | The range of the X value [xMin, xMax] |
+| Vector2 | yRange | The range of the Y value [yMin, yMax] |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | The point on the sphere surface |
+
+
+#### Vector2:RandomPointInAnnulus <a name="vectorExtensionsVector2RandomPointInAnnulus"/>
+Gets a random point inside an annulus using the current Vector2 as origin
+#### Declaration
+```csharp
+Vector2 RandomPointInAnnulus(float smallerRadius, float largerRadius);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | smallerRadius | The radius of the smaller circle |
+| float | largerRadius | The radius of the larger circle |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector2 | A random point inside the specified annulus |
+
+
 #### Vector2:With <a name="vectorExtensionsVector2With"/>
 Returns a new Vector2 with the specified components replaced
 #### Declaration
@@ -122,48 +164,6 @@ Vector2 WithY(float y);
 | Vector2 | A new Vector2 with the Y component replaced |
 
 
-#### Vector2:RandomPointInAnnulus <a name="vectorExtensionsVector2RandomPointInAnnulus"/>
-Gets a random point inside an annulus using the current Vector2 as origin
-#### Declaration
-```csharp
-Vector2 RandomPointInAnnulus(float smallerRadius, float largerRadius);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | smallerRadius | The radius of the smaller circle |
-| float | largerRadius | The radius of the larger circle |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| Vector2 | A random point inside the specified annulus |
-
-
-#### Vector2:PointToSphereSurface <a name="vectorExtensionsVector2PointToSphereSurface"/>
-Map a 2D point to a sphere surface.
-  The middle of the 2D point will be mapped to the front of the sphere (0, 0, radius).
-  While the values of the X edges (minX and maxX) will be mapped to the back (0, 0, -radius).
-#### Declaration
-```csharp
-Vector3 PointToSphereSurface(float radius, float minX = 0, float maxX = 1, float minY = 0, float maxY = 1);
-Vector3 PointToSphereSurface(float radius, Vector2 xRange, Vector2 yRange);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | radius | The sphere radius |
-| float | minX | The minimum X value of the range |
-| float | maxX | The maximum X value of the range |
-| float | minY | The minimum Y value of the range |
-| float | maxY | The maximum Y value of the range |
-| Vector2 | xRange | The range of the X value [xMin, xMax] |
-| Vector2 | yRange | The range of the Y value [yMin, yMax] |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| Vector3 | The point on the sphere surface |
-
-
 #### Vector3:AddToAxis <a name="vectorExtensionsVector3AddToAxis"/>
 Returns a new Vector3 with a specific amount added to each axis
 #### Declaration
@@ -197,6 +197,23 @@ bool InRangeOf(Vector3 origin, float range);
 | Type | Description |
 | :--- | :--- |
 | bool | True, if the current Vector3 is in range, false otherwise |
+
+
+#### Vector3:RandomPointInAnnulus <a name="vectorExtensionsVector3RandomPointInAnnulus"/>
+Gets a random point inside an annulus using the current Vector3 as origin
+#### Declaration
+```csharp
+Vector3 RandomPointInAnnulus(float smallerRadius, float largerRadius);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | smallerRadius | The radius of the smaller circle |
+| float | largerRadius | The radius of the larger circle |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | A random point inside the specified annulus |
 
 
 #### Vector3:With <a name="vectorExtensionsVector3With"/>
@@ -314,22 +331,6 @@ Vector3 WithXZ(float y, float z);
 | Type | Description |
 | :--- | :--- |
 | Vector3 | A new Vector3 with the Y and Z components replaced |
-
-#### Vector3:RandomPointInAnnulus <a name="vectorExtensionsVector3RandomPointInAnnulus"/>
-Gets a random point inside an annulus using the current Vector3 as origin
-#### Declaration
-```csharp
-Vector3 RandomPointInAnnulus(float smallerRadius, float largerRadius);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | smallerRadius | The radius of the smaller circle |
-| float | largerRadius | The radius of the larger circle |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| Vector3 | A random point inside the specified annulus |
 
 
 #### Vector4:AddToAxis <a name="vectorExtensionsVector4AddToAxis"/>

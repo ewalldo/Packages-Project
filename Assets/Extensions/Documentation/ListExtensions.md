@@ -2,27 +2,59 @@
 ## Table of contents
 - [Documentation](#documentation)
   - [List](#listExtensions)
-      - [HasIndex](#listExtensionsHasIndex)
-      - [IsNullOrEmpty](#listExtensionsIsNullOrEmpty)
+      - [AsReadOnly](#listExtensionsAsReadOnly)
+      - [ComplementList](#listExtensionsComplementList)
       - [First](#listExtensionsFirst)
+      - [HasIndex](#listExtensionsHasIndex)
+      - [InverseList](#listExtensionsInverseList)
+      - [IsNullOrEmpty](#listExtensionsIsNullOrEmpty)
       - [Last](#listExtensionsLast)
-      - [RandomElement](#listExtensionsRandomElement)
-      - [Minimum](#listExtensionsMinimum)
+      - [MapList](#listExtensionsMapList)
       - [Maximum](#listExtensionsMaximum)
-      - [Swap](#listExtensionsSwap)
+      - [Minimum](#listExtensionsMinimum)
+      - [NormalizeList](#listExtensionsNormalizeList)
+      - [RandomElement](#listExtensionsRandomElement)
+      - [RemoveDuplicates](#listExtensionsRemoveDuplicates)
+      - [RemoveNullValues](#listExtensionsRemoveNullValues)
       - [RotateLeft](#listExtensionsRotateLeft)
       - [RotateRight](#listExtensionsRotateRight)
-      - [RemoveNullValues](#listExtensionsRemoveNullValues)
-      - [RemoveDuplicates](#listExtensionsRemoveDuplicates)
       - [Shuffle](#listExtensionsShuffle)
-      - [NormalizeList](#listExtensionsNormalizeList)
-      - [MapList](#listExtensionsMapList)
-      - [ComplementList](#listExtensionsComplementList)
-      - [InverseList](#listExtensionsInverseList)
-      - [AsReadOnly](#listExtensionsAsReadOnly)
+      - [Swap](#listExtensionsSwap)
 
 ## Documentation <a name="documentation"/>
 ### List Extensions <a name="listExtensions"/>
+#### AsReadOnly <a name="listExtensionsAsReadOnly"/>
+Gets a read-only version of a list
+#### Declaration
+```csharp
+IReadOnlyList<T> AsReadOnly<T>();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| IReadOnlyList<T> | The read-only version of the list |
+
+
+#### ComplementList <a name="listExtensionsComplementList"/>
+Change all values of the list to its complement (1 - value)
+#### Declaration
+```csharp
+void ComplementList();
+```
+
+
+#### First <a name="listExtensionsFirst"/>
+Return the first element of a list
+#### Declaration
+```csharp
+T First();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| T | The first element of the list |
+
+
 #### HasIndex <a name="listExtensionsHasIndex"/>
 Returns whether an index is within the bounds of a list
 #### Declaration
@@ -39,6 +71,14 @@ bool HasIndex(int index);
 | bool | Wheter the index is within the bounds of the array or not |
 
 
+#### InverseList <a name="listExtensionsInverseList"/>
+Inverse the signal of all elements in the list
+#### Declaration
+```csharp
+void InverseList();
+```
+
+
 #### IsNullOrEmpty <a name="listExtensionsIsNullOrEmpty"/>
 Returns whether a list is null or empty
 #### Declaration
@@ -49,18 +89,6 @@ bool IsNullOrEmpty();
 | Type | Description |
 | :--- | :--- |
 | bool |True, if the list is null or empty, false otherwise |
-
-
-#### First <a name="listExtensionsFirst"/>
-Return the first element of a list
-#### Declaration
-```csharp
-T First();
-```
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| T | The first element of the list |
 
 
 #### Last <a name="listExtensionsLast"/>
@@ -75,28 +103,19 @@ T Last();
 | T | The last element of the list |
 
 
-#### RandomElement <a name="listExtensionsRandomElement"/>
-Gets a random element from a list
+#### MapList <a name="listExtensionsMapList"/>
+Map a list to a new range
 #### Declaration
 ```csharp
-T RandomElement();
+void MapList(float min, float max, float targetMin, float targetMax);
 ```
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| T | The random element got from the list |
-
-
-#### Minimum <a name="listExtensionsMinimum"/>
-Return the minimum element of a list
-#### Declaration
-```csharp
-float Minimum();
-```
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| float | The minimum element of the list |
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | min | The current minimum range |
+| float | max | The current maximum range |
+| float | targetMin | The new target minimum range |
+| float | targetMax | The new target maximum range |
 
 
 #### Maximum <a name="listExtensionsMaximum"/>
@@ -111,17 +130,58 @@ float Maximum();
 | float | The maximum element of the list |
 
 
-#### Swap <a name="listExtensionsSwap"/>
-Swap the value in the "firstIndex" with the one in the "secondIndex"
+#### Minimum <a name="listExtensionsMinimum"/>
+Return the minimum element of a list
 #### Declaration
 ```csharp
-void Swap(int firstIndex, int secondIndex);
+float Minimum();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The minimum element of the list |
+
+
+#### NormalizeList <a name="listExtensionsNormalizeList"/>
+Normalize a list of float between the values of 0 and 1
+#### Declaration
+```csharp
+void NormalizeList();
+void NormalizeList(float min, float max);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| int | firstIndex | The first index |
-| int | secondIndex | The second index |
+| float | min | The minimum value |
+| float | max | The maximum value |
+
+
+#### RandomElement <a name="listExtensionsRandomElement"/>
+Gets a random element from a list
+#### Declaration
+```csharp
+T RandomElement();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| T | The random element got from the list |
+
+
+#### RemoveDuplicates <a name="listExtensionsRemoveDuplicates"/>
+Remove all duplicates in a list
+#### Declaration
+```csharp
+void RemoveDuplicates();
+```
+
+
+#### RemoveNullValues <a name="listExtensionsRemoveNullValues"/>
+Remove all null entries in a list
+#### Declaration
+```csharp
+void RemoveNullValues();
+```
 
 
 #### RotateLeft <a name="listExtensionsRotateLeft"/>
@@ -148,22 +208,6 @@ void RotateRight(int amount);
 | int | amount | Move all items of a list "amount" spaces to the right |
 
 
-#### RemoveNullValues <a name="listExtensionsRemoveNullValues"/>
-Remove all null entries in a list
-#### Declaration
-```csharp
-void RemoveNullValues();
-```
-
-
-#### RemoveDuplicates <a name="listExtensionsRemoveDuplicates"/>
-Remove all duplicates in a list
-#### Declaration
-```csharp
-void RemoveDuplicates();
-```
-
-
 #### Shuffle <a name="listExtensionsShuffle"/>
 Shuffle a list by using Fisher-Yates
 #### Declaration
@@ -172,58 +216,14 @@ void Shuffle();
 ```
 
 
-#### NormalizeList <a name="listExtensionsNormalizeList"/>
-Normalize a list of float between the values of 0 and 1
+#### Swap <a name="listExtensionsSwap"/>
+Swap the value in the "firstIndex" with the one in the "secondIndex"
 #### Declaration
 ```csharp
-void NormalizeList();
-void NormalizeList(float min, float max);
+void Swap(int firstIndex, int secondIndex);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| float | min | The minimum value |
-| float | max | The maximum value |
-
-
-#### MapList <a name="listExtensionsMapList"/>
-Map a list to a new range
-#### Declaration
-```csharp
-void MapList(float min, float max, float targetMin, float targetMax);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | min | The current minimum range |
-| float | max | The current maximum range |
-| float | targetMin | The new target minimum range |
-| float | targetMax | The new target maximum range |
-
-
-#### ComplementList <a name="listExtensionsComplementList"/>
-Change all values of the list to its complement (1 - value)
-#### Declaration
-```csharp
-void ComplementList();
-```
-
-
-#### InverseList <a name="listExtensionsInverseList"/>
-Inverse the signal of all elements in the list
-#### Declaration
-```csharp
-void InverseList();
-```
-
-
-#### AsReadOnly <a name="listExtensionsAsReadOnly"/>
-Gets a read-only version of a list
-#### Declaration
-```csharp
-IReadOnlyList<T> AsReadOnly<T>();
-```
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| IReadOnlyList<T> | The read-only version of the list |
+| int | firstIndex | The first index |
+| int | secondIndex | The second index |

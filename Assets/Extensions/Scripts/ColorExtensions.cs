@@ -5,12 +5,41 @@ namespace Extensions
 {
     public static class ColorExtensions
 	{
-        /// <summary>
-        /// Converts a Color to a hexadecimal string representation
-        /// </summary>
-        /// <param name="color">The color to be converted</param>
-        /// <returns>The hex string representation of the color</returns>
-        public static string ToHexString(this Color color)
+		/// <summary>
+		/// Blend two colors based on a specified ratio
+		/// </summary>
+		/// <param name="color1">The first color of the blend</param>
+		/// <param name="color2">The second color of the blend</param>
+		/// <param name="ratio">The blend ratio of the colors</param>
+		/// <returns>The blended color based on the specified ratio</returns>
+		public static Color Blend(this Color color1, Color color2, float ratio)
+		{
+			if (!ratio.InRange(0f, 1f))
+				throw new ArgumentException("Ratio value should be between the range [0, 1]");
+
+			return new Color(
+				(color1.r * ratio) + (color2.r * (1 - ratio)),
+				(color1.g * ratio) + (color2.g * (1 - ratio)),
+				(color1.b * ratio) + (color2.b * (1 - ratio)),
+				(color1.a * ratio) + (color2.a * (1 - ratio)));
+		}
+
+		/// <summary>
+		/// Inverts the color
+		/// </summary>
+		/// <param name="color">The color to be inverted</param>
+		/// <returns>The inverted color</returns>
+		public static Color Invert(this Color color)
+		{
+			return new Color(1 - color.r, 1 - color.g, 1 - color.b, color.a);
+		}
+
+		/// <summary>
+		/// Converts a Color to a hexadecimal string representation
+		/// </summary>
+		/// <param name="color">The color to be converted</param>
+		/// <returns>The hex string representation of the color</returns>
+		public static string ToHexString(this Color color)
 		{
 			return "#" + ColorUtility.ToHtmlStringRGBA(color);
 		}
@@ -44,30 +73,6 @@ namespace Extensions
 		}
 
 		/// <summary>
-		/// Returns a new Color with the R component replaced.
-		/// </summary>
-		/// <param name="color">The original Color</param>
-		/// <param name="rValue">The new R component.</param>
-		/// <returns>A new Color with the R component replaced.</returns>
-		public static Color WithRed(this Color color, float rValue) => color.With(r: rValue);
-
-		/// <summary>
-		/// Returns a new Color with the G component replaced.
-		/// </summary>
-		/// <param name="color">The original Color</param>
-		/// <param name="gValue">The new G component.</param>
-		/// <returns>A new Color with the G component replaced.</returns>
-		public static Color WithGreen(this Color color, float gValue) => color.With(g: gValue);
-
-		/// <summary>
-		/// Returns a new Color with the B component replaced.
-		/// </summary>
-		/// <param name="color">The original Color</param>
-		/// <param name="bValue">The new B component.</param>
-		/// <returns>A new Color with the B component replaced.</returns>
-		public static Color WithBlue(this Color color, float bValue) => color.With(b: bValue);
-
-		/// <summary>
 		/// Returns a new Color with the alpha component replaced
 		/// </summary>
 		/// <param name="color">The original color</param>
@@ -82,32 +87,27 @@ namespace Extensions
 		}
 
 		/// <summary>
-		/// Blend two colors based on a specified ratio
+		/// Returns a new Color with the B component replaced.
 		/// </summary>
-		/// <param name="color1">The first color of the blend</param>
-		/// <param name="color2">The second color of the blend</param>
-		/// <param name="ratio">The blend ratio of the colors</param>
-		/// <returns>The blended color based on the specified ratio</returns>
-		public static Color Blend(this Color color1, Color color2, float ratio)
-		{
-			if (!ratio.InRange(0f, 1f))
-				throw new ArgumentException("Ratio value should be between the range [0, 1]");
-
-			return new Color(
-				(color1.r * ratio) + (color2.r * (1 - ratio)),
-				(color1.g * ratio) + (color2.g * (1 - ratio)),
-				(color1.b * ratio) + (color2.b * (1 - ratio)),
-				(color1.a * ratio) + (color2.a * (1 - ratio)));
-		}
+		/// <param name="color">The original Color</param>
+		/// <param name="bValue">The new B component.</param>
+		/// <returns>A new Color with the B component replaced.</returns>
+		public static Color WithBlue(this Color color, float bValue) => color.With(b: bValue);
 
 		/// <summary>
-		/// Inverts the color
+		/// Returns a new Color with the G component replaced.
 		/// </summary>
-		/// <param name="color">The color to be inverted</param>
-		/// <returns>The inverted color</returns>
-		public static Color Invert(this Color color)
-		{
-			return new Color(1 - color.r, 1 - color.g, 1 - color.b, color.a);
-		}
+		/// <param name="color">The original Color</param>
+		/// <param name="gValue">The new G component.</param>
+		/// <returns>A new Color with the G component replaced.</returns>
+		public static Color WithGreen(this Color color, float gValue) => color.With(g: gValue);
+
+		/// <summary>
+		/// Returns a new Color with the R component replaced.
+		/// </summary>
+		/// <param name="color">The original Color</param>
+		/// <param name="rValue">The new R component.</param>
+		/// <returns>A new Color with the R component replaced.</returns>
+		public static Color WithRed(this Color color, float rValue) => color.With(r: rValue);
 	}
 }

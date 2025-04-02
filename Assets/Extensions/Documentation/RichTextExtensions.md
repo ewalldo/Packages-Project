@@ -2,31 +2,14 @@
 ## Table of contents
 - [Documentation](#documentation)
   - [RichText](#richtextExtensions)
-      - [WrapAround](#richTextExtensionsWrapAround)
       - [Bold](#richTextExtensionsBold)
+      - [Color](#richTextExtensionsColor)
       - [Italic](#richTextExtensionsItalic)
       - [Size](#richTextExtensionsSize)
-      - [Color](#richTextExtensionsColor)
+      - [WrapAround](#richTextExtensionsWrapAround)
 
 ## Documentation <a name="documentation"/>
 ### RichText Extensions <a name="richTextExtensions"/>
-#### WrapAround <a name="richTextExtensionsWrapAround"/>
-Wraps a start and end string around another one
-#### Declaration
-```csharp
-string WrapAround(string startElement, string endElement);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| string | startElement | The start string |
-| string | endElement | The final string |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| string | The string with the start and end element wrapped around it |
-
-
 #### Bold <a name="richTextExtensionsBold"/>
 Renders the text in bold
 #### Declaration
@@ -37,6 +20,24 @@ string Bold();
 | Type | Description |
 | :--- | :--- |
 | string | The bolded text representation |
+
+
+#### Color <a name="richTextExtensionsColor"/>
+Change the render color of the text
+#### Declaration
+```csharp
+string Color(Color color);
+string Color(uint hexColor);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Color | color | The color to apply to the text |
+| uint | hexColor | The color to apply to the text in hex value representation |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| string | The text with the color applied |
 
 
 #### Italic <a name="richTextExtensionsItalic"/>
@@ -67,19 +68,18 @@ string Size(int size);
 | string | The resized text |
 
 
-#### Color <a name="richTextExtensionsColor"/>
-Change the render color of the text
+#### WrapAround <a name="richTextExtensionsWrapAround"/>
+Wraps a start and end string around another one
 #### Declaration
 ```csharp
-string Color(Color color);
-string Color(uint hexColor);
+string WrapAround(string startElement, string endElement);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| Color | color | The color to apply to the text |
-| uint | hexColor | The color to apply to the text in hex value representation |
+| string | startElement | The start string |
+| string | endElement | The final string |
 #### Returns
 | Type | Description |
 | :--- | :--- |
-| string | The text with the color applied |
+| string | The string with the start and end element wrapped around it |

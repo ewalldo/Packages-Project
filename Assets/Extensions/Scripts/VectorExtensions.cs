@@ -32,57 +32,6 @@ namespace Extensions
         }
 
         /// <summary>
-        /// Returns a new Vector2 with the specified components replaced.
-        /// </summary>
-        /// <param name="v">The original Vector2</param>
-        /// <param name="x">Optional X component. If null, the original X component is used.</param>
-        /// <param name="y">Optional Y component. If null, the original Y component is used.</param>
-        /// <returns>A new Vector2 with the specified components replaced.</returns>
-        public static Vector2 With(this Vector2 v, float? x = null, float? y = null)
-        {
-            return new Vector2(x ?? v.x, y ?? v.y);
-        }
-
-        /// <summary>
-        /// Returns a new Vector2 with the X component replaced.
-        /// </summary>
-        /// <param name="v">The original Vector2</param>
-        /// <param name="xValue">The new X component.</param>
-        /// <returns>A new Vector2 with the X component replaced.</returns>
-        public static Vector2 WithX(this Vector2 v, float xValue) => v.With(x: xValue);
-
-        /// <summary>
-        /// Returns a new Vector2 with the Y component replaced.
-        /// </summary>
-        /// <param name="v">The original Vector2</param>
-        /// <param name="yValue">The new Y component.</param>
-        /// <returns>A new Vector2 with the X component replaced.</returns>
-        public static Vector2 WithY(this Vector2 v, float yValue) => v.With(y: yValue);
-
-        /// <summary>
-        /// Gets a random point inside an annulus using the current Vector2 as origin
-        /// </summary>
-        /// <param name="v">Annulus origin</param>
-        /// <param name="smallerRadius">The radius of the smaller circle</param>
-        /// <param name="largerRadius">The radius of the larger circle</param>
-        /// <returns>A random point inside the specified annulus</returns>
-        public static Vector2 RandomPointInAnnulus(this Vector2 v, float smallerRadius, float largerRadius)
-        {
-            if (largerRadius < smallerRadius)
-                throw new ArgumentException($"{nameof(largerRadius)} value should be higher than {nameof(smallerRadius)} value");
-
-            float angle = UnityEngine.Random.value * Mathf.PI * 2f;
-            Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-
-            float minRadiusSquared = smallerRadius * smallerRadius;
-            float maxRadiusSquared = largerRadius * largerRadius;
-            float distance = Mathf.Sqrt(UnityEngine.Random.value * (maxRadiusSquared - minRadiusSquared) + minRadiusSquared);
-
-            Vector2 position = direction * distance;
-            return v + position;
-        }
-
-        /// <summary>
         /// Map a 2D point to a sphere surface.<br/>
         ///     The middle of the 2D point will be mapped to the front of the sphere (0, 0, radius).<br/>
         ///     While the values of the X edges (minX and maxX) will be mapped to the back (0, 0, -radius).
@@ -138,6 +87,57 @@ namespace Extensions
             return v.PointToSphereSurface(radius, xRange.x, xRange.y, yRange.x, yRange.y);
         }
 
+        /// <summary>
+        /// Gets a random point inside an annulus using the current Vector2 as origin
+        /// </summary>
+        /// <param name="v">Annulus origin</param>
+        /// <param name="smallerRadius">The radius of the smaller circle</param>
+        /// <param name="largerRadius">The radius of the larger circle</param>
+        /// <returns>A random point inside the specified annulus</returns>
+        public static Vector2 RandomPointInAnnulus(this Vector2 v, float smallerRadius, float largerRadius)
+        {
+            if (largerRadius < smallerRadius)
+                throw new ArgumentException($"{nameof(largerRadius)} value should be higher than {nameof(smallerRadius)} value");
+
+            float angle = UnityEngine.Random.value * Mathf.PI * 2f;
+            Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+
+            float minRadiusSquared = smallerRadius * smallerRadius;
+            float maxRadiusSquared = largerRadius * largerRadius;
+            float distance = Mathf.Sqrt(UnityEngine.Random.value * (maxRadiusSquared - minRadiusSquared) + minRadiusSquared);
+
+            Vector2 position = direction * distance;
+            return v + position;
+        }
+
+        /// <summary>
+        /// Returns a new Vector2 with the specified components replaced.
+        /// </summary>
+        /// <param name="v">The original Vector2</param>
+        /// <param name="x">Optional X component. If null, the original X component is used.</param>
+        /// <param name="y">Optional Y component. If null, the original Y component is used.</param>
+        /// <returns>A new Vector2 with the specified components replaced.</returns>
+        public static Vector2 With(this Vector2 v, float? x = null, float? y = null)
+        {
+            return new Vector2(x ?? v.x, y ?? v.y);
+        }
+
+        /// <summary>
+        /// Returns a new Vector2 with the X component replaced.
+        /// </summary>
+        /// <param name="v">The original Vector2</param>
+        /// <param name="xValue">The new X component.</param>
+        /// <returns>A new Vector2 with the X component replaced.</returns>
+        public static Vector2 WithX(this Vector2 v, float xValue) => v.With(x: xValue);
+
+        /// <summary>
+        /// Returns a new Vector2 with the Y component replaced.
+        /// </summary>
+        /// <param name="v">The original Vector2</param>
+        /// <param name="yValue">The new Y component.</param>
+        /// <returns>A new Vector2 with the X component replaced.</returns>
+        public static Vector2 WithY(this Vector2 v, float yValue) => v.With(y: yValue);
+
         #endregion
 
         #region Vector3 Extensions
@@ -165,6 +165,30 @@ namespace Extensions
         public static bool InRangeOf(this Vector3 v, Vector3 origin, float range)
         {
             return (v - origin).sqrMagnitude <= (range * range);
+        }
+
+        /// <summary>
+        /// Gets a random point inside an annulus using the current Vector3 as origin
+        /// </summary>
+        /// <param name="v">Annulus origin</param>
+        /// <param name="smallerRadius">The radius of the smaller circle</param>
+        /// <param name="largerRadius">The radius of the larger circle</param>
+        /// <returns>A random point inside the specified annulus</returns>
+        public static Vector3 RandomPointInAnnulus(this Vector3 v, float smallerRadius, float largerRadius)
+        {
+            if (largerRadius < smallerRadius)
+                throw new ArgumentException($"{nameof(largerRadius)} value should be higher than {nameof(smallerRadius)} value");
+
+            float angle = UnityEngine.Random.value * Mathf.PI * 2f;
+            Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+
+            float minRadiusSquared = smallerRadius * smallerRadius;
+            float maxRadiusSquared = largerRadius * largerRadius;
+            float distance = Mathf.Sqrt(UnityEngine.Random.value * (maxRadiusSquared - minRadiusSquared) + minRadiusSquared);
+
+            Vector3 position = new Vector3(direction.x, 0f, direction.y) * distance;
+
+            return v + position;
         }
 
         /// <summary>
@@ -230,30 +254,6 @@ namespace Extensions
         /// <param name="zValue">The new Z component.</param>
         /// <returns>A new Vector3 with the X and Y components replaced.</returns>
         public static Vector3 WithYZ(this Vector3 v, float yValue, float zValue) => v.With(y: yValue, z: zValue);
-
-        /// <summary>
-        /// Gets a random point inside an annulus using the current Vector3 as origin
-        /// </summary>
-        /// <param name="v">Annulus origin</param>
-        /// <param name="smallerRadius">The radius of the smaller circle</param>
-        /// <param name="largerRadius">The radius of the larger circle</param>
-        /// <returns>A random point inside the specified annulus</returns>
-        public static Vector3 RandomPointInAnnulus(this Vector3 v, float smallerRadius, float largerRadius)
-        {
-            if (largerRadius < smallerRadius)
-                throw new ArgumentException($"{nameof(largerRadius)} value should be higher than {nameof(smallerRadius)} value");
-
-            float angle = UnityEngine.Random.value * Mathf.PI * 2f;
-            Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-
-            float minRadiusSquared = smallerRadius * smallerRadius;
-            float maxRadiusSquared = largerRadius * largerRadius;
-            float distance = Mathf.Sqrt(UnityEngine.Random.value * (maxRadiusSquared - minRadiusSquared) + minRadiusSquared);
-
-            Vector3 position = new Vector3(direction.x, 0f, direction.y) * distance;
-
-            return v + position;
-        }
 
         #endregion
 

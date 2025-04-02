@@ -2,17 +2,47 @@
 ## Table of contents
 - [Documentation](#documentation)
   - [Color](#colorExtensions)
-      - [ToHexString](#colorExtensionsToHexString)
-      - [ToHexUInt](#colorExtensionsToHexUint)
-      - [WithAlpha](#colorExtensionsWith)
-      - [WithAlpha](#colorExtensionsWithRed)
-      - [WithAlpha](#colorExtensionsWithGreen)
-      - [WithAlpha](#colorExtensionsWithBlue)
       - [Blend](#colorExtensionsBlend)
       - [Invert](#colorExtensionsInvert)
+      - [ToHexString](#colorExtensionsToHexString)
+      - [ToHexUInt](#colorExtensionsToHexUint)
+      - [With](#colorExtensionsWith)
+      - [WithAlpha](#colorExtensionsWithAlpha)
+      - [WithBlue](#colorExtensionsWithBlue)
+      - [WithGreen](#colorExtensionsWithGreen)
+      - [WithRed](#colorExtensionsWithRed)
 
 ## Documentation <a name="documentation"/>
 ### Color Extensions <a name="colorExtensions"/>
+#### Blend <a name="colorExtensionsBlend"/>
+Blend two colors based on a specified ratio
+#### Declaration
+```csharp
+Color Blend(Color color2, float ratio);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Color | color2 | The second color of the blend |
+| float | ratio | The blend ratio of the colors |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | The blended color based on the specified ratio |
+
+
+#### Invert <a name="colorExtensionsInvert"/>
+Inverts the color
+#### Declaration
+```csharp
+Color Invert();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | The inverted color |
+
+
 #### ToHexString <a name="colorExtensionsToHexString"/>
 Converts a Color to a hexadecimal string representation
 #### Declaration
@@ -56,36 +86,20 @@ Color With(float? r = null, float? g = null, float? b = null, float? a = null);
 | Color | New Color with the specified components replaced |
 
 
-#### WithRed <a name="colorExtensionsWithRed"/>
-Returns a new Color with the R component replaced
+#### WithAlpha <a name="colorExtensionsWithAlpha"/>
+Returns a new Color with the alpha component replaced
 #### Declaration
 ```csharp
-Color WithRed(float rValue);
+Color WithAlpha(float alpha);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| float | rValue | The new R value |
+| float | alpha | The new alpha value |
 #### Returns
 | Type | Description |
 | :--- | :--- |
-| Color | New Color with the R component replaced |
-
-
-#### WithGreen <a name="colorExtensionsWithGreen"/>
-Returns a new Color with the G component replaced
-#### Declaration
-```csharp
-Color WithGreen(float gValue);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| float | gValue | The new G value |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| Color | New Color with the G component replaced |
+| Color | New Color with the alpha component replaced |
 
 
 #### WithBlue <a name="colorExtensionsWithBlue"/>
@@ -104,46 +118,33 @@ Color WithBlue(float bValue);
 | Color | New Color with the B component replaced |
 
 
-#### WithAlpha <a name="colorExtensionsWithAlpha"/>
-Returns a new Color with the alpha component replaced
+#### WithGreen <a name="colorExtensionsWithGreen"/>
+Returns a new Color with the G component replaced
 #### Declaration
 ```csharp
-Color WithAlpha(float alpha);
+Color WithGreen(float gValue);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| float | alpha | The new alpha value |
+| float | gValue | The new G value |
 #### Returns
 | Type | Description |
 | :--- | :--- |
-| Color | New Color with the alpha component replaced |
+| Color | New Color with the G component replaced |
 
 
-#### Blend <a name="colorExtensionsBlend"/>
-Blend two colors based on a specified ratio
+#### WithRed <a name="colorExtensionsWithRed"/>
+Returns a new Color with the R component replaced
 #### Declaration
 ```csharp
-Color Blend(Color color2, float ratio);
+Color WithRed(float rValue);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| Color | color2 | The second color of the blend |
-| float | ratio | The blend ratio of the colors |
+| float | rValue | The new R value |
 #### Returns
 | Type | Description |
 | :--- | :--- |
-| Color | The blended color based on the specified ratio |
-
-
-#### Invert <a name="colorExtensionsInvert"/>
-Inverts the color
-#### Declaration
-```csharp
-Color Invert();
-```
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| Color | The inverted color |
+| Color | New Color with the R component replaced |
