@@ -1,0 +1,7 @@
+namespace GenericNamespace
+{
+	public interface #SCRIPTNAME#
+	{
+		// Add your code here
+	}
+}

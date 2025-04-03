@@ -16,6 +16,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
 - 1.1: Add option to create a "C# Custom Property Attribute"
+- 1.1.1: Refactor code to use text templates
 
 ## 3 - Features <a name="features"/>
 - Template generation: Allows script templates to be created easily inside of Unity, current supported templates are: (more to be added in the future)

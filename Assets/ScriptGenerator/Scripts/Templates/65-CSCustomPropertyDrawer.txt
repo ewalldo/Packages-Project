@@ -1,0 +1,11 @@
+using UnityEngine;
+using UnityEditor;
+
+namespace GenericNamespace
+{
+	//[CustomPropertyDrawer(typeof(ClassName))]
+	public class #SCRIPTNAME# : PropertyDrawer
+	{
+		// Add your code here
+	}
+}

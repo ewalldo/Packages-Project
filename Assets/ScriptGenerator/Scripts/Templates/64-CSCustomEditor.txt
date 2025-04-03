@@ -1,0 +1,11 @@
+using UnityEngine;
+using UnityEditor;
+
+namespace GenericNamespace
+{
+	//[CustomEditor(typeof(ClassName))]
+	public class #SCRIPTNAME# : Editor
+	{
+		// Add your code here
+	}
+}

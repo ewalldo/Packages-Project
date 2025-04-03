@@ -1,0 +1,7 @@
+namespace GenericNamespace
+{
+	public enum #SCRIPTNAME#
+	{
+		// Add your code here
+	}
+}

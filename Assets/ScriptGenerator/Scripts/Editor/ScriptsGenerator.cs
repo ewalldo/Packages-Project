@@ -1,5 +1,6 @@
 using System.IO;
 using UnityEditor;
+using UnityEngine;
 
 namespace ScriptGeneratorTools
 {
@@ -45,59 +46,50 @@ namespace ScriptGeneratorTools
 
         private static void CheckAndCreate(ScriptType scriptType)
         {
-            string currentPath = AssetDatabase.GetAssetPath(Selection.activeObject);
-            string filepath = EditorUtility.SaveFilePanel("Save Script", currentPath, "NewScript", "cs");
+            ScriptsGeneratorSettings settings = ScriptsGeneratorSettings.GetOrCreateSettings();
+            string fileName = "NewScript.cs";
 
-            if (!AssetDatabase.IsValidFolder(currentPath))
-                return;
-
-            if (string.IsNullOrEmpty(filepath))
-                return;
-
-            string scriptContents = "";
-            string filename = Path.GetFileNameWithoutExtension(filepath);
-
+            string templatePath;
             switch (scriptType)
             {
                 case ScriptType.CSClass:
-                    scriptContents += "using UnityEngine;\n\nnamespace GenericNamespace\n{\n\tpublic class " + filename + "\n\t{\n\t\t// Add your code here\n\t}\n}";
+                    templatePath = AssetDatabase.GetAssetPath(settings.CSClassTemplate);
                     break;
                 case ScriptType.CSMonoBehaviour:
-                    scriptContents += "using UnityEngine;\n\nnamespace GenericNamespace\n{\n\tpublic class " + filename + " : MonoBehaviour\n\t{\n\t\t// Add your code here\n\t}\n}";
+                    templatePath = AssetDatabase.GetAssetPath(settings.CSMonoBehaviourTemplate);
                     break;
                 case ScriptType.CSScriptableObject:
-                    scriptContents += "using UnityEngine;\n\nnamespace GenericNamespace\n{\n\t//[CreateAssetMenu(fileName = \"ScriptableObject\", menuName = \"ScriptableObject/New Scriptable Object\")]\n\tpublic class " + filename + " : ScriptableObject\n\t{\n\t\t// Add your code here\n\t}\n}";
+                    templatePath = AssetDatabase.GetAssetPath(settings.CSScriptableObjectTemplate);
                     break;
                 case ScriptType.CSCustomEditor:
-                    scriptContents += "using UnityEngine;\nusing UnityEditor;\n\nnamespace GenericNamespace\n{\n\t//[CustomEditor(typeof(ClassName))]\n\tpublic class " + filename + " : Editor\n\t{\n\t\t// Add your code here\n\t}\n}";
+                    templatePath = AssetDatabase.GetAssetPath(settings.CSCustomEditorTemplate);
                     break;
                 case ScriptType.CSCustomPropertyDrawer:
-                    scriptContents += "using UnityEngine;\nusing UnityEditor;\n\nnamespace GenericNamespace\n{\n\t//[CustomPropertyDrawer(typeof(ClassName))]\n\tpublic class " + filename + " : PropertyDrawer\n\t{\n\t\t// Add your code here\n\t}\n}";
+                    templatePath = AssetDatabase.GetAssetPath(settings.CSCustomPropertyDrawerTemplate);
                     break;
                 case ScriptType.CSCustomPropertyAttribute:
-                    scriptContents += "using UnityEngine;\n\nnamespace GenericNamespace\n{\n\tpublic class " + filename + " : PropertyAttribute\n\t{\n\t\t// Add your code here\n\t}\n}";
+                    templatePath = AssetDatabase.GetAssetPath(settings.CSCustomPropertyAttributeTemplate);
                     break;
                 case ScriptType.CSInterface:
-                    scriptContents += "namespace GenericNamespace\n{\n\tpublic interface " + filename + "\n\t{\n\t\t// Add your code here\n\t}\n}";
+                    templatePath = AssetDatabase.GetAssetPath(settings.CSInterfaceTemplate);
                     break;
                 case ScriptType.CSStruct:
-                    scriptContents += "namespace GenericNamespace\n{\n\tpublic struct " + filename + "\n\t{\n\t\t// Add your code here\n\t}\n}";
+                    templatePath = AssetDatabase.GetAssetPath(settings.CSStructTemplate);
                     break;
                 case ScriptType.CSEnum:
-                    scriptContents += "namespace GenericNamespace\n{\n\tpublic enum " + filename + "\n\t{\n\t\t// Add your code here\n\t}\n}";
+                    templatePath = AssetDatabase.GetAssetPath(settings.CSEnumTemplate);
                     break;
                 default:
-                    break;
+                    return;
             }
 
-            // Standardizes the line endings to Windows format (CRLF)
-            scriptContents = scriptContents.Replace("\n", "\r\n");
+            if (templatePath == string.Empty || templatePath == default)
+            {
+                Debug.LogError($"Could not find template for {scriptType} in the settings file.");
+                return;
+            }
 
-            // Standardizes the line endings to Unix format (LF)
-            //scriptContents = scriptContents.Replace("\r\n", "\n");
-
-            File.WriteAllText(filepath, scriptContents);
-            AssetDatabase.Refresh();
+            ProjectWindowUtil.CreateScriptAssetFromTemplateFile(templatePath, fileName);
         }
 
         private enum ScriptType
