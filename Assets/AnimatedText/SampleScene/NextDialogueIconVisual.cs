@@ -8,11 +8,13 @@ namespace AnimatedText
     {
         [SerializeField] private TextAnimator textAnimator;
 
-        private Image image;
+        private CanvasGroup canvasGroup;
+        private bool shouldAnimateIcon;
 
         private void Awake()
         {
-            image = GetComponent<Image>();
+            canvasGroup = GetComponent<CanvasGroup>();
+            shouldAnimateIcon = false;
         }
 
         private void Start()
@@ -23,18 +25,20 @@ namespace AnimatedText
 
         private void Update()
         {
-            if (image.enabled)
-                image.color = new Color(1f, 1f, 1f, Mathf.Sin(Time.time * 5f) * 0.5f + 0.5f);
+            if (shouldAnimateIcon)
+                canvasGroup.alpha = Mathf.Sin(Time.time * 5f) * 0.5f + 0.5f;
         }
 
         private void TextAnimator_OnStartedTyping()
         {
-            image.enabled = false;
+            canvasGroup.alpha = 0f;
+            shouldAnimateIcon = false;
         }
 
         private void TextAnimator_OnFinishedTyping()
         {
-            image.enabled = true;
+            canvasGroup.alpha = 1f;
+            shouldAnimateIcon = true;
         }
     }
 }
