@@ -34,10 +34,12 @@
 Chrono Tools is a lightweight and flexible Unity package designed to help developers manage and manipulate time-based events in their games. This package includes several types of timers, each with different behaviors that are useful for various gameplay scenarios, such as countdowns, repeated events, and stopwatches.  
 With Chrono Tools, developers can easily integrate time-tracking functionality into their projects, whether it's creating countdowns for power-ups, managing periodic events, or tracking elapsed time for achievements. The package provides intuitive APIs and is designed to be both easy to use and customizable.  
 
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.0.1: Ensure package functionality in Unity version 6000.3.9f1.
 
 ## 3 - Features <a name="features"/>
 - Countdown Timer: A timer that counts down from a specified time and triggers an event when it reaches zero.
