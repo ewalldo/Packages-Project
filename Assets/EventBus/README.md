@@ -17,10 +17,13 @@
 ## 1 - Introduction <a name="introduction"/>
 An event bus is a simple register-unregister pattern that allows communication between different parts of a game or application. It decouples the sender of an event from its receivers, making it easier to add, remove, or modify components in your game without having to update every component that communicates with it.  
 This "Event Bus" package tool helps you to create and use an Event Bus in an safe and easy way. By using scriptable objects as a way to identify event types, we ensure that our code is protected against common errors that can happen when using implementations that utilizes string or enums as an identifier. This tool was also created to be easy to use, all the main actions related to event bus (register/unregister/invoke) can be implemented with a single line of code.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.0.1: Ensure package functionality in Unity version 6000.3.9f1.
 
 ## 3 - Features <a name="features"/>
 - Use of scriptable objects for the event type: Common implementations of "Event Bus" uses a string or enum as a key value for events. The downside of using strings is that a simple typo, wrong capitalization or a blank space can cause events to not be invoked correctly, these errors are not caught by the IDE thus making them harder to debug. Enums can make up for this string's weakness, but on the other hand they may cause a different one. Enums underlying type is an int, so a simple addition or removal of an enum value can cause their value to shift to the next/previous one, so if you have enum values set up in the inspector, they may change to a completely different without triggering any type of warning/error, also making the code harder to debug too. By using scriptable objects instead, we ensure that those two problems cannot happen, thus making the code safer and easier to debug in case of errors.

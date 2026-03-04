@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace EventBusPattern
 {
@@ -42,10 +43,10 @@ namespace EventBusPattern
         {
             Vector2 inputDirection = Vector2.zero;
 
-            if (Input.GetKey(KeyCode.W)) inputDirection.y = +1;
-            if (Input.GetKey(KeyCode.S)) inputDirection.y = -1;
-            if (Input.GetKey(KeyCode.D)) inputDirection.x = +1;
-            if (Input.GetKey(KeyCode.A)) inputDirection.x = -1;
+            if (Keyboard.current.wKey.isPressed) inputDirection.y = +1;
+            if (Keyboard.current.sKey.isPressed) inputDirection.y = -1;
+            if (Keyboard.current.dKey.isPressed) inputDirection.x = +1;
+            if (Keyboard.current.aKey.isPressed) inputDirection.x = -1;
 
             inputDirection = inputDirection.normalized;
 
