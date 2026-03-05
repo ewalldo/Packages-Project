@@ -25,7 +25,9 @@
 
 ## 1 - Introduction <a name="introduction"/>
 The "Extensions" package for Unity is a collection of utility extensions designed to streamline common tasks and enhance the functionality of various Unity and C# classes. With these extensions, developers can optimize their workflow, write cleaner code, and improve overall productivity. This documentation provides an overview of the extensions included in the package and instructions for their usage.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
@@ -34,6 +36,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.2.1: Add extension methods to the Vector2 struct
 - 1.3: Add extension method to the IEnumerable interface, plus new extension methods to Color, GameObject, IList, Math, String, Transform and Vector
 - 1.4: Add extension method to Color, string, IList, and Transform. Divide math extensions into int, float and measurements.
+- 1.4.1: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Extension methods for commonly used classes:

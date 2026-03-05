@@ -37,13 +37,16 @@
 The "Extra Attributes" package for Unity is a toolset designed to significantly enhance the Unity Inspector experience, making it more intuitive, organized, and efficient for Unity developers. This package aims to streamline the process of designing and configuring Unity components by providing a collection of custom attributes that can be easily applied to fields within your scripts. These attributes offer additional functionalities and visual enhancements, improving the overall productivity, maintainability of your projects and enforce validation rules within the Unity Inspector.  
 With the "Extra Attributes" package, you can create more informative and user-friendly Inspector layouts, ensuring a smoother workflow during development and making it easier to manage complex projects with numerous components.  
 For a full list of the supported attributes, please check the documentation section.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.  
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
 - 1.1: Added extra attributes (AnimatorParamField, AssetPreview, HorizontalRule, StreamingAssetsPath)
 - 1.2: Added check when starting Play Mode for the RequiredField attribute
 - 1.3: Added extra attributes (RequireInterface, Clamp, Wrap)
+- 1.3.1: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Enhanced Headers and Label Fields: The package offers an enhanced version of headers and labels in the Inspector. These improved headers allow you to customize your component fields, making it simpler to understand their purpose at a glance.
@@ -259,7 +262,7 @@ public RequiredField();
 Attribute to restrict the object references to items that implements a specific interface
 #### Declaration
 ```csharp
-public RequireInterfaceAttribute(Type interfaceType);
+public RequireInterface(Type interfaceType);
 ```
 #### Parameters
 | Type | Name | Description |

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ExtraAttributes
 {
-	public class AttributesSampleScript : MonoBehaviour
+	public class AttributesSampleScript : MonoBehaviour, IRequiredInterface
 	{
 		[HeaderPlus("Header plus 1", "Blue", TextAnchor.MiddleCenter, "attributeIcon")]
 		[AssetPath] [SerializeField] private string assetPath;
@@ -18,6 +18,8 @@ namespace ExtraAttributes
 
 		[FloatRangeWithStep(0f, 1f, 0.1f)] [SerializeField] private float floatRangeWithStep;
 		[IntRangeWithStep(0, 10, 2)] [SerializeField] private int intRangeWithStep;
+		[Clamp(0, 10)] [SerializeField] private int clamp;
+		[Wrap(0, 10)] [SerializeField] private int wrap;
 
 		[Space(10)]
 
@@ -38,6 +40,7 @@ namespace ExtraAttributes
 		[Space(10)]
 
         [RequiredField] [SerializeField] private Light requiredField;
+        [RequireInterface(typeof(IRequiredInterface))] [SerializeField] private AttributesSampleScript requiredInterface;
 
         [Space(10)]
 
@@ -62,4 +65,9 @@ namespace ExtraAttributes
 		[AnimatorParamField("animatorField")] [SerializeField] private string animatorStringParam;
 		[AnimatorParamField("animatorField")] [SerializeField] private int animatorIntParam;
 	}
+
+	public interface IRequiredInterface
+    {
+		//
+    }
 }
