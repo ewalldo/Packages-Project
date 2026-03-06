@@ -22,13 +22,16 @@ The Grid System Package includes a wide range of built-in methods for manipulati
 
 The Grid System Package for Unity offers a comprehensive solution for developers looking to integrate structured grid-based layouts with minimal setup. With broad support for both 2D and hexagonal grids, intuitive indexing access, and extensive manipulation functions, this package eliminates the need to build complex grid systems from scratch.  
 Designed with performance and ease-of-use in mind, it ensures that developers can focus on building gameplay features rather than low-level grid management. Whether you're building a complex city-building game with a sprawling map or a tactical RPG with precise grid mechanics, this package adapts to your needs, allowing for both efficient development and a high degree of customization.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.  
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0.0: Initial release
 - 1.0.1: Remove redundant error checking
 - 1.0.2: Refactor GridPosition2D struct and Grid2D class
 - 1.1.0: Add support for hex grids
+- 1.1.1: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Use of generics allowing the instantiation of any type of grid.

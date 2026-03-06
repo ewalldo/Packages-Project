@@ -13,11 +13,14 @@
 ## 1 - Introduction <a name="introduction"/>
 The FavoritesWindow package for Unity is an editor extension designed to streamline project organization by allowing users to create panels for their most frequently used assets. With this package, you can quickly access assets across your project and improve workflow efficiency.  
 Favorites Window enables you to create multiple custom panels where you can save links to your favorite assets, all organized for quick access. Ideal for complex projects or large teams, this package enhances productivity by eliminating time spent searching for frequently used assets.  
-This package has been tested with Unity version 2022.1 and is expected to work with both older and future versions.
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
 - 1.0.1: Fixed asset loading issue with different version of Unity
+- 1.0.2: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Customizable Panels: Create and manage multiple favorite panels to suit your organizational needs.

@@ -1,11 +1,12 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace GridSystem
 {
-	public class GridPositionSampleScene : MonoBehaviour
-	{
+	public class GridPositionSampleScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+    {
         [SerializeField] private MeshRenderer meshRenderer;
         [SerializeField] private TextMeshPro singlePositionInfo;
 
@@ -34,17 +35,17 @@ namespace GridSystem
             singlePositionInfo.text = gridPosition2D.ToString();
         }
 
-        private void OnMouseEnter()
+        public void OnPointerEnter(PointerEventData eventData)
         {
             meshRenderer.material = mouseOverMaterial;
         }
 
-        private void OnMouseExit()
+        public void OnPointerExit(PointerEventData eventData)
         {
             meshRenderer.material = defaultMaterial;
         }
 
-        private void OnMouseDown()
+        public void OnPointerDown(PointerEventData eventData)
         {
             OnAnyGridPositionClicked?.Invoke(this, gridPosition2D);
         }
