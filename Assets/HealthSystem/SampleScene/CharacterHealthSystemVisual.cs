@@ -62,7 +62,7 @@ namespace HealthSystem
             animator.speed = 2f;
         }
 
-        private void HealthComponent_OnRevive(float arg1, object arg2)
+        private void HealthComponent_OnRevive(float _, object __)
         {
             aliveEyes.SetActive(true);
             deadEyes.SetActive(false);
@@ -70,7 +70,7 @@ namespace HealthSystem
             animator.enabled = true;
         }
 
-        private void HealthComponent_OnDeath(object obj)
+        private void HealthComponent_OnDeath(object _)
         {
             aliveEyes.SetActive(false);
             deadEyes.SetActive(true);
@@ -78,14 +78,14 @@ namespace HealthSystem
             animator.enabled = false;
         }
 
-        private void HealthComponent_OnDamageTaken(float damageAmount, float healthAfter, object damageCauser)
+        private void HealthComponent_OnDamageTaken(float damageAmount, float _, object __)
         {
             UpdateHealthBar(healthComponent.GetHealthNormalized);
 
             CreateNumberIndicator("-" + damageAmount.ToString(), Color.red, true, new Vector3(1f, 1f, 0f), 2.5f);
         }
 
-        private void HealthComponent_OnDamageHealed(float healingAmount, float healthAfter, object healingCauser)
+        private void HealthComponent_OnDamageHealed(float healingAmount, float _, object __)
         {
             UpdateHealthBar(healthComponent.GetHealthNormalized);
 

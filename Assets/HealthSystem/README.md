@@ -36,12 +36,15 @@
 The Health System package provides a comprehensive and easy-to-use system for adding health to any object in a Unity scene. With this package, you can add health to any object by simply attaching the HealthComponent script, and set the inital values in the editor or by instanciating a new class inside a script.  
 The Health System package provides robust functionality for modifying health, allowing you to simulate damage and healing. Also, it provides several events that are triggered when the health of an object changes passing the related parameters as attribute together with the causer of the event, thus making it useful to trigger custom effects (like different colors depending on the type of damage) or implement other features (like a killfeed showing who caused a death).  
 Overall, this Health System Package for Unity is an useful tool for any developer looking to add health to their objects in game. Its easy-to-use and convenient features make it a valuable asset for creating games and applications.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0.0: Initial release
 - 1.0.1: Add a non-MonoBehaviour version of the health component
 - 1.1: Add multiple interface support
+- 1.1.1: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Easy to use: Just add a script to any object that needs health, such as characters or props.
