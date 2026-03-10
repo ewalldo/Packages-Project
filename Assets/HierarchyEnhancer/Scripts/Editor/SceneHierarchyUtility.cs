@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEngine;
 
 namespace HierarchyEnhancer
 {
@@ -37,14 +38,14 @@ namespace HierarchyEnhancer
                 throw new NullReferenceException("Couldn't find the reference to the SetExpandedRecursive method in the SceneHierarchy");
         }
 
-        public static bool GetExpanded(int instanceID)
+        public static bool GetExpanded(EntityId instanceID)
         {
             object sceneHierarchy = GetSceneHierarchy();
-            int[] ids = (int[])getExpandedMethod.Invoke(sceneHierarchy, new object[] { });
+            EntityId[] ids = (EntityId[])getExpandedMethod.Invoke(sceneHierarchy, new object[] { });
             return ids.Contains(instanceID);
         }
 
-        public static void SetExpanded(int instanceID, bool expanded)
+        public static void SetExpanded(EntityId instanceID, bool expanded)
         {
             object sceneHierarchy = GetSceneHierarchy();
             setExpandedMethod.Invoke(sceneHierarchy, new object[] { instanceID, expanded });

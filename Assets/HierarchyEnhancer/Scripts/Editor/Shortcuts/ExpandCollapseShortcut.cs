@@ -11,7 +11,7 @@ namespace HierarchyEnhancer
 
         public void ShortcutAction(GameObject obj)
         {
-            int instanceID = obj.GetInstanceID();
+            EntityId instanceID = obj.GetEntityId();
             bool isExpanded = SceneHierarchyUtility.GetExpanded(instanceID);
             SceneHierarchyUtility.SetExpanded(instanceID, !isExpanded);
             Event.current.Use();
