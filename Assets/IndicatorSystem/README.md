@@ -78,12 +78,15 @@ Navigating complex game worlds can often be challenging for players, especially 
 This package allows developers to implement dynamic indicators that visually point players towards objects or locations of interest. These indicators can either be displayed directly on the screen (on-screen indicators) or at the edges of the screen (off-screen indicators), depending on whether the target is visible within the camera’s field of view.  
 Whether you need to point out a distant quest objective, warn players of an approaching enemy, or simply highlight an area of interest, the Indicator System is a powerful tool that can be adapted to fit a wide range of gameplay scenarios.  
 This package is designed with flexibility and ease of use in mind, offering support for various types of indicators, extensive customization options, and compatibility with all major Unity Canvas render modes.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 - **Package requirements: TextMeshPro**
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.0.1: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Canvas Render Mode Support: The Indicator System seamlessly integrates with all three types of Unity Canvas render modes: Screen Space - Overlay, Screen Space - Camera, and World Space.
