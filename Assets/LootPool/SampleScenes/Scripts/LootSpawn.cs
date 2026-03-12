@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace LootSystem
 {
-    public class LootSpawn : MonoBehaviour
+    public class LootSpawn : MonoBehaviour, IPointerDownHandler
     {
         [SerializeField][Tooltip("Loot pool where the loot will be pulled from")]
         private LootPool independentLootPool;
@@ -29,7 +31,7 @@ namespace LootSystem
             CheckForReset();
         }
 
-        private void OnMouseDown()
+        public void OnPointerDown(PointerEventData eventData)
         {
             if (spriteRenderer.enabled)
             {
@@ -44,7 +46,7 @@ namespace LootSystem
 
         private void CheckForReset()
         {
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Keyboard.current.rKey.wasPressedThisFrame)
             {
                 spriteRenderer.enabled = true;
             }

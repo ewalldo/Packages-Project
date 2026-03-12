@@ -19,12 +19,15 @@
 The "Loot Pool" package is a tool for creating and managing pools of loot in Unity projects. It allows you to define a set of items that can be spawned under certain conditions (when a character/monster is defeated, when the player reachs a point in the map, ...).  
 The pool itself is divided into two types, a independent pool (each item in the list has its own chance of being pulled) and a dependent pool (the chance of a item being pulled depends on the other items in the list), giving you more control on how and what items will be spawned on the map. Options like the probability, minimum/maximum number of each items can easily be defined thanks to a clean and easy to use UI.  
 Also, the package contains options on how and where the loot can be spawned, parameters like the position and offset can be defined by code.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
 - 1.0.1: Refactor editor code
 - 1.1: Refactor loot pool into two different classes (independent and dependent)
+- 1.1.1: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Easier to create and manage loot pools: By using ScriptablesObjects, loot pools can be created and managed from the editor, without the need of any code.
