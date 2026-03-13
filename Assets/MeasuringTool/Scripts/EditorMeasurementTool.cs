@@ -61,10 +61,47 @@ namespace MeasurementTool
         public string NameOfTextSize => nameof(textSize);
         public string NameOfLineColor => nameof(lineColor);
 
+        private float ConvertFromMeters(float value, LengthUnitType unitType)
+        {
+            float convertedValue = 0;
+
+            switch (unitType)
+            {
+                case LengthUnitType.Meter:
+                    convertedValue = value / METER_VALUE;
+                    break;
+                case LengthUnitType.Centimeter:
+                    convertedValue = value / CENTIMETER_VALUE;
+                    break;
+                case LengthUnitType.Millimeter:
+                    convertedValue = value / MILLIMETER_VALUE;
+                    break;
+                case LengthUnitType.Kilometer:
+                    convertedValue = value / KILOMETER_VALUE;
+                    break;
+                case LengthUnitType.Inch:
+                    convertedValue = value / INCH_VALUE;
+                    break;
+                case LengthUnitType.Foot:
+                    convertedValue = value / FOOT_VALUE;
+                    break;
+                case LengthUnitType.Yard:
+                    convertedValue = value / YARD_VALUE;
+                    break;
+                case LengthUnitType.Mile:
+                    convertedValue = value / MILE_VALUE;
+                    break;
+                default:
+                    break;
+            }
+
+            return convertedValue;
+        }
+
+        #if UNITY_EDITOR
         private void OnValidate()
         {
             UpdateDistanceParameters();
-
             UpdateTextStyle();
         }
 
@@ -122,44 +159,6 @@ namespace MeasurementTool
             textStyle = new GUIStyle() { normal = new GUIStyleState() { textColor = textColor }, fontSize = textSize, alignment = TextAnchor.MiddleCenter };
         }
 
-        private float ConvertFromMeters(float value, LengthUnitType unitType)
-        {
-            float convertedValue = 0;
-
-            switch (unitType)
-            {
-                case LengthUnitType.Meter:
-                    convertedValue = value / METER_VALUE;
-                    break;
-                case LengthUnitType.Centimeter:
-                    convertedValue = value / CENTIMETER_VALUE;
-                    break;
-                case LengthUnitType.Millimeter:
-                    convertedValue = value / MILLIMETER_VALUE;
-                    break;
-                case LengthUnitType.Kilometer:
-                    convertedValue = value / KILOMETER_VALUE;
-                    break;
-                case LengthUnitType.Inch:
-                    convertedValue = value / INCH_VALUE;
-                    break;
-                case LengthUnitType.Foot:
-                    convertedValue = value / FOOT_VALUE;
-                    break;
-                case LengthUnitType.Yard:
-                    convertedValue = value / YARD_VALUE;
-                    break;
-                case LengthUnitType.Mile:
-                    convertedValue = value / MILE_VALUE;
-                    break;
-                default:
-                    break;
-            }
-
-            return convertedValue;
-        }
-
-        #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             if (displayAxisMeasurements && displayXAxis)

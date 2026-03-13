@@ -15,10 +15,13 @@
 The Measurement Tool Package for Unity is a comprehensive set of tools designed to help developers and designers create accurate and precise game levels, applications, or visualizations. With this package, you can easily measure distances and angles in your Unity scenes, allowing you to ensure that your gameObjects are positioned correctly and that they fit together perfectly.  
 The Measurement Tool Package is ideal for a wide range of projects and users, including architects, engineers, game developers, product designers, and anyone who needs to position things precisely. Whether you're creating a game level, designing a product prototype, or visualizing an architectural project, the Measurement Tool Package can help you save time and effort by providing accurate and reliable measurements directly within Unity.  
 The package includes a range of measurement tools that are easy to use, allowing you to tailor your measurements to your specific needs. With its support of various measurement units and visualization options, the Measurement Tool Package is an essential tool for any developer or designer looking to create precise and accurate levels in Unity.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.  
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.0.1: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Useful for level design, making it easier to position objects in a scene based on distance/angle.
