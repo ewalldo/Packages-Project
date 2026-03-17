@@ -14,10 +14,13 @@
 ## 1 - Introduction <a name="introduction"/>
 The Selection History package for Unity is an editor tool designed to help developers efficiently navigate through their recent selection history, allowing you to quickly revisit previously selected objects within both the Project and Hierarchy windows. With this package, you can improve your workflow by saving time and minimizing repetitive navigation steps.  
 Ideal for Unity developers and designers, the Selection History package is useful for level design, asset organization, and rapid iteration. The package is fully customizable, enabling you to adjust the length of the history, toggle icon display, and specify which windows selections to track.  
-This package has been tested with Unity version 2022.1 and is expected to work with both older and future versions.
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.0.1: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Displays a history of recently selected objects, accessible in a separate window.
