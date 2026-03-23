@@ -33,7 +33,9 @@ The Tween package excels in its simplicity and ease of use. It leverages intuiti
 Additionally, the Tween package enhances your workflow by offering grouping capabilities. You can create groups of tweens to be executed in parallel or in sequence, providing full control over the timing and synchronization of animations. This allows for the creation of intricate and synchronized animations that seamlessly combine multiple objects or properties.  To further enhance the quality and fluidity of your animations, the Tween package supports a variety of easing functions. These functions enable you to add natural and appealing motion effects to your tweens, making them more visually appealing and lifelike. With options such as ease-in, ease-out, and various other easing functions, you can effortlessly create animations that feel smooth and polished.  
 Moreover, the Tween package includes looping functionality, allowing you to create tweens that repeat their animation either indefinitely or a specified number of times. This feature is especially useful for creating looping animations or implementing interactive elements that require repeated movement or transformation.  
 In summary, the Tween package in Unity provides a robust set of tools for creating and managing tweens. With its support for various object types, grouping capabilities, easing functions, looping, and convenient extension methods, the package empowers developers to create engaging and visually appealing animations with ease. Whether you are a beginner or an experienced developer, the Tween package offers a valuable asset for enhancing the overall user experience of your Unity projects.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
@@ -51,6 +53,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.5.2: Refactor tween classes
 - 1.5.3: Add sample tween scene
 - 1.6: Add tween options to RawImage tweens and new methods to group Tweens
+- 1.6.1: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Offers the possibility of "tween" many types of components.

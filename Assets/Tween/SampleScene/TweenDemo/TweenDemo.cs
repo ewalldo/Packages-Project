@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Tween
@@ -42,31 +43,31 @@ namespace Tween
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Keyboard.current.spaceKey.wasPressedThisFrame)
             {
                 transformTween.Stop();
                 transformTween.Execute();
             }
 
-            if (Input.GetKeyDown(KeyCode.L))
+            if (Keyboard.current.lKey.wasPressedThisFrame)
             {
                 lightTween.Stop();
                 lightTween.Execute();
             }
 
-            if (Input.GetKeyDown(KeyCode.I))
+            if (Keyboard.current.iKey.wasPressedThisFrame)
             {
                 imageTween.Stop();
                 imageTween.Execute();
             }
 
-            if (Input.GetKeyDown(KeyCode.U))
+            if (Keyboard.current.uKey.wasPressedThisFrame)
             {
                 uiTween.Stop();
                 uiTween.Execute();
             }
 
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Keyboard.current.sKey.wasPressedThisFrame)
             {
                 TweenShakeRotation shake = new TweenShakeRotation(Camera.main.transform, new Vector3(0f, 0f, 1f), 0.5f, 0f, maxMagnitude: 5, easingFunction: new EaseInCirc());
                 StartCoroutine(shake.Execute());
