@@ -33,7 +33,8 @@ Each of these features is designed to address specific pain points commonly enco
 
 In summary, the Hierarchy Enhancer is a helpful tool for Unity developers looking to improve their workflow, manage complex scenes more effectively, and save time on routine hierarchy management tasks. By enhancing the default hierarchy view, this package allows developers to focus more on creating and less on managing, leading to a more productive development process.  
 
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.  
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
@@ -44,6 +45,7 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - 1.4: Add option to ignore specific component's icons
 - 1.4.1: Add shortcut related settings
 - 1.5: Add new shortcuts
+- 1.5.1: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Useful for identifying which components are attached to which objects.
@@ -79,7 +81,7 @@ Objects in the hierarchy can be sorted by right-clicking a game object and selec
 ### 4.6 Renaming objects in the hierarchy <a name="renamingObjectsInTheHierarchy"/>
 Objects in the hierarchy can be renamed simultaneously by right-clicking a game object and selecting the option "Rename (HierarchyEnhancer)". This should open an editor window where you can choose how the renaming will be performed. Below is an overview of the renaming options.  
 - Rename Target: Children (rename all children of each selected object), Selected only (rename only the selected objects).  
-- Rename Affix: Suffix (affix added at the end of the name), Suffix (affix added at the start of the name).  
+- Rename Affix: Suffix (affix added at the end of the name), Prefix (affix added at the start of the name).  
 - Base name: The base name that all objects will share.    
 - Start value: The start number value for the affix.  
 - Minimum number of digits: How many digits at minimum will be displayed in the affix.  

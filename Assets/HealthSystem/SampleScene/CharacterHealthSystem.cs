@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace HealthSystem
 {
@@ -22,11 +23,11 @@ namespace HealthSystem
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Mouse.current.leftButton.wasPressedThisFrame)
             {
                 CheckForCollision(ClickType.DamageClick);
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (Mouse.current.rightButton.wasPressedThisFrame)
             {
                 CheckForCollision(ClickType.HealClick);
             }
@@ -34,7 +35,7 @@ namespace HealthSystem
 
         private void CheckForCollision(ClickType clickType)
         {
-            Ray ray = gameCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = gameCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))

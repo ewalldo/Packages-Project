@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace GridSystem
 {
@@ -8,22 +9,22 @@ namespace GridSystem
 
         private void Update()
         {
-            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+            if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed)
             {
                 transform.position += moveSpeed * Time.deltaTime * Vector3.forward;
             }
 
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed)
             {
                 transform.position += moveSpeed * Time.deltaTime * -Vector3.right;
             }
 
-            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            if (Keyboard.current.sKey.isPressed || Keyboard.current.downArrowKey.isPressed)
             {
                 transform.position += moveSpeed * Time.deltaTime * -Vector3.forward;
             }
 
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
             {
                 transform.position += moveSpeed * Time.deltaTime * Vector3.right;
             }

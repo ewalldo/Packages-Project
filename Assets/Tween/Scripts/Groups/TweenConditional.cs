@@ -9,6 +9,9 @@ namespace Tween
         private readonly float checkInterval;
         private readonly Func<bool> condition;
 
+        private bool isExecuting;
+
+        public bool IsExecuting => isExecuting;
         public event Action OnComplete;
 
         public TweenConditional(Func<bool> condition, float checkInterval)
@@ -19,12 +22,21 @@ namespace Tween
 
         public IEnumerator Execute()
         {
+            isExecuting = true;
+
             while (!condition.Invoke())
             {
                 yield return new WaitForSeconds(checkInterval);
             }
 
             OnComplete?.Invoke();
+            isExecuting = false;
+        }
+
+        public void ForceFinish()
+        {
+            isExecuting = false;
+            return;
         }
     }
 }

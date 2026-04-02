@@ -9,13 +9,34 @@ namespace Extensions
     public static class ListExtensions
     {
         /// <summary>
-        /// Returns whether an index is within the bounds of a list
+        /// Gets a read-only version of a list
         /// </summary>
-        /// <typeparam name="T">The type of the list</typeparam>
-        /// <param name="list">The list to check</param>
-        /// <param name="index">The index to check</param>
-        /// <returns>Wheter the index is inside of the list or not</returns>
-        public static bool HasIndex<T>(this IList<T> list, int index) => index.InRange(0, list.Count - 1);
+        /// <typeparam name="T">The type of the elements in the list</typeparam>
+        /// <param name="list">The list to be converted to read only</param>
+        /// <returns>The read-only version of the list</returns>
+        public static IReadOnlyList<T> AsReadOnly<T>(this List<T> list)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+
+            return list.AsReadOnly();
+        }
+
+        /// <summary>
+        /// Change all values of the list to its complement (1 - value)
+        /// </summary>
+        /// <param name="list">The list to calculate the complement</param>
+        public static void ComplementList(this IList<float> list)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                float value = list[i];
+                list[i] = value.Complement();
+            }
+        }
 
         /// <summary>
         /// Return the first element of a list
@@ -35,6 +56,39 @@ namespace Extensions
         }
 
         /// <summary>
+        /// Returns whether an index is within the bounds of a list
+        /// </summary>
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="list">The list to check</param>
+        /// <param name="index">The index to check</param>
+        /// <returns>Wheter the index is inside of the list or not</returns>
+        public static bool HasIndex<T>(this IList<T> list, int index) => index.InRange(0, list.Count - 1);
+
+        /// <summary>
+        /// Inverse the signal of all elements in the list
+        /// </summary>
+        /// <param name="list">The list to calculate the inverted signal</param>
+        public static void InverseList(this IList<float> list)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                float value = list[i];
+                list[i] = value.Inverse();
+            }
+        }
+
+        /// <summary>
+        /// Returns whether a list is null or empty
+        /// </summary>
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="list">The list to check</param>
+        /// <returns>True, if the list is null or empty, false otherwise</returns>
+        public static bool IsNullOrEmpty<T>(this IList<T> list) => list == null || list.Count > 0;
+
+        /// <summary>
         /// Return the last element of a list
         /// </summary>
         /// <typeparam name="T">The type of the list</typeparam>
@@ -52,45 +106,23 @@ namespace Extensions
         }
 
         /// <summary>
-        /// Gets a random element from a list
+        /// Map a list to a new range
         /// </summary>
-        /// <typeparam name="T">The type of the list</typeparam>
-        /// <param name="list">The list to get a random element from</param>
-        /// <returns>The random element got from the list</returns>
-        public static T RandomElement<T>(this IList<T> list)
+        /// <param name="list">The list to be mapped</param>
+        /// <param name="min">The current minimum range</param>
+        /// <param name="max">The current maximum range</param>
+        /// <param name="targetMin">The new target minimum range</param>
+        /// <param name="targetMax">The new target maximum range</param>
+        public static void MapList(this IList<float> list, float min, float max, float targetMin, float targetMax)
         {
             if (list == null)
                 throw new ArgumentNullException(nameof(list));
-
-            if (list.Count <= 0)
-                throw new ArgumentException("List should contain at least one element");
-
-            int index = UnityEngine.Random.Range(0, list.Count);
-            return list[index];
-        }
-
-        /// <summary>
-        /// Return the minimum element of a list
-        /// </summary>
-        /// <param name="list">The list to get the minimum element from</param>
-        /// <returns>The minimum element of the list</returns>
-        public static float Minimum(this IList<float> list)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-
-            if (list.Count <= 0)
-                throw new ArgumentException("List should contain at least one element");
-
-            float curMinimum = float.MaxValue;
 
             for (int i = 0; i < list.Count; i++)
             {
-                if (list[i] < curMinimum)
-                    curMinimum = list[i];
+                float value = list[i];
+                list[i] = value.Map(min, max, targetMin, targetMax);
             }
-
-            return curMinimum;
         }
 
         /// <summary>
@@ -118,30 +150,107 @@ namespace Extensions
         }
 
         /// <summary>
-        /// Swap the value in the "firstIndex" with the one in the "secondIndex"
+        /// Return the minimum element of a list
         /// </summary>
-        /// <typeparam name="T">The type of the list</typeparam>
-        /// <param name="list">The list to swap the values</param>
-        /// <param name="firstIndex">The first index</param>
-        /// <param name="secondIndex">The second index</param>
-        public static void Swap<T>(this IList<T> list, int firstIndex, int secondIndex)
+        /// <param name="list">The list to get the minimum element from</param>
+        /// <returns>The minimum element of the list</returns>
+        public static float Minimum(this IList<float> list)
         {
             if (list == null)
                 throw new ArgumentNullException(nameof(list));
 
-            if (list.Count < 2)
-                throw new ArgumentException("List should contain at least two elements");
+            if (list.Count <= 0)
+                throw new ArgumentException("List should contain at least one element");
 
-            if (!list.HasIndex(firstIndex))
-                throw new ArgumentException("The list does not contain firstIndex");
+            float curMinimum = float.MaxValue;
 
-            if (!list.HasIndex(secondIndex))
-                throw new ArgumentException("The list does not contain secondIndex");
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i] < curMinimum)
+                    curMinimum = list[i];
+            }
 
-            T firstValue = list[firstIndex];
+            return curMinimum;
+        }
 
-            list[firstIndex] = list[secondIndex];
-            list[secondIndex] = firstValue;
+        /// <summary>
+        /// Normalize a list of float between the values of 0 and 1
+        /// </summary>
+        /// <param name="list">The list to be normalized</param>
+        public static void NormalizeList(this IList<float> list)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+
+            float min = list.Minimum();
+            float max = list.Maximum();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                float value = list[i];
+                list[i] = value.Normalize(min, max);
+            }
+        }
+
+        /// <summary>
+        /// Normalize a list of float between the values of 0 and 1
+        /// </summary>
+        /// <param name="list">The list to be normalized</param>
+        /// <param name="min">The minimum value</param>
+        /// <param name="max">The maximum value</param>
+        public static void NormalizeList(this IList<float> list, float min, float max)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                float value = list[i];
+                list[i] = value.Normalize(min, max);
+            }
+        }
+
+        /// <summary>
+        /// Gets a random element from a list
+        /// </summary>
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="list">The list to get a random element from</param>
+        /// <returns>The random element got from the list</returns>
+        public static T RandomElement<T>(this IList<T> list)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+
+            if (list.Count <= 0)
+                throw new ArgumentException("List should contain at least one element");
+
+            int index = UnityEngine.Random.Range(0, list.Count);
+            return list[index];
+        }
+
+        /// <summary>
+        /// Remove all duplicates in a list
+        /// </summary>
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="list">The list which will have the duplicates removed from</param>
+        public static void RemoveDuplicates<T>(this IList<T> list)
+        {
+            HashSet<T> uniqueItems = new HashSet<T>();
+            for (int i = list.Count - 1; i >= 0; i--)
+                if (!uniqueItems.Add(list[i]))
+                    list.RemoveAt(i);
+        }
+
+        /// <summary>
+        /// Remove all null entries in a list
+        /// </summary>
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="list">The list which will have the null entries removed from</param>
+        public static void RemoveNullValues<T>(this IList<T> list) where T : class
+        {
+            for (int i = list.Count - 1; i >= 0; i--)
+                if (Equals(list[i], null))
+                    list.RemoveAt(i);
         }
 
         /// <summary>
@@ -190,18 +299,6 @@ namespace Extensions
         }
 
         /// <summary>
-        /// Remove all null entries in a list
-        /// </summary>
-        /// <typeparam name="T">The type of the list</typeparam>
-        /// <param name="list">The list which will have the null entries removed from</param>
-        public static void RemoveNullValues<T>(this IList<T> list) where T: class
-        {
-            for (int i = list.Count - 1; i >= 0; i--)
-                if (Equals(list[i], null))
-                    list.RemoveAt(i);
-        }
-
-        /// <summary>
         /// Shuffle a list by using Fisher-Yates
         /// </summary>
         /// <typeparam name="T">The type of the list</typeparam>
@@ -216,106 +313,30 @@ namespace Extensions
         }
 
         /// <summary>
-        /// Normalize a list of float between the values of 0 and 1
+        /// Swap the value in the "firstIndex" with the one in the "secondIndex"
         /// </summary>
-        /// <param name="list">The list to be normalized</param>
-        /// <param name="min">The minimum value</param>
-        /// <param name="max">The maximum value</param>
-        public static void NormalizeList(this IList<float> list, float min, float max)
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="list">The list to swap the values</param>
+        /// <param name="firstIndex">The first index</param>
+        /// <param name="secondIndex">The second index</param>
+        public static void Swap<T>(this IList<T> list, int firstIndex, int secondIndex)
         {
             if (list == null)
                 throw new ArgumentNullException(nameof(list));
 
-            for (int i = 0; i < list.Count; i++)
-            {
-                float value = list[i];
-                list[i] = value.Normalize(min, max);
-            }
-        }
+            if (list.Count < 2)
+                throw new ArgumentException("List should contain at least two elements");
 
-        /// <summary>
-        /// Normalize a list of float between the values of 0 and 1
-        /// </summary>
-        /// <param name="list">The list to be normalized</param>
-        public static void NormalizeList(this IList<float> list)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
+            if (!list.HasIndex(firstIndex))
+                throw new ArgumentException("The list does not contain firstIndex");
 
-            float min = list.Minimum();
-            float max = list.Maximum();
+            if (!list.HasIndex(secondIndex))
+                throw new ArgumentException("The list does not contain secondIndex");
 
-            for (int i = 0; i < list.Count; i++)
-            {
-                float value = list[i];
-                list[i] = value.Normalize(min, max);
-            }
-        }
+            T firstValue = list[firstIndex];
 
-        /// <summary>
-        /// Map a list to a new range
-        /// </summary>
-        /// <param name="list">The list to be mapped</param>
-        /// <param name="min">The current minimum range</param>
-        /// <param name="max">The current maximum range</param>
-        /// <param name="targetMin">The new target minimum range</param>
-        /// <param name="targetMax">The new target maximum range</param>
-        public static void MapList(this IList<float> list, float min, float max, float targetMin, float targetMax)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                float value = list[i];
-                list[i] = value.Map(min, max, targetMin, targetMax);
-            }
-        }
-
-        /// <summary>
-        /// Change all values of the list to its complement (1 - value)
-        /// </summary>
-        /// <param name="list">The list to calculate the complement</param>
-        public static void ComplementList(this IList<float> list)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                float value = list[i];
-                list[i] = value.Complement();
-            }
-        }
-
-        /// <summary>
-        /// Inverse the signal of all elements in the list
-        /// </summary>
-        /// <param name="list">The list to calculate the inverted signal</param>
-        public static void InverseList(this IList<float> list)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                float value = list[i];
-                list[i] = value.Inverse();
-            }
-        }
-
-        /// <summary>
-        /// Gets a read-only version of a list
-        /// </summary>
-        /// <typeparam name="T">The type of the elements in the list</typeparam>
-        /// <param name="list">The list to be converted to read only</param>
-        /// <returns>The read-only version of the list</returns>
-        public static IReadOnlyList<T> AsReadOnly<T>(this List<T> list)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-
-            return list.AsReadOnly();
+            list[firstIndex] = list[secondIndex];
+            list[secondIndex] = firstValue;
         }
     }
 }

@@ -1,4 +1,4 @@
-using Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +6,7 @@ namespace CameraSystem
 {
 	public class CameraController : MonoBehaviour
 	{
-        [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
+        [SerializeField] private CinemachineCamera cinemachineCamera;
         [SerializeField] private CameraSettings cameraSettings;
 
         private CameraSystemInputActions cameraActions;
@@ -15,16 +15,16 @@ namespace CameraSystem
 
         private Vector3 followOffset;
 
-        private CinemachineTransposer cinemachineTransposer;
+        private CinemachineFollow cinemachineFollow;
 
         private void Awake()
         {
-            cinemachineTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+            cinemachineFollow = cinemachineCamera.GetComponent<CinemachineFollow>();
             cameraActions = new CameraSystemInputActions();
 
             if (cameraSettings.OverrideCameraInitialOffset)
-                cinemachineTransposer.m_FollowOffset = cameraSettings.CinemachineVirtualCameraInitialOffset;
-            followOffset = cinemachineTransposer.m_FollowOffset;
+                cinemachineFollow.FollowOffset = cameraSettings.CinemachineVirtualCameraInitialOffset;
+            followOffset = cinemachineFollow.FollowOffset;
         }
 
         private void OnEnable()
@@ -177,7 +177,7 @@ namespace CameraSystem
             if (followOffset.magnitude < cameraSettings.FollowOffsetMin) followOffset = zoomDir * cameraSettings.FollowOffsetMin;
             if (followOffset.magnitude > cameraSettings.FollowOffsetMax) followOffset = zoomDir * cameraSettings.FollowOffsetMax;
 
-            cinemachineTransposer.m_FollowOffset = Vector3.Lerp(cinemachineTransposer.m_FollowOffset, followOffset, Time.deltaTime * cameraSettings.ZoomCameraSpeed);
+            cinemachineFollow.FollowOffset = Vector3.Lerp(cinemachineFollow.FollowOffset, followOffset, Time.deltaTime * cameraSettings.ZoomCameraSpeed);
         }
 
         //private void HandleCameraZoom_LowerY()

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d31ecc88f57c694cb7b63df5b660257, type: 3}
+  m_Name: ScriptsGeneratorSettings
+  m_EditorClassIdentifier: 
+  CSClassTemplate: {fileID: 4900000, guid: 1b02663f559d6274c80eae6009e5e12b, type: 3}
+  CSMonoBehaviourTemplate: {fileID: 4900000, guid: 5a5a5b0b357014540bccfac8d2537fd5,
+    type: 3}
+  CSScriptableObjectTemplate: {fileID: 4900000, guid: aac576da816d0bb4c9b1220155dd2c36,
+    type: 3}
+  CSCustomEditorTemplate: {fileID: 4900000, guid: 3db27767e8276fb4796be9ddc12ae2de,
+    type: 3}
+  CSCustomPropertyDrawerTemplate: {fileID: 4900000, guid: 10406c4b3f4327542861023d6c04756c,
+    type: 3}
+  CSCustomPropertyAttributeTemplate: {fileID: 4900000, guid: 994d11836a7e90346b103a4cff29c805,
+    type: 3}
+  CSInterfaceTemplate: {fileID: 4900000, guid: 6272faf44498d494382026713fb4c9e4, type: 3}
+  CSStructTemplate: {fileID: 4900000, guid: 1e9931f86e4f98342a56e964fb1ed762, type: 3}
+  CSEnumTemplate: {fileID: 4900000, guid: fc70afd5c853c5447906eea534b880ea, type: 3}

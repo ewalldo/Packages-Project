@@ -17,7 +17,10 @@ namespace Tween
         protected T from;
         protected T to;
 
+        protected bool isExecuting;
+
         public event Action OnComplete;
+        public bool IsExecuting => isExecuting;
 
         public BaseTween(T initialValue, T endValue, float duration, float delay, EasingFunction easingFunction, ILoopType loopType, Action onComplete)
         {
@@ -29,12 +32,14 @@ namespace Tween
             this.loopType = loopType;
 
             OnComplete += onComplete;
+            isExecuting = false;
         }
 
         public IEnumerator Execute()
         {
             SaveInitialTweenValues();
 
+            isExecuting = true;
             int curLoops = 0;
 
             float progress = 0f;
@@ -74,6 +79,13 @@ namespace Tween
             }
 
             OnComplete?.Invoke();
+            isExecuting = false;
+        }
+
+        public void ForceFinish()
+        {
+            isExecuting = false;
+            ApplyTween(endValue);
         }
 
         protected void SaveInitialTweenValues()

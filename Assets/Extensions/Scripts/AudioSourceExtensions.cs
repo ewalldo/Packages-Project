@@ -12,126 +12,6 @@ namespace Extensions
     public static class AudioSourceExtensions
     {
         /// <summary>
-        /// Fades out the audio of the <paramref name="audioSource"/> over a specified duration.
-        /// </summary>
-        /// <param name="audioSource">The audio source to fade out</param>
-        /// <param name="fadeOutTime">The duration over which the fade out should occur</param>
-        /// <param name="startVolume">The starting volume level of the audio (between 0 and 1)</param>
-        /// <param name="finalVolume">The final volume level of the audio (between 0 and 1)</param>
-        /// <param name="resetVolumeAfterFade">Indicates wheter to reset the volume to its starting value after the fade operation</param>
-        /// <param name="onFinishedFading">Action to invoke when the fade out is finished</param>
-        /// <returns>An <see cref="IEnumerator"/> for the fade out coroutine execution</returns>
-        public static IEnumerator FadeOut(this AudioSource audioSource, float fadeOutTime, float startVolume = 1f, float finalVolume = 0f, bool resetVolumeAfterFade = false, Action onFinishedFading = null)
-        {
-            ValidateParams(fadeOutTime, startVolume, finalVolume, () => startVolume < finalVolume, "Start volume should be higher than final volume");
-
-            float volumeIncrement = (startVolume - finalVolume) / fadeOutTime;
-
-            while (audioSource.volume > finalVolume)
-            {
-                audioSource.volume -= volumeIncrement * Time.deltaTime;
-                yield return null;
-            }
-
-            audioSource.Stop();
-            if (resetVolumeAfterFade)
-                audioSource.volume = startVolume;
-            onFinishedFading?.Invoke();
-        }
-
-        /// <summary>
-        /// Fades out the audio of the <paramref name="audioSource"/> over a specified duration.
-        /// </summary>
-        /// <param name="audioSource">The audio source to fade out</param>
-        /// <param name="fadeOutTime">The duration over which the fade out should occur</param>
-        /// <param name="cancellationToken">Cancellation token to safely stop the fade out operation midway through</param>
-        /// <param name="startVolume">The starting volume level of the audio (between 0 and 1)</param>
-        /// <param name="finalVolume">The final volume level of the audio (between 0 and 1)</param>
-        /// <param name="resetVolumeAfterFade">Indicates wheter to reset the volume to its starting value after the fade operation</param>
-        /// <param name="onFinishedFading">Action to invoke when the fade out is finished</param>
-        /// <returns>An asynchronous task for the fade out operation</returns>
-        public static async Task FadeOutAsync(this AudioSource audioSource, float fadeOutTime, CancellationToken cancellationToken, float startVolume = 1f, float finalVolume = 0f, bool resetVolumeAfterFade = false, Action onFinishedFading = null)
-        {
-            ValidateParams(fadeOutTime, startVolume, finalVolume, () => startVolume < finalVolume, "Start volume should be higher than final volume", audioSource);
-
-            float volumeIncrement = (startVolume - finalVolume) / fadeOutTime;
-
-            while (!cancellationToken.IsCancellationRequested && audioSource.volume > finalVolume)
-            {
-                audioSource.volume -= volumeIncrement * Time.deltaTime;
-                await Task.Yield();
-            }
-
-            if (cancellationToken.IsCancellationRequested)
-                return;
-
-            audioSource.Stop();
-            if (resetVolumeAfterFade)
-                audioSource.volume = startVolume;
-            onFinishedFading?.Invoke();
-        }
-
-        /// <summary>
-        /// Fades in the audio of the <paramref name="audioSource"/> over a specified duration.
-        /// </summary>
-        /// <param name="audioSource">The audio source to fade in</param>
-        /// <param name="fadeInTime">The duration over which the fade in should occur</param>
-        /// <param name="startVolume">The starting volume level of the audio (between 0 and 1)</param>
-        /// <param name="finalVolume">The final volume level of the audio (between 0 and 1)</param>
-        /// <param name="onFinishedFading">Action to invoke when the fade in is finished</param>
-        /// <returns>An <see cref="IEnumerator"/> for the fade in coroutine execution</returns>
-        public static IEnumerator FadeIn(this AudioSource audioSource, float fadeInTime, float startVolume = 0f, float finalVolume = 1f, Action onFinishedFading = null)
-        {
-            ValidateParams(fadeInTime, startVolume, finalVolume, () => finalVolume < startVolume, "Start volume should be lower than final volume", audioSource);
-
-            float volumeIncrement = (finalVolume - startVolume) / fadeInTime;
-
-            if (!audioSource.isPlaying)
-                audioSource.Play();
-
-            while (audioSource.volume < finalVolume)
-            {
-                audioSource.volume += volumeIncrement * Time.deltaTime;
-                yield return null;
-            }
-
-            audioSource.volume = finalVolume;
-            onFinishedFading?.Invoke();
-        }
-
-        /// <summary>
-        /// Fades in the audio of the <paramref name="audioSource"/> over a specified duration.
-        /// </summary>
-        /// <param name="audioSource">The audio source to fade in</param>
-        /// <param name="fadeInTime">The duration over which the fade in should occur</param>
-        /// <param name="cancellationToken">Cancellation token to safely stop the fade in operation midway through</param>
-        /// <param name="startVolume">The starting volume level of the audio (between 0 and 1)</param>
-        /// <param name="finalVolume">The final volume level of the audio (between 0 and 1)</param>
-        /// <param name="onFinishedFading">Action to invoke when the fade in is finished</param>
-        /// <returns>An asynchronous task for the fade in operation</returns>
-        public static async Task FadeInAsync(this AudioSource audioSource, float fadeInTime, CancellationToken cancellationToken, float startVolume = 0f, float finalVolume = 1f, Action onFinishedFading = null)
-        {
-            ValidateParams(fadeInTime, startVolume, finalVolume, () => finalVolume < startVolume, "Start volume should be lower than final volume", audioSource);
-
-            float volumeIncrement = (finalVolume - startVolume) / fadeInTime;
-
-            if (!audioSource.isPlaying)
-                audioSource.Play();
-
-            while (!cancellationToken.IsCancellationRequested && audioSource.volume < finalVolume)
-            {
-                audioSource.volume += volumeIncrement * Time.deltaTime;
-                await Task.Yield();
-            }
-
-            if (cancellationToken.IsCancellationRequested)
-                return;
-
-            audioSource.volume = finalVolume;
-            onFinishedFading?.Invoke();
-        }
-
-        /// <summary>
         /// Cross fade the audio of the <paramref name="audioSourceOut"/> to <paramref name="audioSourceIn"/> over a specific duration.
         /// </summary>
         /// <param name="audioSourceOut">The audio source to fade out</param>
@@ -205,6 +85,126 @@ namespace Extensions
             audioSourceOut.volume = 0f;
             audioSourceIn.volume = finalVolume;
             onFinishedCrossFading?.Invoke();
+        }
+
+        /// <summary>
+        /// Fades in the audio of the <paramref name="audioSource"/> over a specified duration.
+        /// </summary>
+        /// <param name="audioSource">The audio source to fade in</param>
+        /// <param name="fadeInTime">The duration over which the fade in should occur</param>
+        /// <param name="startVolume">The starting volume level of the audio (between 0 and 1)</param>
+        /// <param name="finalVolume">The final volume level of the audio (between 0 and 1)</param>
+        /// <param name="onFinishedFading">Action to invoke when the fade in is finished</param>
+        /// <returns>An <see cref="IEnumerator"/> for the fade in coroutine execution</returns>
+        public static IEnumerator FadeIn(this AudioSource audioSource, float fadeInTime, float startVolume = 0f, float finalVolume = 1f, Action onFinishedFading = null)
+        {
+            ValidateParams(fadeInTime, startVolume, finalVolume, () => finalVolume < startVolume, "Start volume should be lower than final volume", audioSource);
+
+            float volumeIncrement = (finalVolume - startVolume) / fadeInTime;
+
+            if (!audioSource.isPlaying)
+                audioSource.Play();
+
+            while (audioSource.volume < finalVolume)
+            {
+                audioSource.volume += volumeIncrement * Time.deltaTime;
+                yield return null;
+            }
+
+            audioSource.volume = finalVolume;
+            onFinishedFading?.Invoke();
+        }
+
+        /// <summary>
+        /// Fades in the audio of the <paramref name="audioSource"/> over a specified duration.
+        /// </summary>
+        /// <param name="audioSource">The audio source to fade in</param>
+        /// <param name="fadeInTime">The duration over which the fade in should occur</param>
+        /// <param name="cancellationToken">Cancellation token to safely stop the fade in operation midway through</param>
+        /// <param name="startVolume">The starting volume level of the audio (between 0 and 1)</param>
+        /// <param name="finalVolume">The final volume level of the audio (between 0 and 1)</param>
+        /// <param name="onFinishedFading">Action to invoke when the fade in is finished</param>
+        /// <returns>An asynchronous task for the fade in operation</returns>
+        public static async Task FadeInAsync(this AudioSource audioSource, float fadeInTime, CancellationToken cancellationToken, float startVolume = 0f, float finalVolume = 1f, Action onFinishedFading = null)
+        {
+            ValidateParams(fadeInTime, startVolume, finalVolume, () => finalVolume < startVolume, "Start volume should be lower than final volume", audioSource);
+
+            float volumeIncrement = (finalVolume - startVolume) / fadeInTime;
+
+            if (!audioSource.isPlaying)
+                audioSource.Play();
+
+            while (!cancellationToken.IsCancellationRequested && audioSource.volume < finalVolume)
+            {
+                audioSource.volume += volumeIncrement * Time.deltaTime;
+                await Task.Yield();
+            }
+
+            if (cancellationToken.IsCancellationRequested)
+                return;
+
+            audioSource.volume = finalVolume;
+            onFinishedFading?.Invoke();
+        }
+
+        /// <summary>
+        /// Fades out the audio of the <paramref name="audioSource"/> over a specified duration.
+        /// </summary>
+        /// <param name="audioSource">The audio source to fade out</param>
+        /// <param name="fadeOutTime">The duration over which the fade out should occur</param>
+        /// <param name="startVolume">The starting volume level of the audio (between 0 and 1)</param>
+        /// <param name="finalVolume">The final volume level of the audio (between 0 and 1)</param>
+        /// <param name="resetVolumeAfterFade">Indicates wheter to reset the volume to its starting value after the fade operation</param>
+        /// <param name="onFinishedFading">Action to invoke when the fade out is finished</param>
+        /// <returns>An <see cref="IEnumerator"/> for the fade out coroutine execution</returns>
+        public static IEnumerator FadeOut(this AudioSource audioSource, float fadeOutTime, float startVolume = 1f, float finalVolume = 0f, bool resetVolumeAfterFade = false, Action onFinishedFading = null)
+        {
+            ValidateParams(fadeOutTime, startVolume, finalVolume, () => startVolume < finalVolume, "Start volume should be higher than final volume");
+
+            float volumeIncrement = (startVolume - finalVolume) / fadeOutTime;
+
+            while (audioSource.volume > finalVolume)
+            {
+                audioSource.volume -= volumeIncrement * Time.deltaTime;
+                yield return null;
+            }
+
+            audioSource.Stop();
+            if (resetVolumeAfterFade)
+                audioSource.volume = startVolume;
+            onFinishedFading?.Invoke();
+        }
+
+        /// <summary>
+        /// Fades out the audio of the <paramref name="audioSource"/> over a specified duration.
+        /// </summary>
+        /// <param name="audioSource">The audio source to fade out</param>
+        /// <param name="fadeOutTime">The duration over which the fade out should occur</param>
+        /// <param name="cancellationToken">Cancellation token to safely stop the fade out operation midway through</param>
+        /// <param name="startVolume">The starting volume level of the audio (between 0 and 1)</param>
+        /// <param name="finalVolume">The final volume level of the audio (between 0 and 1)</param>
+        /// <param name="resetVolumeAfterFade">Indicates wheter to reset the volume to its starting value after the fade operation</param>
+        /// <param name="onFinishedFading">Action to invoke when the fade out is finished</param>
+        /// <returns>An asynchronous task for the fade out operation</returns>
+        public static async Task FadeOutAsync(this AudioSource audioSource, float fadeOutTime, CancellationToken cancellationToken, float startVolume = 1f, float finalVolume = 0f, bool resetVolumeAfterFade = false, Action onFinishedFading = null)
+        {
+            ValidateParams(fadeOutTime, startVolume, finalVolume, () => startVolume < finalVolume, "Start volume should be higher than final volume", audioSource);
+
+            float volumeIncrement = (startVolume - finalVolume) / fadeOutTime;
+
+            while (!cancellationToken.IsCancellationRequested && audioSource.volume > finalVolume)
+            {
+                audioSource.volume -= volumeIncrement * Time.deltaTime;
+                await Task.Yield();
+            }
+
+            if (cancellationToken.IsCancellationRequested)
+                return;
+
+            audioSource.Stop();
+            if (resetVolumeAfterFade)
+                audioSource.volume = startVolume;
+            onFinishedFading?.Invoke();
         }
 
         /// <summary>

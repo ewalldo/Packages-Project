@@ -1,11 +1,15 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace LootSystem
 {
-    public class LootSpawn : MonoBehaviour
+    public class LootSpawn : MonoBehaviour, IPointerDownHandler
     {
         [SerializeField][Tooltip("Loot pool where the loot will be pulled from")]
-        private LootPool lootPool;
+        private LootPool independentLootPool;
+        [SerializeField][Tooltip("Loot pool where the loot will be pulled from")]
+        private LootPool dependentLootPool;
         [SerializeField][Tooltip("Number of pulls from the independent list")]
         private int numIndependentPulls;
         [SerializeField][Tooltip("Number of pulls from the dependent list")]
@@ -27,11 +31,12 @@ namespace LootSystem
             CheckForReset();
         }
 
-        private void OnMouseDown()
+        public void OnPointerDown(PointerEventData eventData)
         {
             if (spriteRenderer.enabled)
             {
-                lootPool.SpawnDrop(transform, offsetRange, numIndependentPulls, numDependentPulls);
+                independentLootPool.SpawnDrop(transform.position, offsetRange, numIndependentPulls);
+                dependentLootPool.SpawnDrop(transform.position, offsetRange, numDependentPulls);
                 spriteRenderer.enabled = false;
 
                 GameObject explosion = Instantiate(particleSystemSimpleExplosion);
@@ -41,7 +46,7 @@ namespace LootSystem
 
         private void CheckForReset()
         {
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Keyboard.current.rKey.wasPressedThisFrame)
             {
                 spriteRenderer.enabled = true;
             }

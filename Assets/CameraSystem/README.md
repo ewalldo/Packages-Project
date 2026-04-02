@@ -35,12 +35,15 @@
 ## 1 - Introduction <a name="introduction"/>
 The Camera System Package is a collection of scripts that allow for easy and flexible camera control in Unity. The package uses Cinemachine and the new Input System approach to create smooth camera movement and customizable inputs. With the Camera System Package, you can quickly create a camera that works really well for games that requires a free camera movement.  
 The camera settings are created using scriptable objects, allowing the use to easily switch between presets both in the editor or during runtime. Also, the camera settings values can be save/load using playerPrefs or Json, so any changes in the camera can be restored when relaunching the game.
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.  
 
-- **Package requirements: Cinemachine and InputSystem**
+This package has been updated to Unity 6000.3.9f1 and Cinemachine 3. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
+
+- **Package requirements: Cinemachine 3 and InputSystem**
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 2.0: Update to Cinemachine 3 and ensured package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Easier to create camera presets: By using ScriptableObjects, different camera presets can be created allowing the camera settings to be changed easily in the editor or during runtime.
@@ -54,16 +57,18 @@ This package was created and tested using Unity version 2022.1, but it should wo
 - Camera settings can be created by right-clicking the project window, choose "Create"->"Scriptable Objects"->"Camera System"-"Camera Settings".
 
 ### 4.2 Setting up a camera <a name="settingUpACamera"/>
-- Add a CinemachineVirtualCamera to the scene.
+- Add a CinemachineCamera by either:
+  - "GameObject -> Cinemachine -> Cinemachine Camera", and add a CinemachineFollow and CinemachineRotationComposer components to the same GameObject.
+  - "GameObject -> Cinemachine -> Targeted Cameras -> Follow Camera" to add it with the required components
 - Create am empty game object and attach the "CameraController" script to it.
-- Drag the CinemachineVirtualCamera to the "Cinemachine virtual camera" slot in the CameraController script.
-- In the CinemachineVirtualCamera drag the previously created empty to the "Follow" and "Look At" slots.
-- Edit other CinemachineVirtualCamera settings as you see fit.
+- Drag the CinemachineCamera to the "Cinemachine Camera" slot in the CameraController script.
+- In the CinemachineCamera drag the previously created empty to the "Tracking Target" field.
+- Edit other CinemachineCamera/CinemachineFollow/CinemachineRotationComposer settings as you see fit.
 
 ### 4.3 Camera controls <a name="cameraControls"/>
 By default camera controls are:
-- Movement: WASD keys, arrow keys or controller left stick (or by right-mouse click if drag pan is active).
-- Rotation: "Q" and "E" keys (or by middle-mouse click if drag rotation is active).
+- Movement: WASD keys, arrow keys or controller left stick (or by right-mouse click and drag if drag pan is active).
+- Rotation: "Q" and "E" keys (or by middle-mouse click and drag left/right if rotation is active).
 - Zoom: By middle-mouse scroll if the useZoom option is active.  
 To overwrite/change the default camera controls scheme, you can edit the CameraSystemInputActions.inputactions file in the Scripts folder.
 

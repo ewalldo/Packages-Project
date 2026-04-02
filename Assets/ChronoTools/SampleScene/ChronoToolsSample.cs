@@ -93,8 +93,6 @@ namespace ChronoTools
             TimeSpan time = TimeSpan.FromSeconds(countdownTimer.CurrentTime);
             countdownText.text = time.ToString(@"mm\:ss");
             countdownImage.fillAmount = countdownTimer.Progress;
-
-            deactivateMessageTimer.Tick();
         }
 
         private void UpdatePeriod()
@@ -103,6 +101,8 @@ namespace ChronoTools
             TimeSpan time = TimeSpan.FromSeconds(periodicTimer.CurrentTime);
             periodText.text = time.ToString(@"mm\:ss");
             periodImage.fillAmount = periodicTimer.Progress;
+
+            deactivateMessageTimer.Tick();
         }
 
         private void UpdateStopwatch()

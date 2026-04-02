@@ -1,0 +1,7 @@
+namespace GenericNamespace
+{
+	public struct #SCRIPTNAME#
+	{
+		// Add your code here
+	}
+}

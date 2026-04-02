@@ -21,7 +21,7 @@ namespace ExtraAttributes
 
         private static void CheckAllRequiredFields()
         {
-            MonoBehaviour[] allMonoBehaviours = Object.FindObjectsOfType<MonoBehaviour>();
+            MonoBehaviour[] allMonoBehaviours = Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
             foreach (MonoBehaviour monoBehaviour in allMonoBehaviours)
             {

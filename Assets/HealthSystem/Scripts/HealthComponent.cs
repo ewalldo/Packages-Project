@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace HealthSystem
 {
-	public class HealthComponent : MonoBehaviour
-	{
+	public class HealthComponent : MonoBehaviour, IHealth, IDamageable, IHealable, IHealthStatus
+    {
         public string GetNameOfMaxCurrentHealth => nameof(maxHealth);
         public string GetNameOfCurrentHealth => nameof(curHealth);
         public string GetNameOfStartAtMaxHealth => nameof(startAtMaxHealth);
@@ -19,37 +19,37 @@ namespace HealthSystem
         [SerializeField]
         private float criticalHealthThreshold;
 
-        private bool isCurrentlyAtCriticalHealth;
+        private Health health;
 
         /// <summary>
         /// Get the current health of the health component
         /// </summary>
-        public float GetHealth => curHealth;
+        public float GetHealth => health.GetHealth;
 
         /// <summary>
         /// Get the normalized current health of the health component
         /// </summary>
-        public float GetHealthNormalized => curHealth / maxHealth;
+        public float GetHealthNormalized => health.GetHealthNormalized;
         
         /// <summary>
         /// Get the maxHealth value of this health component
         /// </summary>
-        public float GetMaxHealth => maxHealth;
+        public float GetMaxHealth => health.GetMaxHealth;
 
         /// <summary>
         /// Check if the current health is zero or below
         /// </summary>
-        public bool IsDead => curHealth <= 0f;
+        public bool IsDead => health.IsDead;
 
         /// <summary>
         /// Check if the current health is on a critical value
         /// </summary>
-        public bool IsOnCriticalHealth => GetHealthNormalized <= criticalHealthThreshold;
+        public bool IsOnCriticalHealth => health.IsOnCriticalHealth;
 
         /// <summary>
         /// Check if the current health value is the same as the full health
         /// </summary>
-        public bool IsOnFullHealth => curHealth == maxHealth;
+        public bool IsOnFullHealth => health.IsOnFullHealth;
 
         /// <summary>
         /// Invoked when the current health value changes
@@ -129,7 +129,16 @@ namespace HealthSystem
 
         private void Awake()
         {
-            isCurrentlyAtCriticalHealth = IsOnCriticalHealth;
+            health = new Health(maxHealth, curHealth, criticalHealthThreshold);
+
+            health.OnCurrentHealthChanged += (changedAmount, healthAfter, changeCauser) => OnCurrentHealthChanged?.Invoke(changedAmount, healthAfter, changeCauser);
+            health.OnMaxHealthChanged += (changedAmount, healthAfter, changeCauser) => OnMaxHealthChanged?.Invoke(changedAmount, healthAfter, changeCauser);
+            health.OnDamageTaken += (damageAmount, healthAfter, damageCauser) => OnDamageTaken?.Invoke(damageAmount, healthAfter, damageCauser);
+            health.OnDamageHealed += (healingAmount, healthAfter, healingCauser) => OnDamageHealed?.Invoke(healingAmount, healthAfter, healingCauser);
+            health.OnCriticalHealthStarted += () => OnCriticalHealthStarted?.Invoke();
+            health.OnCriticalHealthEnded += () => OnCriticalHealthEnded?.Invoke();
+            health.OnDeath += (deathCauser) => OnDeath?.Invoke(deathCauser);
+            health.OnRevive += (healthAfter, reviveCauser) => OnRevive?.Invoke(healthAfter, reviveCauser);
         }
 
         /// <summary>
@@ -139,15 +148,7 @@ namespace HealthSystem
         /// <param name="damageCauser">The object responsible to cause damage to this healthComponent</param>
         public void TakeDamage(float amountDamage, object damageCauser)
         {
-            if (amountDamage < 0f)
-                throw new ArgumentException("amountDamage cannot be a negative number");
-
-            if (IsDead)
-                return;
-
-            SetHealth(curHealth - amountDamage, damageCauser);
-
-            OnDamageTaken?.Invoke(amountDamage, curHealth, damageCauser);
+            health.TakeDamage(amountDamage, damageCauser);
         }
 
         /// <summary>
@@ -156,9 +157,7 @@ namespace HealthSystem
         /// <param name="deathCauser">The object responsible for the death</param>
         public void Die(object deathCauser)
         {
-            curHealth = 0f;
-            isCurrentlyAtCriticalHealth = false;
-            OnDeath?.Invoke(deathCauser);
+            health.Die(deathCauser);
         }
 
         /// <summary>
@@ -168,12 +167,7 @@ namespace HealthSystem
         /// <param name="healingCauser">The object responsible to heal this healthComponent</param>
         public void HealDamage(float amountHeal, object healingCauser)
         {
-            if (amountHeal < 0f)
-                throw new ArgumentException("amountHeal cannot be a negative number");
-
-            SetHealth(curHealth + amountHeal, healingCauser);
-
-            OnDamageHealed?.Invoke(amountHeal, curHealth, healingCauser);
+            health.HealDamage(amountHeal, healingCauser);
         }
 
         /// <summary>
@@ -182,7 +176,7 @@ namespace HealthSystem
         /// <param name="healingCauser">The object responsible to full heal this healthComponent</param>
         public void HealToFull(object healingCauser)
         {
-            HealDamage(maxHealth - curHealth, healingCauser);
+            health.HealToFull(healingCauser);
         }
 
         /// <summary>
@@ -193,23 +187,7 @@ namespace HealthSystem
         /// <param name="changeCauser">The object responsible for modifying the maxHealth of this healthComponent</param>
         public void SetMaxHealth(float newMaxHealth, bool updateToFullHealth, object changeCauser)
         {
-            if (newMaxHealth < 0f)
-                throw new ArgumentException("newMaxHealth cannot be a negative number");
-
-            if (maxHealth == newMaxHealth)
-                return;
-
-            float previousMaxHealth = maxHealth;
-
-            maxHealth = newMaxHealth;
-
-            if (updateToFullHealth || curHealth > newMaxHealth)
-            {
-                SetHealth(newMaxHealth, changeCauser);
-            }
-
-            CheckForCriticalChange();
-            OnMaxHealthChanged?.Invoke(newMaxHealth - previousMaxHealth, newMaxHealth, changeCauser);
+            health.SetMaxHealth(newMaxHealth, updateToFullHealth, changeCauser);
         }
 
         /// <summary>
@@ -219,43 +197,7 @@ namespace HealthSystem
         /// <param name="changeCauser">The object responsible for modify the health value of this healthComponent</param>
         public void SetHealth(float newHealth, object changeCauser)
         {
-            if (curHealth == newHealth)
-                return;
-
-            float previousHealth = curHealth;
-
-            curHealth = newHealth;
-
-            if (curHealth > maxHealth)
-            {
-                curHealth = maxHealth;
-            }
-            else if (curHealth <= 0f)
-            {
-                Die(changeCauser);
-            }
-
-            if (previousHealth <= 0f && curHealth > 0f)
-                OnRevive?.Invoke(curHealth, changeCauser);
-
-            if (!IsDead)
-                CheckForCriticalChange();
-
-            OnCurrentHealthChanged?.Invoke(curHealth - previousHealth, curHealth, changeCauser);
-        }
-
-        private void CheckForCriticalChange()
-        {
-            if (isCurrentlyAtCriticalHealth && !IsOnCriticalHealth)
-            {
-                isCurrentlyAtCriticalHealth = IsOnCriticalHealth;
-                OnCriticalHealthEnded?.Invoke();
-            }
-            else if (!isCurrentlyAtCriticalHealth && IsOnCriticalHealth)
-            {
-                isCurrentlyAtCriticalHealth = IsOnCriticalHealth;
-                OnCriticalHealthStarted?.Invoke();
-            }
+            health.SetHealth(newHealth, changeCauser);
         }
     }
 }

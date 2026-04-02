@@ -27,13 +27,16 @@ The "Animated text" package is a collection of scripts that helps the user to qu
 Additionally, the package provides a special tag for parsing text during runtime. This allows developers to create dynamic text that responds to user input, like custom names, providing a more immersive experience for the player.  
 With support for all TextMeshPro's RichText tags, developers can customize the appearance of the text with bold, italic, underlined fonts, color, and so on.  
 Overall, this Animated Text Package for Unity is an useful tool for any developer looking to add animated text effects to their Unity projects. Its easy-to-use and convenient features make it a valuable asset for creating engaging and interactive games and applications.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.  
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 - **Package requirements: TextMeshPro**
 
 ## 2 - Version History <a name="versionHistory"/>
-- 1.0: Initial release
-- 1.1: Add option to change default typing speed from code
+- 1.0: Initial release.
+- 1.1: Add option to change default typing speed from code.
+- 1.1.1: Ensure package functionality in Unity version 6000.3.9f1.
 
 ## 3 - Features <a name="features"/>
 - Easy to add a typing animation to texts, just attach a script and call one method.

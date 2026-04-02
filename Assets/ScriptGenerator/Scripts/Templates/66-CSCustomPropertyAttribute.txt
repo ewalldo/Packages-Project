@@ -1,0 +1,9 @@
+using UnityEngine;
+
+namespace GenericNamespace
+{
+	public class #SCRIPTNAME# : PropertyAttribute
+	{
+		// Add your code here
+	}
+}

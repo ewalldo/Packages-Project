@@ -1,0 +1,9 @@
+using UnityEngine;
+
+namespace GenericNamespace
+{
+	public class #SCRIPTNAME# : MonoBehaviour
+	{
+		// Add your code here
+	}
+}

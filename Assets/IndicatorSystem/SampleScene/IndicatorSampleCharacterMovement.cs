@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace IndicatorSystem
 {
@@ -6,13 +7,23 @@ namespace IndicatorSystem
 	{
         [SerializeField] private Camera playerCamera;
         [SerializeField] private float moveSpeed = 10f;
-        [SerializeField] private float mouseSensitivity = 100f;
+        [SerializeField] private float mouseSensitivity = 10f;
 
         [SerializeField] private Indicator runtimeIndicatorPrefab;
         [SerializeField] private Transform indicatorParent;
         [SerializeField] private Canvas indicatorCanvas;
 
-        float xRotation = 0f;
+        private float xRotation = 0f;
+
+        private InputAction moveAction;
+        private Vector2 moveValue;
+
+        private Vector2 mouseDelta;
+
+        private void Awake()
+        {
+            moveAction = InputSystem.actions.FindAction("Player/Move");
+        }
 
         private void Start()
         {
@@ -29,29 +40,27 @@ namespace IndicatorSystem
 
         private void MovePlayer()
         {
-            float moveX = Input.GetAxis("Horizontal");
-            float moveZ = Input.GetAxis("Vertical");
+            moveValue = moveAction.ReadValue<Vector2>();
+            Vector3 moveDirection = transform.right * moveValue.x + transform.forward * moveValue.y;
 
-            Vector3 moveDirection = transform.right * moveX + transform.forward * moveZ;
-
-            transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
+            transform.Translate(moveSpeed * Time.deltaTime * moveDirection, Space.World);
         }
 
         private void LookAround()
         {
-            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+            mouseDelta = Mouse.current.delta.ReadValue();
+            mouseDelta *= mouseSensitivity * Time.deltaTime;
 
-            xRotation -= mouseY;
+            xRotation -= mouseDelta.y;
             xRotation = Mathf.Clamp(xRotation, -90f, 90f);
             playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
-            transform.Rotate(Vector3.up * mouseX);
+            transform.Rotate(Vector3.up * mouseDelta.x);
         }
 
         private void SpawnIndicator()
         {
-            if (!Input.GetKeyDown(KeyCode.Space))
+            if (!Keyboard.current.spaceKey.wasPressedThisFrame)
                 return;
 
             Indicator spawnedIndicator = Instantiate(runtimeIndicatorPrefab,
@@ -64,7 +73,7 @@ namespace IndicatorSystem
 
         private void ResetIndicators()
         {
-            if (!Input.GetKeyDown(KeyCode.R))
+            if (!Keyboard.current.rKey.wasPressedThisFrame)
                 return;
 
             foreach (Transform child in indicatorParent)

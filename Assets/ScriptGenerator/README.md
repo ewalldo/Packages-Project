@@ -11,11 +11,15 @@
 The "Script Generator" package is a tool that allows you to create script templates of different types inside of Unity.  
 Right now, the only option to create a script in Unity is for a MonoBehaviour class, so if you want a generic C# class, an interface, a struct or any other type, you must erase the reference to the MonoBehaviour and/or replace the type of script and/or add more code to it.  
 Do these things above doesn't take much time, but after creating many scripts, this process starts to get repetitive. This allows you to save a few seconds every time by giving the option to create the desired type right away inside of Unity.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
 - 1.1: Add option to create a "C# Custom Property Attribute"
+- 1.1.1: Refactor code to use text templates
+- 1.1.2: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Template generation: Allows script templates to be created easily inside of Unity, current supported templates are: (more to be added in the future)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Extensions
@@ -8,6 +9,101 @@ namespace Extensions
     /// </summary>
     public static class TransformExtensions
     {
+        /// <summary>
+        /// Retrieves all children from the Transform
+        /// </summary>
+        /// <param name="transform">The Transform to get the children from</param>
+        /// <returns>IEnumerable containing all child Transform</returns>
+        public static IEnumerable<Transform> Children(this Transform transform)
+        {
+            foreach (Transform child in transform)
+                yield return child;
+        }
+
+        /// <summary>
+        /// Destroy all children of a transform
+        /// </summary>
+        /// <param name="transform">The transform to have the children destroyed</param>
+        public static void DestroyAllChildren(this Transform transform)
+        {
+            if (transform == null)
+                throw new ArgumentNullException(nameof(transform));
+
+            transform.ForEveryChild((child) => UnityEngine.Object.Destroy(child.gameObject));
+        }
+
+        /// <summary>
+        /// Calculates the direction between another transform in relation to this one
+        /// </summary>
+        /// <param name="transform">The transform to get the direction from</param>
+        /// <param name="other">The transform origin point</param>
+        /// <param name="useLocalPosition">If the direction should be calculated using the local position or the global one</param>
+        /// <returns>The normalized directional vector from the target transform to this one</returns>
+        public static Vector3 DirectionFrom(this Transform transform, Transform other, bool useLocalPosition = false)
+        {
+            return transform.DirectionFrom(useLocalPosition ? other.localPosition : other.position, useLocalPosition);
+        }
+
+        /// <summary>
+        /// Calculates the direction between a specific point in space and this transform
+        /// </summary>
+        /// <param name="transform">The transform to get the direction from</param>
+        /// <param name="other">The position of the origin point</param>
+        /// <param name="useLocalPosition">If the direction should be calculated using the local position or the global one</param>
+        /// <returns>The normalized directional vector from the target position to this transform</returns>
+        public static Vector3 DirectionFrom(this Transform transform, Vector3 other, bool useLocalPosition = false)
+        {
+            return ((useLocalPosition ? transform.localPosition : transform.position) - other).normalized;
+        }
+
+        /// <summary>
+        /// Calculates the direction between this transform in relation to another one
+        /// </summary>
+        /// <param name="transform">The transform origin point</param>
+        /// <param name="other">The transform to calculate the direction to</param>
+        /// <param name="useLocalPosition">If the direction should be calculated using the local position or the global one</param>
+        /// <returns>The normalized directional vector from this transform to the target one</returns>
+        public static Vector3 DirectionTo(this Transform transform, Transform other, bool useLocalPosition = false)
+        {
+            return transform.DirectionTo(useLocalPosition ? other.localPosition : other.position, useLocalPosition);
+        }
+
+        /// <summary>
+        /// Calculates the direction between this transform in relation to a specific point in space
+        /// </summary>
+        /// <param name="transform">The transform origin point</param>
+        /// <param name="other">The position to calculate the direction to</param>
+        /// <param name="useLocalPosition">If the direction should be calculated using the local position or the global one</param>
+        /// <returns>The normalized directional vector from this transform to the target position</returns>
+        public static Vector3 DirectionTo(this Transform transform, Vector3 other, bool useLocalPosition = false)
+        {
+            return (other - (useLocalPosition ? transform.localPosition : transform.position)).normalized;
+        }
+
+        /// <summary>
+        /// Calculates the distance of this transform in relation to another one
+        /// </summary>
+        /// <param name="transform">The transform starting point</param>
+        /// <param name="other">The transform end point</param>
+        /// <param name="useLocalPosition">If the distance should be calculated using the local position or the global one</param>
+        /// <returns>The distance between the two transforms</returns>
+        public static float DistanceTo(this Transform transform, Transform other, bool useLocalPosition = false)
+        {
+            return transform.DistanceTo(useLocalPosition ? other.localPosition : other.position, useLocalPosition);
+        }
+
+        /// <summary>
+        /// Calculates the distance of this transform in relation to a specific point in space
+        /// </summary>
+        /// <param name="transform">The transform starting point</param>
+        /// <param name="other">The position end point</param>
+        /// <param name="useLocalPosition">If the distance should be calculated using the local position or the global one</param>
+        /// <returns>The distance between the object transform and the point in space</returns>
+        public static float DistanceTo(this Transform transform, Vector3 other, bool useLocalPosition = false)
+        {
+            return Vector3.Distance(useLocalPosition ? transform.localPosition : transform.position, other);
+        }
+
         /// <summary>
         /// Returns the first child transform of a gameObject, returns null if there is no children
         /// </summary>
@@ -25,6 +121,45 @@ namespace Extensions
         }
 
         /// <summary>
+        /// Performs an action on every child of the Transform
+        /// </summary>
+        /// <param name="transform">The parent Transform</param>
+        /// <param name="action">Action to be performed on every child</param>
+        public static void ForEveryChild(this Transform transform, Action<Transform> action)
+        {
+            for (int i = transform.childCount - 1; i >= 0; i--)
+            {
+                action(transform.GetChild(i));
+            }
+        }
+
+        /// <summary>
+        /// Checks if all corners of a rectTransform are visible on the screen
+        /// </summary>
+        /// <param name="rectTransform">The rect transform to check</param>
+        /// <param name="canvas">The parent canvas of the rect transform.<br/>
+        ///     If the canvas render mode is set to Camera or World, it will use the canvas camera during checking.
+        /// </param>
+        /// <returns>True, if all four corners are on the screen, false otherwise</returns>
+        public static bool IsAllCornersVisible(this RectTransform rectTransform, Canvas canvas)
+        {
+            return CountCornersVisible(rectTransform, canvas) == 4;
+        }
+
+        /// <summary>
+        /// Check if at least one corner of a rectTransform is visible on the screen
+        /// </summary>
+        /// <param name="rectTransform">The rectTransform to check</param>
+        /// <param name="canvas">The parent canvas of the rectTransform.<br/>
+        ///     If the canvas render mode is set to Camera or World, it will use the canvas camera during checking.
+        /// </param>
+        /// <returns>True, if at least one corner is on the screen, false otherwise</returns>
+        public static bool IsAtLeastOneCornerVisible(this RectTransform rectTransform, Canvas canvas)
+        {
+            return CountCornersVisible(rectTransform, canvas) > 0;
+        }
+
+        /// <summary>
         /// Returns the last child transform of a gameObject, returns null if there is no children
         /// </summary>
         /// <param name="transform">The transform to get the child from</param>
@@ -38,37 +173,6 @@ namespace Extensions
                 return null;
 
             return transform.GetChild(transform.childCount - 1);
-        }
-
-        /// <summary>
-        /// Destroy all children of a transform
-        /// </summary>
-        /// <param name="transform">The transform to have the children destroyed</param>
-        public static void DestroyAllChildren(this Transform transform)
-        {
-            if (transform == null)
-                throw new ArgumentNullException(nameof(transform));
-
-            foreach (Transform child in transform)
-            {
-                UnityEngine.Object.Destroy(child.gameObject);
-            }
-        }
-
-        /// <summary>
-        /// Activate/deactivate all children of a transform
-        /// </summary>
-        /// <param name="transform">The transform to have the children activated/deactivated</param>
-        /// <param name="status">True activate all the children, false deactivate all of them</param>
-        public static void SetActiveAllChildren(this Transform transform, bool status)
-        {
-            if (transform == null)
-                throw new ArgumentNullException(nameof(transform));
-
-            foreach (Transform child in transform)
-            {
-                child.gameObject.SetActive(status);
-            }
         }
 
         /// <summary>
@@ -103,6 +207,32 @@ namespace Extensions
         }
 
         /// <summary>
+        /// Rotate the transform towards a target
+        /// </summary>
+        /// <param name="transform">The transform to be rotated</param>
+        /// <param name="target">The target value to be rotated towards</param>
+        /// <param name="speed">The speed of the rotation</param>
+        public static void RotateTowards(this Transform transform, Vector3 target, float speed)
+        {
+            Vector3 direction = (target - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * speed);
+        }
+
+        /// <summary>
+        /// Activate/deactivate all children of a transform
+        /// </summary>
+        /// <param name="transform">The transform to have the children activated/deactivated</param>
+        /// <param name="status">True activate all the children, false deactivate all of them</param>
+        public static void SetActiveAllChildren(this Transform transform, bool status)
+        {
+            if (transform == null)
+                throw new ArgumentNullException(nameof(transform));
+
+            transform.ForEveryChild((child) => child.gameObject.SetActive(status));
+        }
+
+        /// <summary>
         /// Set the object to a new parent and reset the transform values
         /// </summary>
         /// <param name="child">The transform to be moved</param>
@@ -120,69 +250,6 @@ namespace Extensions
 
             child.SetParent(parent);
             child.ResetTransform(true, resetPosition, resetRotation, resetScale);
-        }
-
-        /// <summary>
-        /// Rotate the transform towards a target
-        /// </summary>
-        /// <param name="transform">The transform to be rotated</param>
-        /// <param name="target">The target value to be rotated towards</param>
-        /// <param name="speed">The speed of the rotation</param>
-        public static void RotateTowards(this Transform transform, Vector3 target, float speed)
-        {
-            Vector3 direction = (target - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * speed);
-        }
-
-        /// <summary>
-        /// Calculates the distance of this transform in relation to another one
-        /// </summary>
-        /// <param name="transform">The transform starting point</param>
-        /// <param name="other">The transform end point</param>
-        /// <param name="useLocalPosition">If the distance should be calculated using the local position or the global one</param>
-        /// <returns>The distance between the two transforms</returns>
-        public static float DistanceTo(this Transform transform, Transform other, bool useLocalPosition = false)
-        {
-            return transform.DistanceTo(useLocalPosition ? other.localPosition : other.position, useLocalPosition);
-        }
-
-        /// <summary>
-        /// Calculates the distance of this transform in relation to a specific point in space
-        /// </summary>
-        /// <param name="transform">The transform starting point</param>
-        /// <param name="other">The position end point</param>
-        /// <param name="useLocalPosition">If the distance should be calculated using the local position or the global one</param>
-        /// <returns>The distance between the object transform and the point in space</returns>
-        public static float DistanceTo(this Transform transform, Vector3 other, bool useLocalPosition = false)
-        {
-            return Vector3.Distance(useLocalPosition ? transform.localPosition : transform.position, other);
-        }
-
-        /// <summary>
-        /// Checks if all corners of a rectTransform are visible on the screen
-        /// </summary>
-        /// <param name="rectTransform">The rect transform to check</param>
-        /// <param name="canvas">The parent canvas of the rect transform.<br/>
-        ///     If the canvas render mode is set to Camera or World, it will use the canvas camera during checking.
-        /// </param>
-        /// <returns>True, if all four corners are on the screen, false otherwise</returns>
-        public static bool IsAllCornersVisible(this RectTransform rectTransform, Canvas canvas)
-        {
-            return CountCornersVisible(rectTransform, canvas) == 4;
-        }
-
-        /// <summary>
-        /// Check if at least one corner of a rectTransform is visible on the screen
-        /// </summary>
-        /// <param name="rectTransform">The rectTransform to check</param>
-        /// <param name="canvas">The parent canvas of the rectTransform.<br/>
-        ///     If the canvas render mode is set to Camera or World, it will use the canvas camera during checking.
-        /// </param>
-        /// <returns>True, if at least one corner is on the screen, false otherwise</returns>
-        public static bool IsAtLeastOneCornerVisible(this RectTransform rectTransform, Canvas canvas)
-        {
-            return CountCornersVisible(rectTransform, canvas) > 0;
         }
 
         /// <summary>

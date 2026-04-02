@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Extensions
@@ -23,6 +24,37 @@ namespace Extensions
 			}
 
 			return component;
+		}
+
+		/// <summary>
+		/// Return a gameObject itself if exists, null otherwise
+		/// </summary>
+		/// <typeparam name="T">The type of the object</typeparam>
+		/// <param name="obj">The object being checked</param>
+		/// <returns>The object itself if it exists and it is not destroyed, null otherwise</returns>
+		public static T GetOrNull<T>(this T obj) where T : UnityEngine.Object
+		{
+			return obj ?? null;
+		}
+
+		/// <summary>
+		/// Get the full hierarchical path, from the root until parent, for this specific GameObject
+		/// </summary>
+		/// <param name="gameObject">The GameObject to get the path from</param>
+		/// <returns>String representation of the hierarchical path</returns>
+		public static string GetPath(this GameObject gameObject)
+		{
+			return "/" + string.Join("/", gameObject.GetComponentsInParent<Transform>().Select((t) => t.name).Reverse().ToArray());
+		}
+
+		/// <summary>
+		/// Get the full hierarchical path, from the root until gameObject, for this specific GameObject
+		/// </summary>
+		/// <param name="gameObject">The GameObject to get the path from</param>
+		/// <returns>String representation of the full hierarchical path</returns>
+		public static string GetFullPath(this GameObject gameObject)
+		{
+			return gameObject.GetPath() + "/" + gameObject.name;
 		}
 	}
 }

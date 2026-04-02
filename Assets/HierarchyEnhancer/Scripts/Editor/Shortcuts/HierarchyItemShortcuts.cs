@@ -33,7 +33,7 @@ namespace HierarchyEnhancer
             if (!EditorPrefs.GetBool(ShortcutSettings.SHORTCUTS_ACTIVE_ALL_PREFS_NAME, true))
                 return;
 
-            GameObject obj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+            GameObject obj = EditorUtility.EntityIdToObject(instanceID) as GameObject;
 
             if (obj == null)
                 return;

@@ -10,15 +10,19 @@ namespace Tween
         private readonly List<ITweener> tweens;
 
         private int completedTweens;
+        private bool isExecuting;
 
-        private List<Coroutine> group;
+        private Dictionary<Coroutine, ITweener> group;
 
+        public bool IsExecuting => isExecuting;
         public event Action OnAllTweensCompleted;
 
         public TweenBuilder(MonoBehaviour monoBehaviour)
         {
             owner = monoBehaviour;
             tweens = new List<ITweener>();
+            group = new Dictionary<Coroutine, ITweener>();
+            isExecuting = false;
         }
 
         public ITweenGroup AddTween(ITweener tween)
@@ -30,13 +34,17 @@ namespace Tween
 
         public void Execute()
         {
+            if (tweens.Count == 0)
+                return;
+
             completedTweens = 0;
-            group = new List<Coroutine>();
+            isExecuting = true;
+            group.Clear();
 
             foreach (ITweener tween in tweens)
             {
                 Coroutine coroutine = owner.StartCoroutine(tween.Execute());
-                group.Add(coroutine);
+                group.Add(coroutine, tween);
             }
         }
 
@@ -46,15 +54,20 @@ namespace Tween
             group.Clear();
             OnAllTweensCompleted = null;
             completedTweens = 0;
+            isExecuting = false;
         }
 
-        public void Stop()
+        public void Stop(bool forceFinish = false)
         {
             completedTweens = 0;
+            isExecuting = false;
 
-            foreach (Coroutine coroutine in group)
+            foreach (KeyValuePair<Coroutine, ITweener> coroutineTweenPair in group)
             {
-                owner.StopCoroutine(coroutine);
+                owner.StopCoroutine(coroutineTweenPair.Key);
+
+                if (forceFinish && coroutineTweenPair.Value.IsExecuting)
+                    coroutineTweenPair.Value.ForceFinish();
             }
         }
 
@@ -63,7 +76,10 @@ namespace Tween
             completedTweens++;
 
             if (completedTweens >= tweens.Count)
+            {
                 OnAllTweensCompleted?.Invoke();
+                isExecuting = false;
+            }
         }
     }
 }

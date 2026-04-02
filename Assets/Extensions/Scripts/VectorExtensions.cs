@@ -8,32 +8,28 @@ namespace Extensions
         #region Vector2 Extensions
 
         /// <summary>
-        /// Returns a new Vector2 with the specified components replaced.
+        /// Returns a new Vector2 with a specific amount added to each axis
         /// </summary>
-        /// <param name="v">The original Vector2</param>
-        /// <param name="x">Optional X component. If null, the original X component is used.</param>
-        /// <param name="y">Optional Y component. If null, the original Y component is used.</param>
-        /// <returns>A new Vector2 with the specified components replaced.</returns>
-        public static Vector2 With(this Vector2 v, float? x = null, float? y = null)
+        /// <param name="v">The original Vector3</param>
+        /// <param name="x">Amount to add to the X-axis</param>
+        /// <param name="y">Amount to add to the Y-axis</param>
+        /// <returns>A new Vector2 with the value added to the specified components</returns>
+        public static Vector2 AddToAxis(this Vector2 v, float x = 0, float y = 0)
         {
-            return new Vector2(x ?? v.x, y ?? v.y);
+            return new Vector2(v.x + x, v.y + y);
         }
 
         /// <summary>
-        /// Returns a new Vector2 with the X component replaced.
+        /// Returns true if current Vector2 is in range of specified Vector2 and range
         /// </summary>
-        /// <param name="v">The original Vector2</param>
-        /// <param name="xValue">The new X component.</param>
-        /// <returns>A new Vector2 with the X component replaced.</returns>
-        public static Vector2 WithX(this Vector2 v, float xValue) => v.With(x: xValue);
-
-        /// <summary>
-        /// Returns a new Vector2 with the Y component replaced.
-        /// </summary>
-        /// <param name="v">The original Vector2</param>
-        /// <param name="yValue">The new Y component.</param>
-        /// <returns>A new Vector2 with the X component replaced.</returns>
-        public static Vector2 WithY(this Vector2 v, float yValue) => v.With(y: yValue);
+        /// <param name="v">The current Vector2</param>
+        /// <param name="origin">The Vector2 to compare with</param>
+        /// <param name="range">The range of the specified Vector2</param>
+        /// <returns>True, if the current Vector2 is in range, false otherwise</returns>
+        public static bool InRangeOf(this Vector2 v, Vector2 origin, float range)
+        {
+            return (v - origin).sqrMagnitude <= (range * range);
+        }
 
         /// <summary>
         /// Map a 2D point to a sphere surface.<br/>
@@ -91,9 +87,109 @@ namespace Extensions
             return v.PointToSphereSurface(radius, xRange.x, xRange.y, yRange.x, yRange.y);
         }
 
+        /// <summary>
+        /// Gets a random point inside an annulus using the current Vector2 as origin
+        /// </summary>
+        /// <param name="v">Annulus origin</param>
+        /// <param name="smallerRadius">The radius of the smaller circle</param>
+        /// <param name="largerRadius">The radius of the larger circle</param>
+        /// <returns>A random point inside the specified annulus</returns>
+        public static Vector2 RandomPointInAnnulus(this Vector2 v, float smallerRadius, float largerRadius)
+        {
+            if (largerRadius < smallerRadius)
+                throw new ArgumentException($"{nameof(largerRadius)} value should be higher than {nameof(smallerRadius)} value");
+
+            float angle = UnityEngine.Random.value * Mathf.PI * 2f;
+            Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+
+            float minRadiusSquared = smallerRadius * smallerRadius;
+            float maxRadiusSquared = largerRadius * largerRadius;
+            float distance = Mathf.Sqrt(UnityEngine.Random.value * (maxRadiusSquared - minRadiusSquared) + minRadiusSquared);
+
+            Vector2 position = direction * distance;
+            return v + position;
+        }
+
+        /// <summary>
+        /// Returns a new Vector2 with the specified components replaced.
+        /// </summary>
+        /// <param name="v">The original Vector2</param>
+        /// <param name="x">Optional X component. If null, the original X component is used.</param>
+        /// <param name="y">Optional Y component. If null, the original Y component is used.</param>
+        /// <returns>A new Vector2 with the specified components replaced.</returns>
+        public static Vector2 With(this Vector2 v, float? x = null, float? y = null)
+        {
+            return new Vector2(x ?? v.x, y ?? v.y);
+        }
+
+        /// <summary>
+        /// Returns a new Vector2 with the X component replaced.
+        /// </summary>
+        /// <param name="v">The original Vector2</param>
+        /// <param name="xValue">The new X component.</param>
+        /// <returns>A new Vector2 with the X component replaced.</returns>
+        public static Vector2 WithX(this Vector2 v, float xValue) => v.With(x: xValue);
+
+        /// <summary>
+        /// Returns a new Vector2 with the Y component replaced.
+        /// </summary>
+        /// <param name="v">The original Vector2</param>
+        /// <param name="yValue">The new Y component.</param>
+        /// <returns>A new Vector2 with the X component replaced.</returns>
+        public static Vector2 WithY(this Vector2 v, float yValue) => v.With(y: yValue);
+
         #endregion
 
         #region Vector3 Extensions
+
+        /// <summary>
+        /// Returns a new Vector3 with a specific amount added to each axis
+        /// </summary>
+        /// <param name="v">The original Vector3</param>
+        /// <param name="x">Amount to add to the X-axis</param>
+        /// <param name="y">Amount to add to the Y-axis</param>
+        /// <param name="z">Amount to add to the Z-axis</param>
+        /// <returns>A new Vector3 with the value added to the specified components</returns>
+        public static Vector3 AddToAxis(this Vector3 v, float x = 0, float y = 0, float z = 0)
+        {
+            return new Vector3(v.x + x, v.y + y, v.z + z);
+        }
+
+        /// <summary>
+        /// Returns true if current Vector3 is in range of specified Vector3 and range
+        /// </summary>
+        /// <param name="v">The current Vector3</param>
+        /// <param name="origin">The Vector3 to compare with</param>
+        /// <param name="range">The range of the specified Vector3</param>
+        /// <returns>True, if the current Vector3 is in range, false otherwise</returns>
+        public static bool InRangeOf(this Vector3 v, Vector3 origin, float range)
+        {
+            return (v - origin).sqrMagnitude <= (range * range);
+        }
+
+        /// <summary>
+        /// Gets a random point inside an annulus using the current Vector3 as origin
+        /// </summary>
+        /// <param name="v">Annulus origin</param>
+        /// <param name="smallerRadius">The radius of the smaller circle</param>
+        /// <param name="largerRadius">The radius of the larger circle</param>
+        /// <returns>A random point inside the specified annulus</returns>
+        public static Vector3 RandomPointInAnnulus(this Vector3 v, float smallerRadius, float largerRadius)
+        {
+            if (largerRadius < smallerRadius)
+                throw new ArgumentException($"{nameof(largerRadius)} value should be higher than {nameof(smallerRadius)} value");
+
+            float angle = UnityEngine.Random.value * Mathf.PI * 2f;
+            Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+
+            float minRadiusSquared = smallerRadius * smallerRadius;
+            float maxRadiusSquared = largerRadius * largerRadius;
+            float distance = Mathf.Sqrt(UnityEngine.Random.value * (maxRadiusSquared - minRadiusSquared) + minRadiusSquared);
+
+            Vector3 position = new Vector3(direction.x, 0f, direction.y) * distance;
+
+            return v + position;
+        }
 
         /// <summary>
         /// Returns a new Vector3 with the specified components replaced.
@@ -162,6 +258,32 @@ namespace Extensions
         #endregion
 
         #region Vector4 Extensions
+
+        /// <summary>
+        /// Returns a new Vector4 with a specific amount added to each axis
+        /// </summary>
+        /// <param name="v">The original Vector3</param>
+        /// <param name="x">Amount to add to the X-axis</param>
+        /// <param name="y">Amount to add to the Y-axis</param>
+        /// <param name="z">Amount to add to the Z-axis</param>
+        /// <param name="w">Amount to add to the W-axis</param>
+        /// <returns>A new Vector4 with the value added to the specified components</returns>
+        public static Vector4 AddToAxis(this Vector4 v, float x = 0, float y = 0, float z = 0, float w = 0)
+        {
+            return new Vector4(v.x + x, v.y + y, v.z + z, v.w + w);
+        }
+
+        /// <summary>
+        /// Returns true if current Vector4 is in range of specified Vector4 and range
+        /// </summary>
+        /// <param name="v">The current Vector4</param>
+        /// <param name="origin">The Vector4 to compare with</param>
+        /// <param name="range">The range of the specified Vector4</param>
+        /// <returns>True, if the current Vector4 is in range, false otherwise</returns>
+        public static bool InRangeOf(this Vector4 v, Vector4 origin, float range)
+        {
+            return (v - origin).sqrMagnitude <= (range * range);
+        }
 
         /// <summary>
         /// Returns a new Vector4 with the specified components replaced.

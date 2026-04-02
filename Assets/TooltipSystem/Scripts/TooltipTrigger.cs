@@ -112,26 +112,7 @@ namespace TooltipSystem
         }
 
         /// <summary>
-        /// Invoked when mouse enter a collider
-        /// </summary>
-        private void OnMouseEnter()
-        {
-            if (EventSystem.current.IsPointerOverGameObject()) return;
-
-            delayCoroutine = StartCoroutine(Delay());
-        }
-
-        /// <summary>
-        /// Invoked when mouse leaves a collider
-        /// </summary>
-        private void OnMouseExit()
-        {
-            StopCoroutine(delayCoroutine);
-            TooltipController.Instance.Hide(GetTooltipStyle);
-        }
-
-        /// <summary>
-        /// Invoked when mouse enter an UI element
+        /// Invoked when mouse enters a collider
         /// </summary>
         /// <param name="eventData">The eventData</param>
         public void OnPointerEnter(PointerEventData eventData)
@@ -140,7 +121,7 @@ namespace TooltipSystem
         }
 
         /// <summary>
-        /// Invoked when mouse leaves an UI element
+        /// Invoked when mouse leaves a collider
         /// </summary>
         /// <param name="eventData">The eventData</param>
         public void OnPointerExit(PointerEventData eventData)

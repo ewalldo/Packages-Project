@@ -24,13 +24,16 @@
 ## 1 - Introduction <a name="introduction"/>
 The "State Machine" package is a utility for managing game states in Unity. It allows you to define a set of states more easily, making it easy to create complex game logic. The package provides a interface that can be used to create the game states, simplifying the process of implementing state management in your game making the code more compact and readable.  
 The package also include a "state machine generator" tool, allowing you to quickly create the base of multiple state scripts at once, saving you seconds (or a few minutes depending on the number of scripts) of writing basic code and compilation time.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0.0: Initial release
 - 1.0.1: Adjust spacing on automatically generated scripts
 - 1.0.2: Add non-MonoBehaviour version of the State Machine
 - 1.0.3: Edit StateMachine generator tool to allow creation of both MonoBehaviour and non-Monobehaviour version
+- 1.0.4: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Use of interface: Unlike traditional implementations that use enums, the use of a interface for states provide a more flexible, compact and extensible way to define states and their behaviours, making the code cleaner and easier to debug and maintain.

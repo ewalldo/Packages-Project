@@ -39,10 +39,13 @@
 The "Stats System" package is a tool for creating and managing stats value for characters, enemies, and so on in Unity projects. It allows you to easily create stats sets that can be shared between objects of similar characteristics, as well as add/remove modifiers that alters the value of those stats under certain circumstances (equipment, buffs/debuffs, power ups, ...). It is a useful package for people creating RPGs where they need to keep track of the stats of their characters, or even any type of game where you need a behaviour to be based on a numeric value, like the jumping range or speed in a platform game.  
 The package itself is basically divided into three parts: 1) "StatType" and "StatTypeSet" are scriptable objects used to define individual stats and organize them into sets that can be shared between different similar objects. 2) The "SingleStat" class allows the creation and management of a single instance of a stat value and add/remove modifiers that affects it's final value. This is a normal C# script, so it can be instantiated anywhere in your code. 3) The "StatModifier" class allows you to create modifiers that will target a specific stat, it has options to choose the type of modifier (flat or percentage), as wells as options to modify the order which the modifier is applied, useful for situations where you want to make sure that a modifier is applied before or after others. Like the SingleStat script, the StatModifier class is also a normal C# script.  
 This package also includes a custom editor for the "StatModifier" class, allowing you to setup easily modifiers through the inspector instead of through code, and also include a sample scene demonstrating how to use this tool to manage two different sets of stats at the same time.  
-This package was created and tested using Unity version 2022.1, but it should work without a problem with earlier or future versions of Unity.
+
+This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
+Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
+- 1.0.1: Ensure package functionality in Unity version 6000.3.9f1
 
 ## 3 - Features <a name="features"/>
 - Easier to create and define stats: By using ScriptableObjects, stat types and stat sets can be generated from the editor, making it easier to manage all your in-game stats.
