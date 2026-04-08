@@ -128,33 +128,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 965043681}
-  - component: {fileID: 965043680}
+  - component: {fileID: 965043682}
   m_Layer: 0
-  m_Name: Grid2D
+  m_Name: HexGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &965043680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 965043679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca7e40f10dafb4e8bf14d70290b0d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridPositionPrefab: {fileID: 3455425777741697325, guid: 4dd7c14eb63151c409ea6052c2d7e24f,
-    type: 3}
-  gridWidth: 10
-  gridHeight: 10
-  gridCellSize: 2
-  characterPrefab: {fileID: 136843848046428165, guid: 7958a11d94759d74ebc75ad918ad6abe,
-    type: 3}
 --- !u!4 &965043681
 Transform:
   m_ObjectHideFlags: 0
@@ -170,6 +151,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &965043682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965043679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7706adce709a782439a9cc6d47dbee09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridSystem.HexSampleScene
+  axisCoordPrefab: {fileID: 3455425777741697325, guid: 901436e428bebe94e9a37b2e6ba2d79c,
+    type: 3}
+  leftOffset: 5
+  rightOffset: 5
+  topOffset: 5
+  bottomOffset: 5
+  edgeLength: 1
+  characterPrefab: {fileID: 136843848046428165, guid: 7958a11d94759d74ebc75ad918ad6abe,
+    type: 3}
 --- !u!1 &1112307012
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,7 +478,7 @@ Transform:
   m_GameObject: {fileID: 2020380087}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 4, y: 10, z: 4}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

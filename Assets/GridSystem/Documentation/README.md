@@ -32,6 +32,7 @@ Please let us know if you encounter any issues with the version of Unity you are
 - 1.0.2: Refactor GridPosition2D struct and Grid2D class
 - 1.1.0: Add support for hex grids
 - 1.1.1: Ensure package functionality in Unity version 6000.3.9f1
+- 1.1.2: Add new sample scene to showcase hex grids
 
 ## 3 - Features <a name="features"/>
 - Use of generics allowing the instantiation of any type of grid.
