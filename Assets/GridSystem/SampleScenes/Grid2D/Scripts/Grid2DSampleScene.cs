@@ -29,9 +29,9 @@ namespace GridSystem
 
         private void SetUpAllGridPositions()
         {
-            for (int x = 0; x < grid2D.GetWidth; x++)
+            for (int x = 0; x < grid2D.Width; x++)
             {
-                for (int z = 0; z < grid2D.GetHeight; z++)
+                for (int z = 0; z < grid2D.Height; z++)
                 {
                     GridPosition2D gridPosition2D = new GridPosition2D(x, z);
 

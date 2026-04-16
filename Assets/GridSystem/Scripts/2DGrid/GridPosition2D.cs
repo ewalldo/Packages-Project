@@ -7,8 +7,11 @@ namespace GridSystem
     [Serializable]
 	public struct GridPosition2D : IEquatable<GridPosition2D>
 	{
-        public int X;
-        public int Z;
+        [SerializeField] private int x;
+        [SerializeField] private int z;
+
+        public int X => x;
+        public int Z => z;
 
         [NonSerialized] private List<GridPosition2D> directNeighbours;
         /// <summary>
@@ -24,12 +27,6 @@ namespace GridSystem
                 return directNeighbours;
             }
         }
-        /// <summary>
-        /// Get a specific direct neighbour from this GridPosition2D
-        /// </summary>
-        /// <param name="idx">The direct neighbour index</param>
-        /// <returns>The neighbour at the idx position</returns>
-        public GridPosition2D GetDirectNeighbour(int idx) => DirectNeighbours[(4 + (idx % 4)) % 4];
 
         [NonSerialized] private List<GridPosition2D> neighbours;
         /// <summary>
@@ -45,17 +42,11 @@ namespace GridSystem
                 return neighbours;
             }
         }
-        /// <summary>
-        /// Get a specific neighbour from this GridPosition2D
-        /// </summary>
-        /// <param name="idx">The neighbour index</param>
-        /// <returns>The neighbour at the idx position</returns>
-        public GridPosition2D GetNeighbour(int idx) => Neighbours[(8 + (idx % 8)) % 8];
 
         public GridPosition2D(int x, int z) : this()
         {
-            this.X = x;
-            this.Z = z;
+            this.x = x;
+            this.z = z;
         }
 
         /// <summary>
@@ -63,17 +54,28 @@ namespace GridSystem
         /// </summary>
         /// <param name="other">The GridPosition2D to calculate the distance from</param>
         /// <returns>The distance between the two positions</returns>
-        public int DistanceFrom(GridPosition2D other)
+        public int ManhattanDistanceFrom(GridPosition2D other)
         {
             return ManhattanDistance(this, other);
+        }
+
+        /// <summary>
+        /// Calculates the Chebyshev distance between this and a different GridPosition2D
+        /// </summary>
+        /// <param name="other">The GridPosition2D to calculate the distance from</param>
+        /// <returns>The distance between the two positions</returns>
+        public int ChebyshevDistanceFrom(GridPosition2D other)
+        {
+            return ChebyshevDistance(this, other);
         }
 
         /// <summary>
         /// Get all the grid positions within a range
         /// </summary>
         /// <param name="range">The length of the range (in grid units)</param>
+        /// <param name="includeSelf">Whether to include the current position in the returned set</param>
         /// <returns>Set containing all the positions within the range</returns>
-        public HashSet<GridPosition2D> GetGridPositionsFromADistanceRange(int range)
+        public HashSet<GridPosition2D> GetGridPositionsFromADistanceRange(int range, bool includeSelf = true)
         {
             HashSet<GridPosition2D> rangeList = new HashSet<GridPosition2D>();
 
@@ -81,7 +83,10 @@ namespace GridSystem
             {
                 for (int z = -range; z <= range; z++)
                 {
-                    if (Mathf.Abs(x) + Mathf.Abs(z) > range)
+                    if (Math.Abs(x) + Math.Abs(z) > range)
+                        continue;
+
+                    if (!includeSelf && x == 0 && z == 0)
                         continue;
 
                     GridPosition2D gridPosition = this + (new GridPosition2D(x, z));
@@ -96,8 +101,9 @@ namespace GridSystem
         /// Get all the grid position within a square range
         /// </summary>
         /// <param name="range">The length of the range (in grid units)</param>
+        /// <param name="includeSelf">Whether to include the current position in the returned set</param>
         /// <returns>Set containing all the positions within the square range</returns>
-        public HashSet<GridPosition2D> GetGridPositionsFromASquareRange(int range)
+        public HashSet<GridPosition2D> GetGridPositionsFromASquareRange(int range, bool includeSelf = true)
         {
             HashSet<GridPosition2D> rangeList = new HashSet<GridPosition2D>();
 
@@ -105,6 +111,9 @@ namespace GridSystem
             {
                 for (int z = -range; z <= range; z++)
                 {
+                    if (!includeSelf && x == 0 && z == 0)
+                        continue;
+
                     GridPosition2D gridPosition = this + (new GridPosition2D(x, z));
                     rangeList.Add(gridPosition);
                 }
@@ -117,12 +126,13 @@ namespace GridSystem
         /// Get all grid positions within a circular range from this position
         /// </summary>
         /// <param name="range">The length of the range (in grid units)</param>
+        /// <param name="includeSelf">Whether to include the current position in the returned set</param>
         /// <returns>Set containing all the positions within the circular range</returns>
-        public HashSet<GridPosition2D> GetGridPositionsFromACircularRange(float range)
+        public HashSet<GridPosition2D> GetGridPositionsFromACircularRange(float range, bool includeSelf = true)
         {
             HashSet<GridPosition2D> rangeList = new HashSet<GridPosition2D>();
 
-            foreach (GridPosition2D gridPosition in GetGridPositionsFromASquareRange(Mathf.CeilToInt(range)))
+            foreach (GridPosition2D gridPosition in GetGridPositionsFromASquareRange(Mathf.CeilToInt(range), includeSelf))
             {
                 GridPosition2D distance = this - gridPosition;
                 distance *= distance;
@@ -151,7 +161,7 @@ namespace GridSystem
 
         public override string ToString()
         {
-            return "(" + X + ", " + Z + ")";
+            return $"({X}, {Z})";
         }
 
         public static bool operator ==(GridPosition2D a, GridPosition2D b)
@@ -186,15 +196,21 @@ namespace GridSystem
 
         public static GridPosition2D operator /(GridPosition2D a, GridPosition2D b)
         {
+            if (b.X == 0 || b.Z == 0)
+                throw new DivideByZeroException("GridPosition2D division by zero");
+
             return new GridPosition2D(a.X / b.X, a.Z / b.Z);
         }
 
         public static GridPosition2D operator %(GridPosition2D a, GridPosition2D b)
         {
+            if (b.X == 0 || b.Z == 0)
+                throw new DivideByZeroException("GridPosition2D modulo by zero");
+
             return new GridPosition2D(a.X % b.X, a.Z % b.Z);
         }
 
-        public static GridPosition2D operator !(GridPosition2D a)
+        public static GridPosition2D operator -(GridPosition2D a)
         {
             return new GridPosition2D(-a.X, -a.Z);
         }
@@ -203,10 +219,10 @@ namespace GridSystem
         {
             directNeighbours = new List<GridPosition2D>
             {
-                this + new GridPosition2D(1, 0),
-                this + new GridPosition2D(0, -1),
-                this + new GridPosition2D(-1, 0),
-                this + new GridPosition2D(0, 1)
+                this + Right,
+                this + Down,
+                this + Left,
+                this + Up
             };
         }
 
@@ -214,14 +230,14 @@ namespace GridSystem
         {
             neighbours = new List<GridPosition2D>
             {
-                this + new GridPosition2D(1, 0),
-                this + new GridPosition2D(1, -1),
-                this + new GridPosition2D(0, -1),
-                this + new GridPosition2D(-1, -1),
-                this + new GridPosition2D(-1, 0),
-                this + new GridPosition2D(-1, 1),
-                this + new GridPosition2D(0, 1),
-                this + new GridPosition2D(1, 1)
+                this + Right,
+                this + DownRight,
+                this + Down,
+                this + DownLeft,
+                this + Left,
+                this + UpLeft,
+                this + Up,
+                this + UpRight
             };
         }
 
@@ -233,7 +249,30 @@ namespace GridSystem
         /// <returns>The distance between the two positions</returns>
         public static int ManhattanDistance(GridPosition2D a, GridPosition2D b)
         {
-            return Mathf.Abs(a.X - b.X) + Mathf.Abs(a.Z - b.Z);
+            return Math.Abs(a.X - b.X) + Math.Abs(a.Z - b.Z);
         }
+
+        /// <summary>
+        /// Calculates the Chebyshev distance between two GridPosition2D
+        /// </summary>
+        /// <param name="a">The first GridPosition2D</param>
+        /// <param name="b">The second GridPosition2D</param>
+        /// <returns>The distance between the two positions</returns>
+        public static int ChebyshevDistance(GridPosition2D a, GridPosition2D b)
+        {
+            return Math.Max(Math.Abs(a.X - b.X), Math.Abs(a.Z - b.Z));
+        }
+
+        public static readonly GridPosition2D Zero = new GridPosition2D(0, 0);
+        public static readonly GridPosition2D One = new GridPosition2D(1, 1);
+        public static readonly GridPosition2D Right = new GridPosition2D(1, 0);
+        public static readonly GridPosition2D Left = new GridPosition2D(-1, 0);
+        public static readonly GridPosition2D Up = new GridPosition2D(0, 1);
+        public static readonly GridPosition2D Down = new GridPosition2D(0, -1);
+
+        public static readonly GridPosition2D UpRight = new GridPosition2D(1, 1);
+        public static readonly GridPosition2D UpLeft = new GridPosition2D(-1, 1);
+        public static readonly GridPosition2D DownRight = new GridPosition2D(1, -1);
+        public static readonly GridPosition2D DownLeft = new GridPosition2D(-1, -1);
     }
 }
