@@ -1,34 +1,47 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace GridSystem
 {
-	public abstract class HexGrid<T>
+	public abstract class HexGrid<T> : IEnumerable<T>
 	{
         protected readonly HexType hexType;
         protected readonly float edgeLength;
         protected readonly Vector3 gridOriginPosition;
         protected Dictionary<AxialCoord, T> hexGrid;
 
+        protected static int RandomInt(int max) => UnityEngine.Random.Range(0, max);
+
+        private static readonly float Sqrt3 = Mathf.Sqrt(3f);
+        private static readonly float Sqrt3Over2 = Mathf.Sqrt(3f) / 2f;
+        private static readonly float Sqrt3Over3 = Mathf.Sqrt(3f) / 3f;
+
+        /// <summary>
+        /// Get the hex type of this grid
+        /// </summary>
+        public HexType HexGridType => hexType;
         /// <summary>
         /// Get the edge length of the hex cell's of this grid
         /// </summary>
-        public float GetEdgeLength => edgeLength;
+        public float EdgeLength => edgeLength;
         /// <summary>
         /// Get the origin position of the grid
         /// </summary>
-        public Vector3 GetGridOriginPosition => gridOriginPosition;
+        public Vector3 GridOriginPosition => gridOriginPosition;
+        /// <summary>
+        /// Get the number of positions in the grid
+        /// </summary>
+        public int Count => hexGrid.Count;
 
         /// <summary>
         /// Event to be raised when the value of a cell changes
         /// <param name="axialCoord">AxialCoord: the grid position where the value has changed</param>"
         /// <param name="value">T: the new value assigned to the position</param>"
         /// </summary>
-        public Action<AxialCoord, T> OnGridPositionValueChanged;
+        public event Action<AxialCoord, T> OnGridPositionValueChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HexGrid{T}"/> class.
@@ -70,13 +83,15 @@ namespace GridSystem
         /// Returns the elements of the grid
         /// </summary>
         /// <returns>Element of the grid</returns>
-        public IEnumerable<T> GetGridObjects()
+        public IEnumerator<T> GetEnumerator()
         {
-            foreach (AxialCoord axialCoord in hexGrid.Keys.ToList())
+            foreach (AxialCoord axialCoord in hexGrid.Keys)
             {
                 yield return GetGridObjectAtAxialCoord(axialCoord);
             }
         }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
         /// Returns the AxialCoords of this grid
@@ -84,9 +99,21 @@ namespace GridSystem
         /// <returns>AxialCoord of the grid</returns>
         public IEnumerable<AxialCoord> GetGridAxialCoords()
         {
-            foreach (AxialCoord axialCoord in hexGrid.Keys.ToList())
+            foreach (AxialCoord axialCoord in hexGrid.Keys)
             {
                 yield return axialCoord;
+            }
+        }
+
+        /// <summary>
+        /// Returns the elements of the grid with their respective positions
+        /// </summary>
+        /// <returns>Element of the grid and the respective position</returns>
+        public IEnumerable<(AxialCoord Coord, T Value)> GetGridObjectsWithPositions()
+        {
+            foreach (AxialCoord axialCoord in hexGrid.Keys)
+            {
+                yield return (axialCoord, GetGridObjectAtAxialCoord(axialCoord));
             }
         }
 
@@ -95,7 +122,8 @@ namespace GridSystem
         /// </summary>
         public void ClearGrid()
         {
-            foreach (AxialCoord axialCoord in hexGrid.Keys.ToList())
+            List<AxialCoord> keys = new List<AxialCoord>(hexGrid.Keys);
+            foreach (AxialCoord axialCoord in keys)
             {
                 SetGridObjectAtAxialCoord(axialCoord, default, true);
             }
@@ -107,10 +135,28 @@ namespace GridSystem
         /// <param name="value">The value to apply on every position</param>
         public void Fill(T value)
         {
-            foreach (AxialCoord axialCoord in hexGrid.Keys.ToList())
+            List<AxialCoord> keys = new List<AxialCoord>(hexGrid.Keys);
+            foreach (AxialCoord axialCoord in keys)
             {
                 SetGridObjectAtAxialCoord(axialCoord, value, true);
             }
+        }
+
+        /// <summary>
+        /// Swap the values of two positions in the grid
+        /// </summary>
+        /// <param name="a">The first position</param>
+        /// <param name="b">The second position</param>
+        public void Swap(AxialCoord a, AxialCoord b)
+        {
+            if (!IsWithinHexGridBounds(a))
+                throw new ArgumentException($"There is no grid position {a} in this grid");
+            if (!IsWithinHexGridBounds(b))
+                throw new ArgumentException($"There is no grid position {b} in this grid");
+
+            T temp = GetGridObjectAtAxialCoord(a);
+            SetGridObjectAtAxialCoord(a, GetGridObjectAtAxialCoord(b), true);
+            SetGridObjectAtAxialCoord(b, temp, true);
         }
 
         /// <summary>
@@ -120,10 +166,26 @@ namespace GridSystem
         /// <returns>The element at the specified position</returns>
         public T GetGridObjectAtAxialCoord(AxialCoord axialCoord)
         {
-            if (hexGrid.ContainsKey(axialCoord))
-                return hexGrid[axialCoord];
+            if (hexGrid.TryGetValue(axialCoord, out T value))
+                return value;
 
             throw new ArgumentException("Axial coordinates is out of bounds of the grid");
+        }
+
+        /// <summary>
+        /// Attempts to retrieve the object of type <typeparamref name="T"/> located at the specified AxialCoord
+        /// </summary>
+        /// <param name="axialCoord">The position from which to retrieve the object</param>
+        /// <param name="value">When this method returns, contains the object of type <typeparamref name="T"/> at the specified grid position if found, otherwise the default value for the type</param>
+        /// <returns>True if an object exists at the specified grid position, false otherwise</returns>
+        public bool TryGetGridObjectAtAxialCoord(AxialCoord axialCoord, out T value)
+        {
+            value = default(T);
+            if (!IsWithinHexGridBounds(axialCoord))
+                return false;
+
+            value = GetGridObjectAtAxialCoord(axialCoord);
+            return true;
         }
 
         /// <summary>
@@ -133,19 +195,35 @@ namespace GridSystem
         /// <returns>The element at the specified world position</returns>
         public T GetGridObjectAtWorldPosition(Vector3 worldPosition)
         {
-            AxialCoord axialCoord = GetAxialCoordFromWorldPosition(worldPosition);
-            return GetGridObjectAtAxialCoord(axialCoord);
+            if (TryGetAxialCoordFromWorldPosition(worldPosition, out AxialCoord axialCoord))
+                return GetGridObjectAtAxialCoord(axialCoord);
+            else
+                throw new ArgumentException($"The world position {worldPosition} is out of the grid bounds");
         }
 
         /// <summary>
-        /// Get an random object from the grid
+        /// Attempts to retrieve the object of type <typeparamref name="T"/> located at the specified world position
+        /// </summary>
+        /// <param name="worldPosition">The world position to retrieve the object</param>
+        /// <param name="value">When this method returns, contains the object of type <typeparamref name="T"/> at the specified world position if found, otherwise the default value for the type</param>
+        /// <returns>True if an object exists at the specified world position, false otherwise</returns>
+        public bool TryGetGridObjectAtWorldPosition(Vector3 worldPosition, out T value)
+        {
+            value = default(T);
+            if (!TryGetAxialCoordFromWorldPosition(worldPosition, out AxialCoord axialCoord))
+                return false;
+            value = GetGridObjectAtAxialCoord(axialCoord);
+            return true;
+        }
+
+        /// <summary>
+        /// Get a random object from the grid
         /// </summary>
         /// <returns>A random element from the grid</returns>
         public T GetRandomObject()
         {
-            System.Random rand = new System.Random();
-            List<AxialCoord> coords = hexGrid.Keys.ToList();
-            return GetGridObjectAtAxialCoord(coords[rand.Next(coords.Count)]);
+            int index = RandomInt(hexGrid.Count);
+            return hexGrid.Values.ElementAt(index);
         }
 
         /// <summary>
@@ -154,9 +232,8 @@ namespace GridSystem
         /// <returns>A random position within the grid</returns>
         public AxialCoord GetRandomAxialCoord()
         {
-            System.Random rand = new System.Random();
-            List<AxialCoord> coords = hexGrid.Keys.ToList();
-            return coords[rand.Next(coords.Count)];
+            int index = RandomInt(hexGrid.Count);
+            return hexGrid.Keys.ElementAt(index);
         }
 
         /// <summary>
@@ -168,9 +245,11 @@ namespace GridSystem
         /// <returns>True if the object was successfully assigned, false otherwise</returns>
         public bool SetGridObjectAtAxialCoord(AxialCoord axialCoord, T newObject, bool replaceIfExistAnObjectAlready = true)
         {
+            if (!hexGrid.ContainsKey(axialCoord))
+                throw new ArgumentException($"There is no axial coord {axialCoord} in this grid");
+
             if ((replaceIfExistAnObjectAlready) || // always replace
-                (default(T) is null && hexGrid[axialCoord] == null) || // check if it is a nullable type AND if it is, check if the position is null, if yes set the position
-                (hexGrid[axialCoord].Equals(default(T)))) // it is a non-nullable type, check if the position is at default value, if yes set the position
+                (EqualityComparer<T>.Default.Equals(GetGridObjectAtAxialCoord(axialCoord), default))) // only replace if the position is empty (or default value in case of a non-nullable type)
             {
                 hexGrid[axialCoord] = newObject;
                 OnGridPositionValueChanged?.Invoke(axialCoord, newObject);
@@ -200,6 +279,9 @@ namespace GridSystem
         /// <returns>The position in world coordinates</returns>
         public Vector3 GetWorldPositionFromAxialCoord(AxialCoord axialCoord)
         {
+            if (!IsWithinHexGridBounds(axialCoord))
+                throw new ArgumentException("Axial coordinates is out of bounds of the grid");
+
             Vector3 worldPosition = Vector3.zero;
 
             float x, z;
@@ -207,20 +289,20 @@ namespace GridSystem
             switch (hexType)
             {
                 case HexType.FlatTop:
-                    x = edgeLength * (3f / 2f * axialCoord.Q);
-                    z = edgeLength * ((Mathf.Sqrt(3f) / 2f * axialCoord.Q) + (Mathf.Sqrt(3f) * axialCoord.R));
+                    x = EdgeLength * (3f / 2f * axialCoord.Q);
+                    z = EdgeLength * ((Sqrt3Over2 * axialCoord.Q) + (Sqrt3 * axialCoord.R));
                     worldPosition = new Vector3(x, 0f, z);
                     break;
                 case HexType.PointTop:
-                    x = edgeLength * ((Mathf.Sqrt(3f) * axialCoord.Q) + (Mathf.Sqrt(3f) / 2f * axialCoord.R));
-                    z = edgeLength * (3f / 2f * axialCoord.R);
+                    x = EdgeLength * ((Sqrt3 * axialCoord.Q) + (Sqrt3Over2 * axialCoord.R));
+                    z = EdgeLength * (3f / 2f * axialCoord.R);
                     worldPosition = new Vector3(x, 0f, z);
                     break;
                 default:
                     break;
             }
 
-            return worldPosition + gridOriginPosition;
+            return worldPosition + GridOriginPosition;
         }
 
         /// <summary>
@@ -246,7 +328,7 @@ namespace GridSystem
         /// <returns>The AxialCoord corresponding to the world position</returns>
         public AxialCoord GetAxialCoordFromWorldPosition(Vector3 worldPosition)
         {
-            Vector3 vectorOffset = worldPosition - gridOriginPosition;
+            Vector3 vectorOffset = worldPosition - GridOriginPosition;
             AxialCoord axialCoord = default;
 
             float r, q;
@@ -254,13 +336,13 @@ namespace GridSystem
             switch (hexType)
             {
                 case HexType.FlatTop:
-                    q = (2f / 3f * vectorOffset.x) / edgeLength;
-                    r = (-1f / 3f * vectorOffset.x) + (Mathf.Sqrt(3f) / 3 * vectorOffset.z) / edgeLength;
+                    q = (2f / 3f * vectorOffset.x) / EdgeLength;
+                    r = ((-1f / 3f * vectorOffset.x) + (Sqrt3Over3 * vectorOffset.z)) / EdgeLength;
                     axialCoord = RoundFrac(q, r);
                     break;
                 case HexType.PointTop:
-                    q = (Mathf.Sqrt(3f) / 3f * vectorOffset.x) - (1f / 3 * vectorOffset.z) / edgeLength;
-                    r = (2f / 3f * vectorOffset.z) / edgeLength;
+                    q = ((Sqrt3Over3 * vectorOffset.x) - (1f / 3 * vectorOffset.z)) / EdgeLength;
+                    r = (2f / 3f * vectorOffset.z) / EdgeLength;
                     axialCoord = RoundFrac(q, r);
                     break;
                 default:
@@ -280,8 +362,37 @@ namespace GridSystem
         {
             axialCoord = GetAxialCoordFromWorldPosition(worldPosition);
 
-            if (!IsWithinHexGridBounds(axialCoord))
-                return false;
+            return IsWithinHexGridBounds(axialCoord);
+        }
+
+        /// <summary>
+        /// Check if any of the grid positions satisfies a condition
+        /// </summary>
+        /// <param name="predicate">The condition to check on each position</param>
+        /// <returns>True if any position satisfies the condition, false otherwise</returns>
+        public bool Any(Func<T, bool> predicate)
+        {
+            foreach (AxialCoord axialCoord in hexGrid.Keys)
+            {
+                if (predicate(GetGridObjectAtAxialCoord(axialCoord)))
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Check if all grid positions satisfies a condition
+        /// </summary>
+        /// <param name="predicate">The condition to check on each position</param>
+        /// <returns>True if all positions satisfies the condition, false otherwise</returns>
+        public bool All(Func<T, bool> predicate)
+        {
+            foreach (AxialCoord axialCoord in hexGrid.Keys)
+            {
+                if (!predicate(GetGridObjectAtAxialCoord(axialCoord)))
+                    return false;
+            }
 
             return true;
         }
@@ -291,11 +402,11 @@ namespace GridSystem
         /// </summary>
         /// <param name="predicate">The condition to check on each position (params T: value at the position)</param>
         /// <returns>A list containing all the positions that satisfies the condition</returns>
-        public List<AxialCoord> GetGridPositionsInACertainState(Func<T, bool> predicate)
+        public List<AxialCoord> Where(Func<T, bool> predicate)
         {
             List<AxialCoord> axialCoords = new List<AxialCoord>();
 
-            foreach (AxialCoord axialCoord in hexGrid.Keys.ToList())
+            foreach (AxialCoord axialCoord in hexGrid.Keys)
             {
                 if (predicate(GetGridObjectAtAxialCoord(axialCoord)))
                     axialCoords.Add(axialCoord);
@@ -310,7 +421,8 @@ namespace GridSystem
         /// <param name="action">Action to apply on every grid position (params AxialCoord: grid position, T: value at the position)</param>
         public void IterateOverAllGridPositions(Action<AxialCoord, T> action)
         {
-            foreach (AxialCoord axialCoord in hexGrid.Keys.ToList())
+            List<AxialCoord> keys = new List<AxialCoord>(hexGrid.Keys);
+            foreach (AxialCoord axialCoord in keys)
             {
                 action(axialCoord, GetGridObjectAtAxialCoord(axialCoord));
             }
@@ -370,10 +482,7 @@ namespace GridSystem
         /// <returns>True if the position is empty, false otherwise</returns>
         public bool IsPositionEmpty(AxialCoord axialCoord)
         {
-            if (default(T) is null)
-                return GetGridObjectAtAxialCoord(axialCoord) == null;
-            else
-                return GetGridObjectAtAxialCoord(axialCoord).Equals(default(T));
+            return EqualityComparer<T>.Default.Equals(GetGridObjectAtAxialCoord(axialCoord), default);
         }
 
         /// <summary>
@@ -453,14 +562,11 @@ namespace GridSystem
         {
             List<AxialCoord> rangeList = new List<AxialCoord>();
 
-            foreach (AxialCoord coord in center.GetAxialCoordsWithinRange(range))
+            foreach (AxialCoord coord in center.GetAxialCoordsWithinRange(range, includeCenterPosition))
             {
                 if (IsWithinHexGridBounds(coord))
                     rangeList.Add(coord);
             }
-
-            if (includeCenterPosition)
-                rangeList.Add(center);
 
             return rangeList;
         }
@@ -511,7 +617,7 @@ namespace GridSystem
                 {
                     if (IsWithinHexGridBounds(hex))
                         ring.Add(hex);
-                    hex = hex.GetNeighbour(i);
+                    hex = hex.Neighbours[i];
                 }
             }
 
@@ -540,104 +646,18 @@ namespace GridSystem
         }
 
         /// <summary>
-        /// Instantiate a game object in a certain grid position
+        /// Gets all the AxialCoord that forms a straight line between two positions in the grid
         /// </summary>
-        /// <param name="axialCoord">The grid position to instantiate the object on</param>
-        /// <param name="gameObjectPrefab">The object to instantiate</param>
-        /// <param name="objectParent">The parent transform for the instantiated object</param>
-        /// <param name="onGameObjectSpawned">Action to execute when the object is instantiated</param>
-        /// <returns>The instantiated game object</returns>
-        public GameObject InstantiateGameObjectAtAxialCoord(AxialCoord axialCoord, GameObject gameObjectPrefab, Transform objectParent, Action<GameObject> onGameObjectSpawned = null)
+        /// <param name="start">The start of the line</param>
+        /// <param name="end">The end of the line</param>
+        /// <param name="includeStartAndEndPositions">Should the start and end positions be included in the return set</param>
+        /// <returns>Set containing all the positions in the grid that forms the line</returns>
+        public HashSet<AxialCoord> GetLineWithinBounds(AxialCoord start, AxialCoord end, bool includeStartAndEndPositions = true)
         {
-            GameObject spawnedGameObject = GameObject.Instantiate(gameObjectPrefab, GetWorldPositionFromAxialCoord(axialCoord), Quaternion.identity, objectParent);
+            HashSet<AxialCoord> line = GetLine(start, end, includeStartAndEndPositions);
+            line.IntersectWith(hexGrid.Keys);
 
-            onGameObjectSpawned?.Invoke(spawnedGameObject);
-            return spawnedGameObject;
-        }
-
-        /// <summary>
-        /// Instantiate a game object on the grid based on a world position
-        /// </summary>
-        /// <param name="worldPosition">The world position to instantiate the object</param>
-        /// <param name="gameObjectPrefab">The object to instantiate</param>
-        /// <param name="objectParent">The parent transform for the instantiated object</param>
-        /// <param name="onGameObjectSpawned">Action to execute when the object is instantiated</param>
-        /// <returns>The instantiated game object</returns>
-        public GameObject InstantiateGameObjectAtWorldPosition(Vector3 worldPosition, GameObject gameObjectPrefab, Transform objectParent, Action<GameObject> onGameObjectSpawned = null)
-        {
-            AxialCoord axialCoord = GetAxialCoordFromWorldPosition(worldPosition);
-            return InstantiateGameObjectAtAxialCoord(axialCoord, gameObjectPrefab, objectParent, onGameObjectSpawned);
-        }
-
-        /// <summary>
-        /// Instantiate a game object on every grid position
-        /// </summary>
-        /// <param name="gameObjectPrefab">The object to instantiate</param>
-        /// <param name="objectParent">The parent transform for all objects</param>
-        /// <param name="onEachGameObjectSpawned">Action to execute when one object is instantiated (params GameObject: the instantiated game object)</param>
-        /// <param name="onAllGameObjectSpawned">Action to execute after all objecta are instantiated (params List<GameObject>: all the instantiated game objects)</param>
-        /// <returns>A list containing all the instantiated game objects</returns>
-        public List<GameObject> InstantiateGameObjectAtEveryAxialCoord(GameObject gameObjectPrefab, Transform objectParent, Action<GameObject> onEachGameObjectSpawned = null, Action<List<GameObject>> onAllGameObjectSpawned = null)
-        {
-            List<GameObject> spawnedGameObjectList = new List<GameObject>();
-
-            foreach (AxialCoord axialCoord in hexGrid.Keys.ToList())
-            {
-                GameObject spawnedGameObject = InstantiateGameObjectAtAxialCoord(axialCoord, gameObjectPrefab, objectParent, onEachGameObjectSpawned);
-                spawnedGameObjectList.Add(spawnedGameObject);
-            }
-
-            onAllGameObjectSpawned?.Invoke(spawnedGameObjectList);
-
-            return spawnedGameObjectList;
-        }
-
-        /// <summary>
-        /// Save/serialize the grid using a binary formatter (T and its members must be a serializable type)
-        /// </summary>
-        /// <param name="filename">The file to be opened/created for writing</param>
-        /// <returns>True if the save operation was successful, false otherwise</returns>
-        public bool Save(string filename)
-        {
-            try
-            {
-                using (FileStream stream = File.OpenWrite(filename))
-                {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(stream, hexGrid);
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error saving grid: " + e.Message);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Load/deserialize a grid using a binary formatter (T and its members must be a serializable type)
-        /// </summary>
-        /// <param name="filename">The file to be opened for reading</param>
-        /// <returns>True if the operation was successful, false otherwise</returns>
-        public bool Load(string filename)
-        {
-            try
-            {
-                using (FileStream stream = File.OpenRead(filename))
-                {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    hexGrid = (Dictionary<AxialCoord, T>)formatter.Deserialize(stream);
-
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error loading grid: " + e.Message);
-                return false;
-            }
+            return line;
         }
 
         /// <summary>
@@ -650,22 +670,48 @@ namespace GridSystem
         public static HashSet<AxialCoord> GetLine(AxialCoord start, AxialCoord end, bool includeStartAndEndPositions = true)
         {
             HashSet<AxialCoord> linePoints = new HashSet<AxialCoord>();
-
             int distance = AxialCoord.Distance(start, end);
 
-            for (int i = 0; i < distance; i++)
+            if (distance == 0)
             {
-                AxialCoord coord = Lerp(start, end, (1f / distance * i));
-                linePoints.Add(coord);
+                if (includeStartAndEndPositions)
+                    linePoints.Add(start);
+                return linePoints;
             }
 
-            if (includeStartAndEndPositions)
+            int startIndex = includeStartAndEndPositions ? 0 : 1;
+            int endIndex = includeStartAndEndPositions ? distance : distance - 1;
+
+            for (int i = startIndex; i <= endIndex; i++)
             {
-                linePoints.Add(start);
-                linePoints.Add(end);
+                linePoints.Add(Lerp(start, end, (float)i / distance));
             }
 
             return linePoints;
+        }
+
+        /// <summary>
+        /// Save a grid as JSON string (T and its members must be a serializable type)
+        /// </summary>
+        /// <param name="grid">The grid to save</param>
+        /// <returns>The grid in a string JSON format</returns>
+        public static string Save<TResult>(HexGrid<TResult> grid)
+        {
+            SerializableHexGrid<TResult> gridData = new SerializableHexGrid<TResult>(grid);
+            string json = JsonUtility.ToJson(gridData);
+            return json;
+        }
+
+        /// <summary>
+        /// Load a grid from a JSON string (T and its members must be a serializable type)
+        /// </summary>
+        /// <param name="jsonData">The JSON string containing the serialized grid</param>
+        /// <returns>The loaded grid</returns>
+        public static SerializableHexGrid<TResult> Load<TResult>(string jsonData)
+        {
+            SerializableHexGrid<TResult> gridData = JsonUtility.FromJson<SerializableHexGrid<TResult>>(jsonData);
+
+            return gridData;
         }
 
         private static AxialCoord RoundFrac(float q, float r)

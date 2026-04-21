@@ -4,28 +4,34 @@
   - [AxialCoord](#axialCoordAxialCoord)
       - [AxialCoord()](#axialCoordAxialCoord)
       - [AxialCoord.Neighbours](#axialCoordNeighbours)
-      - [AxialCoord.GetNeighbour()](#axialCoordGetNeighbour)
       - [AxialCoord.Diagonals](#axialCoordDiagonals)
-      - [AxialCoord.GetDiagonal()](#axialCoordGetDiagonal)
       - [AxialCoord.DistanceFrom()](#axialCoordDistanceFrom)
       - [AxialCoord.Distance()](#axialCoordDistance)
       - [AxialCoord.GetAxialCoordsWithinRange()](#axialCoordGetAxialCoordsWithinRange)
       - [AxialCoord.ReflectQ](#axialCoordReflectQ)
       - [AxialCoord.ReflectR](#axialCoordReflectR)
       - [AxialCoord.ReflectS](#axialCoordReflectS)
+      - [AxialCoord.RotateClockwise](#axialCoordRotateClockwise)
+      - [AxialCoord.RotateCounterClockwise](#axialCoordRotateCounterClockwise)
+      - [AxialCoord.RotateClockwiseAround()](#axialCoordRotateClockwiseAround)
       - [AxialCoord.Length()](#axialCoordLength)
     - [HexGrid](#hexGridHexGrid)
       - [HexGrid()](#hexGridHexGrid)
-      - [HexGrid.GetEdgeLength](#hexGridGetEdgeLength)
-      - [HexGrid.GetGridOriginPosition](#hexGridGetGridOriginPosition)
+      - [HexGrid.HexGridType](#hexGridHexGridType)
+      - [HexGrid.EdgeLength](#hexGridEdgeLength)
+      - [HexGrid.GridOriginPosition](#hexGridGridOriginPosition)
       - [HexGrid.OnGridPositionValueChanged](#hexGridOnGridPositionValueChanged)
       - [HexGrid.Indexers](#hexGridIndexers)
-      - [HexGrid.GetGridObjects()](#hexGridGetGridObjects)
+      - [HexGrid.GetEnumerator()](#hexGridGetEnumerator)
       - [HexGrid.GetGridAxialCoords()](#hexGridGetGridAxialCoords)
+      - [HexGrid.GetGridObjectsWithPositions()](#hexGridGetGridObjectsWithPositions)
       - [HexGrid.ClearGrid()](#hexGridClearGrid)
       - [HexGrid.Fill()](#hexGridFill)
+      - [HexGrid.Swap()](#hexGridSwap)
       - [HexGrid.GetGridObjectAtAxialCoord()](#hexGridGetGridObjectAtAxialCoord)
+      - [HexGrid.TryGetGridObjectAtAxialCoord()](#hexGridTryGetGridObjectAtAxialCoord)
       - [HexGrid.GetGridObjectAtWorldPosition()](#hexGridGetGridObjectAtWorldPosition)
+      - [HexGrid.TryGetGridObjectAtWorldPosition()](#hexGridTryGetGridObjectAtWorldPosition)
       - [HexGrid.GetRandomObject()](#hexGridGetRandomObject)
       - [HexGrid.GetRandomAxialCoord()](#hexGridGetRandomAxialCoord)
       - [HexGrid.SetGridObjectAtAxialCoord()](#hexGridSetGridObjectAtAxialCoord)
@@ -34,7 +40,9 @@
       - [HexGrid.TryGetWorldPositionFromAxialCoord()](#hexGridTryGetWorldPositionFromAxialCoord)
       - [HexGrid.GetAxialCoordFromWorldPosition()](#hexGridGetAxialCoordFromWorldPosition)
       - [HexGrid.TryGetAxialCoordFromWorldPosition()](#hexGridTryGetAxialCoordFromWorldPosition)
-      - [HexGrid.GetGridPositionsInACertainState()](#hexGridGetGridPositionsInACertainState)
+      - [HexGrid.Any()](#hexGridAny)
+      - [HexGrid.All()](#hexGridAll)
+      - [HexGrid.Where()](#hexGridWhere)
       - [HexGrid.IterateOverAllGridPositions()](#hexGridIterateOverAllGridPositions)
       - [HexGrid.IsWithinHexGridBounds()](#hexGridIsWithinHexGridBounds)
       - [HexGrid.IsPositionEmpty()](#hexGridIsPositionEmpty)
@@ -44,19 +52,19 @@
       - [HexGrid.GetAxialCoordsFromIntersectingRanges()](#hexGridGetAxialCoordsFromIntersectingRanges)
       - [HexGrid.GetRing()](#hexGridGetRing)
       - [HexGrid.GetSpiral()](#hexGridGetSpiral)
+      - [HexGrid.GetLineWithinBounds()](#hexGridGetLineWithinBounds)
       - [HexGrid.InstantiateGameObjectAtAxialCoord()](#hexGridInstantiateGameObjectAtAxialCoord)
       - [HexGrid.InstantiateGameObjectAtWorldPosition()](#hexGridInstantiateGameObjectAtWorldPosition)
       - [HexGrid.InstantiateGameObjectAtEveryAxialCoord()](#hexGridInstantiateGameObjectAtEveryAxialCoord)
       - [HexGrid.Save()](#hexGridSave)
       - [HexGrid.Load()](#hexGridLoad)
-      - [HexGrid.GetLine()](#hexGridGetLine)
     - [HexagonHexGrid](#hexagonHexGridHexagonHexGrid)
       - [HexagonHexGrid()](#hexagonHexGridHexagonHexGrid)
     - [RectangleHexGrid](#rectangleHexGridRectangleHexGrid)
       - [RectangleHexGrid()](#rectangleHexGridRectangleHexGrid)
 
 ## Documentation <a name="documentation"/>
-### 1.1 AxialCoord() <a name="axialCoordAxialCoord"/>
+### 1 AxialCoord() <a name="axialCoordAxialCoord"/>
 Instantiate a new instance of the AxialCoord struct
 #### Declaration
 ```csharp
@@ -69,7 +77,7 @@ public AxialCoord(int q, int r);
 | int | r | The position r-coordinate |
 
 
-### 1.2 AxialCoord.Neighbours <a name="axialCoordNeighbours"/>
+### AxialCoord.Neighbours <a name="axialCoordNeighbours"/>
 Get all the neighbour positions from this AxialCoord
 #### Declaration
 ```csharp
@@ -81,23 +89,7 @@ public List<AxialCoord> Neighbours;
 | List<AxialCoord> | The neighbours of this AxialCoord |
 
 
-### 1.3 AxialCoord.GetNeighbour() <a name="axialCoordGetNeighbour"/>
-Get a specific neighbour from this AxialCoord
-#### Declaration
-```csharp
-public AxialCoord GetNeighbour(int idx) => Neighbours[(6 + (idx % 6)) % 6];
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| int | idx | The neighbour index |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| AxialCoord | The neighbour at the index position |
-
-
-### 1.4 AxialCoord.Diagonals <a name="axialCoordDiagonals"/>
+### AxialCoord.Diagonals <a name="axialCoordDiagonals"/>
 Get all the diagonal positions from this AxialCoord
 #### Declaration
 ```csharp
@@ -109,24 +101,8 @@ public List<AxialCoord> Diagonals;
 | List<AxialCoord> | The diagonals of this AxialCoord |
 
 
-### 1.5 AxialCoord.GetDiagonal() <a name="axialCoordGetDiagonal"/>
-Get a specific diagonal from this AxialCoord
-#### Declaration
-```csharp
-public AxialCoord GetDiagonal(int idx) => Diagonals[(6 + (idx % 6)) % 6];
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| int | idx | The diagonal index |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| AxialCoord | The diagonal at the index position |
-
-
-### 1.6.1 AxialCoord.DistanceFrom() <a name="axialCoordDistanceFrom"/>
-### 1.6.2 AxialCoord.Distance() <a name="axialCoordDistance"/>
+### AxialCoord.DistanceFrom() <a name="axialCoordDistanceFrom"/>
+### AxialCoord.Distance() <a name="axialCoordDistance"/>
 Calculates the distance between this and a different AxialCoord
 Calculates the distance between two AxialCoord
 #### Declaration
@@ -146,24 +122,25 @@ public static int Distance(AxialCoord a, AxialCoord b);
 | int | The distance between the two positions |
 
 
-### 1.7 AxialCoord.GetAxialCoordsWithinRange() <a name="axialCoordGetAxialCoordsWithinRange"/>
+### AxialCoord.GetAxialCoordsWithinRange() <a name="axialCoordGetAxialCoordsWithinRange"/>
 Get all AxialCoord within a range
 #### Declaration
 ```csharp
-public HashSet<AxialCoord> GetAxialCoordsWithinRange(int range);
+public HashSet<AxialCoord> GetAxialCoordsWithinRange(int range, bool includeSelf = true);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
 | int | range | The length of the range (in grid units) |
+| bool | includeSelf | Whether to include the current position in the returned set |
 #### Returns
 | Type | Description |
 | :--- | :--- |
 | HashSet<AxialCoord> | Set containing all the positions within the range |
 
 
-### 1.8 AxialCoord.ReflectQ <a name="axialCoordReflectQ"/>
-Get the AxialCoord position when reflecting through the Q-axis
+### AxialCoord.ReflectQ <a name="axialCoordReflectQ"/>
+Reflects this coordinate across the Q axis (keeping Q constant, swapping R and S)
 #### Declaration
 ```csharp
 public AxialCoord ReflectQ;
@@ -174,8 +151,8 @@ public AxialCoord ReflectQ;
 | AxialCoord | The position when reflecting through the Q-axis |
 
 
-### 1.9 AxialCoord.ReflectR <a name="axialCoordReflectR"/>
-Get the AxialCoord position when reflecting through the R-axis
+### AxialCoord.ReflectR <a name="axialCoordReflectR"/>
+Reflects this coordinate across the R axis (keeping R constant, swapping Q and S)
 #### Declaration
 ```csharp
 public AxialCoord ReflectR;
@@ -186,8 +163,8 @@ public AxialCoord ReflectR;
 | AxialCoord | The position when reflecting through the R-axis |
 
 
-### 1.10 AxialCoord.ReflectS <a name="axialCoordReflectS"/>
-Get the AxialCoord position when reflecting through the S-axis
+### AxialCoord.ReflectS <a name="axialCoordReflectS"/>
+Reflects this coordinate across the S axis (keeping S constant, swapping Q and R)
 #### Declaration
 ```csharp
 public AxialCoord ReflectS;
@@ -198,7 +175,48 @@ public AxialCoord ReflectS;
 | AxialCoord | The position when reflecting through the S-axis |
 
 
-### 1.11 AxialCoord.Length() <a name="axialCoordLength"/>
+### AxialCoord.RotateClockwise <a name="axialCoordRotateClockwise"/>
+Rotates this coordinate 60° clockwise around the origin
+#### Declaration
+```csharp
+public AxialCoord RotateClockwise;
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| AxialCoord | The position when rotating around the origin clockwise |
+
+
+### AxialCoord.RotateCounterClockwise <a name="axialCoordRotateCounterClockwise"/>
+Rotates this coordinate 60° counter-clockwise around the origin
+#### Declaration
+```csharp
+public AxialCoord RotateCounterClockwise;
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| AxialCoord | The position when rotating around the origin counter-clockwise |
+
+
+### AxialCoord.RotateClockwiseAround <a name="axialCoordRotateClockwiseAround"/>
+Rotates this coordinate around a center point
+#### Declaration
+```csharp
+public AxialCoord RotateClockwiseAround(AxialCoord center, int steps = 1);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| AxialCoord | center | The center point to rotate around |
+| int | steps | The number of 60° steps to rotate |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| AxialCoord | The position when rotating around clockwise around the specified center position a steps amount of time |
+
+
+### AxialCoord.Length() <a name="axialCoordLength"/>
 Calculates the length of an AxialCoord
 #### Declaration
 ```csharp
@@ -214,7 +232,7 @@ public static int Length(AxialCoord a);
 | int | The AxialCoord's length |
 
 
-### 2.1 HexGrid() <a name="hexGridHexGrid"/>
+### 2 HexGrid() <a name="hexGridHexGrid"/>
 Initializes a new instance of the HexGrid class
 #### Declaration
 ```csharp
@@ -229,11 +247,23 @@ public HexGrid<T>(HexType hexType, float edgeLength, Vector3 gridOriginPosition)
 | Vector3 | gridOriginPosition | The grid origin position |
 
 
-### 2.2 HexGrid.GetEdgeLength <a name="hexGridGetEdgeLength"/>
+### HexGrid.HexGridType <a name="hexGridHexGridType"/>
+Get the hex type of this grid
+#### Declaration
+```csharp
+public HexType HexGridType;
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| HexType | The hex type of this grid |
+
+
+### HexGrid.EdgeLength <a name="hexGridEdgeLength"/>
 Get the edge length of the hex cell's of this grid
 #### Declaration
 ```csharp
-public float GetEdgeLength;
+public float EdgeLength;
 ```
 #### Returns
 | Type | Description |
@@ -241,11 +271,11 @@ public float GetEdgeLength;
 | float | The edge lenght of a hex cell |
 
 
-### 2.3 HexGrid.GetGridOriginPosition <a name="hexGridGetGridOriginPosition"/>
+### HexGrid.GridOriginPosition <a name="hexGridGridOriginPosition"/>
 Get the origin position of the grid
 #### Declaration
 ```csharp
-public Vector3 GetGridOriginPosition;
+public Vector3 GridOriginPosition;
 ```
 #### Returns
 | Type | Description |
@@ -253,11 +283,23 @@ public Vector3 GetGridOriginPosition;
 | Vector3 | The grid origin position |
 
 
-### 2.4 HexGrid.OnGridPositionValueChanged <a name="hexGridOnGridPositionValueChanged"/>
+### HexGrid.Count <a name="hexGridCount"/>
+Get the number of positions in the grid
+#### Declaration
+```csharp
+public int Count;
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| int | The number of positions in the grid |
+
+
+### HexGrid.OnGridPositionValueChanged <a name="hexGridOnGridPositionValueChanged"/>
 Event to be raised when the value of a cell changes
 #### Declaration
 ```csharp
-public Action<AxialCoord, T> OnGridPositionValueChanged;
+public event Action<AxialCoord, T> OnGridPositionValueChanged;
 ```
 #### Parameters
 | Type | Description |
@@ -266,7 +308,7 @@ public Action<AxialCoord, T> OnGridPositionValueChanged;
 | T | The new value assigned to the position |
 
 
-### 2.5 HexGrid.Indexers <a name="hexGridIndexers"/>
+### HexGrid.Indexers <a name="hexGridIndexers"/>
 Get the object at a specific grid position
 #### Declaration
 ```csharp
@@ -287,11 +329,11 @@ public T [Vector3 worldPosition];
 | T | The object at the specified grid position |
 
 
-### 2.6 HexGrid.GetGridObjects() <a name="hexGridGetGridObjects"/>
+### HexGrid.GetEnumerator() <a name="hexGridGetEnumerator"/>
 Returns the elements of the grid
 #### Declaration
 ```csharp
-public IEnumerable<T> GetGridObjects();
+public IEnumerator<T> GetEnumerator();
 ```
 #### Returns
 | Type | Description |
@@ -299,7 +341,7 @@ public IEnumerable<T> GetGridObjects();
 | IEnumerable<T> | Element of the grid |
 
 
-### 2.7 HexGrid.GetGridAxialCoords() <a name="hexGridGetGridAxialCoords"/>
+### HexGrid.GetGridAxialCoords() <a name="hexGridGetGridAxialCoords"/>
 Returns the AxialCoords of this grid
 #### Declaration
 ```csharp
@@ -311,7 +353,19 @@ public IEnumerable<AxialCoord> GetGridAxialCoords();
 | IEnumerable<AxialCoord> | AxialCoord of the grid |
 
 
-### 2.8 HexGrid.ClearGrid() <a name="hexGridClearGrid"/>
+### HexGrid.GetGridObjectsWithPositions() <a name="hexGridGetGridObjectsWithPositions"/>
+Returns the elements of the grid with their respective positions
+#### Declaration
+```csharp
+public IEnumerable<(AxialCoord Position, T Value)> GetGridObjectsWithPositions();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| IEnumerable<AxialCoord, T> | The elements of the grid and the respective position |
+
+
+### HexGrid.ClearGrid() <a name="hexGridClearGrid"/>
 Clear the grid and reset all the positions to their default values
 #### Declaration
 ```csharp
@@ -319,7 +373,7 @@ public void ClearGrid();
 ```
 
 
-### 2.9 HexGrid.Fill() <a name="hexGridFill"/>
+### HexGrid.Fill() <a name="hexGridFill"/>
 Fill all the positions in the grid with the specific value
 #### Declaration
 ```csharp
@@ -331,7 +385,20 @@ public void Fill(T value);
 | T | value | The value to apply on every position |
 
 
-### 2.10 HexGrid.GetGridObjectAtAxialCoord() <a name="hexGridGetGridObjectAtAxialCoord"/>
+### HexGrid.Swap() <a name="hexGridSwap"/>
+Swap the values of two positions in the grid
+#### Declaration
+```csharp
+public void Swap(AxialCoord a, AxialCoord b);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| GridPosition2D | a | The first position |
+| GridPosition2D | b | The second position |
+
+
+### HexGrid.GetGridObjectAtAxialCoord() <a name="hexGridGetGridObjectAtAxialCoord"/>
 Get an element from the grid on a specific AxialCoord
 #### Declaration
 ```csharp
@@ -347,7 +414,24 @@ public T GetGridObjectAtAxialCoord(AxialCoord axialCoord);
 | T | The object at the specified grid position |
 
 
-### 2.11 HexGrid.GetGridObjectAtWorldPosition() <a name="hexGridGetGridObjectAtWorldPosition"/>
+### HexGrid.TryGetGridObjectAtAxialCoord() <a name="hexGridTryGetGridObjectAtAxialCoord"/>
+Attempts to retrieve the object located at the specified position
+#### Declaration
+```csharp
+public bool TryGetGridObjectAtAxialCoord(AxialCoord axialCoord, out T value);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| AxialCoord | axialCoord | The position to get the element from |
+| T | value | When this method returns, contains the object at the specified grid position if found, otherwise the default value for the type |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True if an object exists at the specified grid position, false otherwise |
+
+
+### HexGrid.GetGridObjectAtWorldPosition() <a name="hexGridGetGridObjectAtWorldPosition"/>
 Get an element from the grid based on a world position
 #### Declaration
 ```csharp
@@ -363,7 +447,24 @@ public T GetGridObjectAtWorldPosition(Vector3 worldPosition);
 | T | The object at the specified world position |
 
 
-### 2.12 HexGrid.GetRandomObject() <a name="hexGridGetRandomObject"/>
+### HexGrid.TryGetGridObjectAtWorldPosition() <a name="hexGridTryGetGridObjectAtWorldPosition"/>
+Attempts to retrieve the object located at the specified world position
+#### Declaration
+```csharp
+public bool TryGetGridObjectAtWorldPosition(Vector3 worldPosition, out T value);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Vector3 | worldPosition | The world position to get the element from |
+| T | value | When this method returns, contains the object at the specified grid position if found, otherwise the default value for the type |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True if an object exists at the specified grid position, false otherwise |
+
+
+### HexGrid.GetRandomObject() <a name="hexGridGetRandomObject"/>
 Get an random object from the grid
 #### Declaration
 ```csharp
@@ -375,7 +476,7 @@ public T GetRandomObject();
 | T | A random object from the grid |
 
 
-### 2.13 HexGrid.GetRandomAxialCoord() <a name="hexGridGetRandomAxialCoord"/>
+### HexGrid.GetRandomAxialCoord() <a name="hexGridGetRandomAxialCoord"/>
 Gets a random position from the grid
 #### Declaration
 ```csharp
@@ -387,7 +488,7 @@ public AxialCoord GetRandomAxialCoord();
 | AxialCoord | A random position within the grid |
 
 
-### 2.14 HexGrid.SetGridObjectAtAxialCoord() <a name="hexGridSetGridObjectAtAxialCoord"/>
+### HexGrid.SetGridObjectAtAxialCoord() <a name="hexGridSetGridObjectAtAxialCoord"/>
 Set a grid object in a specific grid position
 #### Declaration
 ```csharp
@@ -405,7 +506,7 @@ public bool SetGridObjectAtAxialCoord(AxialCoord axialCoord, T newObject, bool r
 | bool | True if the object was successfully assigned, false otherwise |
 
 
-### 2.15 HexGrid.SetGridObjectAtWorldPosition() <a name="hexGridSetGridObjectAtWorldPosition"/>
+### HexGrid.SetGridObjectAtWorldPosition() <a name="hexGridSetGridObjectAtWorldPosition"/>
 Set an object in the grid based on a world position
 #### Declaration
 ```csharp
@@ -423,7 +524,7 @@ public bool SetGridObjectAtWorldPosition(Vector3 worldPosition, T newObject, boo
 | bool | True if the object was successfully assigned, false otherwise |
 
 
-### 2.16 HexGrid.GetWorldPositionFromAxialCoord() <a name="hexGridGetWorldPositionFromAxialCoord"/>
+### HexGrid.GetWorldPositionFromAxialCoord() <a name="hexGridGetWorldPositionFromAxialCoord"/>
 Converts a AxialCoord to a world position
 #### Declaration
 ```csharp
@@ -439,7 +540,7 @@ public Vector3 GetWorldPositionFromAxialCoord(AxialCoord axialCoord);
 | Vector3 | The position in world coordinates |
 
 
-### 2.17 HexGrid.TryGetWorldPositionFromAxialCoord() <a name="hexGridTryGetWorldPositionFromAxialCoord"/>
+### HexGrid.TryGetWorldPositionFromAxialCoord() <a name="hexGridTryGetWorldPositionFromAxialCoord"/>
 Try to convert a AxialCoord into a world position
 #### Declaration
 ```csharp
@@ -456,7 +557,7 @@ public bool TryGetWorldPositionFromAxialCoord(AxialCoord axialCoord, out Vector3
 | bool | True if it is able to convert, false otherwise |
 
 
-### 2.18 HexGrid.GetAxialCoordFromWorldPosition() <a name="hexGridGetAxialCoordFromWorldPosition"/>
+### HexGrid.GetAxialCoordFromWorldPosition() <a name="hexGridGetAxialCoordFromWorldPosition"/>
 Converts a world position into AxialCoord
 #### Declaration
 ```csharp
@@ -472,7 +573,7 @@ public AxialCoord GetAxialCoordFromWorldPosition(Vector3 worldPosition);
 | AxialCoord | The AxialCoord corresponding to the world position |
 
 
-### 2.19 HexGrid.TryGetAxialCoordFromWorldPosition() <a name="hexGridTryGetAxialCoordFromWorldPosition"/>
+### HexGrid.TryGetAxialCoordFromWorldPosition() <a name="hexGridTryGetAxialCoordFromWorldPosition"/>
 Try to convert a world position into AxialCoord
 #### Declaration
 ```csharp
@@ -489,11 +590,43 @@ public bool TryGetAxialCoordFromWorldPosition(Vector3 worldPosition, out AxialCo
 | bool | True if it is able to convert, false otherwise |
 
 
-### 2.20 HexGrid.GetGridPositionsInACertainState() <a name="hexGridGetGridPositionsInACertainState"/>
+### HexGrid.Any() <a name="hexGridAny"/>
+Check if any of the grid positions satisfies a condition
+#### Declaration
+```csharp
+public bool Any(Func<T, bool> predicate);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Func<T, bool> | predicate | The condition to check on each position |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True if any position satisfies the condition, false otherwise |
+
+
+### HexGrid.All() <a name="hexGridAll"/>
+Check if all grid positions satisfies a condition
+#### Declaration
+```csharp
+public bool All(Func<T, bool> predicate);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Func<T, bool> | predicate | The condition to check on each position |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True if all positions satisfies the condition, false otherwise |
+
+
+### HexGrid.Where() <a name="hexGridWhere"/>
 Get all positions that satisfies a condition
 #### Declaration
 ```csharp
-public List<AxialCoord> GetGridPositionsInACertainState(Func<T, bool> predicate);
+public List<AxialCoord> Where(Func<T, bool> predicate);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -505,7 +638,7 @@ public List<AxialCoord> GetGridPositionsInACertainState(Func<T, bool> predicate)
 | List<AxialCoord> | A list containing all the positions that satisfies the condition |
 
 
-### 2.21 HexGrid.IterateOverAllGridPositions() <a name="hexGridIterateOverAllGridPositions"/>
+### HexGrid.IterateOverAllGridPositions() <a name="hexGridIterateOverAllGridPositions"/>
 Execute an action for every position in the grid
 #### Declaration
 ```csharp
@@ -517,7 +650,7 @@ public void IterateOverAllGridPositions(Action<AxialCoord, T> action);
 | Action<AxialCoord, T> | action | Action to apply on every grid position (params AxialCoord: grid position, T: value at the position) |
 
 
-### 2.22 HexGrid.IsWithinHexGridBounds() <a name="hexGridIsWithinHexGridBounds"/>
+### HexGrid.IsWithinHexGridBounds() <a name="hexGridIsWithinHexGridBounds"/>
 Check if a grid position is within the grid bounds
 #### Declaration
 ```csharp
@@ -540,7 +673,7 @@ public bool IsWithinHexGridBounds(IEnumerable<AxialCoord> axialCoords);
 | bool | True if the position (or all positions) is/are within the grid, false otherwise |
 
 
-### 2.23 HexGrid.IsPositionEmpty() <a name="hexGridIsPositionEmpty"/>
+### HexGrid.IsPositionEmpty() <a name="hexGridIsPositionEmpty"/>
 Check if the position is empty (or default value in case of a non-nullable type)
 #### Declaration
 ```csharp
@@ -561,7 +694,7 @@ public bool IsPositionEmpty(Vector3 worldPosition);
 | bool | True if the position is empty, false otherwise |
 
 
-### 2.24 HexGrid.GetAdjacentNeighbours() <a name="hexGridGetAdjacentNeighbours"/>
+### HexGrid.GetAdjacentNeighbours() <a name="hexGridGetAdjacentNeighbours"/>
 Get all adjacent neighbours of a specific position
 #### Declaration
 ```csharp
@@ -578,7 +711,7 @@ public List<AxialCoord> GetAdjacentNeighbours(AxialCoord center, bool includeCen
 | List<AxialCoord> | List containing all the neighbour positions of a specific grid position |
 
 
-### 2.25 HexGrid.GetDiagonalNeighbours() <a name="hexGridGetDiagonalNeighbours"/>
+### HexGrid.GetDiagonalNeighbours() <a name="hexGridGetDiagonalNeighbours"/>
 Get all diagonals of a specific position
 #### Declaration
 ```csharp
@@ -595,7 +728,7 @@ public List<AxialCoord> GetDiagonalNeighbours(AxialCoord center, bool includeCen
 | List<AxialCoord> | List containing all the diagonal positions of a specific grid position |
 
 
-### 2.26 HexGrid.GetAxialCoordsFromADistanceRange() <a name="hexGridGetAxialCoordsFromADistanceRange"/>
+### HexGrid.GetAxialCoordsFromADistanceRange() <a name="hexGridGetAxialCoordsFromADistanceRange"/>
 Get all the grid positions within a range
 #### Declaration
 ```csharp
@@ -613,7 +746,7 @@ public List<AxialCoord> GetAxialCoordsFromADistanceRange(AxialCoord center, int 
 | List<AxialCoord> | List containing all the positions within the range |
 
 
-### 2.27 HexGrid.GetAxialCoordsFromIntersectingRanges() <a name="hexGridGetAxialCoordsFromIntersectingRanges"/>
+### HexGrid.GetAxialCoordsFromIntersectingRanges() <a name="hexGridGetAxialCoordsFromIntersectingRanges"/>
 Given two centers and a range, gets all the grid positions that intersects
 #### Declaration
 ```csharp
@@ -631,7 +764,7 @@ public List<AxialCoord> GetAxialCoordsFromIntersectingRanges(AxialCoord center1,
 | List<AxialCoord> | List containing all the intersected positions |
 
 
-### 2.28 HexGrid.GetRing() <a name="hexGridGetRing"/>
+### HexGrid.GetRing() <a name="hexGridGetRing"/>
 Get all the positions forming a ring around a specific center
 #### Declaration
 ```csharp
@@ -648,7 +781,7 @@ public List<AxialCoord> GetRing(AxialCoord center, int radius);
 | List<AxialCoord> | List containing all the positions forming the ring |
 
 
-### 2.29 HexGrid.GetSpiral() <a name="hexGridGetSpiral"/>
+### HexGrid.GetSpiral() <a name="hexGridGetSpiral"/>
 Get all the positions forming a spiral from a specific center
 #### Declaration
 ```csharp
@@ -665,7 +798,26 @@ public List<AxialCoord> GetSpiral(AxialCoord center, int radius);
 | List<AxialCoord> | List containing all the positions forming the spiral |
 
 
-### 2.30 HexGrid.InstantiateGameObjectAtAxialCoord() <a name="hexGridInstantiateGameObjectAtAxialCoord"/>
+### HexGrid.GetLineWithinBounds() <a name="hexGridGetLineWithinBounds"/>
+Gets all the AxialCoord that forms a straight line between two positions
+#### Declaration
+```csharp
+public HashSet<AxialCoord> GetLineWithinBounds(AxialCoord start, AxialCoord end, bool includeStartAndEndPositions = true);
+public static HashSet<AxialCoord> GetLine(AxialCoord start, AxialCoord end, bool includeStartAndEndPositions = true);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| AxialCoord | start | The start of the line |
+| AxialCoord | end | The end of the line |
+| bool | includeStartAndEndPositions | Should the start and end positions be included in the return set |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| HashSet<AxialCoord> | Set containing all the positions forming the line |
+
+
+### HexGrid.InstantiateGameObjectAtAxialCoord() <a name="hexGridInstantiateGameObjectAtAxialCoord"/>
 Instantiate a game object in a certain grid position
 #### Declaration
 ```csharp
@@ -684,7 +836,7 @@ public GameObject InstantiateGameObjectAtAxialCoord(AxialCoord axialCoord, GameO
 | GameObject | The instantiated game object |
 
 
-### 2.31 HexGrid.InstantiateGameObjectAtWorldPosition() <a name="hexGridInstantiateGameObjectAtWorldPosition"/>
+### HexGrid.InstantiateGameObjectAtWorldPosition() <a name="hexGridInstantiateGameObjectAtWorldPosition"/>
 Instantiate a game object on the grid based on a world position
 #### Declaration
 ```csharp
@@ -703,7 +855,7 @@ public GameObject InstantiateGameObjectAtWorldPosition(Vector3 worldPosition, Ga
 | GameObject | The instantiated game object |
 
 
-### 2.32 HexGrid.InstantiateGameObjectAtEveryAxialCoord() <a name="hexGridInstantiateGameObjectAtEveryAxialCoord"/>
+### HexGrid.InstantiateGameObjectAtEveryAxialCoord() <a name="hexGridInstantiateGameObjectAtEveryAxialCoord"/>
 Instantiate a game object on every grid position
 #### Declaration
 ```csharp
@@ -722,62 +874,45 @@ public List<GameObject> InstantiateGameObjectAtEveryAxialCoord(GameObject gameOb
 | List<GameObject> | A list containing all the instantiated game objects |
 
 
-### 2.33 HexGrid.Save() <a name="hexGridSave"/>
-Save/serialize the grid using a binary formatter (T and its members must be a serializable type)
+### HexGrid.Save() <a name="hexGridSave"/>
+Save a grid as JSON string (T and its members must be a serializable type)
 #### Declaration
 ```csharp
-public bool Save(string filename);
+public static string Save<T>(HexGrid<T> grid);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| string | filename | The file to be opened/created for writing |
+| HexGrid<T> | grid | The grid to save |
 #### Returns
 | Type | Description |
 | :--- | :--- |
-| bool | True if the save operation was successful, false otherwise |
+| string | The grid in a JSON format |
 
 
-### 2.34 HexGrid.Load() <a name="hexGridLoad"/>
-Load/deserialize a grid using a binary formatter (T and its members must be a serializable type)
+### HexGrid.Load() <a name="hexGridLoad"/>
+Load a grid from a JSON string (T and its members must be a serializable type)
 #### Declaration
 ```csharp
-public bool Load(string filename);
+public static SerializableHexGrid<T> Load(string jsonData);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| string | filename | The file to be opened for reading |
+| string | jsonData | The JSON string containing the serialized grid |
 #### Returns
 | Type | Description |
 | :--- | :--- |
-| bool | True if the save operation was successful, false otherwise |
+| SerializableHexGrid<T> | The loaded grid |
 
 
-### 2.35 HexGrid.GetLine() <a name="hexGridGetLine"/>
-Gets all the AxialCoord that forms a straight line between two positions
-#### Declaration
-```csharp
-public static HashSet<AxialCoord> GetLine(AxialCoord start, AxialCoord end, bool includeStartAndEndPositions = true);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| AxialCoord | start | The start of the line |
-| AxialCoord | end | The end of the line |
-| bool | includeStartAndEndPositions | Should the start and end positions be included in the return set |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| HashSet<AxialCoord> | Set containing all the positions forming the line |
-
-
-### 3.1 HexagonHexGrid() <a name="hexagonHexGridHexagonHexGrid"/>
+### 3 HexagonHexGrid() <a name="hexagonHexGridHexagonHexGrid"/>
 Initializes a new instance of the HexagonHexGrid class
 #### Declaration
 ```csharp
 public HexagonHexGrid<T>(HexType hexType, int rangeFromCenter, float edgeLength, Vector3 gridOriginPosition, Func<HexagonHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
 public HexagonHexGrid<T>(HexType hexType, int rangeFromCenter, float edgeLength, Func<HexagonHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
+public HexagonHexGrid<T>(SerializableHexGrid<T> gridData)
 ```
 #### Parameters
 | Type | Name | Description |
@@ -788,14 +923,16 @@ public HexagonHexGrid<T>(HexType hexType, int rangeFromCenter, float edgeLength,
 | float | edgeLength | The edge length of a hex cell |
 | Vector3 | gridOriginPosition | The origin position of the hex grid |
 | Func<HexagonHexGrid<T>, AxialCoord, T> | gridObjectInitializer | The initialize function for each grid element (Func<HexagonHexGrid<T>, AxialCoord, T> where HexagonHexGrid<T> references this grid object and AxialCoord references the position in the grid for the object) |
+| SerializableHexGrid<T> | gridData | The grid data in a serialized format |
 
 
-### 4.1 RectangleHexGrid() <a name="rectangleHexGridRectangleHexGrid"/>
+### 4 RectangleHexGrid() <a name="rectangleHexGridRectangleHexGrid"/>
 Initializes a new instance of the RectangleHexGrid class
 #### Declaration
 ```csharp
 public RectangleHexGrid<T>(HexType hexType, HexAlignment centerHexRowColumnAlignment, int leftOffset, int rightOffset, int topOffset, int bottomOffset, float edgeLength, Vector3 gridOriginPosition, Func<RectangleHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
 public RectangleHexGrid<T>(HexType hexType, HexAlignment centerHexRowColumnAlignment, int leftOffset, int rightOffset, int topOffset, int bottomOffset, float edgeLength, Func<RectangleHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
+public RectangleHexGrid<T>(SerializableHexGrid<T> gridData)
 ```
 #### Parameters
 | Type | Name | Description |
@@ -810,3 +947,4 @@ public RectangleHexGrid<T>(HexType hexType, HexAlignment centerHexRowColumnAlign
 | float | edgeLength | The edge length of a hex cell |
 | Vector3 | gridOriginPosition | The origin position of the hex grid |
 | Func<RectangleHexGrid<T>, AxialCoord, T> | gridObjectInitializer | The initialize function for each grid element (Func<RectangleHexGrid<T>, AxialCoord, T> where RectangleHexGrid<T> references this grid object and AxialCoord references the position in the grid for the object) |
+| SerializableHexGrid<T> | gridData | The grid data in a serialized format |

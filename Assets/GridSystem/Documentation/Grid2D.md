@@ -476,7 +476,7 @@ public bool TryGetGridObjectAtGridPosition2D(GridPosition2D gridPosition2D, out 
 | Type | Name | Description |
 | :--- | :--- | :--- |
 | GridPosition2D | gridPosition2D | The position to get the element from |
-| bool | value | When this method returns, contains the object at the specified grid position if found, otherwise the default value for the type |
+| T | value | When this method returns, contains the object at the specified grid position if found, otherwise the default value for the type |
 #### Returns
 | Type | Description |
 | :--- | :--- |
@@ -509,7 +509,7 @@ public bool TryGetGridObjectAtWorldPosition(Vector3 worldPosition, out T value);
 | Type | Name | Description |
 | :--- | :--- | :--- |
 | Vector3 | worldPosition | The world position to get the element from |
-| bool | value | When this method returns, contains the object at the specified grid position if found, otherwise the default value for the type |
+| T | value | When this method returns, contains the object at the specified grid position if found, otherwise the default value for the type |
 #### Returns
 | Type | Description |
 | :--- | :--- |

@@ -33,7 +33,7 @@ Please let us know if you encounter any issues with the version of Unity you are
 - 1.1.0: Add support for hex grids
 - 1.1.1: Ensure package functionality in Unity version 6000.3.9f1
 - 1.1.2: Add new sample scene to showcase hex grids
-- 1.1.3: Add new methods and improve code readability/maintainability for 2D Grids
+- 1.1.3: Add new methods and improve code readability/maintainability for 2D and Hex Grids
 
 ## 3 - Features <a name="features"/>
 - Use of generics allowing the instantiation of any type of grid.
@@ -66,10 +66,12 @@ public Grid2D<T>(int width, int height, float cellSize, Func<Grid2D<T>, GridPosi
 // RectangleHexGrid constructors
 public RectangleHexGrid<T>(HexType hexType, HexAlignment centerHexRowColumnAlignment, int leftOffset, int rightOffset, int topOffset, int bottomOffset, float edgeLength, Vector3 gridOriginPosition, Func<RectangleHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
 public RectangleHexGrid<T>(HexType hexType, HexAlignment centerHexRowColumnAlignment, int leftOffset, int rightOffset, int topOffset, int bottomOffset, float edgeLength, Func<RectangleHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
+public RectangleHexGrid<T>(SerializableHexGrid<T> gridData);
 
 // HexagonHexGrid constructors
 public HexagonHexGrid<T>(HexType hexType, int rangeFromCenter, float edgeLength, Vector3 gridOriginPosition, Func<HexagonHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
 public HexagonHexGrid<T>(HexType hexType, int rangeFromCenter, float edgeLength, Func<HexagonHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
+public HexagonHexGrid<T>(SerializableHexGrid<T> gridData);
 ```
 
 ### 4.2 Accessing grid elements <a name="accessingGridElements"/>
@@ -143,7 +145,7 @@ GetGridPosition2DFromWorldPosition(new Vector3(0.75, 0, 1.5));
 ```
 
 ### 4.4 Grid methods <a name="gridMethods"/>
-Grid class contain many methods to manipulate and/or get information from the grid. For example, get all the positions that fulfil a certain condition (GetGridPositionsInACertainState()), to apply an operation on each each cell (IterateOverAllGridPositions()), get all the positions within a range (GetGridPositionsFromADistanceRange()) and many others. For more details check out the documentation below. 
+Grid class contain many methods to manipulate and/or get information from the grid. For example, get all the positions that fulfil a certain condition (Where()), to apply an operation on each each cell (IterateOverAllGridPositions()), get all the positions within a range (GetGridPositionsFromADistanceRange()) and many others. For more details check out the documentation below. 
 
 ### 4.5 Hex grid shapes <a name="hexGridShapes"/>
 The current version of this package supports the creation of the following hex grid shapes:  
@@ -155,10 +157,12 @@ For more details regarding each parameter, please chech the documentation.
 // RectangleHexGrid constructors
 public RectangleHexGrid<T>(HexType hexType, HexAlignment centerHexRowColumnAlignment, int leftOffset, int rightOffset, int topOffset, int bottomOffset, float edgeLength, Vector3 gridOriginPosition, Func<RectangleHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
 public RectangleHexGrid<T>(HexType hexType, HexAlignment centerHexRowColumnAlignment, int leftOffset, int rightOffset, int topOffset, int bottomOffset, float edgeLength, Func<RectangleHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
+public RectangleHexGrid<T>(SerializableHexGrid<T> gridData);
 
 // HexagonHexGrid constructors
 public HexagonHexGrid<T>(HexType hexType, int rangeFromCenter, float edgeLength, Vector3 gridOriginPosition, Func<HexagonHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
 public HexagonHexGrid<T>(HexType hexType, int rangeFromCenter, float edgeLength, Func<HexagonHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
+public HexagonHexGrid<T>(SerializableHexGrid<T> gridData);
 ```
 
 ## 5 - Documentation <a name="documentation"/>

@@ -7,9 +7,12 @@ namespace GridSystem
 	[Serializable]
 	public struct AxialCoord : IEquatable<AxialCoord>
 	{
-        public int Q;
-        public int R;
-        public int S;
+        [SerializeField] private int q;
+        [SerializeField] private int r;
+
+        public int Q => q;
+        public int R => r;
+        public int S => -Q - R;
 
         [NonSerialized] private List<AxialCoord> neighbours;
         /// <summary>
@@ -25,12 +28,6 @@ namespace GridSystem
                 return neighbours;
             }
         }
-        /// <summary>
-        /// Get a specific neighbour from this AxialCoord
-        /// </summary>
-        /// <param name="idx">The neighbour index</param>
-        /// <returns>The neighbour at the index position</returns>
-        public AxialCoord GetNeighbour(int idx) => Neighbours[(6 + (idx % 6)) % 6];
 
         [NonSerialized] private List<AxialCoord> diagonals;
         /// <summary>
@@ -46,18 +43,11 @@ namespace GridSystem
                 return diagonals;
             }
         }
-        /// <summary>
-        /// Get a specific diagonal from this AxialCoord
-        /// </summary>
-        /// <param name="idx">The diagonal index</param>
-        /// <returns>The diagonal at the index position</returns>
-        public AxialCoord GetDiagonal(int idx) => Diagonals[(6 + (idx % 6)) % 6];
 
         public AxialCoord(int q, int r) : this()
         {
-            this.Q = q;
-            this.R = r;
-            this.S = -q - r;
+            this.q = q;
+            this.r = r;
         }
 
         /// <summary>
@@ -74,8 +64,9 @@ namespace GridSystem
         /// Get all AxialCoord within a range
         /// </summary>
         /// <param name="range">The length of the range (in grid units)</param>
+        /// <param name="includeSelf">Whether to include the current position in the returned set</param>
         /// <returns>Set containing all the positions within the range</returns>
-        public HashSet<AxialCoord> GetAxialCoordsWithinRange(int range)
+        public HashSet<AxialCoord> GetAxialCoordsWithinRange(int range, bool includeSelf = true)
         {
             HashSet<AxialCoord> withinRange = new HashSet<AxialCoord>();
 
@@ -83,6 +74,9 @@ namespace GridSystem
             {
                 for (int r = Mathf.Max(-range, -q - range); r <= Mathf.Min(range, -q + range); r++)
                 {
+                    if (!includeSelf && q == 0 && r == 0)
+                        continue;
+
                     withinRange.Add(this + new AxialCoord(q, r));
                 }
             }
@@ -91,21 +85,45 @@ namespace GridSystem
         }
 
         /// <summary>
-        /// Get the AxialCoord position when reflecting through the Q-axis
+        /// Reflects this coordinate across the Q axis (keeping Q constant, swapping R and S)
         /// </summary>
         public AxialCoord ReflectQ => new AxialCoord(Q, S);
         /// <summary>
-        /// Get the AxialCoord position when reflecting through the R-axis
+        /// Reflects this coordinate across the R axis (keeping R constant, swapping Q and S)
         /// </summary>
         public AxialCoord ReflectR => new AxialCoord(S, R);
         /// <summary>
-        /// Get the AxialCoord position when reflecting through the S-axis
+        /// Reflects this coordinate across the S axis (keeping S constant, swapping Q and R)
         /// </summary>
         public AxialCoord ReflectS => new AxialCoord(R, Q);
 
+        /// <summary>
+        /// Rotates this coordinate 60Åã clockwise around the origin
+        /// </summary>
+        public AxialCoord RotateClockwise => new AxialCoord(-R, -S);
+
+        /// <summary>
+        /// Rotates this coordinate 60Åã counter-clockwise around the origin
+        /// </summary>
+        public AxialCoord RotateCounterClockwise => new AxialCoord(-S, -Q);
+
+        /// <summary>
+        /// Rotates this coordinate around a center point
+        /// </summary>
+        /// <param name="center">The center point to rotate around</param>
+        /// <param name="steps">The number of 60Åã steps to rotate</param>
+        /// <returns>The rotated AxialCoord</returns>
+        public AxialCoord RotateClockwiseAround(AxialCoord center, int steps = 1)
+        {
+            AxialCoord offset = this - center;
+            for (int i = 0; i < ((steps % 6) + 6) % 6; i++)
+                offset = offset.RotateClockwise;
+            return center + offset;
+        }
+
         public override bool Equals(object obj)
         {
-            return obj is AxialCoord axialCoord && Q == axialCoord.Q && R == axialCoord.R && S == axialCoord.S;
+            return obj is AxialCoord axialCoord && Q == axialCoord.Q && R == axialCoord.R;
         }
 
         public bool Equals(AxialCoord other)
@@ -124,7 +142,7 @@ namespace GridSystem
 
         public static bool operator ==(AxialCoord a, AxialCoord b)
         {
-            return a.Q == b.Q && a.R == b.R && a.S == b.S;
+            return a.Q == b.Q && a.R == b.R;
         }
 
         public static bool operator !=(AxialCoord a, AxialCoord b)
@@ -192,7 +210,10 @@ namespace GridSystem
         /// <returns>The AxialCoord's length</returns>
         public static int Length(AxialCoord a)
         {
-            return Mathf.Max(Mathf.Abs(a.Q), Mathf.Abs(a.R), Mathf.Abs(a.S));
+            return (Mathf.Abs(a.Q) + Mathf.Abs(a.R) + Mathf.Abs(a.S)) / 2;
         }
+
+        public static readonly AxialCoord Zero = new AxialCoord(0, 0);
+
     }
 }
