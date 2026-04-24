@@ -5,7 +5,7 @@ using UnityEngine;
 namespace GridSystem
 {
     [Serializable]
-	public struct GridPosition2D : IEquatable<GridPosition2D>
+	public struct GridPosition2D : IEquatable<GridPosition2D>, IGridCell
 	{
         [SerializeField] private int x;
         [SerializeField] private int z;

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace GridSystem
 {
 	[Serializable]
-	public struct AxialCoord : IEquatable<AxialCoord>
+	public struct AxialCoord : IEquatable<AxialCoord>, IGridCell
 	{
         [SerializeField] private int q;
         [SerializeField] private int r;
