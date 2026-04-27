@@ -1,3 +1,4 @@
+using GridSystem.Pathfinding;
 using System;
 using TMPro;
 using UnityEngine;
@@ -5,27 +6,28 @@ using UnityEngine.EventSystems;
 
 namespace GridSystem
 {
-	public class GridPositionSampleScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+	public class GridPositionSampleScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, ITraversalProvider
     {
         [SerializeField] private MeshRenderer meshRenderer;
         [SerializeField] private TextMeshPro singlePositionInfo;
 
         [SerializeField] private Material defaultMaterial;
         [SerializeField] private Material mouseOverMaterial;
+        [SerializeField] private Material pathMaterial;
 
         private GridPosition2D gridPosition2D;
+        private GameObject instanciatedObject;
 
-        public static Action<GridPositionSampleScene, GridPosition2D> OnAnyGridPositionClicked;
+        public static Action<GridPositionSampleScene, GridPosition2D, PointerEventData.InputButton> OnAnyGridPositionClicked;
 
-        public void Show(Material material)
+        public bool IsWalkable { get; set; } = true;
+        private Material currentMaterial;
+
+        public int MovementCost => 1;
+
+        private void Awake()
         {
-            meshRenderer.material = material;
-            meshRenderer.enabled = true;
-        }
-
-        public void Hide()
-        {
-            meshRenderer.enabled = false;
+            currentMaterial = defaultMaterial;
         }
 
         public void SetGridPosition2D(GridPosition2D gridPosition2D)
@@ -35,6 +37,18 @@ namespace GridSystem
             singlePositionInfo.text = gridPosition2D.ToString();
         }
 
+        public void SetMaterialAsPath()
+        {
+            meshRenderer.material = pathMaterial;
+            currentMaterial = pathMaterial;
+        }
+
+        public void ResetMaterial()
+        {
+            meshRenderer.material = defaultMaterial;
+            currentMaterial = defaultMaterial;
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             meshRenderer.material = mouseOverMaterial;
@@ -42,12 +56,26 @@ namespace GridSystem
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            meshRenderer.material = defaultMaterial;
+            meshRenderer.material = currentMaterial;
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            OnAnyGridPositionClicked?.Invoke(this, gridPosition2D);
+            OnAnyGridPositionClicked?.Invoke(this, gridPosition2D, eventData.button);
+        }
+
+        public void DestroyGridObject()
+        {
+            if (instanciatedObject != null)
+            {
+                Destroy(instanciatedObject);
+                instanciatedObject = null;
+            }
+        }
+
+        public void UpdateGridObject(GameObject newObject)
+        {
+            instanciatedObject = newObject;
         }
     }
 }

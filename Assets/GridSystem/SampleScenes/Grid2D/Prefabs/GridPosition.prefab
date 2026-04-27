@@ -321,6 +321,7 @@ MonoBehaviour:
   singlePositionInfo: {fileID: 3455425776430078598}
   defaultMaterial: {fileID: 2100000, guid: aa2d6dccd31f16f4baebb83505a014fb, type: 2}
   mouseOverMaterial: {fileID: 2100000, guid: 89a666f74b2440642a5e83bdd0b1192f, type: 2}
+  pathMaterial: {fileID: 2100000, guid: 4e5da5662dc82d049aade58cb3dc42cf, type: 2}
 --- !u!65 &3260290018681202025
 BoxCollider:
   m_ObjectHideFlags: 0
