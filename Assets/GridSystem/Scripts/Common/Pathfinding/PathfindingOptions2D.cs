@@ -26,7 +26,7 @@ namespace GridSystem.Pathfinding
         /// <summary>
         /// The heuristic function to use for A*.
         /// Manhattan: Uses the Manhattan distance (L1 norm) as the heuristic, which is suitable for grids with only cardinal (4-directional) movement.
-        /// Chebyshev: Uses the Chebyshev distance (LÅá norm) as the heuristic, which is suitable for grids with 8-directional movement.
+        /// Chebyshev: Uses the Chebyshev distance (LÔøΩÔøΩ norm) as the heuristic, which is suitable for grids with 8-directional movement.
         /// Euclidean: Uses the Euclidean distance (L2 norm) as the heuristic, which is suitable for grids with free movement.
         /// </summary>
         public PathfindingHeuristic Heuristic { get; set; }
@@ -38,6 +38,9 @@ namespace GridSystem.Pathfinding
             Euclidean
         }
 
+        /// <summary>
+        /// Maximum search depth for pathfinding
+        /// </summary>
         public int MaxSearchDepth { get; set; }
 
         public PathfindingOptions2D(bool allowDiagonalMovement, bool allowCuttingCorners, bool applyDiagonalCostPenalty, PathfindingHeuristic heuristic, int maxSearchDepth = int.MaxValue)

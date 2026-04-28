@@ -9,6 +9,7 @@
   - [Relationship between grid coordinates and world coordinates](#relationshipBetweenGridCoordinatesAndWorldCoordinates)
   - [Grid methods](#gridMethods)
   - [Hex grid shapes](#hexGridShapes)
+  - [Pathfinding](#pathfinding)
 - [Documentation](#documentation)
   - [Grid2D](#grid2D)
   - [HexGrid](#hexGrid)
@@ -19,8 +20,9 @@ The Grid System Package for Unity is a comprehensive and adaptable tool designed
 With the Grid System Package, you can create both standard 2D grids and hexagonal grids without extra setup, expanding the possibilities for your game design. Traditional 2D grids are perfect for tile-based RPGs, puzzle games, and grid-aligned level designs, while hexagonal grids allow for unique spatial arrangements often seen in tactical and strategy games. Each grid type is fully supported, so you can easily integrate whichever layout suits your project’s aesthetic and functional needs.  
 Accessing grid elements is made straightforward with indexers, which allow you to retrieve, modify, or set specific cells using coordinates directly. This feature enhances readability and performance, as you can directly access grid cells without needing additional lookup functions. Indexers ensure that all grid cells are readily accessible with simple syntax, improving code clarity and reducing errors.  
 The Grid System Package includes a wide range of built-in methods for manipulating grid cells. These include methods to get all the positions that fulfil a certain condition, that apply an operation on each each cell, that get all the positions within a range, and more. These methods make it easy to work with the grid data in a consistent and efficient manner.  
+Additionally, this package already includes a implementation of the A* pathfinding algorithm, eliminating the need to implement from scratch one of the most time consuming features that grid-based system often utilizes. 
 
-The Grid System Package for Unity offers a comprehensive solution for developers looking to integrate structured grid-based layouts with minimal setup. With broad support for both 2D and hexagonal grids, intuitive indexing access, and extensive manipulation functions, this package eliminates the need to build complex grid systems from scratch.  
+The Grid System Package for Unity offers a comprehensive solution for developers looking to integrate structured grid-based layouts with minimal setup. With broad support for both 2D and hexagonal grids, intuitive indexing access, extensive manipulation functions, and pathfinding this package eliminates the need to build complex grid systems from scratch.  
 Designed with performance and ease-of-use in mind, it ensures that developers can focus on building gameplay features rather than low-level grid management. Whether you're building a complex city-building game with a sprawling map or a tactical RPG with precise grid mechanics, this package adapts to your needs, allowing for both efficient development and a high degree of customization.  
 
 This package has been updated to Unity 6000.3.9f1. However, it should work without issue with earlier or future versions of Unity.  
@@ -33,12 +35,14 @@ Please let us know if you encounter any issues with the version of Unity you are
 - 1.1.0: Add support for hex grids
 - 1.1.1: Ensure package functionality in Unity version 6000.3.9f1
 - 1.1.2: Add new sample scene to showcase hex grids
-- 1.1.3: Add new methods and improve code readability/maintainability for 2D and Hex Grids
+- 1.1.3: Add new methods and improve code readability/maintainability for 2D and Hex grids
+- 1.2.0: Add pathfinding support for both 2D and Hex grids
 
 ## 3 - Features <a name="features"/>
 - Use of generics allowing the instantiation of any type of grid.
-- Supports both 2D and hex grids.
+- Support for both 2D and hex grids.
 - Support for different shapes of hex grids.
+- Pathfinding implementation (A*) already included in the package.
 - Easy-to-use methods that simplifies working with grid data in Unity projects.
 - Different types of indexer makes it easier to access position in the grid.
 - Many types of methods to manipulate or get information from the grid.
@@ -163,6 +167,40 @@ public RectangleHexGrid<T>(SerializableHexGrid<T> gridData);
 public HexagonHexGrid<T>(HexType hexType, int rangeFromCenter, float edgeLength, Vector3 gridOriginPosition, Func<HexagonHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
 public HexagonHexGrid<T>(HexType hexType, int rangeFromCenter, float edgeLength, Func<HexagonHexGrid<T>, AxialCoord, T> gridObjectInitializer = null);
 public HexagonHexGrid<T>(SerializableHexGrid<T> gridData);
+```
+
+### 4.6 Pathfinding <a name="pathfinding"/>
+Pathfinding using the A* algorithm is included within the package for both 2D and hex grids.  
+Below is a simple example on how to instantiate and use pathfinding on both types of grids.  
+For more details regarding pathfinding, please check the documentation of each grid.
+```csharp
+// Pathfinder2D default constructor
+public Pathfinder2D(Grid2D<T> grid, Func<T, bool> isWalkable, Func<T, int> movementCost = null, PathfindingOptions2D options = null)
+// Returns an Pathfinder2D instance when the Grid2D objects implements the ITraversalProvider interface
+public static Pathfinder2D<T> CreateFromTraversalProvider(Grid2D<T> grid, PathfindingOptions2D options = null) where T : ITraversalProvider
+
+// Sample use
+PathfindingOptions2D options = new PathfindingOptions2D(false, false, true, PathfindingOptions2DPathfindingHeuristic.Manhattan);
+Grid2D<Foo> grid = new Grid2D<Foo>(10, 10, 2, Vector3.Zero);
+Pathfinder2D pathfinder = new Pathfinder2D(grid, (fooCell) => fooCell.IsWalkable, (fooCell) => fooCell.MovementCost, options);
+// If Foo implements the ITraversalProvider interface
+Pathfinder2D pathfinder = Pathfinder2D<Foo>.CreateFromTraversalProvider(grid, options);
+
+PathfindingResult<GridPosition2D> path = pathfinder.FindPath(startPosition, endPosition);
+
+
+// PathfinderHex default constructor
+public PathfinderHex(HexGrid<T> grid, Func<T, bool> isWalkable, Func<T, int> movementCost = null, int maxSearchDepth = int.MaxValue)
+// Returns an PathfinderHex instance when the HexGrid objects implements the ITraversalProvider interface
+public static PathfinderHex<T> CreateFromTraversalProvider(HexGrid<T> grid, int maxSearchDepth = int.MaxValue) where T : ITraversalProvider
+
+// Sample use
+RectangleHexGrid<Foo> grid = new RectangleHexGrid<Foo>(HexType.FlatTop, HexAlignment.FlatTopUp, 5, 5, 5, 5, 2);
+PathfinderHex pathfinder = new PathfinderHex(grid, (fooCell) => fooCell.IsWalkable, (fooCell) => fooCell.MovementCost);
+// If Foo implements the ITraversalProvider interface
+PathfinderHex pathfinder = PathfinderHex<Foo>.CreateFromTraversalProvider(grid);
+
+PathfindingResult<AxialCoord> path = pathfinder.FindPath(startPosition, endPosition);
 ```
 
 ## 5 - Documentation <a name="documentation"/>

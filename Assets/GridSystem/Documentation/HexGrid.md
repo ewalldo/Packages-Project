@@ -62,6 +62,11 @@
       - [HexagonHexGrid()](#hexagonHexGridHexagonHexGrid)
     - [RectangleHexGrid](#rectangleHexGridRectangleHexGrid)
       - [RectangleHexGrid()](#rectangleHexGridRectangleHexGrid)
+    - [PathfinderHex](#pathfinderHexPathfinderHex)
+        - [PathfinderHex()](#pathfinderHexPathfinderHex)
+        - [PathfinderHex.CreateFromTraversalProvider()](#pathfinderHexCreateFromTraversalProvider)
+        - [PathfinderHex.FindPath()](#pathfinderHexFindPath)
+        - [PathfinderHex.IsPathAvailable()](#pathfinderHexIsPathAvailable)
 
 ## Documentation <a name="documentation"/>
 ### 1 AxialCoord() <a name="axialCoordAxialCoord"/>
@@ -948,3 +953,66 @@ public RectangleHexGrid<T>(SerializableHexGrid<T> gridData)
 | Vector3 | gridOriginPosition | The origin position of the hex grid |
 | Func<RectangleHexGrid<T>, AxialCoord, T> | gridObjectInitializer | The initialize function for each grid element (Func<RectangleHexGrid<T>, AxialCoord, T> where RectangleHexGrid<T> references this grid object and AxialCoord references the position in the grid for the object) |
 | SerializableHexGrid<T> | gridData | The grid data in a serialized format |
+
+
+### 5 PathfinderHex() <a name="pathfinderHexPathfinderHex"/>
+Initializes a new instance of the Pathfinder class.
+#### Declaration
+```csharp
+public PathfinderHex(HexGrid<T> grid, Func<T, bool> isWalkable, Func<T, int> movementCost = null, int maxSearchDepth = int.MaxValue);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| HexGrid<T> | grid | The grid to pathfind on |
+| Func<T, bool> | isWalkable | Predicate that defines if a cell is walkable |
+| Func<T, int> | movementCost | Optional per-cell movement cost (defaults to 1) |
+| int | maxSearchDepth | Maximum search depth for pathfinding |
+
+
+### PathfinderHex.CreateFromTraversalProvider() <a name="pathfinderHexCreateFromTraversalProvider"/>
+Initializes a Pathfinder using a grid of ITraversalProvider objects, which simplifies the setup by using the properties of the object directly.
+#### Declaration
+```csharp
+public static PathfinderHex<T> CreateFromTraversalProvider(HexGrid<T> grid, int maxSearchDepth = int.MaxValue) where T : ITraversalProvider;
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| HexGrid<T> | grid | The grid to pathfind on |
+| int | maxSearchDepth | Maximum search depth for pathfinding |
+
+
+### PathfinderHex.FindPath() <a name="pathfinderHexFindPath"/>
+Finds a path from the start position to the end position
+#### Declaration
+```csharp
+public PathfindingResult<AxialCoord> FindPath(AxialCoord start, AxialCoord end);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| AxialCoord | start | The starting position |
+| AxialCoord | end | The target position |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| PathfindingResult<AxialCoord> | The result of the pathfinding operation, including the found path, cost, and other relevant information |
+
+
+### PathfinderHex.IsPathAvailable() <a name="pathfinderHexIsPathAvailable"/>
+Checks if a path exists between the start and end positions. If it does, the resulting path and related information will be returned in the out parameter. If not, the result will indicate failure.
+#### Declaration
+```csharp
+public bool IsPathAvailable(AxialCoord start, AxialCoord end, out PathfindingResult<AxialCoord> pathResult);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| AxialCoord | start | The starting position |
+| AxialCoord | end | The target position |
+| PathfindingResult<AxialCoord> | The result of the pathfinding operation, including the found path, cost, and other relevant information |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True if a path exists, false otherwise |

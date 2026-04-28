@@ -61,6 +61,12 @@
     - [Grid2D.InstantiateGameObjectAtGridPosition()](#grid2DInstantiateGameObjectAtGridPosition)
     - [Grid2D.InstantiateGameObjectAtWorldPosition()](#grid2DInstantiateGameObjectAtWorldPosition)
     - [Grid2D.InstantiateGameObjectsAtEveryGridPosition()](#grid2DInstantiateGameObjectsAtEveryGridPosition)
+  - [Pathfinder2D](#pathfinder2DPathfinder2D)
+    - [Pathfinder2D()](#pathfinder2DPathfinder2D)
+    - [Pathfinder2D.CreateFromTraversalProvider()](#pathfinder2DCreateFromTraversalProvider)
+    - [Pathfinder2D.FindPath()](#pathfinder2DFindPath)
+    - [Pathfinder2D.IsPathAvailable()](#pathfinder2DIsPathAvailable)
+    - [PathfindingOptions2D()](#pathfinder2DPathfindingOptions2D)
 
 ## Documentation <a name="documentation"/>
 ### 1 GridPosition2D() <a name="gridPosition2DGridPosition2D"/>
@@ -980,3 +986,82 @@ public List<GameObject> InstantiateGameObjectsAtEveryGridPosition(GameObject gam
 | Type | Description |
 | :--- | :--- |
 | List<GameObject> | All the instantiated game objects |
+
+
+### 3 Pathfinder2D() <a name="pathfinder2DPathfinder2D"/>
+Initializes a new instance of the Pathfinder class.
+#### Declaration
+```csharp
+public Pathfinder2D(Grid2D<T> grid, Func<T, bool> isWalkable, Func<T, int> movementCost = null, PathfindingOptions2D options = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Grid2D<T> | grid | The grid to pathfind on |
+| Func<T, bool> | isWalkable | Predicate that defines if a cell is walkable |
+| Func<T, int> | movementCost | Optional per-cell movement cost (defaults to 1) |
+| PathfindingOptions2D | options | Options configuration for pathfinding |
+
+
+### Pathfinder2D.CreateFromTraversalProvider() <a name="pathfinder2DCreateFromTraversalProvider"/>
+Initializes a Pathfinder using a grid of ITraversalProvider objects, which simplifies the setup by using the properties of the object directly.
+#### Declaration
+```csharp
+public static Pathfinder2D<T> CreateFromTraversalProvider(Grid2D<T> grid, PathfindingOptions2D options = null) where T : ITraversalProvider;
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Grid2D<T> | grid | The grid to pathfind on |
+| PathfindingOptions2D | options | Options configuration for pathfinding |
+
+
+### Pathfinder2D.FindPath() <a name="pathfinder2DFindPath"/>
+Finds a path from the start position to the end position
+#### Declaration
+```csharp
+public PathfindingResult<GridPosition2D> FindPath(GridPosition2D start, GridPosition2D end);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| GridPosition2D | start | The starting position |
+| GridPosition2D | end | The target position |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| PathfindingResult<GridPosition2D> | The result of the pathfinding operation, including the found path, cost, and other relevant information |
+
+
+### Pathfinder2D.IsPathAvailable() <a name="pathfinder2DIsPathAvailable"/>
+Checks if a path exists between the start and end positions. If it does, the resulting path and related information will be returned in the out parameter. If not, the result will indicate failure.
+#### Declaration
+```csharp
+public bool IsPathAvailable(GridPosition2D start, GridPosition2D end, out PathfindingResult<GridPosition2D> pathResult);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| GridPosition2D | start | The starting position |
+| GridPosition2D | end | The target position |
+| PathfindingResult<GridPosition2D> | The result of the pathfinding operation, including the found path, cost, and other relevant information |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True if a path exists, false otherwise |
+
+
+### PathfindingOptions2D() <a name="pathfinder2DPathfindingOptions2D"/>
+Initializes a new instance of the PathfindingOptions2D class.
+#### Declaration
+```csharp
+public PathfindingOptions2D(bool allowDiagonalMovement, bool allowCuttingCorners, bool applyDiagonalCostPenalty, PathfindingHeuristic heuristic, int maxSearchDepth = int.MaxValue);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| bool | allowDiagonalMovement | Whether diagonal movement is allowed |
+| bool | allowCuttingCorners | Whether diagonal movement can cut through blocked corners |
+| bool | applyDiagonalCostPenalty | Whether diagonal movement should cost more than cardinal movement |
+| PathfindingHeuristic | heuristic | The heuristic function to use for A* |
+| int | maxSearchDepth | Maximum search depth for pathfinding |
