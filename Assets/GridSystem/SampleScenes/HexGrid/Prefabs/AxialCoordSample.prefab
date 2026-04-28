@@ -321,6 +321,7 @@ MonoBehaviour:
   singlePositionInfo: {fileID: 3455425776430078598}
   defaultMaterial: {fileID: 2100000, guid: 22b6843b0631246428e6ff02c9977b81, type: 2}
   mouseOverMaterial: {fileID: 2100000, guid: 6a12eda395798c34585c06c91330d165, type: 2}
+  pathMaterial: {fileID: 2100000, guid: 6d0a577e61737d54d983610c6a020f5b, type: 2}
 --- !u!135 &4065342771826802351
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -17,12 +17,11 @@ namespace GridSystem
 
         private GridPosition2D gridPosition2D;
         private GameObject instanciatedObject;
+        private Material currentMaterial;
 
         public static Action<GridPositionSampleScene, GridPosition2D, PointerEventData.InputButton> OnAnyGridPositionClicked;
 
         public bool IsWalkable { get; set; } = true;
-        private Material currentMaterial;
-
         public int MovementCost => 1;
 
         private void Awake()

@@ -110,17 +110,9 @@ namespace GridSystem
 
                 foreach (GridPosition2D pos in path.Path)
                 {
-                    //Debug.Log(pos);
                     grid2D[pos].SetMaterialAsPath();
                 }
             }
-
-            //if (character == null)
-            //{
-            //    character = Instantiate(characterPrefab, Vector3.zero, Quaternion.identity);
-            //}
-
-            //character.transform.position = grid2D.GetWorldPositionFromCenterGridPosition2D(gridPosition2D);
         }
 
     }

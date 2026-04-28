@@ -1,3 +1,4 @@
+using GridSystem.Pathfinding;
 using System;
 using TMPro;
 using UnityEngine;
@@ -5,35 +6,47 @@ using UnityEngine.EventSystems;
 
 namespace GridSystem
 {
-	public class AxialCoordSampleScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+	public class AxialCoordSampleScene : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, ITraversalProvider
 	{
 		[SerializeField] private MeshRenderer meshRenderer;
 		[SerializeField] private TextMeshPro singlePositionInfo;
 
 		[SerializeField] private Material defaultMaterial;
 		[SerializeField] private Material mouseOverMaterial;
+		[SerializeField] private Material pathMaterial;
 
-		private AxialCoord axialCoord;
+        private AxialCoord axialCoord;
+		private GameObject instanciatedObject;
+		private Material currentMaterial;
 
-		public static Action<AxialCoordSampleScene, AxialCoord> OnAnyAxialCoordClicked;
+		public static Action<AxialCoordSampleScene, AxialCoord, PointerEventData.InputButton> OnAnyAxialCoordClicked;
 
-		public void Show(Material material)
-		{
-			meshRenderer.material = material;
-			meshRenderer.enabled = true;
-		}
+		public bool IsWalkable { get; set; } = true;
+		public int MovementCost => 1;
 
-		public void Hide()
-		{
-			meshRenderer.enabled = false;
-		}
+        private void Awake()
+        {
+			currentMaterial = defaultMaterial;
+        }
 
-		public void SetAxialCoord(AxialCoord axialCoord)
+        public void SetAxialCoord(AxialCoord axialCoord)
         {
 			this.axialCoord = axialCoord;
 
 			singlePositionInfo.text = axialCoord.ToString();
         }
+
+		public void SetMaterialAsPath()
+		{
+			meshRenderer.material = pathMaterial;
+			currentMaterial = pathMaterial;
+		}
+
+		public void ResetMaterial()
+		{
+			meshRenderer.material = defaultMaterial;
+			currentMaterial = defaultMaterial;
+		}
 
 		public void OnPointerEnter(PointerEventData eventData)
 		{
@@ -42,12 +55,26 @@ namespace GridSystem
 
 		public void OnPointerExit(PointerEventData eventData)
 		{
-			meshRenderer.material = defaultMaterial;
+			meshRenderer.material = currentMaterial;
 		}
 
 		public void OnPointerDown(PointerEventData eventData)
 		{
-			OnAnyAxialCoordClicked?.Invoke(this, axialCoord);
+			OnAnyAxialCoordClicked?.Invoke(this, axialCoord, eventData.button);
+		}
+
+		public void DestroyGridObject()
+		{
+			if (instanciatedObject != null)
+			{
+				Destroy(instanciatedObject);
+				instanciatedObject = null;
+			}
+		}
+
+		public void UpdateGridObject(GameObject newObject)
+		{
+			instanciatedObject = newObject;
 		}
 	}
 }
