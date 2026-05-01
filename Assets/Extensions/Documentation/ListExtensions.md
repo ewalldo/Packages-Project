@@ -14,6 +14,7 @@
       - [Minimum](#listExtensionsMinimum)
       - [NormalizeList](#listExtensionsNormalizeList)
       - [RandomElement](#listExtensionsRandomElement)
+      - [RandomElementWithWeights](#listExtensionsRandomElementWithWeights)
       - [RemoveDuplicates](#listExtensionsRemoveDuplicates)
       - [RemoveNullValues](#listExtensionsRemoveNullValues)
       - [RotateLeft](#listExtensionsRotateLeft)
@@ -166,6 +167,22 @@ T RandomElement();
 | Type | Description |
 | :--- | :--- |
 | T | The random element got from the list |
+
+
+#### RandomElementWithWeights <a name="listExtensionsRandomElementWithWeights"/>
+Gets a random element from a list based on the list items weight
+#### Declaration
+```csharp
+T RandomElementWithWeights(Func<T, float> weightedFunction);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| Func<T, float> | weightedFunction | Function that returns the weight of each item |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| T | The random element got from the list, based on the items weight |
 
 
 #### RemoveDuplicates <a name="listExtensionsRemoveDuplicates"/>

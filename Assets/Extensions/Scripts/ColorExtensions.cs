@@ -25,14 +25,60 @@ namespace Extensions
 		}
 
 		/// <summary>
-		/// Inverts the color
+		/// Brighten the color by a specified amount
 		/// </summary>
-		/// <param name="color">The color to be inverted</param>
-		/// <returns>The inverted color</returns>
-		public static Color Invert(this Color color)
+		/// <param name="color">The color to brigthen</param>
+		/// <param name="amount">The amount to bright</param>
+		/// <returns>The brighten color based on the specified amount</returns>
+		public static Color Brighten(this Color color, float amount)
+		{
+			Color.RGBToHSV(color, out float hue, out float saturation, out float value);
+			return Color.HSVToRGB(hue, saturation, Mathf.Clamp01(value + amount)).WithAlpha(color.a);
+		}
+
+		/// <summary>
+		/// Darken the color by a specified amount
+		/// </summary>
+		/// <param name="color">The color to darken</param>
+		/// <param name="amount">The amount to dark</param>
+		/// <returns>The darken color based on the specified amount</returns>
+		public static Color Darken(this Color color, float amount)
+		{
+			return color.Brighten(-amount);
+		}
+
+        /// <summary>
+        /// Desaturate the color by a specified amount
+        /// </summary>
+        /// <param name="color">The color to desaturate</param>
+        /// <param name="amount">The amount to desaturate</param>
+        /// <returns>The desaturated color based on the specified amount</returns>
+        public static Color Desaturate(this Color color, float amount)
+        {
+            return color.Saturate(-amount);
+        }
+
+        /// <summary>
+        /// Inverts the color
+        /// </summary>
+        /// <param name="color">The color to be inverted</param>
+        /// <returns>The inverted color</returns>
+        public static Color Invert(this Color color)
 		{
 			return new Color(1 - color.r, 1 - color.g, 1 - color.b, color.a);
 		}
+
+        /// <summary>
+        /// Saturate the color by a specified amount
+        /// </summary>
+        /// <param name="color">The color to saturate</param>
+        /// <param name="amount">The amount to saturate</param>
+        /// <returns>The saturated color based on the specified amount</returns>
+        public static Color Saturate(this Color color, float amount)
+		{
+            Color.RGBToHSV(color, out float hue, out float saturation, out float value);
+            return Color.HSVToRGB(hue, Mathf.Clamp01(saturation + amount), value).WithAlpha(color.a);
+        }
 
 		/// <summary>
 		/// Converts a Color to a hexadecimal string representation

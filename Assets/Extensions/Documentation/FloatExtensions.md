@@ -14,6 +14,7 @@
       - [Minimum](#floatExtensionsMinimum)
       - [Normalize](#floatExtensionsNormalize)
       - [ToPercentage](#floatExtensionsToPercentage)
+      - [Wrap](#floatExtensionsWrap)
 
 ## Documentation <a name="documentation"/>
 ### Float Extensions <a name="floatExtensions"/>
@@ -213,3 +214,20 @@ float ToPercentage(float total = 1f);
 | Type | Description |
 | :--- | :--- |
 | float | The value representation in percentage |
+
+
+#### Wrap <a name="floatExtensionsWrap"/>
+Wraps the value between min (inclusive) and max (exclusive)
+#### Declaration
+```csharp
+float Wrap(float min, float max);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | min | The minimum value of the wrap range |
+| float | max | The maximum value of the wrap range |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The value wrapped |

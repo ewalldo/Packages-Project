@@ -3,7 +3,11 @@
 - [Documentation](#documentation)
   - [Color](#colorExtensions)
       - [Blend](#colorExtensionsBlend)
+      - [Brighten](#colorExtensionsBrighten)
+      - [Darken](#colorExtensionsDarken)
+      - [Desaturate](#colorExtensionsDesaturate)
       - [Invert](#colorExtensionsInvert)
+      - [Saturate](#colorExtensionsSaturate)
       - [ToHexString](#colorExtensionsToHexString)
       - [ToHexUInt](#colorExtensionsToHexUint)
       - [With](#colorExtensionsWith)
@@ -31,6 +35,54 @@ Color Blend(Color color2, float ratio);
 | Color | The blended color based on the specified ratio |
 
 
+#### Brighten <a name="colorExtensionsBrighten"/>
+Brighten the color by a specified amount
+#### Declaration
+```csharp
+Color Brighten(float amount);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | amount | The amount to bright |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | The brighten color based on the specified amount |
+
+
+#### Darken <a name="colorExtensionsDarken"/>
+Darken the color by a specified amount
+#### Declaration
+```csharp
+Color Darken(float amount);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | amount | The amount to darken |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | The darken color based on the specified amount |
+
+
+#### Desaturate <a name="colorExtensionsDesaturate"/>
+Saturate the color by a specified amount
+#### Declaration
+```csharp
+Color Desaturate(float amount);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | amount | The amount to desaturate |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | The desaturated color based on the specified amount |
+
+
 #### Invert <a name="colorExtensionsInvert"/>
 Inverts the color
 #### Declaration
@@ -41,6 +93,22 @@ Color Invert();
 | Type | Description |
 | :--- | :--- |
 | Color | The inverted color |
+
+
+#### Saturate <a name="colorExtensionsSaturate"/>
+Saturate the color by a specified amount
+#### Declaration
+```csharp
+Color Saturate(float amount);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| float | amount | The amount to saturate |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Color | The saturated color based on the specified amount |
 
 
 #### ToHexString <a name="colorExtensionsToHexString"/>

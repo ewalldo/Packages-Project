@@ -8,6 +8,10 @@
       - [Inverse](#intExtensionsInverse)
       - [Maximum](#intExtensionsMaximum)
       - [Minimum](#intExtensionsMinimum)
+      - [ToOrdinal](#intExtensionsToOrdinal)
+      - [ToRomanNumeral](#intExtensionsToRomanNumeral)
+      - [ToTimer](#intExtensionsToTimer)
+      - [Wrap](#intExtensionsWrap)
 
 ## Documentation <a name="documentation"/>
 ### Int Extensions <a name="intExtensions"/>
@@ -111,3 +115,56 @@ int Minimum(params int[] values)
 | Type | Description |
 | :--- | :--- |
 | int | The minimum value between the two/in a set |
+
+
+#### ToOrdinal <a name="intExtensionsToOrdinal"/>
+Converts an integer to its ordinal representation (e.g. 1 to 1st, 2 to 2nd, etc.)
+#### Declaration
+```csharp
+string ToOrdinal();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| string | The value in its ordinal representation |
+
+
+#### ToRomanNumeral <a name="intExtensionsToRomanNumeral"/>
+Converts an integer to its Roman numeral representation (e.g. 1 to I, 2 to II, etc.)
+#### Declaration
+```csharp
+string ToRomanNumeral();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| string | The value in its Roman numeral representation |
+
+
+#### ToTimer <a name="intExtensionsToTimer"/>
+Maps a value in seconds to a "MM:SS" style timer string
+#### Declaration
+```csharp
+string ToTimer();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| string | String representation in the "MM:SS" format |
+
+
+#### Wrap <a name="intExtensionsWrap"/>
+Wraps the value between min (inclusive) and max (exclusive)
+#### Declaration
+```csharp
+int Wrap(int min, int max);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| int | min | The minimum value of the wrap range |
+| int | max | The maximum value of the wrap range |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| int | The value wrapped |

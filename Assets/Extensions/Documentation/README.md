@@ -8,6 +8,7 @@
 - [Documentation](#documentation)
   - [Array](#arrayExtensions)
   - [AudioSource](#audioSourceExtensions)
+  - [Camera](#cameraExtensions)
   - [Color](#colorExtensions)
   - [Enumerable](#enumerableExtensions)
   - [Float](#floatExtensions)
@@ -17,6 +18,7 @@
   - [Measurements](#measurementExtensions)
   - [Renderer](#rendererExtensions)
   - [RichText](#richtextExtensions)
+  - [RigidBody](#rigidBodyExtensions)
   - [String](#stringExtensions)
   - [TMPro](#tmproExtensions)
   - [Transform](#transformExtensions)
@@ -30,18 +32,20 @@ This package has been updated to Unity 6000.3.9f1. However, it should work witho
 Please let us know if you encounter any issues with the version of Unity you are using.
 
 ## 2 - Version History <a name="versionHistory"/>
-- 1.0: Initial release
-- 1.1: Add extension methods to the AudioSource class and Vector2/3/4 structs plus a few methods to the other extensions
-- 1.2: Add extension methods to the TMPro and string classes plus a few methods to the other extensions
-- 1.2.1: Add extension methods to the Vector2 struct
-- 1.3: Add extension method to the IEnumerable interface, plus new extension methods to Color, GameObject, IList, Math, String, Transform and Vector
-- 1.4: Add extension method to Color, string, IList, and Transform. Divide math extensions into int, float and measurements.
-- 1.4.1: Ensure package functionality in Unity version 6000.3.9f1
+- 1.0: Initial release.
+- 1.1: Add extension methods to the AudioSource class and Vector2/3/4 structs plus a few methods to the other extensions.
+- 1.2: Add extension methods to the TMPro and string classes plus a few methods to the other extensions.
+- 1.2.1: Add extension methods to the Vector2 struct.
+- 1.3: Add extension methods to the IEnumerable interface, plus new extension methods to Color, GameObject, IList, Math, String, Transform and Vector.
+- 1.4: Add extension methods to Color, string, IList, and Transform. Divide math extensions into int, float and measurements.
+- 1.4.1: Ensure package functionality in Unity version 6000.3.9f1.
+- 1.5: Add extension methods to Camera and RigidBody classes, plus new extension methods to Color, float, int, IList, string, and Vector.
 
 ## 3 - Features <a name="features"/>
 - Extension methods for commonly used classes:
   - Array
   - AudioSource
+  - Camera
   - Color
   - Enumerable
   - Float
@@ -51,6 +55,7 @@ Please let us know if you encounter any issues with the version of Unity you are
   - Measurements
   - Renderer
   - RichText
+  - RigidBody
   - String
   - TMPro
   - Transform
@@ -62,6 +67,8 @@ Please let us know if you encounter any issues with the version of Unity you are
 - To use the extensions in your project, just add the "extensions" namespace on your scripts: using Extensions
 - You can then call the extension methods directly on instances of the corresponding classes. For example:
 ```csharp
+using Extensions
+
 // Shuffle an array
 int[] numbers = { 1, 2, 3, 4, 5 };
 numbers.Shuffle();
@@ -73,6 +80,7 @@ transform.ResetTransform();
 ## 5 - Documentation <a name="documentation"/>
 * [Array](ArrayExtensions.md) <a name="arrayExtensions">
 * [AudioSource](AudioSourceExtensions.md) <a name="audioSourceExtensions">
+* [Camera](CameraExtensions.md) <a name="cameraExtensions">
 * [Color](ColorExtensions.md) <a name="colorExtensions">
 * [Enumerable](EnumerableExtensions.md) <a name="enumerableExtensions">
 * [Float](FloatExtensions.md) <a name="floatExtensions">
@@ -82,6 +90,7 @@ transform.ResetTransform();
 * [Measurements](MeasurementsExtensions.md) <a name="measurementExtensions">
 * [Renderer](RendererExtensions.md) <a name="rendererExtensions">
 * [RichText](RichTextExtensions.md) <a name="richtextExtensions">
+* [RigidBody](RigidBodyExtensions.md) <a name="rigidBodyExtensions">
 * [String](StringExtensions.md) <a name="stringExtensions">
 * [TMPro](TMProExtensions.md) <a name="tmproExtensions">
 * [Transform](TransformExtensions.md) <a name="transformExtensions">

@@ -2,7 +2,9 @@
 ## Table of contents
 - [Documentation](#documentation)
   - [String](#stringExtensions)
+      - [CopyToClipboard](#stringExtensionsCopyToClipboard)
       - [FromHexString](#stringExtensionsFromHexString)
+      - [FromFromRomanNumerals](#stringExtensionsFromFromRomanNumerals)
       - [GetFileExtension](#stringExtensionsGetFileExtension)
       - [HasValue](#stringExtensionsHasValue)
       - [IsNullOrEmpty](#stringExtensionsIsNullOrEmpty)
@@ -14,9 +16,18 @@
       - [ToInt](#stringExtensionsToInt)
       - [ToVector](#stringExtensionsToVector)
       - [ValueOrEmpty](#stringExtensionsValueOrEmpty)
+      - [With](#stringExtensionsWith)
 
 ## Documentation <a name="documentation"/>
 ### String Extensions <a name="stringExtensions"/>
+#### CopyToClipboard <a name="stringExtensionsCopyToClipboard"/>
+Copies the string to the system clipboard
+#### Declaration
+```csharp
+void CopyToClipboard();
+```
+
+
 #### FromHexString <a name="stringExtensionsFromHexString"/>
 Converts a hex string into a Color
 #### Declaration
@@ -27,6 +38,18 @@ Color FromHexString();
 | Type | Description |
 | :--- | :--- |
 | Color | The Color represented by the hex string |
+
+
+#### FromFromRomanNumerals <a name="stringExtensionsFromFromRomanNumerals"/>
+Converts a Roman numeral string into an integer (e.g. I to 1, II to 2, etc.)
+#### Declaration
+```csharp
+int FromRomanNumerals();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| int | The integer representing the Roman numeral |
 
 
 #### GetFileExtension <a name="stringExtensionsGetFileExtension"/>
@@ -171,3 +194,19 @@ string ValueOrEmpty();
 | Type | Description |
 | :--- | :--- |
 | string | The string value or an empty string if null |
+
+
+#### With <a name="stringExtensionsWith"/>
+Shorthand version of string.Format. ex: "Hello {0}{1}.With("world", "!");
+#### Declaration
+```csharp
+string With(params object[] args);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| params object[] | args | Values to be inserted into the string |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| string | The formatted string |

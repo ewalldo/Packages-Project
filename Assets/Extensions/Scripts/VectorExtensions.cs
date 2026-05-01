@@ -156,6 +156,16 @@ namespace Extensions
         }
 
         /// <summary>
+        /// Returns a new Vector3 with the Y component set to 0 (flat on the XZ plane)
+        /// </summary>
+        /// <param name="v">The original Vector3</param>
+        /// <returns>A new Vector3 with the Y component zeroed</returns>
+        public static Vector3 Flat(this Vector3 v)
+        {
+            return v.WithY(0f);
+        }
+
+        /// <summary>
         /// Returns true if current Vector3 is in range of specified Vector3 and range
         /// </summary>
         /// <param name="v">The current Vector3</param>
