@@ -14,6 +14,7 @@
   - [CameraSettings.CinemachineVirtualCameraInitialOffset](#cameraSettingsCinemachineVirtualCameraInitialOffset)
   - [CameraSettings.MoveCameraSpeed](#cameraSettingsMoveCameraSpeed)
   - [CameraSettings.UseEdgeScrolling](#cameraSettingsUseEdgeScrolling)
+  - [CameraSettings.UseEdgeScrollingWhenHoveringUI](#cameraSettingsUseEdgeScrollingWhenHoveringUI)
   - [CameraSettings.EdgeScrollSizeX](#cameraSettingsEdgeScrollSizeX)
   - [CameraSettings.EdgeScrollSizeY](#cameraSettingsEdgeScrollSizeY)
   - [CameraSettings.UseDragPan](#cameraSettingsUseDragPan)
@@ -26,6 +27,7 @@
   - [CameraSettings.ZoomCameraAmount](#cameraSettingsZoomCameraAmount)
   - [CameraSettings.FollowOffsetMin](#cameraSettingsFollowOffsetMin)
   - [CameraSettings.FollowOffsetMax](#cameraSettingsFollowOffsetMax)
+  - [CameraSettings.ResetToDefault](#cameraSettingsResetToDefault)
   - [CameraSettings.ConvertSettingsToJSONString()](#cameraSettingsConvertSettingsToJSONString)
   - [CameraSettings.LoadSettingsFromJson()](#cameraSettingsLoadSettingsFromJson)
   - [CameraSettings.SaveSettingsToPlayerPrefs()](#cameraSettingsSaveSettingsToPlayerPrefs)
@@ -34,7 +36,7 @@
 
 ## 1 - Introduction <a name="introduction"/>
 The Camera System Package is a collection of scripts that allow for easy and flexible camera control in Unity. The package uses Cinemachine and the new Input System approach to create smooth camera movement and customizable inputs. With the Camera System Package, you can quickly create a camera that works really well for games that requires a free camera movement.  
-The camera settings are created using scriptable objects, allowing the use to easily switch between presets both in the editor or during runtime. Also, the camera settings values can be save/load using playerPrefs or Json, so any changes in the camera can be restored when relaunching the game.
+The camera settings are created using scriptable objects, allowing the use to easily switch between presets both in the editor or during runtime. Also, the camera settings values can be saved/loaded using playerPrefs or Json, so any changes in the camera can be restored when relaunching the game.
 
 This package has been updated to Unity 6000.3.9f1 and Cinemachine 3. However, it should work without issue with earlier or future versions of Unity.  
 Please let us know if you encounter any issues with the version of Unity you are using.
@@ -42,8 +44,10 @@ Please let us know if you encounter any issues with the version of Unity you are
 - **Package requirements: Cinemachine 3 and InputSystem**
 
 ## 2 - Version History <a name="versionHistory"/>
-- 1.0: Initial release
-- 2.0: Update to Cinemachine 3 and ensured package functionality in Unity version 6000.3.9f1
+- 1.0: Initial release.
+- 2.0: Update to Cinemachine 3 and ensured package functionality in Unity version 6000.3.9f1.
+- 2.0.1: Fix occasional stutter on zoom.
+- 2.1.0: Add option to Edge Scroll when hovering UI.
 
 ## 3 - Features <a name="features"/>
 - Easier to create camera presets: By using ScriptableObjects, different camera presets can be created allowing the camera settings to be changed easily in the editor or during runtime.
@@ -106,7 +110,7 @@ public bool OverrideCameraInitialOffset;
 | bool | True to override the cinemachineValue, false otherwise |
 
 
-### 5.3 CameraSettings.CinemachineVirtualCameraInitialOffset <a name="cameraSettingsCinemachineVirtualCameraInitialOffset"/>
+### CameraSettings.CinemachineVirtualCameraInitialOffset <a name="cameraSettingsCinemachineVirtualCameraInitialOffset"/>
 Get the initial offset for the cinemachine virtual camera
 #### Declaration
 ```csharp
@@ -118,7 +122,7 @@ public Vector3 CinemachineVirtualCameraInitialOffset;
 | Vector3 | The initial offset for the cinemachine virtual camera |
 
 
-### 5.4 CameraSettings.MoveCameraSpeed <a name="cameraSettingsMoveCameraSpeed"/>
+### CameraSettings.MoveCameraSpeed <a name="cameraSettingsMoveCameraSpeed"/>
 Get the camera movement speed
 #### Declaration
 ```csharp
@@ -130,7 +134,7 @@ public float MoveCameraSpeed;
 | float | The camera movement speed |
 
 
-### 5.5 CameraSettings.UseEdgeScrolling <a name="cameraSettingsUseEdgeScrolling"/>
+### CameraSettings.UseEdgeScrolling <a name="cameraSettingsUseEdgeScrolling"/>
 Should edge scrolling be active or not
 #### Declaration
 ```csharp
@@ -142,7 +146,19 @@ public bool UseEdgeScrolling;
 | bool | True to activate the edge scrolling, false otherwise |
 
 
-### 5.6 CameraSettings.EdgeScrollSizeX <a name="cameraSettingsEdgeScrollSizeX"/>
+### CameraSettings.UseEdgeScrollingWhenHoveringUI <a name="cameraSettingsUseEdgeScrollingWhenHoveringUI"/>
+Should edge scrolling be active when hovering UI elements or not, if false edge scrolling will only be active when not hovering any UI element
+#### Declaration
+```csharp
+public bool UseEdgeScrollingWhenHoveringUI;
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True to perform edge scrolling when hovering UI element, false otherwise |
+
+
+### CameraSettings.EdgeScrollSizeX <a name="cameraSettingsEdgeScrollSizeX"/>
 Percentage of the screen width where the edge scroll will be active (0.1 means that will be active on the 10% of the screen)
 #### Declaration
 ```csharp
@@ -154,7 +170,7 @@ public float EdgeScrollSizeX;
 | float | Percentage of the screen width (0~0.49) |
 
 
-### 5.7 CameraSettings.EdgeScrollSizeY <a name="cameraSettingsEdgeScrollSizeY"/>
+### CameraSettings.EdgeScrollSizeY <a name="cameraSettingsEdgeScrollSizeY"/>
 Percentage of the screen height where the edge scroll will be active (0.1 means that will be active on the 10% of the screen)
 #### Declaration
 ```csharp
@@ -166,7 +182,7 @@ public float EdgeScrollSizeY;
 | float | Percentage of the screen height (0~0.49) |
 
 
-### 5.8 CameraSettings.UseDragPan <a name="cameraSettingsUseDragPan"/>
+### CameraSettings.UseDragPan <a name="cameraSettingsUseDragPan"/>
 Should drag pan be active or not, if active camera can be moved with right-mouse click
 #### Declaration
 ```csharp
@@ -178,7 +194,7 @@ public bool UseDragPan;
 | bool | True to activate drag pan, false otherwise |
 
 
-### 5.9 CameraSettings.DragPanSpeedMultiplier <a name="cameraSettingsDragPanSpeedMultiplier"/>
+### CameraSettings.DragPanSpeedMultiplier <a name="cameraSettingsDragPanSpeedMultiplier"/>
 Get the multiplier speed when using drag pan
 #### Declaration
 ```csharp
@@ -190,7 +206,7 @@ public float DragPanSpeedMultiplier;
 | float | The multiplier speed when using drag pan |
 
 
-### 5.10 CameraSettings.RotateCameraSpeed <a name="cameraSettingsRotateCameraSpeed"/>
+### CameraSettings.RotateCameraSpeed <a name="cameraSettingsRotateCameraSpeed"/>
 Get the camera rotation speed
 #### Declaration
 ```csharp
@@ -202,7 +218,7 @@ public float RotateCameraSpeed;
 | float | The camera rotation speed |
 
 
-### 5.11 CameraSettings.UseDragRotation <a name="cameraSettingsUseDragRotation"/>
+### CameraSettings.UseDragRotation <a name="cameraSettingsUseDragRotation"/>
 Should drag rotation be active or not, if active camera can be rotated with middle-mouse click
 #### Declaration
 ```csharp
@@ -214,7 +230,7 @@ public bool UseDragRotation;
 | bool | True to activate drag rotation, false otherwise |
 
 
-### 5.12 CameraSettings.DragRotationSpeedMultiplier <a name="cameraSettingsDragRotationSpeedMultiplier"/>
+### CameraSettings.DragRotationSpeedMultiplier <a name="cameraSettingsDragRotationSpeedMultiplier"/>
 Get the multiplier speed when using drag rotation
 #### Declaration
 ```csharp
@@ -226,7 +242,7 @@ public float DragRotationSpeedMultiplier;
 | float | The multiplier speed when using drag rotation |
 
 
-### 5.13 CameraSettings.UseZoom <a name="cameraSettingsUseZoom"/>
+### CameraSettings.UseZoom <a name="cameraSettingsUseZoom"/>
 Should camera zoom be active or not, if active camera can be zoomed with middle-mouse scroll
 #### Declaration
 ```csharp
@@ -238,7 +254,7 @@ public bool UseZoom;
 | bool | True to activate zoom, false otherwise |
 
 
-### 5.14 CameraSettings.ZoomCameraSpeed <a name="cameraSettingsZoomCameraSpeed"/>
+### CameraSettings.ZoomCameraSpeed <a name="cameraSettingsZoomCameraSpeed"/>
 Get the camera zoom speed
 #### Declaration
 ```csharp
@@ -250,7 +266,7 @@ public float ZoomCameraSpeed;
 | float | The camera zoom speed |
 
 
-### 5.15 CameraSettings.ZoomCameraAmount <a name="cameraSettingsZoomCameraAmount"/>
+### CameraSettings.ZoomCameraAmount <a name="cameraSettingsZoomCameraAmount"/>
 Get the camera step size when zooming
 #### Declaration
 ```csharp
@@ -262,7 +278,7 @@ public float ZoomCameraAmount;
 | float | The camera step size when zooming |
 
 
-### 5.16 CameraSettings.FollowOffsetMin <a name="cameraSettingsFollowOffsetMin"/>
+### CameraSettings.FollowOffsetMin <a name="cameraSettingsFollowOffsetMin"/>
 Get the minimum amount of offset the camera should keep when zooming
 #### Declaration
 ```csharp
@@ -274,7 +290,7 @@ public float FollowOffsetMin;
 | float | The minimum amount of offset the camera should keep when zooming |
 
 
-### 5.17 CameraSettings.FollowOffsetMax <a name="cameraSettingsFollowOffsetMax"/>
+### CameraSettings.FollowOffsetMax <a name="cameraSettingsFollowOffsetMax"/>
 Get the maximum amount of offset the camera should keep when zooming
 #### Declaration
 ```csharp
@@ -286,7 +302,35 @@ public float FollowOffsetMax;
 | float | The maximum amount of offset the camera should keep when zooming |
 
 
-### 5.18 CameraSettings.ConvertSettingsToJSONString() <a name="cameraSettingsConvertSettingsToJSONString"/>
+### CameraSettings.ResetToDefault <a name="cameraSettingsResetToDefault"/>
+Reset all the settings to their default values.  
+The default values are as follows:
+```csharp
+OverrideCameraInitialOffset = false;
+CinemachineVirtualCameraInitialOffset = new Vector3(0, 10, -10);
+MoveCameraSpeed = 25f;
+UseEdgeScrolling = false;
+UseEdgeScrollingWhenHoveringUI = false;
+EdgeScrollSizeX = 0.1f;
+EdgeScrollSizeY = 0.1f;
+UseDragPan = false;
+DragPanSpeedMultiplier = 1f;
+RotateCameraSpeed = 100f;
+UseDragRotation = false;
+DragRotationSpeedMultiplier = 0.75f;
+UseZoom = true;
+ZoomCameraSpeed = 10f;
+ZoomCameraAmount = 5f;
+FollowOffsetMin = 5f;
+FollowOffsetMax = 50f;
+```
+#### Declaration
+```csharp
+public void ResetToDefault();
+```
+
+
+### CameraSettings.ConvertSettingsToJSONString() <a name="cameraSettingsConvertSettingsToJSONString"/>
 Convert this CameraSettings to a json string
 #### Declaration
 ```csharp
@@ -298,7 +342,7 @@ public string ConvertSettingsToJSONString();
 | string | The string containing the settings in a json format |
 
 
-### 5.19 CameraSettings.LoadSettingsFromJson() <a name="cameraSettingsLoadSettingsFromJson"/>
+### CameraSettings.LoadSettingsFromJson() <a name="cameraSettingsLoadSettingsFromJson"/>
 Load camera settings based on a json string
 #### Declaration
 ```csharp
@@ -310,7 +354,7 @@ public void LoadSettingsFromJson(string json);
 | string | json | The string containing the camera settings |
 
 
-### 5.20 CameraSettings.SaveSettingsToPlayerPrefs() <a name="cameraSettingsSaveSettingsToPlayerPrefs"/>
+### CameraSettings.SaveSettingsToPlayerPrefs() <a name="cameraSettingsSaveSettingsToPlayerPrefs"/>
 Save this camera settings to playerPrefs
 #### Declaration
 ```csharp
@@ -318,7 +362,7 @@ public void SaveSettingsToPlayerPrefs();
 ```
 
 
-### 5.21 CameraSettings.LoadSettingsFromPlayerPrefs() <a name="cameraSettingsLoadSettingsFromPlayerPrefs"/>
+### CameraSettings.LoadSettingsFromPlayerPrefs() <a name="cameraSettingsLoadSettingsFromPlayerPrefs"/>
 Load the camera settings from playerPrefs
 #### Declaration
 ```csharp

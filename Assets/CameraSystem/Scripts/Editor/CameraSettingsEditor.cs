@@ -55,6 +55,7 @@ namespace CameraSystem
                 if (cameraSettings.UseEdgeScrolling)
                 {
                     EditorGUI.indentLevel++;
+                    cameraSettings.UseEdgeScrollingWhenHoveringUI = EditorGUILayout.ToggleLeft("Edge Scroll When Hovering UI Also?", cameraSettings.UseEdgeScrollingWhenHoveringUI);
                     cameraSettings.EdgeScrollSizeX = EditorGUILayout.Slider("X Sensitivity", cameraSettings.EdgeScrollSizeX, 0f, 0.49f);
                     cameraSettings.EdgeScrollSizeY = EditorGUILayout.Slider("Y Sensitivity", cameraSettings.EdgeScrollSizeY, 0f, 0.49f);
                     EditorGUI.indentLevel--;
@@ -90,12 +91,12 @@ namespace CameraSystem
             displayZoomSettings = EditorGUILayout.BeginFoldoutHeaderGroup(displayZoomSettings, "Camera Zoom Settings");
             if (displayZoomSettings)
             {
-                cameraSettings.ZoomCameraSpeed = EditorGUILayout.FloatField("Zoom Speed", cameraSettings.ZoomCameraSpeed);
-                cameraSettings.ZoomCameraAmount = EditorGUILayout.FloatField("Zoom Amount", cameraSettings.ZoomCameraAmount);
                 cameraSettings.UseZoom = EditorGUILayout.ToggleLeft("Allow Zoom?", cameraSettings.UseZoom);
                 if (cameraSettings.UseZoom)
                 {
                     EditorGUI.indentLevel++;
+                    cameraSettings.ZoomCameraSpeed = EditorGUILayout.FloatField("Zoom Speed", cameraSettings.ZoomCameraSpeed);
+                    cameraSettings.ZoomCameraAmount = EditorGUILayout.FloatField("Zoom Amount", cameraSettings.ZoomCameraAmount);
                     cameraSettings.FollowOffsetMin = EditorGUILayout.FloatField("Zoom Offset Min", cameraSettings.FollowOffsetMin);
                     cameraSettings.FollowOffsetMax = EditorGUILayout.FloatField("Zoom Offset Max", cameraSettings.FollowOffsetMax);
                     EditorGUI.indentLevel--;

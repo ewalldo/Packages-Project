@@ -16,6 +16,7 @@ MonoBehaviour:
   CinemachineVirtualCameraInitialOffset: {x: 0, y: 0, z: 0}
   MoveCameraSpeed: 25
   UseEdgeScrolling: 0
+  UseEdgeScrollingWhenHoveringUI: 0
   EdgeScrollSizeX: 0.1
   EdgeScrollSizeY: 0.1
   UseDragPan: 1

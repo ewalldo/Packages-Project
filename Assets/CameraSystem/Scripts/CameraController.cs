@@ -20,6 +20,9 @@ namespace CameraSystem
         private void Awake()
         {
             cinemachineFollow = cinemachineCamera.GetComponent<CinemachineFollow>();
+            if (cinemachineFollow == null)
+                Debug.LogError("[CameraController] CinemachineFollow component not found!", this);
+
             cameraActions = new CameraSystemInputActions();
 
             if (cameraSettings.OverrideCameraInitialOffset)
@@ -58,6 +61,9 @@ namespace CameraSystem
 
             if (cameraSettings.UseDragRotation)
                 HandleCameraRotationDragRotation();
+
+            if (cameraSettings.UseZoom)
+                HandleCameraZoom();
         }
 
         /// <summary>
@@ -67,6 +73,7 @@ namespace CameraSystem
         public void SetCameraSettings(CameraSettings cameraSettings)
         {
             this.cameraSettings = cameraSettings;
+            followOffset = cinemachineFollow.FollowOffset;
         }
 
         /// <summary>
@@ -77,7 +84,7 @@ namespace CameraSystem
             Vector2 keyboardValue = keyboardMovement.ReadValue<Vector2>();
             Vector3 inputDir = new Vector3(keyboardValue.x, 0f, keyboardValue.y);
 
-            if (inputDir.magnitude != 0)
+            if (inputDir.sqrMagnitude > 0f)
                 ApplyMovement(inputDir);
         }
 
@@ -86,15 +93,22 @@ namespace CameraSystem
         /// </summary>
         private void HandleCameraMovementEdgeScrolling()
         {
+            if (!cameraSettings.UseEdgeScrollingWhenHoveringUI && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                return;
+
             Vector3 inputDir = Vector3.zero;
             Vector2 mousePosition = Mouse.current.position.ReadValue();
 
-            if (mousePosition.x < (Screen.width * cameraSettings.EdgeScrollSizeX)) inputDir.x += -1f;
-            if (mousePosition.y < (Screen.height * cameraSettings.EdgeScrollSizeY)) inputDir.z += -1f;
-            if (mousePosition.x > (Screen.width * (1f - cameraSettings.EdgeScrollSizeX))) inputDir.x += +1f;
-            if (mousePosition.y > (Screen.height * (1f - cameraSettings.EdgeScrollSizeY))) inputDir.z += +1f;
+            if (mousePosition.x < (Screen.width * cameraSettings.EdgeScrollSizeX))
+                inputDir.x += -1f;
+            if (mousePosition.y < (Screen.height * cameraSettings.EdgeScrollSizeY))
+                inputDir.z += -1f;
+            if (mousePosition.x > (Screen.width * (1f - cameraSettings.EdgeScrollSizeX)))
+                inputDir.x += +1f;
+            if (mousePosition.y > (Screen.height * (1f - cameraSettings.EdgeScrollSizeY)))
+                inputDir.z += +1f;
 
-            if (inputDir.magnitude != 0)
+            if (inputDir.sqrMagnitude > 0f)
                 ApplyMovement(inputDir);
         }
 
@@ -112,7 +126,7 @@ namespace CameraSystem
             inputDir.x = -mouseMovementDelta.x * cameraSettings.DragPanSpeedMultiplier;
             inputDir.z = -mouseMovementDelta.y * cameraSettings.DragPanSpeedMultiplier;
 
-            if (inputDir.magnitude != 0)
+            if (inputDir.sqrMagnitude > 0f)
                 ApplyMovement(inputDir);
         }
 
@@ -161,6 +175,14 @@ namespace CameraSystem
         }
 
         /// <summary>
+        /// Handle the camera zoom by changing the follow offset of the cinemachine virtual camera, this is called every frame when zoom is active to make the zoom smooth, the follow offset is changed in the HandleCameraZoom_FollowOffsetZoom method when the player scrolls the mouse wheel
+        /// </summary>
+        private void HandleCameraZoom()
+        {
+            cinemachineFollow.FollowOffset = Vector3.Lerp(cinemachineFollow.FollowOffset, followOffset, Time.deltaTime * cameraSettings.ZoomCameraSpeed);
+        }
+
+        /// <summary>
         /// Handle the camera zoom
         /// </summary>
         /// <param name="inputAction"></param>
@@ -171,23 +193,20 @@ namespace CameraSystem
 
             Vector3 zoomDir = followOffset.normalized;
 
-            if (inputAction.ReadValue<Vector2>().y > 0) followOffset -= zoomDir * cameraSettings.ZoomCameraAmount;
-            if (inputAction.ReadValue<Vector2>().y < 0) followOffset += zoomDir * cameraSettings.ZoomCameraAmount;
+            float scrollY = inputAction.ReadValue<Vector2>().y;
+            if (scrollY == 0)
+                return;
 
-            if (followOffset.magnitude < cameraSettings.FollowOffsetMin) followOffset = zoomDir * cameraSettings.FollowOffsetMin;
-            if (followOffset.magnitude > cameraSettings.FollowOffsetMax) followOffset = zoomDir * cameraSettings.FollowOffsetMax;
+            if (scrollY > 0)
+                followOffset -= zoomDir * cameraSettings.ZoomCameraAmount;
+            if (scrollY < 0)
+                followOffset += zoomDir * cameraSettings.ZoomCameraAmount;
 
-            cinemachineFollow.FollowOffset = Vector3.Lerp(cinemachineFollow.FollowOffset, followOffset, Time.deltaTime * cameraSettings.ZoomCameraSpeed);
+            float mag = followOffset.magnitude;
+            if (mag < cameraSettings.FollowOffsetMin)
+                followOffset = zoomDir * cameraSettings.FollowOffsetMin;
+            else if (mag > cameraSettings.FollowOffsetMax)
+                followOffset = zoomDir * cameraSettings.FollowOffsetMax;
         }
-
-        //private void HandleCameraZoom_LowerY()
-        //{
-        //    if (cameraActions.Camera.MouseZoom.ReadValue<Vector2>().y > 0) followOffset.y -= cameraSettings.ZoomCameraAmount;
-        //    if (cameraActions.Camera.MouseZoom.ReadValue<Vector2>().y < 0) followOffset.y += cameraSettings.ZoomCameraAmount;
-
-        //    followOffset.y = Mathf.Clamp(followOffset.y, cameraSettings.FollowOffsetMinY, cameraSettings.FollowOffsetMaxY);
-
-        //    cinemachineTransposer.m_FollowOffset = Vector3.Lerp(cinemachineTransposer.m_FollowOffset, followOffset, Time.deltaTime * cameraSettings.ZoomCameraSpeed);
-        //}
     }
 }
