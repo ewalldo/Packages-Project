@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using System;
+using EventBusPattern.Sample;
 
-namespace EventBusPattern
+namespace EventBusPattern.Sample
 {
 	public class UIInfoManager : MonoBehaviour
 	{
@@ -12,23 +11,22 @@ namespace EventBusPattern
         [SerializeField] private TextMeshProUGUI uiCharacterInfoMovementUGUI;
         [SerializeField] private TextMeshProUGUI uiEventsInfoUGUI;
 
-        [Header("Event Types")]
-        [SerializeField] private EventType buttonClicked;
-        [SerializeField] private EventType sliderChangedValue;
-        [SerializeField] private EventType characterMovement;
+        [Header("Event buses")]
+        [SerializeField] private EventBus uiEventBus;
+        [SerializeField] private EventBus gameplayEventBus;
 
         private void OnEnable()
         {
-            EventBus.Register<Button>(buttonClicked, OnButtonClicked);
-            EventBus.Register<float>(sliderChangedValue, OnSliderChanged);
-            EventBus.Register<bool>(characterMovement, OnCharacterMovement);
+            uiEventBus.Register<OnButtonClickEvent>(OnButtonClicked);
+            uiEventBus.Register<OnSliderValueChangedEvent>(OnSliderChanged);
+            gameplayEventBus.Register<OnCharacterMoveEvent>(OnCharacterMovement);
         }
 
         private void OnDisable()
         {
-            EventBus.Unregister<Button>(buttonClicked, OnButtonClicked);
-            EventBus.Unregister<float>(sliderChangedValue, OnSliderChanged);
-            EventBus.Unregister<bool>(characterMovement, OnCharacterMovement);
+            uiEventBus.Unregister<OnButtonClickEvent>(OnButtonClicked);
+            uiEventBus.Unregister<OnSliderValueChangedEvent>(OnSliderChanged);
+            gameplayEventBus.Unregister<OnCharacterMoveEvent>(OnCharacterMovement);
         }
 
         private void UpdateUIEventsInfo(string newInfo)
@@ -36,21 +34,21 @@ namespace EventBusPattern
             uiEventsInfoUGUI.text = newInfo;
         }
 
-        private void OnButtonClicked(Button clickedButton)
+        private void OnButtonClicked(OnButtonClickEvent onButtonClickEvent)
         {
-            TextMeshProUGUI buttonText = clickedButton.GetComponentInChildren<TextMeshProUGUI>();
+            TextMeshProUGUI buttonText = onButtonClickEvent.ClickedButton.GetComponentInChildren<TextMeshProUGUI>();
             UpdateUIEventsInfo("The \"" + buttonText.text + "\" was clicked");
         }
 
-        private void OnSliderChanged(float newSliderValue)
+        private void OnSliderChanged(OnSliderValueChangedEvent onSliderValueChangedEvent)
         {
-            UpdateUIEventsInfo("Slider value changed to " + newSliderValue.ToString());
-            uiCharacterInfoSpeedUGUI.text = "Speed: " + newSliderValue.ToString();
+            UpdateUIEventsInfo("Slider value changed to " + onSliderValueChangedEvent.NewValue.ToString());
+            uiCharacterInfoSpeedUGUI.text = "Speed: " + onSliderValueChangedEvent.NewValue.ToString();
         }
 
-        private void OnCharacterMovement(bool isMoving)
+        private void OnCharacterMovement(OnCharacterMoveEvent onCharacterMoveEvent)
         {
-            uiCharacterInfoMovementUGUI.text = "Is Moving: " + isMoving;
+            uiCharacterInfoMovementUGUI.text = "Is Moving: " + onCharacterMoveEvent.IsMoving;
         }
     }
 }

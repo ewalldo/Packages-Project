@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace EventBusPattern
+namespace EventBusPattern.Sample
 {
 	public class Character : MonoBehaviour
 	{
-        [Header("Event Types")]
-        [SerializeField] private EventType sliderChangedValue;
-        [SerializeField] private EventType characterMovementEvent;
+        [Header("Event bus")]
+        [SerializeField] private EventBus uiEventBus;
+        [SerializeField] private EventBus gameplayEventBus;
 
 
         private float characterSpeed = 5f;
@@ -15,12 +15,12 @@ namespace EventBusPattern
 
         private void OnEnable()
         {
-            EventBus.Register<float>(sliderChangedValue, UpdateSpeed);
+            uiEventBus.Register<OnSliderValueChangedEvent>(UpdateSpeed);
         }
 
         private void OnDisable()
         {
-            EventBus.Unregister<float>(sliderChangedValue, UpdateSpeed);
+            uiEventBus.Unregister<OnSliderValueChangedEvent>(UpdateSpeed);
         }
 
         private void Update()
@@ -29,14 +29,14 @@ namespace EventBusPattern
 
             if (inputDirection == Vector2.zero)
             {
-                EventBus.Invoke<bool>(characterMovementEvent, false);
+                gameplayEventBus.Invoke<OnCharacterMoveEvent>(new OnCharacterMoveEvent { IsMoving = false });
                 return;
             }
 
             Vector3 moveDirection = new Vector3(inputDirection.x, 0f, inputDirection.y);
             transform.position += characterSpeed * Time.deltaTime * moveDirection;
             transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
-            EventBus.Invoke<bool>(characterMovementEvent, true);
+            gameplayEventBus.Invoke<OnCharacterMoveEvent>(new OnCharacterMoveEvent { IsMoving = true });
         }
 
         private Vector2 GetInputDirectionNormalized()
@@ -53,9 +53,9 @@ namespace EventBusPattern
             return inputDirection;
         }
 
-        private void UpdateSpeed(float newSpeed)
+        private void UpdateSpeed(OnSliderValueChangedEvent onSliderValueChangedEvent)
         {
-            characterSpeed = newSpeed;
+            characterSpeed = onSliderValueChangedEvent.NewValue;
         }
     }
 }

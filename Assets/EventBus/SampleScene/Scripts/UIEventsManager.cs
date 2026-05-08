@@ -1,22 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace EventBusPattern
+namespace EventBusPattern.Sample
 {
 	public class UIEventsManager : MonoBehaviour
 	{
-        [Header("Event Types")]
-        [SerializeField] private EventType buttonClick;
-		[SerializeField] private EventType sliderChangedValue;
-
+        [Header("Event bus")]
+        [SerializeField] private EventBus uiEventBus;
+        
         public void ButtonClick(Button button)
         {
-            EventBus.Invoke<Button>(buttonClick, button);
+            uiEventBus.Invoke<OnButtonClickEvent>(new OnButtonClickEvent { ClickedButton = button });
         }
 
         public void SliderChangedValue(Slider slider)
         {
-            EventBus.Invoke<float>(sliderChangedValue, slider.value);
+            uiEventBus.Invoke<OnSliderValueChangedEvent>(new OnSliderValueChangedEvent { NewValue = slider.value });
         }
     }
 }
