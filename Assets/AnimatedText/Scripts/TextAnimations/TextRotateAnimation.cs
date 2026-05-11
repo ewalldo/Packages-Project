@@ -5,25 +5,20 @@ namespace AnimatedText
 	public class TextRotateAnimation : ITextAnimator
 	{
         public float Speed { get; private set; }
-        public float RotationValue { get; private set; }
+
+        public const string START_ANIMATION_TAG = "rotate=";
+
+        public const string END_ANIMATION_TAG = "/rotate";
 
         public TextRotateAnimation(float speed)
         {
             Speed = speed;
-            RotationValue = 0f;
         }
 
-        private void IncrementRotationValue(float amount)
+        public Matrix4x4 GenerateTransformMatrix(int charIndex)
         {
-            RotationValue += amount;
-            if (RotationValue > 360f)
-                RotationValue -= 360f;
-        }
-
-        public Matrix4x4 GenerateTranformMatrix(int charIndex)
-        {
-            IncrementRotationValue(Time.deltaTime * Speed);
-            Matrix4x4 matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.Euler(0f, 0f, RotationValue), Vector3.one);
+            float angle = Time.time * Speed % 360;
+            Matrix4x4 matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0f, 0f, angle), Vector3.one);
 
             return matrix;
         }

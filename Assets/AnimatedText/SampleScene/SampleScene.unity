@@ -287,7 +287,7 @@ MonoBehaviour:
   - With this package you can also animate some portion of your texts to create really
     cool effects.
   - 'The currently supported animations are: <wave=5,10>wave</wave>, <shake=3>shake</shake>,
-    <pulse=5,0.2,1>pulse</pulse> and <rotate=10>rotate</rotate>.'
+    <pulse=5,0.2,1>pulse</pulse> and <rotate=60>rotate</rotate>.'
   - (There are plans to add more animations in the future).
   - You can mix the animation tags with the previous tags to create different effects,
     like <color=blue><wave=5,10>colored wave</wave></color>.

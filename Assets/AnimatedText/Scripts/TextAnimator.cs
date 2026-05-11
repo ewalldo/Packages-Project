@@ -31,10 +31,10 @@ namespace AnimatedText
         private Coroutine typingCoroutine;
         public float DefaultTypingSpeed { get; set; }
 
-        public Action<char> OnCharTyped;
-        public Action OnStartedTyping;
-        public Action OnFinishedTyping;
-        public Action<string> OnDialogueAction;
+        public event Action<char> OnCharTyped;
+        public event Action OnStartedTyping;
+        public event Action OnFinishedTyping;
+        public event Action<string> OnDialogueAction;
 
         private void Awake()
         {
@@ -56,26 +56,25 @@ namespace AnimatedText
                 if (!charInfo.isVisible)
                     continue;
 
-                Vector3[] sourceVertices = textMeshProUGUI.textInfo.meshInfo[charInfo.materialReferenceIndex].vertices;
+                int materialIndex = charInfo.materialReferenceIndex;
+                int vertexIndex = charInfo.vertexIndex;
+                Vector3[] meshVertices = textMeshProUGUI.textInfo.meshInfo[materialIndex].vertices;
+
+                // Cache original positions before any animation modifies them
+                Vector3[] originalVertices = new Vector3[4];
+                for (int j = 0; j < 4; j++)
+                    originalVertices[j] = meshVertices[vertexIndex + j];
+
+                Vector2 charMidBasline = (originalVertices[0] + originalVertices[2]) / 2;
 
                 foreach (ITextAnimator textAnimation in indexAnimationPair.charAnimationsArray)
                 {
-                    int materialIndex = charInfo.materialReferenceIndex;
-                    int vertexIndex = charInfo.vertexIndex;
-
-                    Vector2 charMidBasline = (sourceVertices[vertexIndex + 0] + sourceVertices[vertexIndex + 2]) / 2;
-                    Vector3 offset = charMidBasline;
-
-                    Vector3[] destinationVertices = textMeshProUGUI.textInfo.meshInfo[materialIndex].vertices;
+                    Matrix4x4 matrix = textAnimation.GenerateTransformMatrix(indexAnimationPair.index);
 
                     for (int j = 0; j < 4; j++)
                     {
-                        destinationVertices[vertexIndex + j] = sourceVertices[vertexIndex + j] - offset;
-
-                        Matrix4x4 matrix = textAnimation.GenerateTranformMatrix(indexAnimationPair.index);
-
-                        destinationVertices[vertexIndex + j] = matrix.MultiplyPoint3x4(destinationVertices[vertexIndex + j]);
-                        destinationVertices[vertexIndex + j] += offset;
+                        Vector3 v = meshVertices[vertexIndex + j] - (Vector3)charMidBasline;
+                        meshVertices[vertexIndex + j] = matrix.MultiplyPoint3x4(v) + (Vector3)charMidBasline;
                     }
                 }
             }
@@ -195,6 +194,9 @@ namespace AnimatedText
             if (tag.Length == 0)
                 yield break;
 
+            if (!TagsUtils.IsCustomTag(tag))
+                yield break;
+
             if (TagsUtils.IsStartAnimationTag(tag) || TagsUtils.IsEndAnimationTag(tag))
                 yield break;
 
@@ -223,30 +225,32 @@ namespace AnimatedText
         /// <returns>An ITextAnimator created based on the tag parameter</returns>
         private ITextAnimator GetTextAnimationFromTag(string tag)
         {
-            if (tag.StartsWith(TagsUtils.WAVE_ANIMATION_START_TAG))
+            if (tag.StartsWith(TextWaveAnimation.START_ANIMATION_TAG))
             {
                 string parameters = tag.Split('=')[1];
-                float frequency = float.Parse(parameters.Split(',')[0]);
-                float amplitude = float.Parse(parameters.Split(',')[1]);
+                string[] parts = parameters.Split(',');
+                float frequency = float.Parse(parts[0]);
+                float amplitude = float.Parse(parts[1]);
                 TextWaveAnimation textWaveAnimation = new TextWaveAnimation(frequency, amplitude);
                 return textWaveAnimation;
             }
-            else if (tag.StartsWith(TagsUtils.SHAKE_ANIMATION_START_TAG))
+            else if (tag.StartsWith(TextShakeAnimation.START_ANIMATION_TAG))
             {
                 float radius = float.Parse(tag.Split('=')[1]);
                 TextShakeAnimation textShakeAnimation = new TextShakeAnimation(radius);
                 return textShakeAnimation;
             }
-            else if (tag.StartsWith(TagsUtils.PULSE_ANIMATION_START_TAG))
+            else if (tag.StartsWith(TextPulseAnimation.START_ANIMATION_TAG))
             {
                 string parameters = tag.Split('=')[1];
-                float speed = float.Parse(parameters.Split(',')[0]);
-                float variance = float.Parse(parameters.Split(',')[1]);
-                float baseValue = float.Parse(parameters.Split(',')[2]);
+                string[] parts = parameters.Split(',');
+                float speed = float.Parse(parts[0]);
+                float variance = float.Parse(parts[1]);
+                float baseValue = float.Parse(parts[2]);
                 TextPulseAnimation textPulseAnimation = new TextPulseAnimation(speed, variance, baseValue);
                 return textPulseAnimation;
             }
-            else if (tag.StartsWith(TagsUtils.ROTATE_ANIMATION_START_TAG))
+            else if (tag.StartsWith(TextRotateAnimation.START_ANIMATION_TAG))
             {
                 float speed = float.Parse(tag.Split('=')[1]);
                 TextRotateAnimation textRotateAnimation = new TextRotateAnimation(speed);
@@ -254,6 +258,7 @@ namespace AnimatedText
             }
             else
             {
+                Debug.LogWarning($"[TextAnimator] Unknown animation tag: {tag}");
                 return null;
             }
         }

@@ -4,7 +4,7 @@ namespace AnimatedText
 {
 	public class ReplaceTagParser
 	{
-        private static Dictionary<string, string> tagParserDictionary;
+        private static Dictionary<string, string> tagParserDictionary = new Dictionary<string, string>();
 
         /// <summary>
         /// Add an entry to the parser dictionary
@@ -13,9 +13,6 @@ namespace AnimatedText
         /// <param name="value">Value to be associated with the key</param>
         public static void AddEntry(string key, string value)
         {
-            if (tagParserDictionary == null)
-                tagParserDictionary = new Dictionary<string, string>();
-
             tagParserDictionary[key] = value;
         }
 
@@ -26,9 +23,6 @@ namespace AnimatedText
         /// <returns>The value associated with the key, or empty string if the value does not exist</returns>
         public static string ParseKey(string key)
         {
-            if (tagParserDictionary == null)
-                tagParserDictionary = new Dictionary<string, string>();
-
             if (!tagParserDictionary.ContainsKey(key))
                 return string.Empty;
 
@@ -38,6 +32,6 @@ namespace AnimatedText
         /// <summary>
         /// Get the whole tags dictionary
         /// </summary>
-        public static Dictionary<string, string> GetTagsParserDictionary => tagParserDictionary;
+        public static IReadOnlyDictionary<string, string> GetTagsParserDictionary => tagParserDictionary;
     }
 }

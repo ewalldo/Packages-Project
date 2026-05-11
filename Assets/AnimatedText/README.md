@@ -94,7 +94,7 @@ public float DefaultTypingSpeed;
 Invoked when a char is typed on the screen
 #### Declaration
 ```csharp
-public Action<char> OnCharTyped;
+public event Action<char> OnCharTyped;
 ```
 #### Parameters
 | Type | Description |
@@ -106,7 +106,7 @@ public Action<char> OnCharTyped;
 Invoked when a text starts being typed on the screen
 #### Declaration
 ```csharp
-public Action OnStartedTyping;
+public event Action OnStartedTyping;
 ```
 
 
@@ -114,7 +114,7 @@ public Action OnStartedTyping;
 Invoked when a text is finished being typed on the screen
 #### Declaration
 ```csharp
-public Action OnFinishedTyping;
+public event Action OnFinishedTyping;
 ```
 
 
@@ -122,7 +122,7 @@ public Action OnFinishedTyping;
 Invoked when an action tag is evaluated during typing
 #### Declaration
 ```csharp
-public Action<string> OnDialogueAction;
+public event Action<string> OnDialogueAction;
 ```
 #### Parameters
 | Type | Description |
