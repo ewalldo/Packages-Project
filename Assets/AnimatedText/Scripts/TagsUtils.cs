@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace AnimatedText
 {
 	public static class TagsUtils
@@ -6,29 +8,23 @@ namespace AnimatedText
         public const string PAUSE_TAG = "pause=";
         public const string ACTION_TAG = "action=";
 
-        //public const string WAVE_ANIMATION_START_TAG = "wave=";
-        //public const string WAVE_ANIMATION_END_TAG = "/wave";
-        //public const string SHAKE_ANIMATION_START_TAG = "shake=";
-        //public const string SHAKE_ANIMATION_END_TAG = "/shake";
-        //public const string ROTATE_ANIMATION_START_TAG = "rotate=";
-        //public const string ROTATE_ANIMATION_END_TAG = "/rotate";
-
         public const string REPLACE_TAG = "replace=";
 
-        public static readonly string[] CUSTOM_TAGS = { SPEED_TAG, PAUSE_TAG, ACTION_TAG,
+        public static readonly HashSet<string> CUSTOM_TAGS = new HashSet<string>() {
+            SPEED_TAG, PAUSE_TAG, ACTION_TAG,
             TextWaveAnimation.START_ANIMATION_TAG, TextWaveAnimation.END_ANIMATION_TAG,
             TextShakeAnimation.START_ANIMATION_TAG, TextShakeAnimation.END_ANIMATION_TAG,
             TextPulseAnimation.START_ANIMATION_TAG, TextPulseAnimation.END_ANIMATION_TAG,
             TextRotateAnimation.START_ANIMATION_TAG, TextRotateAnimation.END_ANIMATION_TAG,
             REPLACE_TAG};
 
-        public static readonly string[] START_ANIMATION_TAGS = {
+        public static readonly HashSet<string> START_ANIMATION_TAGS = new HashSet<string>() {
             TextWaveAnimation.START_ANIMATION_TAG,
             TextShakeAnimation.START_ANIMATION_TAG,
             TextPulseAnimation.START_ANIMATION_TAG,
             TextRotateAnimation.START_ANIMATION_TAG};
 
-        public static readonly string[] END_ANIMATION_TAGS = {
+        public static readonly HashSet<string> END_ANIMATION_TAGS = new HashSet<string>() {
             TextWaveAnimation.END_ANIMATION_TAG,
             TextShakeAnimation.END_ANIMATION_TAG,
             TextPulseAnimation.END_ANIMATION_TAG,

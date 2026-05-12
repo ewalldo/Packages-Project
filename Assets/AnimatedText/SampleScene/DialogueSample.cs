@@ -30,6 +30,12 @@ namespace AnimatedText
         {
             if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame)
             {
+                if (textAnimator.IsTyping)
+                {
+                    textAnimator.SkipTyping();
+                    return;
+                }
+
                 currentDialogue++;
 
                 if (currentDialogue >= dialogueSequence.Count)
@@ -39,6 +45,15 @@ namespace AnimatedText
                 }
 
                 textAnimator.TypeText(dialogueSequence[currentDialogue]);
+            }
+
+            if (Keyboard.current.pKey.wasPressedThisFrame)
+            {
+                if (textAnimator.IsTyping)
+                    textAnimator.PauseTyping();
+                else
+                    textAnimator.ResumeTyping();
+
             }
         }
 

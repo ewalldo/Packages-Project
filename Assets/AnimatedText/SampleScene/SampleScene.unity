@@ -293,7 +293,7 @@ MonoBehaviour:
     like <color=blue><wave=5,10>colored wave</wave></color>.
   - Or a <b><color=red><pulse=5,0.2,1>bold colored pulse</pulse></color></b> effect.
   - <wave=5,10><shake=4>Can also mix multiple animation together too</shake></wave>.
-  - That's very cool, right Mr./Ms <wave=5,10><replace=name></wave><rotate=5>?</rotate>.
+  - That's very cool, right Mr./Ms <wave=5,10><replace=name></wave><rotate=50>?</rotate>.
   - 5) Custom actions.
   - You can also set up custom tags to trigger custom actions during the dialogue
     sequences.

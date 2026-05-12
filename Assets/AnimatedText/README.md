@@ -17,7 +17,12 @@
   - [TextAnimator.OnFinishedTyping](#textAnimatorOnFinishedTyping)
   - [TextAnimator.OnDialogueAction](#textAnimatorOnDialogueAction)
   - [TextAnimator.TypeText()](#textAnimatorTypeText)
+  - [TextAnimator.SkipTyping()](#textAnimatorSkipTyping)
+  - [TextAnimator.PauseTyping()](#textAnimatorPauseTyping)
+  - [TextAnimator.ResumeTyping()](#textAnimatorResumeTyping)
   - [ReplaceTagParser.AddEntry()](#replaceTagParserAddEntry)
+  - [ReplaceTagParser.RemoveEntry()](#replaceTagParserRemoveEntry)
+  - [ReplaceTagParser.ClearEntries()](#replaceTagParserClearEntries)
   - [ReplaceTagParser.ParseKey()](#replaceTagParserParseKey)
   - [ReplaceTagParser.GetTagsParserDictionary()](#replaceTagParserGetTagsParserDictionary)
 - [Contact Information](#contactInformation)
@@ -90,7 +95,7 @@ public float DefaultTypingSpeed;
 | :--- | :--- |
 | float | The speed (pause between characters in seconds) of the texts being typed |
 
-### 5.2 TextAnimator.OnCharTyped <a name="textAnimatorOnCharTyped"/>
+### TextAnimator.OnCharTyped <a name="textAnimatorOnCharTyped"/>
 Invoked when a char is typed on the screen
 #### Declaration
 ```csharp
@@ -102,7 +107,7 @@ public event Action<char> OnCharTyped;
 | char | The char value typed on the screen |
 
 
-### 5.3 TextAnimator.OnStartedTyping <a name="textAnimatorOnStartedTyping"/>
+### TextAnimator.OnStartedTyping <a name="textAnimatorOnStartedTyping"/>
 Invoked when a text starts being typed on the screen
 #### Declaration
 ```csharp
@@ -110,7 +115,7 @@ public event Action OnStartedTyping;
 ```
 
 
-### 5.4 TextAnimator.OnFinishedTyping <a name="textAnimatorOnFinishedTyping"/>
+### TextAnimator.OnFinishedTyping <a name="textAnimatorOnFinishedTyping"/>
 Invoked when a text is finished being typed on the screen
 #### Declaration
 ```csharp
@@ -118,7 +123,7 @@ public event Action OnFinishedTyping;
 ```
 
 
-### 5.5 TextAnimator.OnDialogueAction <a name="textAnimatorOnDialogueAction"/>
+### TextAnimator.OnDialogueAction <a name="textAnimatorOnDialogueAction"/>
 Invoked when an action tag is evaluated during typing
 #### Declaration
 ```csharp
@@ -130,7 +135,7 @@ public event Action<string> OnDialogueAction;
 | string | The value of the action tag |
 
 
-### 5.6 TextAnimator.TypeText() <a name="textAnimatorTypeText"/>
+### TextAnimator.TypeText() <a name="textAnimatorTypeText"/>
 Start typing the text on screen
 #### Declaration
 ```csharp
@@ -142,7 +147,31 @@ public void TypeText(string textToType);
 | string | textToType | The string containing the text information to be typed on the screen |
 
 
-### 5.7 ReplaceTagParser.AddEntry() <a name="replaceTagParserAddEntry"/>
+### TextAnimator.SkipTyping() <a name="textAnimatorSkipTyping"/>
+Instantly reveals all characters, skipping the typewriter effect
+#### Declaration
+```csharp
+public void SkipTyping();
+```
+
+
+### TextAnimator.PauseTyping() <a name="textAnimatorPauseTyping"/>
+Pauses the typewriter effect, keeping the current visible characters on screen
+#### Declaration
+```csharp
+public void PauseTyping();
+```
+
+
+### TextAnimator.ResumeTyping() <a name="textAnimatorResumeTyping"/>
+Resumes the typewriter effect from the current visible characters on screen
+#### Declaration
+```csharp
+public void ResumeTyping();
+```
+
+
+### 5.2 ReplaceTagParser.AddEntry() <a name="replaceTagParserAddEntry"/>
 Add an entry to the parser dictionary
 #### Declaration
 ```csharp
@@ -155,7 +184,27 @@ public static void AddEntry(string key, string value);
 | string | value | The corresponding value to be associated with the key |
 
 
-### 5.8 ReplaceTagParser.ParseKey() <a name="replaceTagParserParseKey"/>
+### ReplaceTagParser.RemoveEntry() <a name="replaceTagParserRemoveEntry"/>
+Removes an entry from the parser dictionary
+#### Declaration
+```csharp
+public static void RemoveEntry(string key);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| string | key | The key value to be removed |
+
+
+### ReplaceTagParser.ClearEntries() <a name="replaceTagParserClearEntries"/>
+Clear all entries from the parser dictionary
+#### Declaration
+```csharp
+public static void ClearEntries();
+```
+
+
+### ReplaceTagParser.ParseKey() <a name="replaceTagParserParseKey"/>
 Get the value associated with a key
 #### Declaration
 ```csharp
@@ -171,16 +220,16 @@ public static string ParseKey(string key);
 | string | The value associated with the key, or empty string if the value does not exist |
 
 
-### 5.9 ReplaceTagParser.GetTagsParserDictionary() <a name="replaceTagParserGetTagsParserDictionary"/>
+### ReplaceTagParser.GetTagsParserDictionary() <a name="replaceTagParserGetTagsParserDictionary"/>
 Get the whole tags dictionary
 #### Declaration
 ```csharp
-public static Dictionary<string, string> GetTagsParserDictionary;
+public static IReadOnlyDictionary<string, string> GetTagsParserDictionary;
 ```
 #### Returns
 | Type | Description |
 | :--- | :--- |
-| Dictionary<string, string> | The dictionary containing all the key/value pairs of the ReplaceTagParser class |
+| IReadOnlyDictionary<string, string> | The dictionary containing all the key/value pairs of the ReplaceTagParser class |
 
 
 ## 6 - Contact Information <a name="contactInformation"/>

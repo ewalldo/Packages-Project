@@ -17,6 +17,24 @@ namespace AnimatedText
         }
 
         /// <summary>
+        /// Removes an entry from the parser dictionary
+        /// </summary>
+        /// <param name="key"></param>
+        public static void RemoveEntry(string key)
+        {
+            if (tagParserDictionary.ContainsKey(key))
+                tagParserDictionary.Remove(key);
+        }
+
+        /// <summary>
+        /// Clear all entries from the parser dictionary
+        /// </summary>
+        public static void ClearEntries()
+        {
+            tagParserDictionary.Clear();
+        }
+
+        /// <summary>
         /// Get the value associated with a key
         /// </summary>
         /// <param name="key">The dictionary key</param>
