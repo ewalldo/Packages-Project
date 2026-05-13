@@ -42,6 +42,7 @@ Please let us know if you encounter any issues with the version of Unity you are
 - 1.0: Initial release.
 - 1.1: Add option to change default typing speed from code.
 - 1.1.1: Ensure package functionality in Unity version 6000.3.9f1.
+- 1.2: Added new text animations and new methods for the TextAnimator class.
 
 ## 3 - Features <a name="features"/>
 - Easy to add a typing animation to texts, just attach a script and call one method.
@@ -68,12 +69,14 @@ The "pause" tag can be used to pause the typing of a text for an amount of secon
 The "action" tag is used to trigger the OnDialogueAction event using the "acitonName" as the parameter.
 
 ### 4.4 Using the animation tags <a name="usingTheAnimationTags"/>
-Animation tags are used to animate a portion of the text, the currently supported animations are: wave, shake, pulse and rotate.  
-The wave tag needs two parameters: frequency (controls the speed) and amplitude (controls the range), here is an example on how to use it: <wave=frequency,amplitude>.  
-The shake tag needs one parameter: radius (offset from the center), here is an example on how to use it: <shake=radius>.  
-The pulse tag needs three parameters: speed (controls the pulsing speed), variance (controls how much the scale can vary) and base value (the scale initial value), here is an example on how to use it: <pulse=speed,variance,baseValue>.  
-The rotate tag needs one parameter: speed (rotation speed), here is an example on how to use it: <rotate=speed>.  
-The corresponding closure tags for each animation are: </wave>, </shake>, </pulse>, </rotate>. Forget to add or close them in a different order can lead to unexpected behaviour.  
+Animation tags are used to animate a portion of the text, the currently supported animations are: wave, shake, pulse, rotate, bounce and noise.  
+- Wave: Requires two parameters: frequency (float, controls the speed) and amplitude (float, controls the range), here is an example on how to use it: <wave=frequency,amplitude>.  
+- Shake: Requires one parameter: radius (float, offset from the center), here is an example on how to use it: <shake=radius>.  
+- Pulse: Requires three parameters: speed (float, controls the pulsing speed), variance (float, controls how much the scale can vary) and base value (float, the scale initial value), here is an example on how to use it: <pulse=speed,variance,baseValue>.  
+- Rotate: Requires one parameter: speed (float, rotation speed), here is an example on how to use it: <rotate=speed>.  
+- Bounce: Requires three parameters: speed (float, controls the bouncing speed), height (float, controls how high the bounce goes) and offsetEachCharacter (bool, true if all characters should bounce at the same rate, false if an offset is required between each character), here is an example on how to use it: <bounce=speed,height,offsetEachCharacter>.  
+- Noise: Requires three parameters: speed (float, controls the noise speed), radiusX (float, controls the noise range along the X-axis) and radiusY (float, controls the noise range along the Y-axis), here is an example on how to use it: <noise=speed,radiusX,radiusY>.  
+The corresponding closure tags for each animation are: </wave>, </shake>, </pulse>, </rotate>, </bounce>, </noise>. Forget to add or close them in a different order can lead to unexpected behaviour.  
 Correct order: <wave=5,10><shake=4>Text to wave and shake</shake></wave>.  
 Incorrect order: <wave=5,10><shake=4>Text to wave and shake</wave></shake>.  
 
@@ -82,6 +85,11 @@ This package supports all TextMeshPro's RichText tags, so it can be used in the 
 
 ### 4.6 Typing text <a name="typingText"/>
 To start typing a text, just invoke the TypeText() method in the TextAnimator class by passing a string (with your tags) as an attribute.
+```csharp
+[SerializeField] private TextAnimator textAnimator;
+
+textAnimator.TypeText("This is an <color=red>animated</color> <wave=5,10>text</wave>.");
+```
 
 ## 5 - Documentation <a name="documentation"/>
 ### 5.1 TextAnimator.DefaultTypingSpeed <a name="textAnimatorDefaultTypingSpeed"/>

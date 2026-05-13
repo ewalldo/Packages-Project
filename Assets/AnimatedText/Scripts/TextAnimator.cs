@@ -310,6 +310,26 @@ namespace AnimatedText
                 TextRotateAnimation textRotateAnimation = new TextRotateAnimation(speed);
                 return textRotateAnimation;
             }
+            else if (tag.StartsWith(TextBounceAnimation.START_ANIMATION_TAG))
+            {
+                string parameters = tag.Split('=')[1];
+                string[] parts = parameters.Split(',');
+                float speed = float.Parse(parts[0]);
+                float height = float.Parse(parts[1]);
+                bool offsetEachCharacter = bool.Parse(parts[2]);
+                TextBounceAnimation textBounceAnimation = new TextBounceAnimation(speed, height, offsetEachCharacter);
+                return textBounceAnimation;
+            }
+            else if (tag.StartsWith(TextNoiseAnimation.START_ANIMATION_TAG))
+            {
+                string parameters = tag.Split('=')[1];
+                string[] parts = parameters.Split(',');
+                float speed = float.Parse(parts[0]);
+                float radiusX = float.Parse(parts[1]);
+                float radiusY = float.Parse(parts[2]);
+                TextNoiseAnimation textNoiseAnimation = new TextNoiseAnimation(speed, radiusX, radiusY);
+                return textNoiseAnimation;
+            }
             else
             {
                 Debug.LogWarning($"[TextAnimator] Unknown animation tag: {tag}");

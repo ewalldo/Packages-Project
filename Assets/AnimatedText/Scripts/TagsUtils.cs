@@ -16,19 +16,25 @@ namespace AnimatedText
             TextShakeAnimation.START_ANIMATION_TAG, TextShakeAnimation.END_ANIMATION_TAG,
             TextPulseAnimation.START_ANIMATION_TAG, TextPulseAnimation.END_ANIMATION_TAG,
             TextRotateAnimation.START_ANIMATION_TAG, TextRotateAnimation.END_ANIMATION_TAG,
+            TextBounceAnimation.START_ANIMATION_TAG, TextBounceAnimation.END_ANIMATION_TAG,
+            TextNoiseAnimation.START_ANIMATION_TAG, TextNoiseAnimation.END_ANIMATION_TAG,
             REPLACE_TAG};
 
         public static readonly HashSet<string> START_ANIMATION_TAGS = new HashSet<string>() {
             TextWaveAnimation.START_ANIMATION_TAG,
             TextShakeAnimation.START_ANIMATION_TAG,
             TextPulseAnimation.START_ANIMATION_TAG,
-            TextRotateAnimation.START_ANIMATION_TAG};
+            TextRotateAnimation.START_ANIMATION_TAG,
+            TextBounceAnimation.START_ANIMATION_TAG,
+            TextNoiseAnimation.START_ANIMATION_TAG};
 
         public static readonly HashSet<string> END_ANIMATION_TAGS = new HashSet<string>() {
             TextWaveAnimation.END_ANIMATION_TAG,
             TextShakeAnimation.END_ANIMATION_TAG,
             TextPulseAnimation.END_ANIMATION_TAG,
-            TextRotateAnimation.END_ANIMATION_TAG};
+            TextRotateAnimation.END_ANIMATION_TAG,
+            TextBounceAnimation.END_ANIMATION_TAG,
+            TextNoiseAnimation.END_ANIMATION_TAG};
 
         public static bool IsCustomTag(string possibleCustomTag)
         {
