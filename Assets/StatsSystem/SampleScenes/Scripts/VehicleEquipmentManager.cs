@@ -2,16 +2,16 @@ using UnityEngine;
 
 namespace StatsSystem
 {
-    [RequireComponent(typeof(Character))]
+    [RequireComponent(typeof(StatsSheetComponent))]
     public class VehicleEquipmentManager : MonoBehaviour
 	{
-        private Character character;
+        private StatsSheetComponent vehicleStats;
 
         private EquipmentSlot attachmentSlot;
 
         private void Awake()
         {
-            character = GetComponent<Character>();
+            vehicleStats = GetComponent<StatsSheetComponent>();
 
             attachmentSlot = new EquipmentSlot();
         }
@@ -31,7 +31,7 @@ namespace StatsSystem
             switch (equipmentItem.EquipmentSlot)
             {
                 case EquipmentSlotTypes.AttachmentSlot:
-                    attachmentSlot.EquipItem(equipmentItem, character);
+                    attachmentSlot.EquipItem(equipmentItem, vehicleStats);
                     break;
                 default:
                     break;

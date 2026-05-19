@@ -4,11 +4,13 @@
 - [Version History](#versionHistory)
 - [Features](#features)
 - [Get started](#getStarted)
+  - [Difference between the "stat" classes in the project](#statsDifference)
   - [Create a "Stat Type"](#createAStatType)
   - [Create a "Stat Set"](#createAStatSet)
   - [Instantiate a "Single Stat"](#instantiateASingleStat)
   - [Instantiate a "Stats Modifier"](#instantiateAStatsModifier)
   - [Add/Remove a modifier from a stat](#addRemoveModifiersFromAStat)
+  - [Managing stats through the "StatsSheet" class](#managingStatsThroughTheStatsSheetClass)
 - [Documentation](#documentation)
   - [SingleStat()](#singleStatSingleStat)
   - [SingleStat.BaseValue](#singleStatStatBaseValue)
@@ -18,9 +20,9 @@
   - [SingleStat.OnModifierAdded](#singleStatOnModifierAdded)
   - [SingleStat.OnModifierRemoved](#singleStatOnModifierRemoved)
   - [SingleStat.OnModifierListModified](#singleStatOnModifierListModified)
-  - [SingleStat.GetFinalValueAfterModifiers](#singleStatGetFinalValueAfterModifiers)
-  - [SingleStat.GetFinalValueAfterModifiersNormalized](#singleStatGetFinalValueAfterModifiersNormalized)
-  - [SingleStat.GetStatBaseValueNormalized](#singleStatGetStatBaseValueNormalized)
+  - [SingleStat.GetFinalValue](#singleStatGetFinalValue)
+  - [SingleStat.GetFinalValueNormalized](#singleStatGetFinalValueNormalized)
+  - [SingleStat.GetBaseValueNormalized](#singleStatGetBaseValueNormalized)
   - [SingleStat.IncreaseDecreaseBaseStat()](#singleStatIncreaseDecreaseBaseStat)
   - [SingleStat.AddModifier()](#singleStatAddModifier)
   - [SingleStat.RemoveModifier()](#singleStatRemoveModifier)
@@ -33,6 +35,15 @@
   - [StatsModifier.ModifierOrder](#statsModifierModifierOrder)
   - [StatsModifier.ModifierSource](#statsModifierModifierSource)
   - [StatsModifiersType](#statsModifiersType)
+  - [StatsSheet()](#statsSheet)
+  - [StatsSheet.OnStatChanged](#statsSheetOnStatChanged)
+  - [StatsSheet.GetStat()](#statsSheetGetStat)
+  - [StatsSheet.GetBaseValue()](#statsSheetGetBaseValue)
+  - [StatsSheet.GetFinalValue()](#statsSheetGetFinalValue)
+  - [StatsSheet.AddModifier()](#statsSheetAddModifier)
+  - [StatsSheet.RemoveModifier()](#statsSheetRemoveModifier)
+  - [StatsSheet.RemoveAllModifiersBySource()](#statsSheetRemoveAllModifiersBySource)
+  - [SingleStatConfig()](#singleStatConfig)
 - [Contact Information](#contactInformation)
 
 ## 1 - Introduction <a name="introduction"/>
@@ -46,29 +57,41 @@ Please let us know if you encounter any issues with the version of Unity you are
 ## 2 - Version History <a name="versionHistory"/>
 - 1.0: Initial release
 - 1.0.1: Ensure package functionality in Unity version 6000.3.9f1
+- 1.1: Add new functionality (StatsSheets) and methods.
 
 ## 3 - Features <a name="features"/>
 - Easier to create and define stats: By using ScriptableObjects, stat types and stat sets can be generated from the editor, making it easier to manage all your in-game stats.
 - Safe to apply temporary stat changes: By using modifiers when changing the current stat instead of updating the value itself, we make sure that the original value is preserved, making it safer to roll back to its original when the temporary stat change wears off.
-- Multiple events: The SingleStat class contains various events related to modifiers, allowing others classes to easily subscribe to stat related events.
+- Multiple events: The SingleStat/StatsSheet classes contains various events related to modifiers, allowing others classes to easily subscribe to stat related events.
 - Modifiers order: The order which the modifiers are applied can be adjusted through their "order" parameter, allowing the creation of modifiers that have high/low priority.
 - Custom editor for the StatsModifier class: Allows StatsModifier to be edited from the editor, instead of code only.
+- Custom editor for StatsSheet and StatTypeSet classes: Allow visualization as well as validation in the inspector, allowing easier debug.
 - Code can be easily extended: The code itself is organized in a way that is easy to understand and with comments on all the important parts, making it easier in case you want to extend by adding new functionalities.
 
 ## 4 - Get Started <a name="getStarted"/>
-### 4.1 Create a "stat type" <a name="createAStatType"/>
+### 4.1 Difference between the "stat" classes in the project <a name="statsDifference"/>
+At first glance, it may be confusing why there are so many "Stat" related classes in this package. The reason why it is divided, is to ensure that each class has one clearly defined role. This helps to ensure single responsability on each of them, making it easier to implement, debug and use. It may seems overcomplicated and over-engineered at first, but I ensure that with usage, not only reasons but also the advantages of this choice of architecture will become clearer.  
+Below you can find a definition for each of the main classes and how they should be used:  
+| Class name | Function |
+| :--- | :--- |
+| StatType (ScriptableObject) | Identity of the stat or which stat it represents (e.g. Attack, Defense, Magic, and so on) |
+| StatTypeSet (ScriptableObject) | Collection of identities (StatType), used to represent the collection of stats that an object has (e.g Character stats, Vehicle stats, and so on) |
+| SingleStat (C# plain class) | Represents the runtime numerical value of the stat, holding the base value as well as the final one after any modifiers |
+| StatSheet (MonoBehaviour or C# plain class) | Manages and holds all the instances of SingleStats based on a StatTypeSet definition |
+
+### 4.2 Create a "stat type" <a name="createAStatType"/>
 - Stat types can be created by right-clicking the project window, choose "Create"->"ScriptableObjects"->"Stats System"-"Stat Type". The name of the file will be used as the name of the stat type as well.
 
-### 4.2 Create a "stat set" <a name="createAStatSet"/>
+### 4.3 Create a "stat set" <a name="createAStatSet"/>
 - Stat sets can be created by right-clicking the project window, choose "Create"->"ScriptableObjects"->"Stats System"-"Stat Type Set"
 
-### 4.3 Instantiate a "single stat" <a name="instantiateASingleStat"/>
+### 4.4 Instantiate a "single stat" <a name="instantiateASingleStat"/>
 An instance of the SingleStat class can be instantiated by calling its constructor and passing the StatType and base value as parameters. The minimum and maximum that a stat can reach can also be defined in the constructor as optional parameters.  
 ```csharp
 public SingleStat(StatType statType, float statBaseValue, float statMinValue = float.MinValue, float statMaxValue = float.MaxValue)
 ```
 
-### 4.4 Instantiate a "stats modifier" <a name="instantiateAStatsModifier"/>
+### 4.5 Instantiate a "stats modifier" <a name="instantiateAStatsModifier"/>
 An instance of the StatsModifier class can be instantiated in many ways, with the only required parameters being how much the stat should change, what statType is this modifier targeting and the type of modifier (flat, percentage additive, percentage multiplicative). Optional parameters include a value indicating the modifier order (passing a low number will give a higher priority when applying the modifier) and an Object indicating the source of the modifier (can be used to remove modifiers more easily). The package also includes a PropertyDrawer for the StatsModifier class, allowing them to be easily edited from the editor also.
 ```csharp
 public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, int modifierOrder, UnityEngine.Object modifierSource)
@@ -77,8 +100,51 @@ public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType st
 public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, UnityEngine.Object modifierSource)
 ```
 
-### 4.5 Add/Remove modifiers from a stat <a name="addRemoveModifiersFromAStat"
+### 4.6 Add/Remove modifiers from a stat <a name="addRemoveModifiersFromAStat"
 Modifiers can be added/removed from a stat by using the AddModifier/RemoveModifier functions in the SingleStat class by passing an instance of the StatsModifier class as a parameter. Modifiers can also be removed by calling RemoveAllModifiers or RemoveModifiersBySource functions.
+```csharp
+// Method definitions
+public void AddModifier(StatsModifier statsModifier);
+public bool RemoveModifier(StatsModifier statsModifier);
+
+// Sample usage
+SingleStat stat = new SingleStat(statType, 10, 0, 99);
+StatsModifier modifier = new StatsModifier(+5, statType, StatsModifiersType.Flat);
+
+stat.AddModifier(modifier);
+stat.RemoveModifier(modifier);
+```
+
+### 4.7 Managing stats through the "StatsSheet" class <a name="managingStatsThroughTheStatsSheetClass"
+Instead of instantiate and manage each SingleStat instance individually, this package provides a StatsSheet class (StatsSheetComponent is the MonoBehaviour equivalent) that instanstiate and holds all SingleStat automatically for easier manipulation.  
+This package provides a MonoBehaviour and a plain C# class version of the StatsSheet class, please use the one that makes more sense in your project.  
+Both version requires a StatTypeSet instance in order to instantiate and manage each individual stats.  
+For the MonoBehaviour version, the instance can be assigned in the inspector. Additionally, a custom editor is provided, so you can track each individual stat with just a glance in the inspector.  
+For the plain C# version, the instance can be passed in the constructor of the StatSheet class.  
+Lastly, the StatsSheet class initializes all stats values based on the defined base, min, and max values, but overrides for each individual stat can be provided in the inspector (MonoBehaviour version) or through the constructor (plain C# version).  
+Below is a snippet sample of how to instantiate and use the StatSheet class, for more details about please check the documentation or the provided sample scene.  
+```csharp
+// Constructor definition
+public StatsSheet(StatTypeSet statTypeSet, float defaultBaseValue, float defaultMinValue, float defaultMaxValue, SingleStatConfig[] statsOverride = null);
+
+// Sample usage
+SingleStatConfig defenseOverride = new SingleStatConfig(defenseStat, 5, 0, 99);
+SingleStatConfig magicOverride = new SingleStatConfig(magicStat, 15, 0, 99);
+SingleStatConfig[] overrides = new SingleStatConfig[] {defenseOverride, magicOverride};
+
+StatsSheet characterStats = new StatsSheet(statTypeSet, 10, 0, 99, overrides);
+
+StatsModifier modifierAttack = new StatsModifier(+5, attackStat, StatsModifiersType.Flat);
+StatsModifier modifierDefense = new StatsModifier(+2, defenseStat, StatsModifiersType.Flat);
+
+characterStats.AddModifier(modifierAttack);
+characterStats.GetFinalValue(attackStat);
+
+characterStats.AddModifier(modifierDefense);
+characterStats.GetFinalValue(defenseStat);
+
+characterStats.GetStat(attackStat);
+```
 
 ## 5 - Documentation <a name="documentation"/>
 ### 5.1 SingleStat() <a name="singleStatSingleStat"/>
@@ -96,7 +162,7 @@ public SingleStat(StatType statType, float statBaseValue, float statMinValue = f
 | float | statMaxValue | The maximum value this stat can reach |
 
 
-### 5.2 SingleStat.StatBaseValue <a name="singleStatStatBaseValue"/>
+### SingleStat.StatBaseValue <a name="singleStatStatBaseValue"/>
 Get the stat base value
 #### Declaration
 ```csharp
@@ -108,7 +174,7 @@ public float StatBaseValue;
 | float | The stat base value |
 
 
-### 5.3 SingleStat.Type <a name="singleStatStatType"/>
+### SingleStat.Type <a name="singleStatStatType"/>
 Get the type of this stat
 #### Declaration
 ```csharp
@@ -120,11 +186,11 @@ public float Type;
 | StatType | The type of this stat |
 
 
-### 5.4 SingleStat.StatsModifiers <a name="singleStatStatsModifiers"/>
+### SingleStat.StatsModifiers <a name="singleStatStatsModifiers"/>
 Get the modifiers of this stat
 #### Declaration
 ```csharp
-public List<StatsModifier> StatsModifiers;
+public IReadOnlyList<StatsModifier> StatsModifiers;
 ```
 #### Returns
 | Type | Description |
@@ -132,63 +198,63 @@ public List<StatsModifier> StatsModifiers;
 | List<StatsModifier> | The modifiers on this stat |
 
 
-### 5.5 SingleStat.OnSingleStatBaseValueChange <a name="singleStatOnSingleStatBaseValueChange"/>
+### SingleStat.OnSingleStatBaseValueChange <a name="singleStatOnSingleStatBaseValueChange"/>
 Invoked when the base value of the stat has changed
 #### Declaration
 ```csharp
-public Action<float, float> OnSingleStatBaseValueChange;
+public event Action<float, float> OnSingleStatBaseValueChange;
 ```
 #### Parameters
 | Type | Description |
 | :--- | :--- |
 | float | Base value of the stat after the change |
-| float | the stat value with the modifiers applied after the change |
+| float | The stat value with the modifiers applied after the change |
 
 
-### 5.6 SingleStat.OnModifierAdded <a name="singleStatOnModifierAdded"/>
+### SingleStat.OnModifierAdded <a name="singleStatOnModifierAdded"/>
 Invoked when a modifier is added to the stat
 #### Declaration
 ```csharp
-public Action<float, float> OnModifierAdded;
+public event Action<float, float> OnModifierAdded;
 ```
 #### Parameters
 | Type | Description |
 | :--- | :--- |
 | float | Base value of the stat after the change |
-| float | the stat value with the modifiers applied after the change |
+| float | The stat value with the modifiers applied after the change |
 
 
-### 5.7 SingleStat.OnModifierRemoved <a name="singleStatOnModifierRemoved"/>
+### SingleStat.OnModifierRemoved <a name="singleStatOnModifierRemoved"/>
 Invoked when a modifier is removed from the stat
 #### Declaration
 ```csharp
-public Action<float, float> OnModifierRemoved;
+public event Action<float, float> OnModifierRemoved;
 ```
 #### Parameters
 | Type | Description |
 | :--- | :--- |
 | float | Base value of the stat after the change |
-| float | the stat value with the modifiers applied after the change |
+| float | The stat value with the modifiers applied after the change |
 
 
-### 5.8 SingleStat.OnModifierListModified <a name="singleStatOnModifierListModified"/>
+### SingleStat.OnModifierListModified <a name="singleStatOnModifierListModified"/>
 Invoked when the modifier list is modified
 #### Declaration
 ```csharp
-public Action<float, float> OnModifierListModified;
+public event Action<float, float> OnModifierListModified;
 ```
 #### Parameters
 | Type | Description |
 | :--- | :--- |
 | float | Base value of the stat after the change |
-| float | the stat value with the modifiers applied after the change |
+| float | The stat value with the modifiers applied after the change |
 
 
-### 5.9 SingleStat.GetFinalValueAfterModifiers <a name="singleStatGetFinalValueAfterModifiers"/>
+### SingleStat.GetFinalValue <a name="singleStatGetFinalValue"/>
 Get the final stat value after the modifiers were applied
 #### Declaration
 ```csharp
-public float GetFinalValueAfterModifiers;
+public float GetFinalValue();
 ```
 #### Returns
 | Type | Description |
@@ -196,11 +262,11 @@ public float GetFinalValueAfterModifiers;
 | float | The final stat value after the modifiers were applied |
 
 
-### 5.10 SingleStat.GetFinalValueAfterModifiersNormalized <a name="singleStatGetFinalValueAfterModifiersNormalized"/>
+### SingleStat.GetFinalValueNormalized <a name="singleStatGetFinalValueNormalized"/>
 Get the final stat normalized after the modifiers were applied
 #### Declaration
 ```csharp
-public float GetFinalValueAfterModifiersNormalized;
+public float GetFinalValueNormalized();
 ```
 #### Returns
 | Type | Description |
@@ -208,11 +274,11 @@ public float GetFinalValueAfterModifiersNormalized;
 | float | The final stat normalized after the modifiers were applied |
 
 
-### 5.11 SingleStat.GetStatBaseValueNormalized <a name="singleStatGetStatBaseValueNormalized"/>
+### SingleStat.GetBaseValueNormalized <a name="singleStatGetBaseValueNormalized"/>
 Get the base stat normalized
 #### Declaration
 ```csharp
-public float GetStatBaseValueNormalized;
+public float GetBaseValueNormalized();
 ```
 #### Returns
 | Type | Description |
@@ -220,7 +286,7 @@ public float GetStatBaseValueNormalized;
 | float | The base stat normalized |
 
 
-### 5.12 SingleStat.IncreaseDecreaseBaseStat() <a name="singleStatIncreaseDecreaseBaseStat"/>
+### SingleStat.IncreaseDecreaseBaseStat() <a name="singleStatIncreaseDecreaseBaseStat"/>
 Increase/decrease the stat by the passed amount
 #### Declaration
 ```csharp
@@ -232,7 +298,7 @@ public void IncreaseDecreaseBaseStat(float amount);
 | float | amount | The amount to modify the stat |
 
 
-### 5.13 SingleStat.AddModifier() <a name="singleStatAddModifier"/>
+### SingleStat.AddModifier() <a name="singleStatAddModifier"/>
 Add a modifier to the stat
 #### Declaration
 ```csharp
@@ -244,7 +310,7 @@ public void AddModifier(StatsModifier statsModifier);
 | StatsModifier | statsModifier | The modifier to be added |
 
 
-### 5.14 SingleStat.RemoveModifier() <a name="singleStatRemoveModifier"/>
+### SingleStat.RemoveModifier() <a name="singleStatRemoveModifier"/>
 Remove a modifier from the stat
 #### Declaration
 ```csharp
@@ -260,7 +326,7 @@ public bool RemoveModifier(StatsModifier statsModifier);
 | bool | If the modifier removal was successful or not |
 
 
-### 5.15 SingleStat.RemoveAllModifiers() <a name="singleStatRemoveAllModifiers"/>
+### SingleStat.RemoveAllModifiers() <a name="singleStatRemoveAllModifiers"/>
 Remove all modifiers from the stat
 #### Declaration
 ```csharp
@@ -272,7 +338,7 @@ public bool RemoveAllModifiers();
 | bool | If modifiers were removed or not |
 
 
-### 5.16 SingleStat.RemoveModifiersBySource() <a name="singleStatRemoveModifiersBySource"/>
+### SingleStat.RemoveModifiersBySource() <a name="singleStatRemoveModifiersBySource"/>
 Remove all the modifiers from a specific source
 #### Declaration
 ```csharp
@@ -288,14 +354,11 @@ public bool RemoveModifiersBySource(Object modifierSource);
 | bool | If the modifier list was modified or not |
 
 
-### 5.17 StatsModifier() <a name="statsModifierStatsModifier"/>
+### 5.2 StatsModifier() <a name="statsModifierStatsModifier"/>
 Instantiate a new instance of the StatsModifier class
 #### Declaration
 ```csharp
-public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, int modifierOrder, UnityEngine.Object modifierSource);
-public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType);
-public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, int modifierOrder);
-public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, UnityEngine.Object modifierSource);
+public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, int modifierOrder = -1, UnityEngine.Object modifierSource = null);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -303,11 +366,11 @@ public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType st
 | float | value | The value of this modifier |
 | StatType | statTypeTarget | The statType that this modifier will modify |
 | StatsModifiersType | statsModifiersType | The type of this modifier |
-| int | modifierOrder | The order of this modifier when applying to the stat |
+| int | modifierOrder | The order of this modifier when applying to the stat, if negative it defaults to the StatsModifiersType value |
 | Object | modifierSource | The source object of this modifier |
 
 
-### 5.18 StatsModifier.Value <a name="statsModifierValue"/>
+### StatsModifier.Value <a name="statsModifierValue"/>
 Get the modifier value
 #### Declaration
 ```csharp
@@ -319,7 +382,7 @@ public float Value;
 | float | The modifier value |
 
 
-### 5.19 StatsModifier.StatTypeTarget <a name="statsModifierStatTypeTarget"/>
+### StatsModifier.StatTypeTarget <a name="statsModifierStatTypeTarget"/>
 Get the stat type who this modifier is targeting
 #### Declaration
 ```csharp
@@ -331,7 +394,7 @@ public StatType StatTypeTarget;
 | StatType | The stat type who this modifier is targeting |
 
 
-### 5.20 StatsModifier.StatsModifiersType <a name="statsModifierStatsModifiersType"/>
+### StatsModifier.StatsModifiersType <a name="statsModifierStatsModifiersType"/>
 Get the type of this modifier
 #### Declaration
 ```csharp
@@ -343,7 +406,7 @@ public StatsModifiersType StatsModifiersType;
 | StatsModifiersType | The type of this modifier |
 
 
-### 5.21 StatsModifier.ModifierOrder <a name="statsModifierModifierOrder"/>
+### StatsModifier.ModifierOrder <a name="statsModifierModifierOrder"/>
 Get the order of this modifier when applying to the stat
 #### Declaration
 ```csharp
@@ -355,7 +418,7 @@ public int ModifierOrder;
 | int | The order of this modifier when applying to the stat |
 
 
-### 5.22 StatsModifier.ModifierSource <a name="statsModifierModifierSource"/>
+### StatsModifier.ModifierSource <a name="statsModifierModifierSource"/>
 Get the source object of this modifier
 #### Declaration
 ```csharp
@@ -367,7 +430,7 @@ public Object ModifierSource;
 | Object | The source object of this modifier |
 
 
-### 5.23 StatsModifiersType <a name="statsModifiersType"/>
+### 5.3 StatsModifiersType <a name="statsModifiersType"/>
 Constrols how the modifier is applied to the stat
 #### Declaration
 ```csharp
@@ -379,6 +442,143 @@ public enum StatsModifiersType;
 | Flat | Flat value to be added/subtracted to the stat, i.e. a value of +5 means that +5 will be added. Default modifier order equals to 100 |
 | PercentageAdditive | Percentage additive value to modify the stat, i.e. all percentage additive modifiers are added together before being applied. Default modifier order equals to 200 |
 | PercentageMultiplicative | Percentage multiplicative value to modify the stat, i.e. percentage multiplicative modifiers are are applied right away. Default modifier order equals to 300 |
+
+
+### 5.4 StatsSheet() <a name="statsSheet"/>
+Instantiate a new instance of the StatSheet class
+#### Declaration
+```csharp
+public StatsSheet(StatTypeSet statTypeSet, float defaultBaseValue, float defaultMinValue, float defaultMaxValue, SingleStatConfig[] statsOverride = null);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| StatTypeSet | statTypeSet | The StatsTypeSet which contains the StatType to be created |
+| float | defaultBaseValue | The base value for all stats in the set |
+| float | defaultMinValue | The minimum value for all stats |
+| float | defaultMaxValue | The maximum value for all stats |
+| SingleStatConfig[] | statsOverride | Overrides for each individual StatType |
+
+
+### StatsSheet.OnStatChanged <a name="statsSheetOnStatChanged"/>
+Invoked when the value of the stat has changed
+#### Declaration
+```csharp
+public event Action<StatType, float, float> OnStatChanged;
+```
+#### Parameters
+| Type | Description |
+| :--- | :--- |
+| StatType | The StatType it was modified |
+| float | Base value of the stat after the change |
+| float | Final value of the stat after the change |
+
+
+### StatsSheet.GetStat() <a name="statsSheetGetStat"/>
+Returns the SingleStat for the given type
+#### Declaration
+```csharp
+public SingleStat GetStat(StatType statType);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| StatType | statType | The StatType to get the SingleStat from |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| SingleStat | The corresponding SingleStat, or null if not found |
+
+
+### StatsSheet.GetBaseValue() <a name="statsSheetGetBaseValue"/>
+Returns the base value of a stat
+#### Declaration
+```csharp
+public float GetBaseValue(StatType statType);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| StatType | statType | The StatType to get the base value from |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | The base value of the stat |
+
+
+### StatsSheet.GetFinalValue() <a name="statsSheetGetFinalValue"/>
+Returns the final calculated value of a stat
+#### Declaration
+```csharp
+public float GetFinalValue(StatType statType);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| StatType | statType | The StatType to get the final value from |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| float | Value of the stat after applying all modifiers |
+
+
+### StatsSheet.AddModifier() <a name="statsSheetAddModifier"/>
+Add a modifier to a specific stat
+#### Declaration
+```csharp
+public void AddModifier(StatsModifier statsModifier);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| StatsModifier | statsModifier | The modifier to be added |
+
+
+### StatsSheet.RemoveModifier() <a name="statsSheetRemoveModifier"/>
+Returns the final calculated value of a stat
+#### Declaration
+```csharp
+public bool RemoveModifier(StatsModifier statsModifier);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| StatsModifier | statsModifier | The modifier to be removed |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True if the modifier was removed successufully, false otherwise |
+
+
+### StatsSheet.RemoveAllModifiersBySource() <a name="statsSheetRemoveAllModifiersBySource"/>
+Remove all modifiers from a specific source
+#### Declaration
+```csharp
+public bool RemoveAllModifiersBySource(UnityEngine.Object source);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| UnityEngine.Object | source | The source of the modifiers to be removed |
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| bool | True if at least one modifier was removed, false otherwise |
+
+
+### 5.5 SingleStatConfig() <a name="singleStatConfig"/>
+Instantiate a new instance of the SingleStatConfig struct
+#### Declaration
+```csharp
+public SingleStatConfig(StatType statType, float baseValue, float minValue, float maxValue);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| StatType | statType | The target StatsType for this config |
+| float | baseValue | The base value for for this stat |
+| float | minValue | The minimum value for this stat |
+| float | maxValue | The maximum value for this stat |
 
 ## 6 - Contact Information <a name="contactInformation"/>
 If you have any questions or want to report a bug/problem with the package, please contact me at evaldo.lborba@gmail.com

@@ -79,7 +79,7 @@ namespace RadarChart
 
         public float GetStatAmountNormalized(Type statType)
         {
-            return GetSingleStat(statType).GetFinalValueAfterModifiersNormalized;
+            return GetSingleStat(statType).GetFinalValueNormalized();
         }
 
         public List<float> StatsToList()
