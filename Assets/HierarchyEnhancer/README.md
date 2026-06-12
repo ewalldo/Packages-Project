@@ -46,6 +46,7 @@ Please let us know if you encounter any issues with the version of Unity you are
 - 1.4.1: Add shortcut related settings
 - 1.5: Add new shortcuts
 - 1.5.1: Ensure package functionality in Unity version 6000.3.9f1
+- 1.5.2: Fixed icon display issue when a component gets deleted from the project while it still exists in the hierarchy
 
 ## 3 - Features <a name="features"/>
 - Useful for identifying which components are attached to which objects.

@@ -44,6 +44,9 @@ namespace HierarchyEnhancer
                 {
                     Component component = components[i];
 
+                    if (component == null)
+                        continue;
+
                     if (ignoredComponents.Contains(component.GetType().Name))
                         continue;
 
