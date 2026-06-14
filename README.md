@@ -9,6 +9,7 @@ Repository to hold the packages of the tools I have developed for Unity.
 * [Extensions](Assets/Extensions/Documentation/README.md)
 * [Extra Attributes](Assets/ExtraAttributes/README.md)
 * [Favorites Window](Assets/FavoritesWindow/README.md)
+* [GOAP](Assets/GOAP/Documentation/README.md)
 * [Grid System](Assets/GridSystem/Documentation/README.md)
 * [Health System](Assets/HealthSystem/README.md)
 * [Hierarchy Enhancer](Assets/HierarchyEnhancer/README.md)
@@ -23,12 +24,8 @@ Repository to hold the packages of the tools I have developed for Unity.
 * [Tooltip System](Assets/TooltipSystem/README.md)
 * [Tween System](Assets/Tween/Documentation/README.md)
 
-## Tools in development
-* Dialogue System
-* Radar Chart
-* Spritesheet Animation Generator
+## Tools currently in development
+* Coming soon
 
 ## TODO list of tools
-* Graph Plot
-* Localization
-* ...
+* Coming soon
