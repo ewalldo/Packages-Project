@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79b5a5017ad10414c983da2b303c7db9, type: 3}
+  m_Name: VillagerGoapAgentConfig
+  m_EditorClassIdentifier: Assembly-CSharp::GOAP.Agent.GoapAgentConfig
+  plannerSettings: {fileID: 11400000, guid: 363eab3233397024daad5749aa0295ae, type: 2}
+  replanInterval: 2
+  maxConsecutivePlanFailures: 3
+  goalEvaluationInterval: 0.5
+  allowMidPlanGoalInterruption: 0
+  tickSensorsWhileIdle: 1
+  tickMode: 0
+  debugLog: 0
+  debugLogPlans: 0
