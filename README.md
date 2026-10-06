@@ -3,6 +3,7 @@ Repository to hold the packages of the tools I have developed for Unity.
 
 ## Available tools
 * [Animated Text](Assets/AnimatedText/README.md)
+* [Behavior Tree](Assets/BehaviorTree/README.md)
 * [Camera System](Assets/CameraSystem/README.md)
 * [Chrono Tools](Assets/ChronoTools/README.md)
 * [Event Bus](Assets/EventBus/README.md)
