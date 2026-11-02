@@ -1,9 +1,8 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ChronoTools
+namespace ChronoTools.Samples
 {
     public class ChronoToolsSample : MonoBehaviour
 	{
@@ -59,8 +58,8 @@ namespace ChronoTools
             periodicTimer.OnTimerStop += () => StopButtonLogic(periodStart, periodStop, periodPause, periodResume);
             periodicTimer.OnTimerPaused += () => PauseButtonLogic(periodStart, periodStop, periodPause, periodResume);
             periodicTimer.OnTimerResumed += () => ResumeButtonLogic(periodStart, periodStop, periodPause, periodResume);
-            periodicTimer.OnPeriodEnd += () => periodMessage.gameObject.SetActive(true);
-            periodicTimer.OnPeriodEnd += () => deactivateMessageTimer.Start();
+            periodicTimer.OnCountdownEnd += () => periodMessage.gameObject.SetActive(true);
+            periodicTimer.OnCountdownEnd += () => deactivateMessageTimer.Start();
             periodStart.onClick.AddListener(periodicTimer.Start);
             periodStop.onClick.AddListener(periodicTimer.Stop);
             periodPause.onClick.AddListener(periodicTimer.Pause);
@@ -90,16 +89,19 @@ namespace ChronoTools
         private void UpdateCountdown()
         {
             countdownTimer.Tick();
-            TimeSpan time = TimeSpan.FromSeconds(countdownTimer.CurrentTime);
-            countdownText.text = time.ToString(@"mm\:ss");
+
+            // All options below can be used to format the timer
+            countdownText.text = countdownTimer.ToClock(ClockFormat.MinutesSeconds);
+            //countdownText.text = TimeFormatExtensions.ToClock(countdownTimer.CurrentTime, ClockFormat.MinutesSeconds);
+            //countdownText.text = TimeFormatExtensions.ToClock(countdownTimer.CurrentTime, @"mm\:ss");
+
             countdownImage.fillAmount = countdownTimer.Progress;
         }
 
         private void UpdatePeriod()
         {
             periodicTimer.Tick();
-            TimeSpan time = TimeSpan.FromSeconds(periodicTimer.CurrentTime);
-            periodText.text = time.ToString(@"mm\:ss");
+            periodText.text = periodicTimer.ToClock(ClockFormat.MinutesSeconds);
             periodImage.fillAmount = periodicTimer.Progress;
 
             deactivateMessageTimer.Tick();
@@ -108,8 +110,7 @@ namespace ChronoTools
         private void UpdateStopwatch()
         {
             stopwatchTimer.Tick();
-            TimeSpan time = TimeSpan.FromSeconds(stopwatchTimer.CurrentTime);
-            stopwatchText.text = time.ToString(@"mm\:ss\:fff");
+            stopwatchText.text = stopwatchTimer.ToClock(ClockFormat.MinutesSecondsMillis);
         }
 
         private void StartButtonLogic(Button start, Button stop, Button pause, Button resume)

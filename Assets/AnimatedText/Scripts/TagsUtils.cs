@@ -1,34 +1,40 @@
+using System.Collections.Generic;
+
 namespace AnimatedText
 {
 	public static class TagsUtils
 	{
-        public static readonly string SPEED_TAG = "speed=";
-        public static readonly string PAUSE_TAG = "pause=";
-        public static readonly string ACTION_TAG = "action=";
+        public const string SPEED_TAG = "speed=";
+        public const string PAUSE_TAG = "pause=";
+        public const string ACTION_TAG = "action=";
 
-        public static readonly string WAVE_ANIMATION_START_TAG = "wave=";
-        public static readonly string WAVE_ANIMATION_END_TAG = "/wave";
-        public static readonly string SHAKE_ANIMATION_START_TAG = "shake=";
-        public static readonly string SHAKE_ANIMATION_END_TAG = "/shake";
-        public static readonly string PULSE_ANIMATION_START_TAG = "pulse=";
-        public static readonly string PULSE_ANIMATION_END_TAG = "/pulse";
-        public static readonly string ROTATE_ANIMATION_START_TAG = "rotate=";
-        public static readonly string ROTATE_ANIMATION_END_TAG = "/rotate";
+        public const string REPLACE_TAG = "replace=";
 
-        public static readonly string REPLACE_TAG = "replace=";
-
-        public static readonly string[] CUSTOM_TAGS = { SPEED_TAG, PAUSE_TAG, ACTION_TAG,
-            WAVE_ANIMATION_START_TAG, WAVE_ANIMATION_END_TAG, SHAKE_ANIMATION_START_TAG, SHAKE_ANIMATION_END_TAG,
-            PULSE_ANIMATION_START_TAG, PULSE_ANIMATION_END_TAG, ROTATE_ANIMATION_START_TAG, ROTATE_ANIMATION_END_TAG,
+        public static readonly HashSet<string> CUSTOM_TAGS = new HashSet<string>() {
+            SPEED_TAG, PAUSE_TAG, ACTION_TAG,
+            TextWaveAnimation.START_ANIMATION_TAG, TextWaveAnimation.END_ANIMATION_TAG,
+            TextShakeAnimation.START_ANIMATION_TAG, TextShakeAnimation.END_ANIMATION_TAG,
+            TextPulseAnimation.START_ANIMATION_TAG, TextPulseAnimation.END_ANIMATION_TAG,
+            TextRotateAnimation.START_ANIMATION_TAG, TextRotateAnimation.END_ANIMATION_TAG,
+            TextBounceAnimation.START_ANIMATION_TAG, TextBounceAnimation.END_ANIMATION_TAG,
+            TextNoiseAnimation.START_ANIMATION_TAG, TextNoiseAnimation.END_ANIMATION_TAG,
             REPLACE_TAG};
 
-        public static readonly string[] START_ANIMATION_TAGS = {
-            WAVE_ANIMATION_START_TAG, SHAKE_ANIMATION_START_TAG,
-            PULSE_ANIMATION_START_TAG, ROTATE_ANIMATION_START_TAG};
+        public static readonly HashSet<string> START_ANIMATION_TAGS = new HashSet<string>() {
+            TextWaveAnimation.START_ANIMATION_TAG,
+            TextShakeAnimation.START_ANIMATION_TAG,
+            TextPulseAnimation.START_ANIMATION_TAG,
+            TextRotateAnimation.START_ANIMATION_TAG,
+            TextBounceAnimation.START_ANIMATION_TAG,
+            TextNoiseAnimation.START_ANIMATION_TAG};
 
-        public static readonly string[] END_ANIMATION_TAGS = {
-            WAVE_ANIMATION_END_TAG, SHAKE_ANIMATION_END_TAG,
-            PULSE_ANIMATION_END_TAG, ROTATE_ANIMATION_END_TAG};
+        public static readonly HashSet<string> END_ANIMATION_TAGS = new HashSet<string>() {
+            TextWaveAnimation.END_ANIMATION_TAG,
+            TextShakeAnimation.END_ANIMATION_TAG,
+            TextPulseAnimation.END_ANIMATION_TAG,
+            TextRotateAnimation.END_ANIMATION_TAG,
+            TextBounceAnimation.END_ANIMATION_TAG,
+            TextNoiseAnimation.END_ANIMATION_TAG};
 
         public static bool IsCustomTag(string possibleCustomTag)
         {

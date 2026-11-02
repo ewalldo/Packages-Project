@@ -2062,6 +2062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d193f81684961be428685402bdfe5837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statsSheet: {fileID: 341501855}
   statType: {fileID: 11400000, guid: bab728ac012d480439b1ad87c965d7ad, type: 2}
   statText: {fileID: 1755184076}
 --- !u!1 &311446091
@@ -2215,6 +2216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d193f81684961be428685402bdfe5837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statsSheet: {fileID: 919231441}
   statType: {fileID: 11400000, guid: b375f6c5f59317146bd46afb1477d234, type: 2}
   statText: {fileID: 924755775}
 --- !u!1 &311890120
@@ -2583,7 +2585,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 341501853}
-  - component: {fileID: 341501852}
+  - component: {fileID: 341501855}
   - component: {fileID: 341501854}
   m_Layer: 0
   m_Name: Character
@@ -2592,20 +2594,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &341501852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 341501851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1519ed6378a48a54eb671dea9c73dfe6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterStatsTypeSet: {fileID: 11400000, guid: fe46cd944f54b444b80f5e400a6892e1,
-    type: 2}
 --- !u!4 &341501853
 Transform:
   m_ObjectHideFlags: 0
@@ -2633,6 +2621,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02998be8d16cffe42b3fd01ea2e262de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &341501855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341501851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03aa7f734ef527944b70772fc07484bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatsSystem.StatsSheetComponent
+  statsSheet:
+    statTypeSet: {fileID: 11400000, guid: fe46cd944f54b444b80f5e400a6892e1, type: 2}
+    statsOverrides: []
+    defaultBaseValue: 10
+    defaultMinValue: 1
+    defaultMaxValue: 100
 --- !u!1 &350427910
 GameObject:
   m_ObjectHideFlags: 0
@@ -3340,6 +3346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d193f81684961be428685402bdfe5837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statsSheet: {fileID: 919231441}
   statType: {fileID: 11400000, guid: ab0b656bddd63034b98e0df0478ed7f0, type: 2}
   statText: {fileID: 1627249766}
 --- !u!1 &492305846
@@ -4123,6 +4130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d193f81684961be428685402bdfe5837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statsSheet: {fileID: 341501855}
   statType: {fileID: 11400000, guid: 02fa5afd9f48f6c4d9344d45aa9b5588, type: 2}
   statText: {fileID: 882439877}
 --- !u!1 &676628653
@@ -5305,6 +5313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d193f81684961be428685402bdfe5837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statsSheet: {fileID: 341501855}
   statType: {fileID: 11400000, guid: 84a1fcef22ff3e94f91d8453f637a0a0, type: 2}
   statText: {fileID: 457759074}
 --- !u!1 &916493299
@@ -5382,7 +5391,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 919231440}
-  - component: {fileID: 919231439}
+  - component: {fileID: 919231441}
   - component: {fileID: 919231438}
   m_Layer: 0
   m_Name: Vehicle
@@ -5403,20 +5412,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce46696511c7a9d40a68479408bbec61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &919231439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919231437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1519ed6378a48a54eb671dea9c73dfe6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterStatsTypeSet: {fileID: 11400000, guid: 8979bd0fc5592c040b3b5967c404393a,
-    type: 2}
 --- !u!4 &919231440
 Transform:
   m_ObjectHideFlags: 0
@@ -5432,6 +5427,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &919231441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919231437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03aa7f734ef527944b70772fc07484bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatsSystem.StatsSheetComponent
+  statsSheet:
+    statTypeSet: {fileID: 11400000, guid: 8979bd0fc5592c040b3b5967c404393a, type: 2}
+    statsOverrides: []
+    defaultBaseValue: 10
+    defaultMinValue: 1
+    defaultMaxValue: 100
 --- !u!1 &924755773
 GameObject:
   m_ObjectHideFlags: 0
@@ -10139,6 +10152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d193f81684961be428685402bdfe5837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statsSheet: {fileID: 341501855}
   statType: {fileID: 11400000, guid: 3a7e46fbd89f08b488cee311dd83b02f, type: 2}
   statText: {fileID: 1745667209}
 --- !u!1 &1787717347
@@ -10697,6 +10711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d193f81684961be428685402bdfe5837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statsSheet: {fileID: 341501855}
   statType: {fileID: 11400000, guid: 18ba8729e8870564cb9e9a1fb398f222, type: 2}
   statText: {fileID: 1456768875}
 --- !u!1 &1889624078
@@ -11322,6 +11337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d193f81684961be428685402bdfe5837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statsSheet: {fileID: 919231441}
   statType: {fileID: 11400000, guid: 8de422449944fa34bb3d20edc02a3347, type: 2}
   statText: {fileID: 1918596876}
 --- !u!1 &1954596621

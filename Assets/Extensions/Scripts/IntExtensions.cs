@@ -122,5 +122,72 @@ namespace Extensions
 
             return min;
         }
+
+        /// <summary>
+        /// Converts an integer to its ordinal representation (e.g. 1 to 1st, 2 to 2nd, etc.)
+        /// </summary>
+        /// <param name="value">The value to be converted</param>
+        /// <returns>The value in its ordinal representation</returns>
+        public static string ToOrdinal(this int value)
+        {
+            if (value <= 0)
+                throw new ArgumentOutOfRangeException(nameof(value), "Value should be higher than zero");
+
+            int lastDigit = value % 10;
+            int lastTwoDigits = value % 100;
+
+            if (lastTwoDigits >= 11 && lastTwoDigits <= 13)
+                return $"{value}th";
+
+            return lastDigit switch
+            {
+                1 => $"{value}st",
+                2 => $"{value}nd",
+                3 => $"{value}rd",
+                _ => $"{value}th",
+            };
+        }
+
+        /// <summary>
+        /// Converts an integer to its Roman numeral representation (e.g. 1 to I, 2 to II, etc.)
+        /// </summary>
+        /// <param name="value">The value to be converted</param>
+        /// <returns>The value in its Roman numeral representation</returns>
+        public static string ToRomanNumeral(this int value)
+        {
+            if (value <= 0)
+                throw new ArgumentOutOfRangeException(nameof(value), "Value should be higher than zero");
+
+            string[] thousands = { "", "M", "MM", "MMM" };
+            string[] hundreds = { "", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM" };
+            string[] tens = { "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC" };
+            string[] units = { "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
+
+            return thousands[value / 1000] + hundreds[(value % 1000) / 100] + tens[(value % 100) / 10] + units[value % 10];
+        }
+
+        /// <summary>
+        /// Maps a value in seconds to a "MM:SS" style timer string
+        /// </summary>
+        /// <param name="value">The value in seconds</param>
+        /// <returns>String representation in the "MM:SS" format</returns>
+        public static string ToTimer(this int value)
+        {
+            int mins = value / 60;
+            int secs = value % 60;
+            return $"{mins:D2}:{secs:D2}";
+        }
+
+        /// <summary>
+        /// Wraps the value between min (inclusive) and max (exclusive)
+        /// </summary>
+        /// <param name="value">The value to wrap</param>
+        /// <param name="min">The minimum value of the wrap range</param>
+        /// <param name="max">The maximum value of the wrap range</param>
+        /// <returns>The value wrapped</returns>
+        public static int Wrap(this int value, int min, int max)
+        {
+            return min + ((value - min) % (max - min) + (max - min)) % (max - min);
+        }
     }
 }

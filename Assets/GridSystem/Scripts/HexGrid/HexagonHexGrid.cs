@@ -44,5 +44,18 @@ namespace GridSystem
         /// <param name="gridObjectInitializer">The initialize function for each grid element (Func<HexagonHexGrid<T>, AxialCoord, T> where HexagonHexGrid<T> references this grid object and AxialCoord references the position in the grid for the object)</param>
         public HexagonHexGrid(HexType hexType, int rangeFromCenter, float edgeLength, Func<HexagonHexGrid<T>, AxialCoord, T> gridObjectInitializer = null)
             : this(hexType, rangeFromCenter, edgeLength, Vector3.zero, gridObjectInitializer) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HexagonHexGrid{T}"/> class.
+        /// </summary>
+        /// <param name="gridData">The grid data in a serialized format</param>
+        public HexagonHexGrid(SerializableHexGrid<T> gridData)
+            : base((HexType)gridData.HexType, gridData.EdgeLength, new Vector3(gridData.OriginX, gridData.OriginY, gridData.OriginZ))
+        {
+            foreach (SerializableHexGrid<T>.HexGridData data in gridData.Data)
+            {
+                hexGrid[new AxialCoord(data.Q, data.R)] = data.Value;
+            }
+        }
     }
 }

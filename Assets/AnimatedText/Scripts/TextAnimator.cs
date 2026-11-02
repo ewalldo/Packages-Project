@@ -27,14 +27,20 @@ namespace AnimatedText
             }
         }
         private Stack<ITextAnimator> currentlyTextAnimationList;
+        private readonly Vector3[] vertexCache = new Vector3[4];
 
         private Coroutine typingCoroutine;
-        public float DefaultTypingSpeed { get; set; }
+        private string[] currentSubTexts;
+        private int currentSubTextIndex;
+        //private bool isPaused;
 
-        public Action<char> OnCharTyped;
-        public Action OnStartedTyping;
-        public Action OnFinishedTyping;
-        public Action<string> OnDialogueAction;
+        public float DefaultTypingSpeed { get; set; }
+        public bool IsTyping { get; private set; }
+
+        public event Action<char> OnCharTyped;
+        public event Action OnStartedTyping;
+        public event Action OnFinishedTyping;
+        public event Action<string> OnDialogueAction;
 
         private void Awake()
         {
@@ -56,26 +62,27 @@ namespace AnimatedText
                 if (!charInfo.isVisible)
                     continue;
 
-                Vector3[] sourceVertices = textMeshProUGUI.textInfo.meshInfo[charInfo.materialReferenceIndex].vertices;
+                int materialIndex = charInfo.materialReferenceIndex;
+                int vertexIndex = charInfo.vertexIndex;
+                Vector3[] meshVertices = textMeshProUGUI.textInfo.meshInfo[materialIndex].vertices;
+
+                // Cache original positions before any animation modifies them
+                for (int j = 0; j < 4; j++)
+                    vertexCache[j] = meshVertices[vertexIndex + j];
+
+                Vector2 charMidBasline = (vertexCache[0] + vertexCache[2]) / 2;
 
                 foreach (ITextAnimator textAnimation in indexAnimationPair.charAnimationsArray)
                 {
-                    int materialIndex = charInfo.materialReferenceIndex;
-                    int vertexIndex = charInfo.vertexIndex;
+                    if (textAnimation == null)
+                        continue;
 
-                    Vector2 charMidBasline = (sourceVertices[vertexIndex + 0] + sourceVertices[vertexIndex + 2]) / 2;
-                    Vector3 offset = charMidBasline;
-
-                    Vector3[] destinationVertices = textMeshProUGUI.textInfo.meshInfo[materialIndex].vertices;
+                    Matrix4x4 matrix = textAnimation.GenerateTransformMatrix(indexAnimationPair.index);
 
                     for (int j = 0; j < 4; j++)
                     {
-                        destinationVertices[vertexIndex + j] = sourceVertices[vertexIndex + j] - offset;
-
-                        Matrix4x4 matrix = textAnimation.GenerateTranformMatrix(indexAnimationPair.index);
-
-                        destinationVertices[vertexIndex + j] = matrix.MultiplyPoint3x4(destinationVertices[vertexIndex + j]);
-                        destinationVertices[vertexIndex + j] += offset;
+                        Vector3 v = meshVertices[vertexIndex + j] - (Vector3)charMidBasline;
+                        meshVertices[vertexIndex + j] = matrix.MultiplyPoint3x4(v) + (Vector3)charMidBasline;
                     }
                 }
             }
@@ -113,9 +120,10 @@ namespace AnimatedText
 
                     if (currentlyTextAnimationList.Count > 0)
                     {
+                        ITextAnimator[] currentAnimations = currentlyTextAnimationList.ToArray();
                         for (int j = displayText.Length - subTexts[i].Length - richtagOffset; j < displayText.Length - richtagOffset; j++)
                         {
-                            animatedCharList.Add(new IndexAnimationPair(j, currentlyTextAnimationList.ToArray()));
+                            animatedCharList.Add(new IndexAnimationPair(j, currentAnimations));
                         }
                     }
                 }
@@ -147,25 +155,70 @@ namespace AnimatedText
         }
 
         /// <summary>
+        /// Instantly reveals all characters, skipping the typewriter effect
+        /// </summary>
+        public void SkipTyping()
+        {
+            if (typingCoroutine == null)
+                return;
+
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+
+            ProcessRemainingTags();
+
+            textMeshProUGUI.maxVisibleCharacters = textMeshProUGUI.textInfo.characterCount;
+
+            FinishTyping();
+        }
+
+        /// <summary>
+        /// Pauses the typewriter effect, keeping the current visible characters on screen
+        /// </summary>
+        public void PauseTyping()
+        {
+            if (!IsTyping)
+                return;
+
+            IsTyping = false;
+        }
+
+        /// <summary>
+        /// Resumes the typewriter effect from the current visible characters on screen
+        /// </summary>
+        public void ResumeTyping()
+        {
+            if (IsTyping)
+                return;
+
+            IsTyping = true;
+        }
+
+        /// <summary>
         /// "Type" each character on screen
         /// </summary>
         /// <param name="subTexts">Array containing the text information to be typed</param>
         /// <returns></returns>
         private IEnumerator TypewriterCoroutine(string[] subTexts)
         {
-            int subCounter = 0;
+            currentSubTexts = subTexts;
+            currentSubTextIndex = 0;
             int visibleCounter = 0;
 
             typingSpeed = DefaultTypingSpeed;
+            IsTyping = true;
             OnStartedTyping?.Invoke();
 
-            while (subCounter < subTexts.Length)
+            while (currentSubTextIndex < subTexts.Length)
             {
-                if (subCounter % 2 == 0) // text without a tag
+                if (currentSubTextIndex % 2 == 0) // text without a tag
                 {
-                    while (visibleCounter < subTexts[subCounter].Length)
+                    while (visibleCounter < subTexts[currentSubTextIndex].Length)
                     {
-                        OnCharTyped?.Invoke(subTexts[subCounter][visibleCounter]);
+                        while (!IsTyping)
+                            yield return null;
+
+                        OnCharTyped?.Invoke(subTexts[currentSubTextIndex][visibleCounter]);
 
                         visibleCounter++;
                         textMeshProUGUI.maxVisibleCharacters++;
@@ -176,13 +229,13 @@ namespace AnimatedText
                 }
                 else // tagged text
                 {
-                    yield return EvaluateTag(subTexts[subCounter]);
+                    yield return EvaluateTag(subTexts[currentSubTextIndex]);
                 }
 
-                subCounter++;
+                currentSubTextIndex++;
             }
 
-            OnFinishedTyping?.Invoke();
+            FinishTyping();
         }
 
         /// <summary>
@@ -193,6 +246,9 @@ namespace AnimatedText
         private IEnumerator EvaluateTag(string tag)
         {
             if (tag.Length == 0)
+                yield break;
+
+            if (!TagsUtils.IsCustomTag(tag))
                 yield break;
 
             if (TagsUtils.IsStartAnimationTag(tag) || TagsUtils.IsEndAnimationTag(tag))
@@ -223,38 +279,88 @@ namespace AnimatedText
         /// <returns>An ITextAnimator created based on the tag parameter</returns>
         private ITextAnimator GetTextAnimationFromTag(string tag)
         {
-            if (tag.StartsWith(TagsUtils.WAVE_ANIMATION_START_TAG))
+            if (tag.StartsWith(TextWaveAnimation.START_ANIMATION_TAG))
             {
                 string parameters = tag.Split('=')[1];
-                float frequency = float.Parse(parameters.Split(',')[0]);
-                float amplitude = float.Parse(parameters.Split(',')[1]);
+                string[] parts = parameters.Split(',');
+                float frequency = float.Parse(parts[0]);
+                float amplitude = float.Parse(parts[1]);
                 TextWaveAnimation textWaveAnimation = new TextWaveAnimation(frequency, amplitude);
                 return textWaveAnimation;
             }
-            else if (tag.StartsWith(TagsUtils.SHAKE_ANIMATION_START_TAG))
+            else if (tag.StartsWith(TextShakeAnimation.START_ANIMATION_TAG))
             {
                 float radius = float.Parse(tag.Split('=')[1]);
                 TextShakeAnimation textShakeAnimation = new TextShakeAnimation(radius);
                 return textShakeAnimation;
             }
-            else if (tag.StartsWith(TagsUtils.PULSE_ANIMATION_START_TAG))
+            else if (tag.StartsWith(TextPulseAnimation.START_ANIMATION_TAG))
             {
                 string parameters = tag.Split('=')[1];
-                float speed = float.Parse(parameters.Split(',')[0]);
-                float variance = float.Parse(parameters.Split(',')[1]);
-                float baseValue = float.Parse(parameters.Split(',')[2]);
+                string[] parts = parameters.Split(',');
+                float speed = float.Parse(parts[0]);
+                float variance = float.Parse(parts[1]);
+                float baseValue = float.Parse(parts[2]);
                 TextPulseAnimation textPulseAnimation = new TextPulseAnimation(speed, variance, baseValue);
                 return textPulseAnimation;
             }
-            else if (tag.StartsWith(TagsUtils.ROTATE_ANIMATION_START_TAG))
+            else if (tag.StartsWith(TextRotateAnimation.START_ANIMATION_TAG))
             {
                 float speed = float.Parse(tag.Split('=')[1]);
                 TextRotateAnimation textRotateAnimation = new TextRotateAnimation(speed);
                 return textRotateAnimation;
             }
+            else if (tag.StartsWith(TextBounceAnimation.START_ANIMATION_TAG))
+            {
+                string parameters = tag.Split('=')[1];
+                string[] parts = parameters.Split(',');
+                float speed = float.Parse(parts[0]);
+                float height = float.Parse(parts[1]);
+                bool offsetEachCharacter = bool.Parse(parts[2]);
+                TextBounceAnimation textBounceAnimation = new TextBounceAnimation(speed, height, offsetEachCharacter);
+                return textBounceAnimation;
+            }
+            else if (tag.StartsWith(TextNoiseAnimation.START_ANIMATION_TAG))
+            {
+                string parameters = tag.Split('=')[1];
+                string[] parts = parameters.Split(',');
+                float speed = float.Parse(parts[0]);
+                float radiusX = float.Parse(parts[1]);
+                float radiusY = float.Parse(parts[2]);
+                TextNoiseAnimation textNoiseAnimation = new TextNoiseAnimation(speed, radiusX, radiusY);
+                return textNoiseAnimation;
+            }
             else
             {
+                Debug.LogWarning($"[TextAnimator] Unknown animation tag: {tag}");
                 return null;
+            }
+        }
+
+        private void FinishTyping()
+        {
+            typingCoroutine = null;
+            IsTyping = false;
+            OnFinishedTyping?.Invoke();
+        }
+
+        private void ProcessRemainingTags()
+        {
+            if (currentSubTexts == null || currentSubTexts.Length == 0)
+                return;
+
+            for (int i = currentSubTextIndex + 1; i < currentSubTexts.Length; i++)
+            {
+                if (i % 2 == 0) // text segment, does not have a tag
+                    continue;
+
+                string tag = currentSubTexts[i];
+
+                if (tag.StartsWith(TagsUtils.ACTION_TAG)) // handle action tag
+                {
+                    OnDialogueAction?.Invoke(tag.Split('=')[1]);
+                }
+                // the remaining tags [SPEED_TAG][PAUSE_TAG] does not need to be processed on skip
             }
         }
     }

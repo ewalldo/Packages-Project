@@ -10,6 +10,7 @@
       - [Vector2:WithX](#vectorExtensionsVector2WithX)
       - [Vector2:WithY](#vectorExtensionsVector2WithY)
       - [Vector3:AddToAxis](#vectorExtensionsVector3AddToAxis)
+      - [Vector3:Flat](#vectorExtensionsVector3Flat)
       - [Vector3:InRangeOf](#vectorExtensionsVector3InRangeOf)
       - [Vector3:RandomPointInAnnulus](#vectorExtensionsVector3RandomPointInAnnulus)
       - [Vector3:With](#vectorExtensionsVector3With)
@@ -180,6 +181,18 @@ Vector3 AddToAxis(float x = 0, float y = 0, float z = 0);
 | Type | Description |
 | :--- | :--- |
 | Vector3 | A new Vector3 with the value added to the specified components |
+
+
+#### Vector3:Flat <a name="vectorExtensionsVector3Flat"/>
+Returns a new Vector3 with the Y component set to 0 (flat on the XZ plane)
+#### Declaration
+```csharp
+Vector3 Flat();
+```
+#### Returns
+| Type | Description |
+| :--- | :--- |
+| Vector3 | A new Vector3 with the Y component zeroed |
 
 
 #### Vector3:InRangeOf <a name="vectorExtensionsVector3InRangeOf"/>

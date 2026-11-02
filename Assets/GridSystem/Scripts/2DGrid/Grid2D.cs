@@ -1,13 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace GridSystem
 {
-	public class Grid2D<T>
-	{
+	public class Grid2D<T> : IEnumerable<T>
+    {
         private readonly int width;
         private readonly int height;
         private readonly float cellSizeX;
@@ -15,44 +14,50 @@ namespace GridSystem
         private readonly Vector3 gridOriginPosition;
         private Dictionary<GridPosition2D, T> grid;
 
+        private static int RandomInt(int max) => UnityEngine.Random.Range(0, max);
+
         /// <summary>
         /// Get the width of the grid
         /// </summary>
-        public int GetWidth => width;
+        public int Width => width;
         /// <summary>
         /// Get the height of the grid
         /// </summary>
-        public int GetHeight => height;
+        public int Height => height;
+        /// <summary>
+        /// Get the total number of cells in the grid
+        /// </summary>
+        public int Count => Width * Height;
         /// <summary>
         /// Get the width of the grid's cell
         /// </summary>
-        public float GetCellSizeX => cellSizeX;
+        public float CellSizeX => cellSizeX;
         /// <summary>
         /// Get the height of the grid's cell
         /// </summary>
-        public float GetCellSizeZ => cellSizeZ;
+        public float CellSizeZ => cellSizeZ;
         /// <summary>
         /// Get the origin position of the grid
         /// </summary>
-        public Vector3 GetGridOriginPosition => gridOriginPosition;
+        public Vector3 GridOriginPosition => gridOriginPosition;
         /// <summary>
         /// Check if is a square grid (width == height)
         /// </summary>
-        public bool IsSquareGrid => width == height;
+        public bool IsSquareGrid => Width == Height;
         /// <summary>
         /// Check if the grid has square cells (cell's width == cell's height)
         /// </summary>
-        public bool IsSquareGridCellSize => cellSizeX == cellSizeZ;
+        public bool IsSquareGridCellSize => Mathf.Approximately(CellSizeX, CellSizeZ);
 
         /// <summary>
         /// Event to be raised when the value of a cell changes
         /// <param name="gridPosition2D">GridPosition2D: the grid position where the value has changed</param>"
         /// <param name="value">T: the new value assigned to the position</param>"
         /// </summary>
-        public Action<GridPosition2D, T> OnGridPositionValueChanged;
+        public event Action<GridPosition2D, T> OnGridPositionValueChanged;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Grid{T}"/> class.
+        /// Initializes a new instance of the <see cref="Grid2D{T}"/> class.
         /// </summary>
         /// <param name="width">The width of the grid</param>
         /// <param name="height">The height of the grid</param>
@@ -87,15 +92,15 @@ namespace GridSystem
 
                     // ex: grid2D = new Grid2D<GridObject>(width, height, cellSize, cellSize, Vector3.Zero, (Grid2D<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
                     if (gridObjectInitializer != null)
-                        grid[new GridPosition2D(x, z)] = gridObjectInitializer(this, gridPosition2D);
+                        grid[gridPosition2D] = gridObjectInitializer(this, gridPosition2D);
                     else
-                        grid[new GridPosition2D(x, z)] = default(T);
+                        grid[gridPosition2D] = default(T);
                 }
             }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Grid{T}"/> class.
+        /// Initializes a new instance of the <see cref="Grid2D{T}"/> class.
         /// </summary>
         /// <param name="width">The width of the grid</param>
         /// <param name="height">The height of the grid</param>
@@ -106,7 +111,7 @@ namespace GridSystem
             : this(width, height, cellSizeX, cellSizeZ, Vector3.zero, gridObjectInitializer) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Grid{T}"/> class.
+        /// Initializes a new instance of the <see cref="Grid2D{T}"/> class.
         /// </summary>
         /// <param name="width">The width of the grid</param>
         /// <param name="height">The height of the grid</param>
@@ -117,7 +122,7 @@ namespace GridSystem
             : this(width, height, cellSize, cellSize, gridOriginPosition, gridObjectInitializer) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Grid{T}"/> class.
+        /// Initializes a new instance of the <see cref="Grid2D{T}"/> class.
         /// </summary>
         /// <param name="width">The width of the grid</param>
         /// <param name="height">The height of the grid</param>
@@ -148,13 +153,31 @@ namespace GridSystem
         /// Returns the elements of the grid
         /// </summary>
         /// <returns>Element of the grid</returns>
-        public IEnumerable<T> GetGridObjects()
+        public IEnumerator<T> GetEnumerator()
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (int z = 0; z < height; z++)
+                for (int z = 0; z < Height; z++)
                 {
                     yield return GetGridObjectAtGridPosition2D(new GridPosition2D(x, z));
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        /// <summary>
+        /// Returns the elements of the grid with their respective positions
+        /// </summary>
+        /// <returns>Element of the grid and the respective position</returns>
+        public IEnumerable<(GridPosition2D Position, T Value)> GetGridObjectsWithPositions()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int z = 0; z < Height; z++)
+                {
+                    var pos = new GridPosition2D(x, z);
+                    yield return (pos, GetGridObjectAtGridPosition2D(pos));
                 }
             }
         }
@@ -166,9 +189,12 @@ namespace GridSystem
         /// <returns>Element of the row</returns>
         public IEnumerable<T> GetRow(int rowIndex)
         {
-            for (int z = 0; z < height; z++)
+            if (rowIndex < 0 || rowIndex >= Height)
+                throw new ArgumentOutOfRangeException(nameof(rowIndex));
+
+            for (int x = 0; x < Width; x++)
             {
-                yield return GetGridObjectAtGridPosition2D(new GridPosition2D(rowIndex, z));
+                yield return GetGridObjectAtGridPosition2D(new GridPosition2D(x, rowIndex));
             }
         }
 
@@ -179,9 +205,12 @@ namespace GridSystem
         /// <returns>Element of the column</returns>
         public IEnumerable<T> GetCol(int colIndex)
         {
-            for (int x = 0; x < width; x++)
+            if (colIndex < 0 || colIndex >= Width)
+                throw new ArgumentOutOfRangeException(nameof(colIndex));
+
+            for (int z = 0; z < Height; z++)
             {
-                yield return GetGridObjectAtGridPosition2D(new GridPosition2D(x, colIndex));
+                yield return GetGridObjectAtGridPosition2D(new GridPosition2D(colIndex, z));
             }
         }
 
@@ -190,9 +219,9 @@ namespace GridSystem
         /// </summary>
         public void ClearGrid()
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (int z = 0; z < height; z++)
+                for (int z = 0; z < Height; z++)
                 {
                     SetGridObjectAtGridPosition2D(new GridPosition2D(x, z), default(T), true);
                 }
@@ -205,13 +234,51 @@ namespace GridSystem
         /// <param name="value">The value to apply to every position</param>
         public void Fill(T value)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (int z = 0; z < height; z++)
+                for (int z = 0; z < Height; z++)
                 {
                     SetGridObjectAtGridPosition2D(new GridPosition2D(x, z), value, true);
                 }
             }
+        }
+
+        /// <summary>
+        /// Map the grid to a new grid with the same dimensions but with different type of elements based on a mapping function
+        /// </summary>
+        /// <param name="mapper">The mapping function</param>
+        /// <returns>A new grid with the mapped values</returns>
+        public Grid2D<TResult> Map<TResult>(Func<T, TResult> mapper)
+        {
+            Grid2D<TResult> mappedGrid = new Grid2D<TResult>(Width, Height, CellSizeX, CellSizeZ, GridOriginPosition);
+
+            for (int x = 0; x < Width; x++)
+            {
+                for (int z = 0; z < Height; z++)
+                {
+                    GridPosition2D gridPosition2D = new GridPosition2D(x, z);
+                    mappedGrid.SetGridObjectAtGridPosition2D(gridPosition2D, mapper(GetGridObjectAtGridPosition2D(gridPosition2D)), true);
+                }
+            }
+
+            return mappedGrid;
+        }
+
+        /// <summary>
+        /// Swap the values of two positions in the grid
+        /// </summary>
+        /// <param name="a">The first position</param>
+        /// <param name="b">The second position</param>
+        public void Swap(GridPosition2D a, GridPosition2D b)
+        {
+            if (!IsWithinGrid2DBounds(a))
+                throw new ArgumentException($"There is no grid position {a} in this grid");
+            if (!IsWithinGrid2DBounds(b))
+                throw new ArgumentException($"There is no grid position {b} in this grid");
+
+            T temp = GetGridObjectAtGridPosition2D(a);
+            SetGridObjectAtGridPosition2D(a, GetGridObjectAtGridPosition2D(b), true);
+            SetGridObjectAtGridPosition2D(b, temp, true);
         }
 
         /// <summary>
@@ -221,7 +288,26 @@ namespace GridSystem
         /// <returns>The element at the specified grid position</returns>
         public T GetGridObjectAtGridPosition2D(GridPosition2D gridPosition2D)
         {
-            return grid[gridPosition2D];
+            if (grid.TryGetValue(gridPosition2D, out T value))
+                return value;
+            else
+                throw new ArgumentException($"There is no grid position {gridPosition2D} in this grid");
+        }
+
+        /// <summary>
+        /// Attempts to retrieve the object of type <typeparamref name="T"/> located at the specified 2D grid position
+        /// </summary>
+        /// <param name="gridPosition2D">The 2D grid position from which to retrieve the object</param>
+        /// <param name="value">When this method returns, contains the object of type <typeparamref name="T"/> at the specified grid position if found, otherwise the default value for the type</param>
+        /// <returns>True if an object exists at the specified grid position, false otherwise</returns>
+        public bool TryGetGridObjectAtGridPosition2D(GridPosition2D gridPosition2D, out T value)
+        {
+            value = default(T);
+            if (!IsWithinGrid2DBounds(gridPosition2D))
+                return false;
+
+            value = GetGridObjectAtGridPosition2D(gridPosition2D);
+            return true;
         }
 
         /// <summary>
@@ -231,46 +317,81 @@ namespace GridSystem
         /// <returns>The element at the specified world position</returns>
         public T GetGridObjectAtWorldPosition(Vector3 worldPosition)
         {
-            GridPosition2D gridPosition2D = GetGridPosition2DFromWorldPosition(worldPosition);
-            return GetGridObjectAtGridPosition2D(gridPosition2D);
+            if (TryGetGridPosition2DFromWorldPosition(worldPosition, out GridPosition2D gridPosition2D))
+                return GetGridObjectAtGridPosition2D(gridPosition2D);
+            else
+                throw new ArgumentException($"The world position {worldPosition} is out of the grid bounds");
         }
 
         /// <summary>
-        /// Get an random object from the grid
+        /// Attempts to retrieve the object of type <typeparamref name="T"/> located at the specified world position
+        /// </summary>
+        /// <param name="worldPosition">The world position to retrieve the object</param>
+        /// <param name="value">When this method returns, contains the object of type <typeparamref name="T"/> at the specified world position if found, otherwise the default value for the type</param>
+        /// <returns>True if an object exists at the specified world position, false otherwise</returns>
+        public bool TryGetGridObjectAtWorldPosition(Vector3 worldPosition, out T value)
+        {
+            value = default(T);
+            if (!TryGetGridPosition2DFromWorldPosition(worldPosition, out GridPosition2D gridPosition2D))
+                return false;
+            value = GetGridObjectAtGridPosition2D(gridPosition2D);
+            return true;
+        }
+
+        /// <summary>
+        /// Get a random object from the grid
         /// </summary>
         /// <returns>A random element from the grid</returns>
         public T GetRandomGridObject()
         {
-            System.Random random = new System.Random();
-            int x = random.Next(width);
-            int z = random.Next(height);
+            int x = RandomInt(Width);
+            int z = RandomInt(Height);
             return GetGridObjectAtGridPosition2D(new GridPosition2D(x, z));
         }
 
-        // inclusive range
         /// <summary>
         /// Get a sub-grid from the original grid (inclusive interval)
         /// </summary>
-        /// <param name="startRow">The start row of the subgrid</param>
-        /// <param name="endRow">The end row of the subgrid (inclusive)</param>
-        /// <param name="startColumn">The start column of the subgrid</param>
-        /// <param name="endColumn">The end column of the subgrid</param>
-        /// <param name="newGridOriginPosition">The original position for the subgrid</param>
+        /// <param name="startX">The start X-value of the subgrid</param>
+        /// <param name="endX">The end X-value of the subgrid</param>
+        /// <param name="startZ">The start Z-value of the subgrid</param>
+        /// <param name="endZ">The end Z-value of the subgrid</param>
+        /// <param name="newGridOriginPosition">The origin position for the subgrid</param>
         /// <returns>A subgrid containing the elements of the original grid</returns>
-        public Grid2D<T> GetSubGrid(int startRow, int endRow, int startColumn, int endColumn, Vector3 newGridOriginPosition)
+        public Grid2D<T> GetSubGrid(int startX, int endX, int startZ, int endZ, Vector3 newGridOriginPosition)
         {
-            Grid2D<T> subGrid = new Grid2D<T>(endRow - startRow + 1, endColumn - startColumn + 1, cellSizeX, cellSizeZ, newGridOriginPosition);
+            if (startX < 0 || startX >= Width)
+                throw new ArgumentOutOfRangeException(nameof(startX));
+            if (endX < 0 || endX >= Width || endX < startX)
+                throw new ArgumentOutOfRangeException(nameof(endX));
+            if (startZ < 0 || startZ >= Height)
+                throw new ArgumentOutOfRangeException(nameof(startZ));
+            if (endZ < 0 || endZ >= Height || endZ < startZ)
+                throw new ArgumentOutOfRangeException(nameof(endZ));
 
-            for (int x = startRow; x <= endRow; x++)
+            Grid2D<T> subGrid = new Grid2D<T>(endX - startX + 1, endZ - startZ + 1, CellSizeX, CellSizeZ, newGridOriginPosition);
+
+            for (int x = startX; x <= endX; x++)
             {
-                for (int z = startColumn; z <= endColumn; z++)
+                for (int z = startZ; z <= endZ; z++)
                 {
-                    GridPosition2D originalGridPosition2D = new GridPosition2D(x, z);
-                    subGrid.SetGridObjectAtGridPosition2D(new GridPosition2D(x, z) - originalGridPosition2D, GetGridObjectAtGridPosition2D(originalGridPosition2D), true);
+                    subGrid.SetGridObjectAtGridPosition2D(new GridPosition2D(x - startX, z - startZ), GetGridObjectAtGridPosition2D(new GridPosition2D(x, z)), true);
                 }
             }
 
             return subGrid;
+        }
+
+        /// <summary>
+        /// Get a sub-grid from the original grid (inclusive interval)
+        /// </summary>
+        /// <param name="start">The start grid position of the subgrid</param>
+        /// <param name="end">The end grid position of the subgrid</param>
+        /// <param name="newGridOriginPosition">The origin position for the subgrid</param>
+        /// <returns>A subgrid containing the elements of the original grid</returns>
+        public Grid2D<T> GetSubGrid(GridPosition2D start, GridPosition2D end, Vector3 newGridOriginPosition)
+        {
+            return GetSubGrid(start.X, end.X, start.Z, end.Z, newGridOriginPosition);
         }
 
         /// <summary>
@@ -279,9 +400,8 @@ namespace GridSystem
         /// <returns>A random position within the grid</returns>
         public GridPosition2D GetRandomGridPosition()
         {
-            System.Random random = new System.Random();
-            int x = random.Next(width);
-            int z = random.Next(height);
+            int x = RandomInt(Width);
+            int z = RandomInt(Height);
             return new GridPosition2D(x, z);
         }
 
@@ -293,9 +413,19 @@ namespace GridSystem
         /// <returns>The wrapped position</returns>
         public GridPosition2D GetWrappedGridPosition(int x, int z)
         {
-            int wrappedX = (x + GetWidth) % GetWidth;
-            int wrappedZ = (z + GetHeight) % GetHeight;
+            int wrappedX = ((x % Width) + Width) % Width;
+            int wrappedZ = ((z % Height) + Height) % Height;
             return new GridPosition2D(wrappedX, wrappedZ);
+        }
+
+        /// <summary>
+        /// Gets the wrapped position of the grid
+        /// </summary>
+        /// <param name="gridPosition">The grid position coordinate</param>
+        /// <returns>The wrapped position</returns>
+        public GridPosition2D GetWrappedGridPosition(GridPosition2D gridPosition)
+        {
+            return GetWrappedGridPosition(gridPosition.X, gridPosition.Z);
         }
 
         /// <summary>
@@ -304,12 +434,14 @@ namespace GridSystem
         /// <param name="gridPosition2D">The grid position of the object</param>
         /// <param name="newObject">The new object to set in the position</param>
         /// <param name="replaceIfExistAnObjectAlready">Replace even if the position already has been assigned</param>
-        /// <returns>The new object was set successfully or not</returns>
+        /// <returns>True if the object was set successfully, false otherwise</returns>
         public bool SetGridObjectAtGridPosition2D(GridPosition2D gridPosition2D, T newObject, bool replaceIfExistAnObjectAlready = true)
         {
+            if (!grid.ContainsKey(gridPosition2D))
+                throw new ArgumentException($"There is no grid position {gridPosition2D} in this grid");
+
             if ((replaceIfExistAnObjectAlready) || // always replace
-                (default(T) is null && grid[gridPosition2D] == null) || // check if it is a nullable type AND if it is, check if the position is null, if yes set the position
-                (grid[gridPosition2D].Equals(default(T)))) // it is a non-nullable type, check if the position is at default value, if yes set the position
+                (EqualityComparer<T>.Default.Equals(GetGridObjectAtGridPosition2D(gridPosition2D), default))) // only replace if the position is empty (or default value in case of a non-nullable type)
             {
                 grid[gridPosition2D] = newObject;
                 OnGridPositionValueChanged?.Invoke(gridPosition2D, newObject);
@@ -325,7 +457,7 @@ namespace GridSystem
         /// <param name="worldPosition">The world position of the object</param>
         /// <param name="newObject">The new object to set on the position</param>
         /// <param name="replaceIfExistAnObjectAlready">Replace even if the position already has been assigned</param>
-        /// <returns>The new object was set successfully or not</returns>
+        /// <returns>True if the object was set successfully, false otherwise</returns>
         public bool SetGridObjectAtWorldPosition(Vector3 worldPosition, T newObject, bool replaceIfExistAnObjectAlready = true)
         {
             GridPosition2D gridPosition2D = GetGridPosition2DFromWorldPosition(worldPosition);
@@ -340,7 +472,7 @@ namespace GridSystem
         /// <returns>The position in world coordinates</returns>
         public Vector3 GetWorldPositionFromGridPosition2D(GridPosition2D gridPosition2D)
         {
-            return new Vector3(gridPosition2D.X * cellSizeX, 0, gridPosition2D.Z * cellSizeZ) + gridOriginPosition;
+            return new Vector3(gridPosition2D.X * CellSizeX, 0, gridPosition2D.Z * CellSizeZ) + GridOriginPosition;
         }
 
         /// <summary>
@@ -350,7 +482,7 @@ namespace GridSystem
         /// <returns>The position in world coordinates at the center of the gridPosition</returns>
         public Vector3 GetWorldPositionFromCenterGridPosition2D(GridPosition2D gridPosition2D)
         {
-            return GetWorldPositionFromGridPosition2D(gridPosition2D) + new Vector3(cellSizeX / 2f, 0f, cellSizeZ / 2f);
+            return GetWorldPositionFromGridPosition2D(gridPosition2D) + new Vector3(CellSizeX / 2f, 0f, CellSizeZ / 2f);
         }
 
         /// <summary>
@@ -392,8 +524,8 @@ namespace GridSystem
         /// <returns>The grid position related to the world one</returns>
         public GridPosition2D GetGridPosition2DFromWorldPosition(Vector3 worldPosition)
         {
-            Vector3 vectorOffset = worldPosition - gridOriginPosition;
-            GridPosition2D gridPosition2D = new GridPosition2D(Mathf.FloorToInt(vectorOffset.x / cellSizeX), Mathf.FloorToInt(vectorOffset.z / cellSizeZ));
+            Vector3 vectorOffset = worldPosition - GridOriginPosition;
+            GridPosition2D gridPosition2D = new GridPosition2D(Mathf.FloorToInt(vectorOffset.x / CellSizeX), Mathf.FloorToInt(vectorOffset.z / CellSizeZ));
 
             return gridPosition2D;
         }
@@ -408,8 +540,43 @@ namespace GridSystem
         {
             gridPosition2D = GetGridPosition2DFromWorldPosition(worldPosition);
 
-            if (!IsWithinGrid2DBounds(gridPosition2D))
-                return false;
+            return IsWithinGrid2DBounds(gridPosition2D);
+        }
+
+        /// <summary>
+        /// Check if any of the grid positions satisfies a condition
+        /// </summary>
+        /// <param name="predicate">The condition to check on each position</param>
+        /// <returns>True if any position satisfies the condition, false otherwise</returns>
+        public bool Any(Func<T, bool> predicate)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int z = 0; z < Height; z++)
+                {
+                    if (predicate(GetGridObjectAtGridPosition2D(new GridPosition2D(x, z))))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Check if all grid positions satisfies a condition
+        /// </summary>
+        /// <param name="predicate">The condition to check on each position</param>
+        /// <returns>True if all positions satisfies the condition, false otherwise</returns>
+        public bool All(Func<T, bool> predicate)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int z = 0; z < Height; z++)
+                {
+                    if (!predicate(GetGridObjectAtGridPosition2D(new GridPosition2D(x, z))))
+                        return false;
+                }
+            }
 
             return true;
         }
@@ -419,13 +586,13 @@ namespace GridSystem
         /// </summary>
         /// <param name="predicate">The condition to check on each position (params T: value at the position)</param>
         /// <returns>A list containing all the positions that satisfies the condition</returns>
-        public List<GridPosition2D> GetGridPositionsInACertainState(Func<T, bool> predicate)
+        public List<GridPosition2D> Where(Func<T, bool> predicate)
         {
             List<GridPosition2D> gridPositions = new List<GridPosition2D>();
 
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (int z = 0; z < height; z++)
+                for (int z = 0; z < Height; z++)
                 {
                     GridPosition2D gridPosition2D = new GridPosition2D(x, z);
                     if (predicate(GetGridObjectAtGridPosition2D(gridPosition2D)))
@@ -442,9 +609,9 @@ namespace GridSystem
         /// <param name="action">Action to apply on every grid position (params GridPosition2D: grid position, T: value at the position)</param>
         public void IterateOverAllGridPositions(Action<GridPosition2D, T> action)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (int z = 0; z < height; z++)
+                for (int z = 0; z < Height; z++)
                 {
                     GridPosition2D gridPosition2D = new GridPosition2D(x, z);
                     action(gridPosition2D, GetGridObjectAtGridPosition2D(gridPosition2D));
@@ -459,7 +626,7 @@ namespace GridSystem
         /// <returns>The grid position is within bounds or not</returns>
         public bool IsWithinGrid2DBounds(GridPosition2D gridPosition2D)
         {
-            return gridPosition2D.X >= 0 && gridPosition2D.X < width && gridPosition2D.Z >= 0 && gridPosition2D.Z < height;
+            return gridPosition2D.X >= 0 && gridPosition2D.X < Width && gridPosition2D.Z >= 0 && gridPosition2D.Z < Height;
         }
 
         /// <summary>
@@ -506,10 +673,7 @@ namespace GridSystem
         /// <returns>If the position is empty or not</returns>
         public bool IsPositionEmpty(GridPosition2D gridPosition2D)
         {
-            if (default(T) is null)
-                return GetGridObjectAtGridPosition2D(gridPosition2D) == null;
-            else
-                return GetGridObjectAtGridPosition2D(gridPosition2D).Equals(default(T));
+            return EqualityComparer<T>.Default.Equals(GetGridObjectAtGridPosition2D(gridPosition2D), default);
         }
 
         /// <summary>
@@ -571,14 +735,11 @@ namespace GridSystem
         {
             List<GridPosition2D> rangeList = new List<GridPosition2D>();
 
-            foreach (GridPosition2D inRange in center.GetGridPositionsFromADistanceRange(range))
+            foreach (GridPosition2D inRange in center.GetGridPositionsFromADistanceRange(range, includeCenterPosition))
             {
                 if (IsWithinGrid2DBounds(inRange))
                     rangeList.Add(inRange);
             }
-
-            if (includeCenterPosition)
-                rangeList.Add(center);
 
             return rangeList;
         }
@@ -594,14 +755,11 @@ namespace GridSystem
         {
             List<GridPosition2D> rangeList = new List<GridPosition2D>();
 
-            foreach (GridPosition2D inRange in center.GetGridPositionsFromASquareRange(range))
+            foreach (GridPosition2D inRange in center.GetGridPositionsFromASquareRange(range, includeCenterPosition))
             {
                 if (IsWithinGrid2DBounds(inRange))
                     rangeList.Add(inRange);
             }
-
-            if (includeCenterPosition)
-                rangeList.Add(center);
 
             return rangeList;
         }
@@ -617,123 +775,53 @@ namespace GridSystem
         {
             List<GridPosition2D> rangeList = new List<GridPosition2D>();
 
-            foreach (GridPosition2D inRange in center.GetGridPositionsFromACircularRange(range))
+            foreach (GridPosition2D inRange in center.GetGridPositionsFromACircularRange(range, includeCenterPosition))
             {
                 if (IsWithinGrid2DBounds(inRange))
                     rangeList.Add(inRange);
             }
 
-            if (includeCenterPosition)
-                rangeList.Add(center);
-
             return rangeList;
         }
 
         /// <summary>
-        /// Instantiate a game object in a certain grid position
+        /// Save a grid as JSON string (T and its members must be a serializable type)
         /// </summary>
-        /// <param name="gridPosition2D">The grid position to instantiate the object on (will be instantiatd at its center)</param>
-        /// <param name="gameObjectPrefab">The object to instantiate</param>
-        /// <param name="objectParent">The parent transform for the instantiated object</param>
-        /// <param name="onGameObjectSpawned">Action to execute when the object is instantiated (params GameObject: the instantiated game object)</param>
-        /// <returns>The instantiated game object</returns>
-        public GameObject InstantiateGameObjectAtGridPosition(GridPosition2D gridPosition2D, GameObject gameObjectPrefab, Transform objectParent, Action<GameObject> onGameObjectSpawned = null)
+        /// <param name="grid">The grid to save</param>
+        /// <returns>The grid in a string JSON format</returns>
+        public static string Save<TResult>(Grid2D<TResult> grid)
         {
-            GameObject spawnedGameObject = GameObject.Instantiate(gameObjectPrefab, GetWorldPositionFromCenterGridPosition2D(gridPosition2D), Quaternion.identity, objectParent);
-
-            onGameObjectSpawned?.Invoke(spawnedGameObject);
-            return spawnedGameObject;
+            SerializableGrid2D<TResult> gridData = new SerializableGrid2D<TResult>(grid);
+            string json = JsonUtility.ToJson(gridData);
+            return json;
         }
 
         /// <summary>
-        /// Instantiate a game object in the grid based on a world position
+        /// Load a grid from a JSON string (T and its members must be a serializable type)
         /// </summary>
-        /// <param name="worldPosition">The world position to instantiate the object</param>
-        /// <param name="gameObjectPrefab">The object to instantiate</param>
-        /// <param name="objectParent">The parent transform for the instantiated object</param>
-        /// <param name="onGameObjectSpawned">Action to execute when the object is instantiated (params GameObject: the instantiated game object)</param>
-        /// <returns>The instantiated game object</returns>
-        public GameObject InstantiateGameObjectAtWorldPosition(Vector3 worldPosition, GameObject gameObjectPrefab, Transform objectParent, Action<GameObject> onGameObjectSpawned = null)
+        /// <param name="jsonData">The JSON string containing the serialized grid</param>
+        /// <returns>The loaded grid</returns>
+        public static Grid2D<TResult> Load<TResult>(string jsonData)
         {
-            GridPosition2D gridPosition2D = GetGridPosition2DFromWorldPosition(worldPosition);
-
-            return InstantiateGameObjectAtGridPosition(gridPosition2D, gameObjectPrefab, objectParent, onGameObjectSpawned);
-        }
-
-        /// <summary>
-        /// Instantiate a game object on every grid position
-        /// </summary>
-        /// <param name="gameObjectPrefab">The object to instantiate</param>
-        /// <param name="objectParent">The parent transform for all objects</param>
-        /// <param name="onEachGameObjectSpawned">Action to execute when one object is instantiated (params GameObject: the instantiated game object)</param>
-        /// <param name="onAllGameObjectSpawned">Action to execute after all objecta are instantiated (params List<GameObject>: all the instantiated game objects)</param>
-        /// <returns>A list containing all the instantiated game objects</returns>
-        public List<GameObject> InstantiateGameObjectsAtEveryGridPosition(GameObject gameObjectPrefab, Transform objectParent, Action<GameObject> onEachGameObjectSpawned = null, Action<List<GameObject>> onAllGameObjectSpawned = null)
-        {
-            List<GameObject> spawnedGameObjectList = new List<GameObject>();
-
-            for (int x = 0; x < width; x++)
+            SerializableGrid2D<TResult> gridData = JsonUtility.FromJson<SerializableGrid2D<TResult>>(jsonData);
+            
+            if (gridData == null || gridData.Data == null || gridData.Data.Length == 0)
             {
-                for (int z = 0; z < height; z++)
-                {
-                    GridPosition2D gridPosition2D = new GridPosition2D(x, z);
-                    GameObject spawnedGameObject = InstantiateGameObjectAtGridPosition(gridPosition2D, gameObjectPrefab, objectParent, onEachGameObjectSpawned);
+                throw new ArgumentException("The provided JSON data is not valid for deserializing a grid");
+            }
 
-                    spawnedGameObjectList.Add(spawnedGameObject);
+            Grid2D<TResult> grid = new Grid2D<TResult>(gridData.Width, gridData.Height, gridData.CellSizeX, gridData.CellSizeZ, new Vector3(gridData.OriginX, gridData.OriginY, gridData.OriginZ));
+
+            for (int x = 0; x < gridData.Width; x++)
+            {
+                for (int z = 0; z < gridData.Height; z++)
+                {
+                    int index = x * gridData.Height + z;
+                    grid.SetGridObjectAtGridPosition2D(new GridPosition2D(x, z), gridData.Data[index], true);
                 }
             }
 
-            onAllGameObjectSpawned?.Invoke(spawnedGameObjectList);
-
-            return spawnedGameObjectList;
-        }
-
-        /// <summary>
-        /// Save/serialize the grid using a binary formatter (T and its members must be a serializable type)
-        /// </summary>
-        /// <param name="filename">The file to be opened/created for writing</param>
-        /// <returns>If the save operation was successful or not</returns>
-        public bool Save(string filename)
-        {
-            try
-            {
-                using (FileStream stream = File.OpenWrite(filename))
-                {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(stream, grid);
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error saving grid: " + e.Message);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Load/deserialize a grid using a binary formatter (T and its members must be a serializable type)
-        /// </summary>
-        /// <param name="filename">The file to be opened for reading</param>
-        /// <returns>If the load operation was sucessful or not</returns>
-        public bool Load(string filename)
-        {
-            try
-            {
-                using (FileStream stream = File.OpenRead(filename))
-                {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    grid = (Dictionary<GridPosition2D, T>)formatter.Deserialize(stream);
-
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error loading grid: " + e.Message);
-                return false;
-            }
+            return grid;
         }
     }
 }

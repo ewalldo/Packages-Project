@@ -287,13 +287,14 @@ MonoBehaviour:
   - With this package you can also animate some portion of your texts to create really
     cool effects.
   - 'The currently supported animations are: <wave=5,10>wave</wave>, <shake=3>shake</shake>,
-    <pulse=5,0.2,1>pulse</pulse> and <rotate=10>rotate</rotate>.'
+    <pulse=5,0.2,1>pulse</pulse>, <rotate=60>rotate</rotate>, (<bounce=5,5,true>bounce</bounce>,
+    <bounce=5,5,false>bounce</bounce>), and <noise=20,5,0>noise</noise>.'
   - (There are plans to add more animations in the future).
   - You can mix the animation tags with the previous tags to create different effects,
     like <color=blue><wave=5,10>colored wave</wave></color>.
   - Or a <b><color=red><pulse=5,0.2,1>bold colored pulse</pulse></color></b> effect.
   - <wave=5,10><shake=4>Can also mix multiple animation together too</shake></wave>.
-  - That's very cool, right Mr./Ms <wave=5,10><replace=name></wave><rotate=5>?</rotate>.
+  - That's very cool, right Mr./Ms <wave=5,10><replace=name></wave><rotate=50>?</rotate>.
   - 5) Custom actions.
   - You can also set up custom tags to trigger custom actions during the dialogue
     sequences.

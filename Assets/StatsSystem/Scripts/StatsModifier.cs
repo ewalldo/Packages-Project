@@ -4,7 +4,7 @@ using UnityEngine;
 namespace StatsSystem
 {
     [Serializable]
-    public class StatsModifier: IComparable
+    public class StatsModifier: IComparable<StatsModifier>
     {
         [SerializeField] private float value;
         [SerializeField] private StatType statTypeTarget;
@@ -51,41 +51,28 @@ namespace StatsSystem
         /// <param name="value">The value of this modifier</param>
         /// <param name="statTypeTarget">The statType that this modifier will modify</param>
         /// <param name="statsModifiersType">The type of this modifier</param>
-        /// <param name="modifierOrder">The order of this modifier when applying to the stat</param>
+        /// <param name="modifierOrder">The order of this modifier when applying to the stat, if negative it defaults to the StatsModifiersType value</param>
         /// <param name="modifierSource">The source object of this modifier</param>
-        public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, int modifierOrder, UnityEngine.Object modifierSource)
+        public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, int modifierOrder = -1, UnityEngine.Object modifierSource = null)
         {
             this.value = value;
             this.statTypeTarget = statTypeTarget;
             this.statsModifiersType = statsModifiersType;
-            this.modifierOrder = modifierOrder;
+            this.modifierOrder = modifierOrder < 0 ? (int)statsModifiersType : modifierOrder;
             this.modifierSource = modifierSource;
         }
-
-        public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType)
-            : this(value, statTypeTarget, statsModifiersType, (int)statsModifiersType, null) { }
-
-        public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, int modifierOrder)
-            : this(value, statTypeTarget, statsModifiersType, modifierOrder, null) { }
-
-        public StatsModifier(float value, StatType statTypeTarget, StatsModifiersType statsModifiersType, UnityEngine.Object modifierSource)
-            : this(value, statTypeTarget, statsModifiersType, (int)statsModifiersType, modifierSource) { }
 
         /// <summary>
         /// Sort the StatsModifier class by the ModifierOrder attribute
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public int CompareTo(object obj)
+        public int CompareTo(StatsModifier other)
         {
-            StatsModifier statsModifier = obj as StatsModifier;
-
-            if (this.ModifierOrder < statsModifier.ModifierOrder)
-                return -1;
-            else if (this.ModifierOrder > statsModifier.ModifierOrder)
+            if (other == null)
                 return 1;
-            else
-                return 0;
+
+            return ModifierOrder.CompareTo(other.ModifierOrder);
         }
     }
 

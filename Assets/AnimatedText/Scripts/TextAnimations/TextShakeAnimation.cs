@@ -6,12 +6,16 @@ namespace AnimatedText
 	{
         public float Radius { get; private set; }
 
+        public const string START_ANIMATION_TAG = "shake=";
+
+        public const string END_ANIMATION_TAG = "/shake";
+
         public TextShakeAnimation(float radius)
         {
             Radius = radius;
         }
 
-        public Matrix4x4 GenerateTranformMatrix(int charIndex)
+        public Matrix4x4 GenerateTransformMatrix(int charIndex)
         {
             Vector3 shakeOffset = UnityEngine.Random.insideUnitSphere * Radius;
             shakeOffset.z = 0f;

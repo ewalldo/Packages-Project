@@ -12,30 +12,30 @@ namespace StatsSystem
 			equippedItem = null;
         }
 
-		public void EquipItem(Item equipment, Character character)
+		public void EquipItem(Item equipment, StatsSheetComponent statsSheet)
         {
 			if (equippedItem != null)
-				UnequipItem(character);
+				UnequipItem(statsSheet);
 
             if (equipment != null)
             {
                 foreach (StatsModifier statsModifier in equipment.StatsModifiers)
                 {
-                    character.AddModifierToStat(statsModifier.StatTypeTarget, statsModifier);
+                    statsSheet.AddModifier(statsModifier);
                 }
             }
 
             equippedItem = equipment;
         }
 
-		public void UnequipItem(Character character)
+		public void UnequipItem(StatsSheetComponent statsSheet)
         {
             if (equippedItem == null)
                 return;
 
             foreach (StatsModifier statsModifier in equippedItem.StatsModifiers)
             {
-                character.RemoveModifierFromStat(statsModifier.StatTypeTarget, statsModifier);
+                statsSheet.RemoveModifier(statsModifier);
             }
 
 			equippedItem = null;

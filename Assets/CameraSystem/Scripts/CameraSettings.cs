@@ -23,6 +23,10 @@ namespace CameraSystem
         /// </summary>
         public bool UseEdgeScrolling;
         /// <summary>
+        /// Should edge scrolling be active when hovering UI elements or not, if false edge scrolling will only be active when not hovering any UI element
+        /// </summary>
+        public bool UseEdgeScrollingWhenHoveringUI;
+        /// <summary>
         /// Percentage of the screen width where the edge scroll will be active (0.1 means that will be active on the 10% of the screen)
         /// </summary>
         public float EdgeScrollSizeX;
@@ -74,6 +78,30 @@ namespace CameraSystem
         public float FollowOffsetMax;
 
         /// <summary>
+        /// Reset all the settings to their default values
+        /// </summary>
+        public void ResetToDefault()
+        {
+            OverrideCameraInitialOffset = false;
+            CinemachineVirtualCameraInitialOffset = new Vector3(0, 10, -10);
+            MoveCameraSpeed = 25f;
+            UseEdgeScrolling = false;
+            UseEdgeScrollingWhenHoveringUI = false;
+            EdgeScrollSizeX = 0.1f;
+            EdgeScrollSizeY = 0.1f;
+            UseDragPan = false;
+            DragPanSpeedMultiplier = 1f;
+            RotateCameraSpeed = 100f;
+            UseDragRotation = false;
+            DragRotationSpeedMultiplier = 0.75f;
+            UseZoom = true;
+            ZoomCameraSpeed = 10f;
+            ZoomCameraAmount = 5f;
+            FollowOffsetMin = 5f;
+            FollowOffsetMax = 50f;
+        }
+
+        /// <summary>
         /// Convert this CameraSettings to a json string
         /// </summary>
         /// <returns>The string containing the settings in a json format</returns>
@@ -97,27 +125,28 @@ namespace CameraSystem
         /// </summary>
         public void SaveSettingsToPlayerPrefs()
         {
-            PlayerPrefs.SetInt("_cameraSettings_overrideCameraInitialOffset", OverrideCameraInitialOffset ? 1 : 0);
-            PlayerPrefs.SetFloat("_cameraSettings_cinemachineVirtualCameraInitialOffset_X", CinemachineVirtualCameraInitialOffset.x);
-            PlayerPrefs.SetFloat("_cameraSettings_cinemachineVirtualCameraInitialOffset_Y", CinemachineVirtualCameraInitialOffset.y);
-            PlayerPrefs.SetFloat("_cameraSettings_cinemachineVirtualCameraInitialOffset_Z", CinemachineVirtualCameraInitialOffset.z);
+            PlayerPrefs.SetInt(OverrideCameraInitialOffsetKey, OverrideCameraInitialOffset ? 1 : 0);
+            PlayerPrefs.SetFloat(CinemachineVirtualCameraInitialOffsetXKey, CinemachineVirtualCameraInitialOffset.x);
+            PlayerPrefs.SetFloat(CinemachineVirtualCameraInitialOffsetYKey, CinemachineVirtualCameraInitialOffset.y);
+            PlayerPrefs.SetFloat(CinemachineVirtualCameraInitialOffsetZKey, CinemachineVirtualCameraInitialOffset.z);
 
-            PlayerPrefs.SetFloat("_cameraSettings_moveCameraSpeed", MoveCameraSpeed);
-            PlayerPrefs.SetInt("_cameraSettings_useEdgeScrolling", UseEdgeScrolling ? 1 : 0);
-            PlayerPrefs.SetFloat("_cameraSettings_edgeScrollSizeX", EdgeScrollSizeX);
-            PlayerPrefs.SetFloat("_cameraSettings_edgeScrollSizeY", EdgeScrollSizeY);
-            PlayerPrefs.SetInt("_cameraSettings_useDragPan", UseDragPan ? 1 : 0);
-            PlayerPrefs.SetFloat("_cameraSettings_dragPanSpeedMultiplier", DragPanSpeedMultiplier);
+            PlayerPrefs.SetFloat(MoveCameraSpeedKey, MoveCameraSpeed);
+            PlayerPrefs.SetInt(UseEdgeScrollingKey, UseEdgeScrolling ? 1 : 0);
+            PlayerPrefs.SetInt(UseEdgeScrollingWhenHoveringUIKey, UseEdgeScrollingWhenHoveringUI ? 1 : 0);
+            PlayerPrefs.SetFloat(EdgeScrollSizeXKey, EdgeScrollSizeX);
+            PlayerPrefs.SetFloat(EdgeScrollSizeYKey, EdgeScrollSizeY);
+            PlayerPrefs.SetInt(UseDragPanKey, UseDragPan ? 1 : 0);
+            PlayerPrefs.SetFloat(DragPanSpeedMultiplierKey, DragPanSpeedMultiplier);
 
-            PlayerPrefs.SetFloat("_cameraSettings_rotateCameraSpeed", RotateCameraSpeed);
-            PlayerPrefs.SetInt("_cameraSettings_useDragRotation", UseDragRotation ? 1 : 0);
-            PlayerPrefs.SetFloat("_cameraSettings_dragRotationSpeedMultiplier", DragRotationSpeedMultiplier);
+            PlayerPrefs.SetFloat(RotateCameraSpeedKey, RotateCameraSpeed);
+            PlayerPrefs.SetInt(UseDragRotationKey, UseDragRotation ? 1 : 0);
+            PlayerPrefs.SetFloat(DragRotationSpeedMultiplierKey, DragRotationSpeedMultiplier);
 
-            PlayerPrefs.SetFloat("_cameraSettings_zoomCameraSpeed", ZoomCameraSpeed);
-            PlayerPrefs.SetFloat("_cameraSettings_zoomCameraAmount", ZoomCameraAmount);
-            PlayerPrefs.SetInt("_cameraSettings_useZoom", UseZoom ? 1 : 0);
-            PlayerPrefs.SetFloat("_cameraSettings_followOffsetMin", FollowOffsetMin);
-            PlayerPrefs.SetFloat("_cameraSettings_followOffsetMax", FollowOffsetMax);
+            PlayerPrefs.SetFloat(ZoomCameraSpeedKey, ZoomCameraSpeed);
+            PlayerPrefs.SetFloat(ZoomCameraAmountKey, ZoomCameraAmount);
+            PlayerPrefs.SetInt(UseZoomKey, UseZoom ? 1 : 0);
+            PlayerPrefs.SetFloat(FollowOffsetMinKey, FollowOffsetMin);
+            PlayerPrefs.SetFloat(FollowOffsetMaxKey, FollowOffsetMax);
         }
 
         /// <summary>
@@ -125,27 +154,48 @@ namespace CameraSystem
         /// </summary>
         public void LoadSettingsFromPlayerPrefs()
         {
-            OverrideCameraInitialOffset = PlayerPrefs.GetInt("_cameraSettings_overrideCameraInitialOffset") == 1;
-            CinemachineVirtualCameraInitialOffset.x = PlayerPrefs.GetFloat("_cameraSettings_cinemachineVirtualCameraInitialOffset_X");
-            CinemachineVirtualCameraInitialOffset.y = PlayerPrefs.GetFloat("_cameraSettings_cinemachineVirtualCameraInitialOffset_Y");
-            CinemachineVirtualCameraInitialOffset.z = PlayerPrefs.GetFloat("_cameraSettings_cinemachineVirtualCameraInitialOffset_Z");
+            OverrideCameraInitialOffset = PlayerPrefs.GetInt(OverrideCameraInitialOffsetKey) == 1;
+            CinemachineVirtualCameraInitialOffset.x = PlayerPrefs.GetFloat(CinemachineVirtualCameraInitialOffsetXKey);
+            CinemachineVirtualCameraInitialOffset.y = PlayerPrefs.GetFloat(CinemachineVirtualCameraInitialOffsetYKey);
+            CinemachineVirtualCameraInitialOffset.z = PlayerPrefs.GetFloat(CinemachineVirtualCameraInitialOffsetZKey);
 
-            MoveCameraSpeed = PlayerPrefs.GetFloat("_cameraSettings_moveCameraSpeed");
-            UseEdgeScrolling = PlayerPrefs.GetInt("_cameraSettings_useEdgeScrolling") == 1;
-            EdgeScrollSizeX = PlayerPrefs.GetFloat("_cameraSettings_edgeScrollSizeX");
-            EdgeScrollSizeY = PlayerPrefs.GetFloat("_cameraSettings_edgeScrollSizeY");
-            UseDragPan = PlayerPrefs.GetInt("_cameraSettings_useDragPan") == 1;
-            DragPanSpeedMultiplier = PlayerPrefs.GetFloat("_cameraSettings_dragPanSpeedMultiplier");
+            MoveCameraSpeed = PlayerPrefs.GetFloat(MoveCameraSpeedKey);
+            UseEdgeScrolling = PlayerPrefs.GetInt(UseEdgeScrollingKey) == 1;
+            UseEdgeScrollingWhenHoveringUI = PlayerPrefs.GetInt(UseEdgeScrollingWhenHoveringUIKey) == 1;
+            EdgeScrollSizeX = PlayerPrefs.GetFloat(EdgeScrollSizeXKey);
+            EdgeScrollSizeY = PlayerPrefs.GetFloat(EdgeScrollSizeYKey);
+            UseDragPan = PlayerPrefs.GetInt(UseDragPanKey) == 1;
+            DragPanSpeedMultiplier = PlayerPrefs.GetFloat(DragPanSpeedMultiplierKey);
 
-            RotateCameraSpeed = PlayerPrefs.GetFloat("_cameraSettings_rotateCameraSpeed");
-            UseDragRotation = PlayerPrefs.GetInt("_cameraSettings_useDragRotation") == 1;
-            DragRotationSpeedMultiplier = PlayerPrefs.GetFloat("_cameraSettings_dragRotationSpeedMultiplier");
+            RotateCameraSpeed = PlayerPrefs.GetFloat(RotateCameraSpeedKey);
+            UseDragRotation = PlayerPrefs.GetInt(UseDragRotationKey) == 1;
+            DragRotationSpeedMultiplier = PlayerPrefs.GetFloat(DragRotationSpeedMultiplierKey);
 
-            ZoomCameraSpeed = PlayerPrefs.GetFloat("_cameraSettings_zoomCameraSpeed");
-            ZoomCameraAmount = PlayerPrefs.GetFloat("_cameraSettings_zoomCameraAmount");
-            UseZoom = PlayerPrefs.GetInt("_cameraSettings_useZoom") == 1;
-            FollowOffsetMin = PlayerPrefs.GetFloat("_cameraSettings_followOffsetMin");
-            FollowOffsetMax = PlayerPrefs.GetFloat("_cameraSettings_followOffsetMax");
+            ZoomCameraSpeed = PlayerPrefs.GetFloat(ZoomCameraSpeedKey);
+            ZoomCameraAmount = PlayerPrefs.GetFloat(ZoomCameraAmountKey);
+            UseZoom = PlayerPrefs.GetInt(UseZoomKey) == 1;
+            FollowOffsetMin = PlayerPrefs.GetFloat(FollowOffsetMinKey);
+            FollowOffsetMax = PlayerPrefs.GetFloat(FollowOffsetMaxKey);
         }
+
+        private const string OverrideCameraInitialOffsetKey = "_cameraSettings_overrideCameraInitialOffset";
+        private const string CinemachineVirtualCameraInitialOffsetXKey = "_cameraSettings_cinemachineVirtualCameraInitialOffset_X";
+        private const string CinemachineVirtualCameraInitialOffsetYKey = "_cameraSettings_cinemachineVirtualCameraInitialOffset_Y";
+        private const string CinemachineVirtualCameraInitialOffsetZKey = "_cameraSettings_cinemachineVirtualCameraInitialOffset_Z";
+        private const string MoveCameraSpeedKey = "_cameraSettings_moveCameraSpeed";
+        private const string UseEdgeScrollingKey = "_cameraSettings_useEdgeScrolling";
+        private const string UseEdgeScrollingWhenHoveringUIKey = "_cameraSettings_useEdgeScrollingWhenHoveringUI";
+        private const string EdgeScrollSizeXKey = "_cameraSettings_edgeScrollSizeX";
+        private const string EdgeScrollSizeYKey = "_cameraSettings_edgeScrollSizeY";
+        private const string UseDragPanKey = "_cameraSettings_useDragPan";
+        private const string DragPanSpeedMultiplierKey = "_cameraSettings_dragPanSpeedMultiplier";
+        private const string RotateCameraSpeedKey = "_cameraSettings_rotateCameraSpeed";
+        private const string UseDragRotationKey = "_cameraSettings_useDragRotation";
+        private const string DragRotationSpeedMultiplierKey = "_cameraSettings_dragRotationSpeedMultiplier";
+        private const string ZoomCameraSpeedKey = "_cameraSettings_zoomCameraSpeed";
+        private const string ZoomCameraAmountKey = "_cameraSettings_zoomCameraAmount";
+        private const string UseZoomKey = "_cameraSettings_useZoom";
+        private const string FollowOffsetMinKey = "_cameraSettings_followOffsetMin";
+        private const string FollowOffsetMaxKey = "_cameraSettings_followOffsetMax";
     }
 }

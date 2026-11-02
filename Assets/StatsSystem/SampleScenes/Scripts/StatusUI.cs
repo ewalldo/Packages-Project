@@ -1,28 +1,33 @@
-using System;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 namespace StatsSystem
 {
 	public class StatusUI : MonoBehaviour
 	{
+        [SerializeField] private StatsSheetComponent statsSheet;
 		[SerializeField] private StatType statType;
         [SerializeField] private TextMeshProUGUI statText;
 
         private void OnEnable()
         {
-            Character.OnStatUpdated += Character_OnStatUpdated;
+            statsSheet.OnStatChanged += StatsSheet_OnStatChanged;
         }
 
         private void OnDisable()
         {
-            Character.OnStatUpdated -= Character_OnStatUpdated;
+            statsSheet.OnStatChanged -= StatsSheet_OnStatChanged;
         }
 
-        private void Character_OnStatUpdated(StatType type, float value)
+        private void Start()
+        {
+            statText.text = statsSheet.GetStat(statType).GetFinalValue().ToString();
+        }
+
+        private void StatsSheet_OnStatChanged(StatType type, float baseValue, float finalValue)
         {
             if (type == statType)
-                statText.text = value.ToString();
+                statText.text = finalValue.ToString();
         }
     }
 }

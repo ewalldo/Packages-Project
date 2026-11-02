@@ -7,7 +7,7 @@ namespace StatsSystem
 	{
 		[SerializeField] private string statName;
 
-		public string GetNameOfStatName => nameof(statName);
+		public static string GetNameOfStatName => nameof(statName);
 
 		/// <summary>
 		/// Get the name of this stat

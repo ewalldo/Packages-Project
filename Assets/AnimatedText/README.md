@@ -17,7 +17,12 @@
   - [TextAnimator.OnFinishedTyping](#textAnimatorOnFinishedTyping)
   - [TextAnimator.OnDialogueAction](#textAnimatorOnDialogueAction)
   - [TextAnimator.TypeText()](#textAnimatorTypeText)
+  - [TextAnimator.SkipTyping()](#textAnimatorSkipTyping)
+  - [TextAnimator.PauseTyping()](#textAnimatorPauseTyping)
+  - [TextAnimator.ResumeTyping()](#textAnimatorResumeTyping)
   - [ReplaceTagParser.AddEntry()](#replaceTagParserAddEntry)
+  - [ReplaceTagParser.RemoveEntry()](#replaceTagParserRemoveEntry)
+  - [ReplaceTagParser.ClearEntries()](#replaceTagParserClearEntries)
   - [ReplaceTagParser.ParseKey()](#replaceTagParserParseKey)
   - [ReplaceTagParser.GetTagsParserDictionary()](#replaceTagParserGetTagsParserDictionary)
 - [Contact Information](#contactInformation)
@@ -37,6 +42,7 @@ Please let us know if you encounter any issues with the version of Unity you are
 - 1.0: Initial release.
 - 1.1: Add option to change default typing speed from code.
 - 1.1.1: Ensure package functionality in Unity version 6000.3.9f1.
+- 1.2: Added new text animations and new methods for the TextAnimator class.
 
 ## 3 - Features <a name="features"/>
 - Easy to add a typing animation to texts, just attach a script and call one method.
@@ -63,12 +69,14 @@ The "pause" tag can be used to pause the typing of a text for an amount of secon
 The "action" tag is used to trigger the OnDialogueAction event using the "acitonName" as the parameter.
 
 ### 4.4 Using the animation tags <a name="usingTheAnimationTags"/>
-Animation tags are used to animate a portion of the text, the currently supported animations are: wave, shake, pulse and rotate.  
-The wave tag needs two parameters: frequency (controls the speed) and amplitude (controls the range), here is an example on how to use it: <wave=frequency,amplitude>.  
-The shake tag needs one parameter: radius (offset from the center), here is an example on how to use it: <shake=radius>.  
-The pulse tag needs three parameters: speed (controls the pulsing speed), variance (controls how much the scale can vary) and base value (the scale initial value), here is an example on how to use it: <pulse=speed,variance,baseValue>.  
-The rotate tag needs one parameter: speed (rotation speed), here is an example on how to use it: <rotate=speed>.  
-The corresponding closure tags for each animation are: </wave>, </shake>, </pulse>, </rotate>. Forget to add or close them in a different order can lead to unexpected behaviour.  
+Animation tags are used to animate a portion of the text, the currently supported animations are: wave, shake, pulse, rotate, bounce and noise.  
+- Wave: Requires two parameters: frequency (float, controls the speed) and amplitude (float, controls the range), here is an example on how to use it: <wave=frequency,amplitude>.  
+- Shake: Requires one parameter: radius (float, offset from the center), here is an example on how to use it: <shake=radius>.  
+- Pulse: Requires three parameters: speed (float, controls the pulsing speed), variance (float, controls how much the scale can vary) and base value (float, the scale initial value), here is an example on how to use it: <pulse=speed,variance,baseValue>.  
+- Rotate: Requires one parameter: speed (float, rotation speed), here is an example on how to use it: <rotate=speed>.  
+- Bounce: Requires three parameters: speed (float, controls the bouncing speed), height (float, controls how high the bounce goes) and offsetEachCharacter (bool, true if all characters should bounce at the same rate, false if an offset is required between each character), here is an example on how to use it: <bounce=speed,height,offsetEachCharacter>.  
+- Noise: Requires three parameters: speed (float, controls the noise speed), radiusX (float, controls the noise range along the X-axis) and radiusY (float, controls the noise range along the Y-axis), here is an example on how to use it: <noise=speed,radiusX,radiusY>.  
+The corresponding closure tags for each animation are: </wave>, </shake>, </pulse>, </rotate>, </bounce>, </noise>. Forget to add or close them in a different order can lead to unexpected behaviour.  
 Correct order: <wave=5,10><shake=4>Text to wave and shake</shake></wave>.  
 Incorrect order: <wave=5,10><shake=4>Text to wave and shake</wave></shake>.  
 
@@ -77,6 +85,11 @@ This package supports all TextMeshPro's RichText tags, so it can be used in the 
 
 ### 4.6 Typing text <a name="typingText"/>
 To start typing a text, just invoke the TypeText() method in the TextAnimator class by passing a string (with your tags) as an attribute.
+```csharp
+[SerializeField] private TextAnimator textAnimator;
+
+textAnimator.TypeText("This is an <color=red>animated</color> <wave=5,10>text</wave>.");
+```
 
 ## 5 - Documentation <a name="documentation"/>
 ### 5.1 TextAnimator.DefaultTypingSpeed <a name="textAnimatorDefaultTypingSpeed"/>
@@ -90,11 +103,11 @@ public float DefaultTypingSpeed;
 | :--- | :--- |
 | float | The speed (pause between characters in seconds) of the texts being typed |
 
-### 5.2 TextAnimator.OnCharTyped <a name="textAnimatorOnCharTyped"/>
+### TextAnimator.OnCharTyped <a name="textAnimatorOnCharTyped"/>
 Invoked when a char is typed on the screen
 #### Declaration
 ```csharp
-public Action<char> OnCharTyped;
+public event Action<char> OnCharTyped;
 ```
 #### Parameters
 | Type | Description |
@@ -102,27 +115,27 @@ public Action<char> OnCharTyped;
 | char | The char value typed on the screen |
 
 
-### 5.3 TextAnimator.OnStartedTyping <a name="textAnimatorOnStartedTyping"/>
+### TextAnimator.OnStartedTyping <a name="textAnimatorOnStartedTyping"/>
 Invoked when a text starts being typed on the screen
 #### Declaration
 ```csharp
-public Action OnStartedTyping;
+public event Action OnStartedTyping;
 ```
 
 
-### 5.4 TextAnimator.OnFinishedTyping <a name="textAnimatorOnFinishedTyping"/>
+### TextAnimator.OnFinishedTyping <a name="textAnimatorOnFinishedTyping"/>
 Invoked when a text is finished being typed on the screen
 #### Declaration
 ```csharp
-public Action OnFinishedTyping;
+public event Action OnFinishedTyping;
 ```
 
 
-### 5.5 TextAnimator.OnDialogueAction <a name="textAnimatorOnDialogueAction"/>
+### TextAnimator.OnDialogueAction <a name="textAnimatorOnDialogueAction"/>
 Invoked when an action tag is evaluated during typing
 #### Declaration
 ```csharp
-public Action<string> OnDialogueAction;
+public event Action<string> OnDialogueAction;
 ```
 #### Parameters
 | Type | Description |
@@ -130,7 +143,7 @@ public Action<string> OnDialogueAction;
 | string | The value of the action tag |
 
 
-### 5.6 TextAnimator.TypeText() <a name="textAnimatorTypeText"/>
+### TextAnimator.TypeText() <a name="textAnimatorTypeText"/>
 Start typing the text on screen
 #### Declaration
 ```csharp
@@ -142,7 +155,31 @@ public void TypeText(string textToType);
 | string | textToType | The string containing the text information to be typed on the screen |
 
 
-### 5.7 ReplaceTagParser.AddEntry() <a name="replaceTagParserAddEntry"/>
+### TextAnimator.SkipTyping() <a name="textAnimatorSkipTyping"/>
+Instantly reveals all characters, skipping the typewriter effect
+#### Declaration
+```csharp
+public void SkipTyping();
+```
+
+
+### TextAnimator.PauseTyping() <a name="textAnimatorPauseTyping"/>
+Pauses the typewriter effect, keeping the current visible characters on screen
+#### Declaration
+```csharp
+public void PauseTyping();
+```
+
+
+### TextAnimator.ResumeTyping() <a name="textAnimatorResumeTyping"/>
+Resumes the typewriter effect from the current visible characters on screen
+#### Declaration
+```csharp
+public void ResumeTyping();
+```
+
+
+### 5.2 ReplaceTagParser.AddEntry() <a name="replaceTagParserAddEntry"/>
 Add an entry to the parser dictionary
 #### Declaration
 ```csharp
@@ -155,7 +192,27 @@ public static void AddEntry(string key, string value);
 | string | value | The corresponding value to be associated with the key |
 
 
-### 5.8 ReplaceTagParser.ParseKey() <a name="replaceTagParserParseKey"/>
+### ReplaceTagParser.RemoveEntry() <a name="replaceTagParserRemoveEntry"/>
+Removes an entry from the parser dictionary
+#### Declaration
+```csharp
+public static void RemoveEntry(string key);
+```
+#### Parameters
+| Type | Name | Description |
+| :--- | :--- | :--- |
+| string | key | The key value to be removed |
+
+
+### ReplaceTagParser.ClearEntries() <a name="replaceTagParserClearEntries"/>
+Clear all entries from the parser dictionary
+#### Declaration
+```csharp
+public static void ClearEntries();
+```
+
+
+### ReplaceTagParser.ParseKey() <a name="replaceTagParserParseKey"/>
 Get the value associated with a key
 #### Declaration
 ```csharp
@@ -171,16 +228,16 @@ public static string ParseKey(string key);
 | string | The value associated with the key, or empty string if the value does not exist |
 
 
-### 5.9 ReplaceTagParser.GetTagsParserDictionary() <a name="replaceTagParserGetTagsParserDictionary"/>
+### ReplaceTagParser.GetTagsParserDictionary() <a name="replaceTagParserGetTagsParserDictionary"/>
 Get the whole tags dictionary
 #### Declaration
 ```csharp
-public static Dictionary<string, string> GetTagsParserDictionary;
+public static IReadOnlyDictionary<string, string> GetTagsParserDictionary;
 ```
 #### Returns
 | Type | Description |
 | :--- | :--- |
-| Dictionary<string, string> | The dictionary containing all the key/value pairs of the ReplaceTagParser class |
+| IReadOnlyDictionary<string, string> | The dictionary containing all the key/value pairs of the ReplaceTagParser class |
 
 
 ## 6 - Contact Information <a name="contactInformation"/>

@@ -229,6 +229,40 @@ namespace Extensions
         }
 
         /// <summary>
+        /// Gets a random element from a list based on the list items weight
+        /// </summary>
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="list">The list to get a random element from</param>
+        /// <param name="weightedFunction">Function that returns the weight of each item</param>
+        /// <returns>The random element got from the list, based on the items weight</returns>
+        public static T RandomElementWithWeights<T>(this IList<T> list, Func<T, float> weightedFunction)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+
+            if (list.Count <= 0)
+                throw new ArgumentException("List should contain at least one element");
+
+            float totalWeight = 0;
+            foreach (T item in list)
+            {
+                totalWeight += weightedFunction(item);
+            }
+
+            float r = UnityEngine.Random.Range(0f, totalWeight);
+            float cumulative = 0f;
+
+            foreach (T item in list)
+            {
+                cumulative += weightedFunction(item);
+                if (r <= cumulative)
+                    return item;
+            }
+
+            return list[list.Count - 1];
+        }
+
+        /// <summary>
         /// Remove all duplicates in a list
         /// </summary>
         /// <typeparam name="T">The type of the list</typeparam>

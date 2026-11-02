@@ -16,38 +16,39 @@ namespace StatsSystem
         /// </summary>
         public StatType Type { get; private set; }
 
+        private readonly List<StatsModifier> statsModifiers;
         /// <summary>
         /// The modifiers on this stat
         /// </summary>
-        public List<StatsModifier> StatsModifiers { get; private set; }
+        public IReadOnlyList<StatsModifier> StatsModifiers => statsModifiers;
 
         /// <summary>
         /// Invoked when the base value of the stat has changed
         /// </summary>
         /// <param name="curBaseValue">float: base value of the stat after the change</param>
         /// <param name="curValueAfterModifiers">float: the stat value with the modifiers applied after the change</param>
-        public Action<float, float> OnSingleStatBaseValueChange;
+        public event Action<float, float> OnSingleStatBaseValueChange;
 
         /// <summary>
         /// Invoked when a modifier is added to the stat
         /// </summary>
         /// <param name="curBaseValue">float: base value of the stat after the change</param>
         /// <param name="curValueAfterModifiers">float: the stat value with the modifiers applied after the change</param>
-        public Action<float, float> OnModifierAdded;
+        public event Action<float, float> OnModifierAdded;
 
         /// <summary>
         /// Invoked when a modifier is removed from the stat
         /// </summary>
         /// <param name="curBaseValue">float: base value of the stat after the change</param>
         /// <param name="curValueAfterModifiers">float: the stat value with the modifiers applied after the change</param>
-        public Action<float, float> OnModifierRemoved;
+        public event Action<float, float> OnModifierRemoved;
 
         /// <summary>
         /// Invoked when the modifier list is modified
         /// </summary>
         /// <param name="curBaseValue">float: base value of the stat after the change</param>
         /// <param name="curValueAfterModifiers">float: the stat value with the modifiers applied after the change</param>
-        public Action<float, float> OnModifierListModified;
+        public event Action<float, float> OnModifierListModified;
 
         /// <summary>
         /// The minimum value this stat can reach
@@ -68,28 +69,35 @@ namespace StatsSystem
         /// <param name="statMaxValue">The maximum value this stat can reach</param>
         public SingleStat(StatType statType, float statBaseValue, float statMinValue = float.MinValue, float statMaxValue = float.MaxValue)
         {
+            if (statMaxValue <= 0f)
+                throw new ArgumentOutOfRangeException(nameof(statMaxValue), "Value cannot be zero or negative");
+
             Type = statType;
             StatBaseValue = Mathf.Clamp(statBaseValue, statMinValue, statMaxValue);
             this.statMinValue = statMinValue;
             this.statMaxValue = statMaxValue;
 
-            StatsModifiers = new List<StatsModifier>();
+            statsModifiers = new List<StatsModifier>();
         }
 
         /// <summary>
         /// Get the final stat value after the modifiers were applied
         /// </summary>
-        public float GetFinalValueAfterModifiers => CalculateFinalValue();
+        public float GetFinalValue() => CalculateFinalValue();
 
         /// <summary>
         /// Get the final stat normalized after the modifiers were applied
         /// </summary>
-        public float GetFinalValueAfterModifiersNormalized => CalculateFinalValue() / statMaxValue;
+        public float GetFinalValueNormalized()
+        {
+            float finalValue = CalculateFinalValue();
+            return finalValue / statMaxValue;
+        }
 
         /// <summary>
         /// Get the base stat normalized
         /// </summary>
-        public float GetStatBaseValueNormalized => StatBaseValue / statMaxValue;
+        public float GetBaseValueNormalized() => StatBaseValue / statMaxValue;
 
         /// <summary>
         /// Increase/decrease the stat by the passed amount
@@ -100,7 +108,7 @@ namespace StatsSystem
             StatBaseValue += amount;
             StatBaseValue = Mathf.Clamp(StatBaseValue, statMinValue, statMaxValue);
 
-            OnSingleStatBaseValueChange?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
+            OnSingleStatBaseValueChange?.Invoke(StatBaseValue, GetFinalValue());
         }
 
         /// <summary>
@@ -109,11 +117,12 @@ namespace StatsSystem
         /// <param name="statsModifier">The modifier to be added</param>
         public void AddModifier(StatsModifier statsModifier)
         {
-            StatsModifiers.Add(statsModifier);
-            StatsModifiers.Sort();
+            statsModifiers.Add(statsModifier);
+            statsModifiers.Sort();
 
-            OnModifierAdded?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
-            OnModifierListModified?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
+            float finalValue = GetFinalValue();
+            OnModifierAdded?.Invoke(StatBaseValue, finalValue);
+            OnModifierListModified?.Invoke(StatBaseValue, finalValue);
         }
 
         /// <summary>
@@ -123,12 +132,13 @@ namespace StatsSystem
         /// <returns>If the modifier removal was successful or not</returns>
         public bool RemoveModifier(StatsModifier statsModifier)
         {
-            bool wasRemoved = StatsModifiers.Remove(statsModifier);
+            bool wasRemoved = statsModifiers.Remove(statsModifier);
 
             if (wasRemoved)
             {
-                OnModifierRemoved?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
-                OnModifierListModified?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
+                float finalValue = GetFinalValue();
+                OnModifierRemoved?.Invoke(StatBaseValue, finalValue);
+                OnModifierListModified?.Invoke(StatBaseValue, finalValue);
             }
 
             return wasRemoved;
@@ -142,10 +152,11 @@ namespace StatsSystem
         {
             if (StatsModifiers.Count > 0)
             {
-                StatsModifiers = new List<StatsModifier>();
+                statsModifiers.Clear();
 
-                OnModifierRemoved?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
-                OnModifierListModified?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
+                float finalValue = GetFinalValue();
+                OnModifierRemoved?.Invoke(StatBaseValue, finalValue);
+                OnModifierListModified?.Invoke(StatBaseValue, finalValue);
 
                 return true;
             }
@@ -169,14 +180,15 @@ namespace StatsSystem
                 if (StatsModifiers[i].ModifierSource == modifierSource)
                 {
                     somethingWasRemoved = true;
-                    StatsModifiers.RemoveAt(i);
+                    statsModifiers.RemoveAt(i);
                 }
             }
 
             if (somethingWasRemoved)
             {
-                OnModifierRemoved?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
-                OnModifierListModified?.Invoke(StatBaseValue, GetFinalValueAfterModifiers);
+                float finalValue = GetFinalValue();
+                OnModifierRemoved?.Invoke(StatBaseValue, finalValue);
+                OnModifierListModified?.Invoke(StatBaseValue, finalValue);
             }
 
             return somethingWasRemoved;

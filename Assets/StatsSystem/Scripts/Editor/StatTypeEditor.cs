@@ -15,7 +15,7 @@ namespace StatsSystem
         {
             statType = target as StatType;
 
-            statNameProperty = serializedObject.FindProperty(statType.GetNameOfStatName);
+            statNameProperty = serializedObject.FindProperty(StatType.GetNameOfStatName);
         }
 
         public override void OnInspectorGUI()

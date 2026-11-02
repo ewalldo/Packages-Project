@@ -205,5 +205,17 @@ namespace Extensions
 
             return (value / total) * 100f;
         }
+
+        /// <summary>
+        /// Wraps the value between min (inclusive) and max (exclusive)
+        /// </summary>
+        /// <param name="value">The value to wrap</param>
+        /// <param name="min">The minimum value of the wrap range</param>
+        /// <param name="max">The maximum value of the wrap range</param>
+        /// <returns>The value wrapped</returns>
+        public static float Wrap(this float value, float min, float max)
+        {
+            return min + ((value - min) % (max - min) + (max - min)) % (max - min);
+        }
     }
 }

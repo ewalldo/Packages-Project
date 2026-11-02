@@ -2,10 +2,10 @@ using UnityEngine;
 
 namespace StatsSystem
 {
-    [RequireComponent(typeof(Character))]
+    [RequireComponent(typeof(StatsSheetComponent))]
     public class CharacterEquipmentManager : MonoBehaviour
     {
-        private Character character;
+        private StatsSheetComponent characterStats;
 
         private EquipmentSlot weaponSlot;
         private EquipmentSlot helmetSlot;
@@ -13,7 +13,7 @@ namespace StatsSystem
 
         private void Awake()
         {
-            character = GetComponent<Character>();
+            characterStats = GetComponent<StatsSheetComponent>();
 
             weaponSlot = new EquipmentSlot();
             helmetSlot = new EquipmentSlot();
@@ -35,13 +35,13 @@ namespace StatsSystem
             switch (equipmentItem.EquipmentSlot)
             {
                 case EquipmentSlotTypes.WeaponSlot:
-                    weaponSlot.EquipItem(equipmentItem, character);
+                    weaponSlot.EquipItem(equipmentItem, characterStats);
                     break;
                 case EquipmentSlotTypes.HelmetSlot:
-                    helmetSlot.EquipItem(equipmentItem, character);
+                    helmetSlot.EquipItem(equipmentItem, characterStats);
                     break;
                 case EquipmentSlotTypes.ArmorSlot:
-                    armorSlot.EquipItem(equipmentItem, character);
+                    armorSlot.EquipItem(equipmentItem, characterStats);
                     break;
                 default:
                     break;

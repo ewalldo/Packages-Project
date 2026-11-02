@@ -11,6 +11,12 @@ namespace Extensions
 	public static class StringExtensions
 	{
         /// <summary>
+        /// Copies the string to the system clipboard
+        /// </summary>
+        /// <param name="value">The string to be copied on the clipboard</param>
+        public static void CopyToClipboard(this string value) => GUIUtility.systemCopyBuffer = value;
+
+        /// <summary>
         /// Converts a hex string into a Color
         /// </summary>
         /// <param name="hexInput">The hex string to convert from</param>
@@ -21,6 +27,34 @@ namespace Extensions
                 return color;
 
             throw new ArgumentException($"Can't convert string '{hexInput}' to Color");
+        }
+
+        /// <summary>
+        /// Converts a Roman numeral string into an integer (e.g. I to 1, II to 2, etc.)
+        /// </summary>
+        /// <param name="romanNumeral">The Roman numeral string to convert from</param>
+        /// <returns>The integer representing the Roman numeral</returns>
+        public static int FromRomanNumerals(this string romanNumeral)
+        {
+            int totalValue = 0;
+            int previousValue = 0;
+
+            for (int i = romanNumeral.Length - 1; i >= 0; i--)
+            {
+                char currentChar = romanNumeral[i];
+
+                if (!romanMap.TryGetValue(currentChar, out int currentValue))
+                    throw new ArgumentException($"Invalid Roman numeral character: '{currentChar}'");
+
+                if (currentValue < previousValue)
+                    totalValue -= currentValue;
+                else
+                    totalValue += currentValue;
+
+                previousValue = currentValue;
+            }
+
+            return totalValue;
         }
 
         /// <summary>
@@ -167,6 +201,22 @@ namespace Extensions
         /// <param name="input">The string to get the value from</param>
         /// <returns>The string value or an empty string if null</returns>
         public static string ValueOrEmpty(this string input) => input ?? string.Empty;
+
+        /// <summary>
+        /// Shorthand version of string.Format. ex: "Hello {0}{1}.With("world", "!");
+        /// </summary>
+        /// <param name="value">The string to format</param>
+        /// <param name="args">Values to be inserted into the string</param>
+        /// <returns>The formatted string</returns>
+        public static string With(this string value, params object[] args)
+        {
+            return string.Format(value, args);
+        }
+
+        private static readonly Dictionary<char, int> romanMap = new Dictionary<char, int>()
+        {
+            { 'I', 1 }, { 'V', 5 }, { 'X', 10 }, { 'L', 50 }, { 'C', 100 }, { 'D', 500 }, { 'M', 1000 }
+        };
 
         private static readonly Dictionary<Type, Func<string[], object>> vectorConstructors = new Dictionary<Type, Func<string[], object>>()
         {

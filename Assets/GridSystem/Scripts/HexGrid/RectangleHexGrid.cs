@@ -29,6 +29,8 @@ namespace GridSystem
             if (bottomOffset < 0)
                 throw new ArgumentException($"{nameof(bottomOffset)} cannot be negative.");
 
+            ValidateAlignment(hexType, centerHexRowColumnAlignment);
+
             leftOffset *= -1;
             bottomOffset *= -1;
 
@@ -39,7 +41,7 @@ namespace GridSystem
                     int qOffset = GetOffset(centerHexRowColumnAlignment, q);
                     for (int r = bottomOffset - qOffset; r <= topOffset - qOffset; r++)
                     {
-                        InitializeAxialCoord(r, q, gridObjectInitializer);
+                        InitializeAxialCoord(q, r, gridObjectInitializer);
                     }
                 }
             }
@@ -50,7 +52,7 @@ namespace GridSystem
                     int rOffset = GetOffset(centerHexRowColumnAlignment, r);
                     for (int q = leftOffset - rOffset; q <= rightOffset - rOffset; q++)
                     {
-                        InitializeAxialCoord(r, q, gridObjectInitializer);
+                        InitializeAxialCoord(q, r, gridObjectInitializer);
                     }
                 }
             }
@@ -70,7 +72,20 @@ namespace GridSystem
         public RectangleHexGrid(HexType hexType, HexAlignment centerHexRowColumnAlignment, int leftOffset, int rightOffset, int topOffset, int bottomOffset, float edgeLength, Func<RectangleHexGrid<T>, AxialCoord, T> gridObjectInitializer = null)
             : this(hexType, centerHexRowColumnAlignment, leftOffset, rightOffset, topOffset, bottomOffset, edgeLength, Vector3.zero, gridObjectInitializer) { }
 
-        private void InitializeAxialCoord(int r, int q, Func<RectangleHexGrid<T>, AxialCoord, T> gridObjectInitializer)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RectangleHexGrid{T}"/> class.
+        /// </summary>
+        /// <param name="gridData">The grid data in a serialized format</param>
+        public RectangleHexGrid(SerializableHexGrid<T> gridData)
+            : base((HexType)gridData.HexType, gridData.EdgeLength, new Vector3(gridData.OriginX, gridData.OriginY, gridData.OriginZ))
+        {
+            foreach (SerializableHexGrid<T>.HexGridData data in gridData.Data)
+            {
+                hexGrid[new AxialCoord(data.Q, data.R)] = data.Value;
+            }
+        }
+
+        private void InitializeAxialCoord(int q, int r, Func<RectangleHexGrid<T>, AxialCoord, T> gridObjectInitializer)
         {
             AxialCoord axialCoord = new AxialCoord(q, r);
 
@@ -86,8 +101,21 @@ namespace GridSystem
             {
                 HexAlignment.FlatTopDown or HexAlignment.PointTopLeft => (int)Math.Floor(axisIndex / 2f),
                 HexAlignment.FlatTopUp or HexAlignment.PointTopRight => (int)Math.Floor((axisIndex + 1) / 2.0f),
-                _ => 0,
+                _ => throw new ArgumentOutOfRangeException(nameof(hexAlignment), hexAlignment, null),
             };
+        }
+
+        private void ValidateAlignment(HexType hexType, HexAlignment alignment)
+        {
+            bool valid = hexType switch
+            {
+                HexType.FlatTop => alignment is HexAlignment.FlatTopDown or HexAlignment.FlatTopUp,
+                HexType.PointTop => alignment is HexAlignment.PointTopLeft or HexAlignment.PointTopRight,
+                _ => false
+            };
+
+            if (!valid)
+                throw new ArgumentException($"HexAlignment {alignment} is not compatible with HexType {hexType}");
         }
     }
 }
