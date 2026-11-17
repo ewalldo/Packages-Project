@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LootSystem
+namespace LootSystem.Samples
 {
     public class LootBehaviour : MonoBehaviour
     {

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-namespace LootSystem
+namespace LootSystem.Samples
 {
     public class LootSpawn : MonoBehaviour, IPointerDownHandler
     {
