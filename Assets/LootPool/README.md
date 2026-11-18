@@ -101,12 +101,12 @@ public void SpawnDrop(Vector3 spawnPosition, int numberOfPulls = 1, Transform sp
 Pull loot from a list in an independent way (each item in the list has its own chance of being pulled)
 #### Declaration
 ```csharp
-public static List<GameObject> PullLoot(List<LootItem> lootItems, int numberOfPulls);
+public static List<GameObject> PullLoot(List<LootPoolItem> lootItems, int numberOfPulls);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| List<LootItem> | lootItems | The independent list to pull items from |
+| List<LootPoolItem> | lootItems | The independent list to pull items from |
 | int | numberOfPulls | How many times it should pull from the list |
 #### Returns
 | Type | Description |
@@ -118,12 +118,12 @@ public static List<GameObject> PullLoot(List<LootItem> lootItems, int numberOfPu
 Pull loot from a list in a dependent way (the chance of a item being pulled depends on the other items in the list)
 #### Declaration
 ```csharp
-public static List<GameObject> PullLoot(List<LootItem> lootItems, int numberOfPulls);
+public static List<GameObject> PullLoot(List<LootPoolItem> lootItems, int numberOfPulls);
 ```
 #### Parameters
 | Type | Name | Description |
 | :--- | :--- | :--- |
-| List<LootItem> | lootItems | The dependent list to pull items from |
+| List<LootPoolItem> | lootItems | The dependent list to pull items from |
 | int | numberOfPulls | How many times it should pull from the list |
 #### Returns
 | Type | Description |

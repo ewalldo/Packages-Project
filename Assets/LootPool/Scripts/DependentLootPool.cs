@@ -23,7 +23,7 @@ namespace LootSystem
         /// <param name="lootItems">The dependent list to pull items from</param>
         /// <param name="numberOfPulls">How many times it should pull from the list</param>
         /// <returns>List of GameObjects containing the pulled items</returns>
-        public static List<GameObject> PullLoot(List<LootItem> lootItems, int numberOfPulls)
+        public static List<GameObject> PullLoot(List<LootPoolItem> lootItems, int numberOfPulls)
         {
             List<GameObject> lootList = new List<GameObject>();
 

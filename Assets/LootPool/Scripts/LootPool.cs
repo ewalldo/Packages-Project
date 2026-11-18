@@ -5,9 +5,9 @@ namespace LootSystem
 {
     public abstract class LootPool : ScriptableObject
     {
-        [SerializeField] protected List<LootItem> lootPool = new List<LootItem>();
+        [SerializeField] protected List<LootPoolItem> lootPool = new List<LootPoolItem>();
 
-        public IReadOnlyList<LootItem> LootPoolList => lootPool;
+        public IReadOnlyList<LootPoolItem> LootPoolList => lootPool;
 
         public abstract List<GameObject> PullLoot(int numberOfPulls = 1);
 
@@ -62,9 +62,9 @@ namespace LootSystem
         /// Validate changes on the min/max of each item (number can't be negative and min can be larger than max)
         /// </summary>
         /// <param name="lootItems">The list of pool items to validate</param>
-        private void ValidateMinMax(List<LootItem> lootItems)
+        private void ValidateMinMax(List<LootPoolItem> lootItems)
         {
-            foreach (LootItem item in lootItems)
+            foreach (LootPoolItem item in lootItems)
             {
                 if (item.minCountItem < 0)
                     item.minCountItem = 0;

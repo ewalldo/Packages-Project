@@ -90,10 +90,10 @@ namespace LootSystem
 
         private void InitializeElement(SerializedProperty element)
         {
-            element.FindPropertyRelative(nameof(LootItem.weight)).floatValue = 0f;
-            element.FindPropertyRelative(nameof(LootItem.item)).objectReferenceValue = null;
-            element.FindPropertyRelative(nameof(LootItem.minCountItem)).intValue = 1;
-            element.FindPropertyRelative(nameof(LootItem.maxCountItem)).intValue = 1;
+            element.FindPropertyRelative(nameof(LootPoolItem.weight)).floatValue = 0f;
+            element.FindPropertyRelative(nameof(LootPoolItem.item)).objectReferenceValue = null;
+            element.FindPropertyRelative(nameof(LootPoolItem.minCountItem)).intValue = 1;
+            element.FindPropertyRelative(nameof(LootPoolItem.maxCountItem)).intValue = 1;
         }
 
         protected void DrawItem(ReorderableList list, Rect rect, int index, Action<float> onSliderChanged)
@@ -109,13 +109,13 @@ namespace LootSystem
             EditorGUI.LabelField(new Rect(rect.x + (itemWidth + spacing), rect.y, minMaxWidth, listItemHeight / 2), "<color=white>Min</color>", smallHeaderStyle);
             EditorGUI.LabelField(new Rect(rect.x + (itemWidth + minMaxWidth + spacing * 2), rect.y, minMaxWidth, listItemHeight / 2), "<color=white>Max</color>", smallHeaderStyle);
 
-            EditorGUI.PropertyField(new Rect(rect.x + (rect.width * 0.00f), rect.y + (listItemHeight / 2), itemWidth, listItemHeight / 2), element.FindPropertyRelative(nameof(LootItem.item)), GUIContent.none);
-            EditorGUI.PropertyField(new Rect(rect.x + (itemWidth + spacing), rect.y + (listItemHeight / 2), minMaxWidth, listItemHeight / 2), element.FindPropertyRelative(nameof(LootItem.minCountItem)), GUIContent.none);
-            EditorGUI.PropertyField(new Rect(rect.x + (itemWidth + minMaxWidth + spacing * 2), rect.y + (listItemHeight / 2), minMaxWidth, listItemHeight / 2), element.FindPropertyRelative(nameof(LootItem.maxCountItem)), GUIContent.none);
+            EditorGUI.PropertyField(new Rect(rect.x + (rect.width * 0.00f), rect.y + (listItemHeight / 2), itemWidth, listItemHeight / 2), element.FindPropertyRelative(nameof(LootPoolItem.item)), GUIContent.none);
+            EditorGUI.PropertyField(new Rect(rect.x + (itemWidth + spacing), rect.y + (listItemHeight / 2), minMaxWidth, listItemHeight / 2), element.FindPropertyRelative(nameof(LootPoolItem.minCountItem)), GUIContent.none);
+            EditorGUI.PropertyField(new Rect(rect.x + (itemWidth + minMaxWidth + spacing * 2), rect.y + (listItemHeight / 2), minMaxWidth, listItemHeight / 2), element.FindPropertyRelative(nameof(LootPoolItem.maxCountItem)), GUIContent.none);
 
             EditorGUI.LabelField(new Rect(rect.x, rect.y + listItemHeight, rect.width, listItemHeight / 2), "Drop Chance (0~1)");
             EditorGUI.BeginChangeCheck();
-            float weight = EditorGUI.Slider(new Rect(rect.x, rect.y + (listItemHeight + listItemHeight / 2), rect.width, listItemHeight / 2), element.FindPropertyRelative(nameof(LootItem.weight)).floatValue, 0f, 1f);
+            float weight = EditorGUI.Slider(new Rect(rect.x, rect.y + (listItemHeight + listItemHeight / 2), rect.width, listItemHeight / 2), element.FindPropertyRelative(nameof(LootPoolItem.weight)).floatValue, 0f, 1f);
             if (EditorGUI.EndChangeCheck())
             {
                 weight = Mathf.Clamp01(weight);
@@ -125,12 +125,12 @@ namespace LootSystem
 
         protected abstract void DrawListTable(Rect tableRect);
 
-        protected void DrawProgressBar(Rect rect, LootItem lootItem)
+        protected void DrawProgressBar(Rect rect, LootPoolItem lootItem)
         {
             EditorGUI.ProgressBar(rect, lootItem.weight, GetProgressBarMessage(lootItem));
         }
 
-        private string GetProgressBarMessage(LootItem lootItem)
+        private string GetProgressBarMessage(LootPoolItem lootItem)
         {
             return $"{lootItem.item.name}: ({lootItem.minCountItem}~{lootItem.maxCountItem}) - {lootItem.weight * 100:F2}% chance";
         }

@@ -18,7 +18,7 @@ namespace LootSystem
         protected override void DrawList(Rect rect, int index, bool isActive, bool isFocused)
         {
             SerializedProperty element = lootList.serializedProperty.GetArrayElementAtIndex(index);
-            DrawItem(lootList, rect, index, (weight) => element.FindPropertyRelative(nameof(LootItem.weight)).floatValue = weight);
+            DrawItem(lootList, rect, index, (weight) => element.FindPropertyRelative(nameof(LootPoolItem.weight)).floatValue = weight);
         }
 
         protected override void DrawListTable(Rect tableRect)
