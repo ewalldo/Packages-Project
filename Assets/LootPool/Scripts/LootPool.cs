@@ -9,7 +9,7 @@ namespace LootSystem
 
         public IReadOnlyList<LootPoolItem> LootPoolList => lootPool;
 
-        public abstract List<GameObject> PullLoot(int numberOfPulls = 1);
+        public abstract List<LootDrop> PullLoot(int numberOfPulls = 1);
 
         /// <summary>
         /// Pulls and spawn the loot from the loot pool
@@ -20,13 +20,19 @@ namespace LootSystem
         /// <param name="spawnParent">The transform parent for the spawned loot</param>
         public void SpawnDrop(Vector3 spawnPosition, Vector3 offsetRange, int numberOfPulls = 1, Transform spawnParent = null)
         {
-            List<GameObject> pulledLoot = PullLoot(numberOfPulls);
+            List<LootDrop> pulledLoot = PullLoot(numberOfPulls);
 
-            for (int i = 0; i < pulledLoot.Count; i++)
+            foreach (LootDrop drop in pulledLoot)
             {
-                GameObject spawnedLoot = Instantiate(pulledLoot[i], spawnParent);
-                spawnedLoot.transform.position = new Vector3(spawnPosition.x + Random.Range(-offsetRange.x, offsetRange.x), spawnPosition.y + Random.Range(-offsetRange.y, offsetRange.y), spawnPosition.z + Random.Range(-offsetRange.z, offsetRange.z));
-                spawnedLoot.transform.rotation = Quaternion.identity;
+                for (int i = 0; i < drop.Amount; i++)
+                {
+                    GameObject spawnedLoot = Instantiate(drop.Reward, spawnParent);
+                    spawnedLoot.transform.position = new Vector3(
+                        spawnPosition.x + Random.Range(-offsetRange.x, offsetRange.x),
+                        spawnPosition.y + Random.Range(-offsetRange.y, offsetRange.y),
+                        spawnPosition.z + Random.Range(-offsetRange.z, offsetRange.z));
+                    spawnedLoot.transform.rotation = Quaternion.identity;
+                }
             }
         }
 
@@ -77,6 +83,12 @@ namespace LootSystem
                 }
             }
         }
+
+        /// <summary>
+        /// Selects the item indices that dropped for a single pull
+        /// </summary>
+        /// <returns>List containing the selected item indices</returns>
+        protected abstract List<int> SelectHits(List<LootPoolItem> lootItems);
 
         public static string GetNameOfLootPool => nameof(lootPool);
     }

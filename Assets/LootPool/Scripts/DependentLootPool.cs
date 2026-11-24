@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,43 +11,44 @@ namespace LootSystem
         /// </summary>
         /// <param name="numberOfPulls">How many times it should pull from the list</param>
         /// <returns>List of GameObjects containing the pulled items</returns>
-        public override List<GameObject> PullLoot(int numberOfPulls = 1)
+        public override List<LootDrop> PullLoot(int numberOfPulls = 1)
         {
-            return PullLoot(lootPool, numberOfPulls);
-        }
-
-        /// <summary>
-        /// Pull loot from a list in a dependent way (the chance of a item being pulled depends on the other items in the list)
-        /// </summary>
-        /// <param name="lootItems">The dependent list to pull items from</param>
-        /// <param name="numberOfPulls">How many times it should pull from the list</param>
-        /// <returns>List of GameObjects containing the pulled items</returns>
-        public static List<GameObject> PullLoot(List<LootPoolItem> lootItems, int numberOfPulls)
-        {
-            List<GameObject> lootList = new List<GameObject>();
+            List<LootDrop> pulledLoot = new List<LootDrop>();
+            List<int> hits;
 
             for (int pulls = 0; pulls < numberOfPulls; pulls++)
             {
-                float value = Random.Range(0f, 1f);
-                float curSum = 0;
+                hits = SelectHits(lootPool);
 
-                for (int i = 0; i < lootItems.Count; i++)
+                foreach (int hit in hits)
                 {
-                    curSum += lootItems[i].weight;
-                    if (curSum >= value)
-                    {
-                        int count = Random.Range(lootItems[i].minCountItem, lootItems[i].maxCountItem + 1);
-                        for (int j = 0; j < count; j++)
-                        {
-                            if (lootItems[i].item != null)
-                                lootList.Add(lootItems[i].item);
-                        }
-                        break;
-                    }
+                    LootPoolItem pulledItem = lootPool[hit];
+                    int amount = Random.Range(pulledItem.minCountItem, pulledItem.maxCountItem + 1);
+                    pulledLoot.Add(new LootDrop(pulledItem.item, amount));
                 }
             }
 
-            return lootList;
+            return pulledLoot;
+        }
+
+        protected override List<int> SelectHits(List<LootPoolItem> lootItems)
+        {
+            List<int> hits = new List<int>();
+
+            float value = Random.Range(0f, 1f);
+            float curSum = 0;
+
+            for (int i = 0; i < lootItems.Count; i++)
+            {
+                curSum += lootItems[i].weight;
+                if (curSum >= value)
+                {
+                    hits.Add(i);
+                    break;
+                }
+            }
+
+            return hits;
         }
 
         /// <summary>

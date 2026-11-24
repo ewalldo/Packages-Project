@@ -11,8 +11,6 @@
 - [Documentation](#documentation)
   - [LootPool.PullLoot()](#lootPoolPullLoot)
   - [LootPool.SpawnDrop()](#lootPoolSpawnDrop)
-  - [IndependentLootPool.PullLoot](#independentLootPoolPullLoot)
-  - [DependentLootPool.PullLoot()](#dependentLootPoolPullLoot)
 - [Contact Information](#contactInformation)
 
 ## 1 - Introduction <a name="introduction"/>
@@ -52,7 +50,7 @@ The loot pool UI is organized into two parts: The "loot pool", and the "visualiz
 - Items can be pulled from the pool through code by using the PullLoot function in the LootPool script. Details on how use the LootPull function can be found in the documentation part.
 ```csharp
 [SerializeField] private LootPool lootPool;
-List<GameObject> loot = lootPool.PullLoot();
+List<LootDrop> loot = lootPool.PullLoot();
 ```
 
 ### 4.4 Spawn items from the loot pool <a name="spawnFromALootPool"/>
@@ -67,7 +65,7 @@ lootPool.SpawnDrop(position, offset, 1, this);
 Pull loot from the loot pool list
 #### Declaration
 ```csharp
-public List<GameObject> PullLoot(int numberOfPulls = 1);
+public List<LootDrop> PullLoot(int numberOfPulls = 1);
 ```
 #### Parameters
 | Type | Name | Description |
@@ -76,7 +74,7 @@ public List<GameObject> PullLoot(int numberOfPulls = 1);
 #### Returns
 | Type | Description |
 | :--- | :--- |
-| List<GameObject> | List of GameObjects containing the pulled items |
+| List<LootDrop> | List of LootDrop containing the pulled items as well as their amount |
 
 
 ### 5.2 LootPool.SpawnDrop() <a name="lootPoolSpawnDrop"/>
@@ -95,40 +93,6 @@ public void SpawnDrop(Vector3 spawnPosition, int numberOfPulls = 1, Transform sp
 | float | offsetRange | The offset range from the spawnPosition (calculated independent for each item), applied to all axis |
 | int | numberOfPulls | How many times it should pull from the loot list |
 | Transform | spawnParent | The transform parent for the spawned loot |
-
-
-### 5.3 IndependentLootPool.PullLoot() <a name="independentLootPoolPullLoot"/>
-Pull loot from a list in an independent way (each item in the list has its own chance of being pulled)
-#### Declaration
-```csharp
-public static List<GameObject> PullLoot(List<LootPoolItem> lootItems, int numberOfPulls);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| List<LootPoolItem> | lootItems | The independent list to pull items from |
-| int | numberOfPulls | How many times it should pull from the list |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| List<GameObject> | List of GameObjects containing the pulled items |
-
-
-### 5.4 DependentLootPool.PullLoot() <a name="dependentLootPoolPullLoot"/>
-Pull loot from a list in a dependent way (the chance of a item being pulled depends on the other items in the list)
-#### Declaration
-```csharp
-public static List<GameObject> PullLoot(List<LootPoolItem> lootItems, int numberOfPulls);
-```
-#### Parameters
-| Type | Name | Description |
-| :--- | :--- | :--- |
-| List<LootPoolItem> | lootItems | The dependent list to pull items from |
-| int | numberOfPulls | How many times it should pull from the list |
-#### Returns
-| Type | Description |
-| :--- | :--- |
-| List<GameObject> | List of GameObjects containing the pulled items |
 
 ## 6 - Contact Information <a name="contactInformation"/>
 If you have any questions or want to report a bug/problem with the package, please contact me at evaldo.lborba@gmail.com
