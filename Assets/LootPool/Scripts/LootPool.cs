@@ -9,7 +9,7 @@ namespace LootSystem
 
         public IReadOnlyList<LootPoolItem> LootPoolList => lootPool;
 
-        public abstract List<LootDrop> PullLoot(int numberOfPulls = 1);
+        public abstract List<LootDrop> PullLoot(int numberOfPulls = 1, IRandomProvider random = null);
 
         /// <summary>
         /// Pulls and spawn the loot from the loot pool
@@ -18,9 +18,11 @@ namespace LootSystem
         /// <param name="offsetRange">The offset range from the <paramref name="spawnPosition"/> (calculated independent for each item)</param>
         /// <param name="numberOfPulls">How many times it should pull from the loot list</param>
         /// <param name="spawnParent">The transform parent for the spawned loot</param>
-        public void SpawnDrop(Vector3 spawnPosition, Vector3 offsetRange, int numberOfPulls = 1, Transform spawnParent = null)
+        /// <param name="random">The source for the random number generator, defaults to <see cref="UnityRandomProvider"/> when null</param>
+        public void SpawnDrop(Vector3 spawnPosition, Vector3 offsetRange, int numberOfPulls = 1, Transform spawnParent = null, IRandomProvider random = null)
         {
-            List<LootDrop> pulledLoot = PullLoot(numberOfPulls);
+            IRandomProvider rng = random ?? UnityRandomProvider.Shared;
+            List<LootDrop> pulledLoot = PullLoot(numberOfPulls, rng);
 
             foreach (LootDrop drop in pulledLoot)
             {
@@ -28,9 +30,9 @@ namespace LootSystem
                 {
                     GameObject spawnedLoot = Instantiate(drop.Reward, spawnParent);
                     spawnedLoot.transform.position = new Vector3(
-                        spawnPosition.x + Random.Range(-offsetRange.x, offsetRange.x),
-                        spawnPosition.y + Random.Range(-offsetRange.y, offsetRange.y),
-                        spawnPosition.z + Random.Range(-offsetRange.z, offsetRange.z));
+                        spawnPosition.x + rng.NextFloat(-offsetRange.x, offsetRange.x),
+                        spawnPosition.y + rng.NextFloat(-offsetRange.y, offsetRange.y),
+                        spawnPosition.z + rng.NextFloat(-offsetRange.z, offsetRange.z));
                     spawnedLoot.transform.rotation = Quaternion.identity;
                 }
             }
@@ -43,9 +45,10 @@ namespace LootSystem
         /// <param name="offsetRange">The offset range from the <paramref name="spawnPosition"/> (calculated independent for each item)</param>
         /// <param name="numberOfPulls">How many times it should pull from the loot list</param>
         /// <param name="spawnParent">The transform parent for the spawned loot</param>
-        public void SpawnDrop(Vector3 spawnPosition, float offsetRange, int numberOfPulls = 1, Transform spawnParent = null)
+        /// <param name="random">The source for the random number generator, defaults to <see cref="UnityRandomProvider"/> when null</param>
+        public void SpawnDrop(Vector3 spawnPosition, float offsetRange, int numberOfPulls = 1, Transform spawnParent = null, IRandomProvider random = null)
         {
-            SpawnDrop(spawnPosition, new Vector3(offsetRange, offsetRange, offsetRange), numberOfPulls, spawnParent);
+            SpawnDrop(spawnPosition, new Vector3(offsetRange, offsetRange, offsetRange), numberOfPulls, spawnParent, random);
         }
 
         /// <summary>
@@ -54,9 +57,10 @@ namespace LootSystem
         /// <param name="spawnPosition">The central position where the loot will be spawned</param>
         /// <param name="numberOfPulls">How many times it should pull from the loot list</param>
         /// <param name="spawnParent">The transform parent for the spawned loot</param>
-        public void SpawnDrop(Vector3 spawnPosition, int numberOfPulls = 1, Transform spawnParent = null)
+        /// <param name="random">The source for the random number generator, defaults to <see cref="UnityRandomProvider"/> when null</param>
+        public void SpawnDrop(Vector3 spawnPosition, int numberOfPulls = 1, Transform spawnParent = null, IRandomProvider random = null)
         {
-            SpawnDrop(spawnPosition, Vector3.zero, numberOfPulls, spawnParent);
+            SpawnDrop(spawnPosition, Vector3.zero, numberOfPulls, spawnParent, random);
         }
 
         private void OnValidate()
@@ -88,7 +92,7 @@ namespace LootSystem
         /// Selects the item indices that dropped for a single pull
         /// </summary>
         /// <returns>List containing the selected item indices</returns>
-        protected abstract List<int> SelectHits(List<LootPoolItem> lootItems);
+        protected abstract List<int> SelectHits(List<LootPoolItem> lootItems, IRandomProvider random);
 
         public static string GetNameOfLootPool => nameof(lootPool);
     }
